@@ -19,7 +19,7 @@ USAGE
 }
 
 get_volume() {
-  pactl get-sink-volume @DEFAULT_SINK@ | grep Volume | awk '{print $5}' | tr % " "
+  pactl get-sink-volume @DEFAULT_SINK@ | grep Volume | awk '{print $5}' | tr % " " | awk '{$1=$1};1'
 }
 
 set_volume() {

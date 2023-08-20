@@ -1,2 +1,5 @@
+# Update $PATH variable
+export PATH=$PATH:~/programs/bin
+
 # Common aliases for all shells
 alias ls='ls --color=auto'
