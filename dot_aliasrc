@@ -1,5 +1,5 @@
 # Update $PATH variable
-export PATH=$PATH:~/programs/bin
+export PATH=$PATH:~/go/bin:~/.local/bin
 
 # Common aliases for all shells
 alias ls='ls --color=auto'

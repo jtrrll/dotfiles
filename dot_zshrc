@@ -6,6 +6,16 @@ if [ -f "$HOME"/.aliasrc ]; then
   . "$HOME"/.aliasrc
 fi
 
+# Source completions if available
+if [ -d /usr/local/completions ]; then
+  autoload -U compinit; compinit
+  for file in /usr/local/completions/*.zsh; do
+    if [ -f "$file" ]; then
+      . "$file"
+    fi
+  done
+fi
+
 # Set zsh prompt
 if [ -n "$SSH_CLIENT" ]; then
   PROMPT='%F{blue}%n@%m%f %F{magenta}%1~%f %F{green}%#%f ' # username@host dir %

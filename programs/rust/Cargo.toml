@@ -1,7 +1,8 @@
 [workspace]
 members = [
-  "*"
+  "crates/*"
 ]
-exclude = [
-  "target/"
-]
+
+[workspace.package]
+authors = ["jtrrll"]
+edition = "2021"

@@ -1,6 +1,5 @@
 # ~/.dotfiles
 ![GitHub Actions CI Status](https://github.com/jacksonterrill/dotfiles/workflows/dotfiles-ci/badge.svg)
-![Repository size](https://img.shields.io/github/repo-size/jacksonterrill/dotfiles?labelColor=2E3440&color=BF616A)
 ![License](https://img.shields.io/github/license/jacksonterrill/dotfiles?labelColor=2E3440&color=ECEFF4&style=flat)
 
 My dotfiles collection for configuring frequently used programs. Managed via [chezmoi](https://www.chezmoi.io/)
