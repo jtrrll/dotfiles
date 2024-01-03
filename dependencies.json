@@ -1,0 +1,55 @@
+{
+  "Fonts": [
+    "Hack Nerd Font Mono",
+    "IBM Plex Serif"
+  ],
+  "Programs": {
+    "Applications": [
+      "alacritty",
+      "nvim",
+      "spotify",
+      "steam",
+      "vim"
+    ],
+    "Custom": [
+      "spotifyctl"
+    ],
+    "Languages": [
+      "cargo",
+      "go",
+      "node",
+      "npm",
+      "python",
+      "pip"
+    ],
+    "Shells": [
+      "bash",
+      "sh"
+    ],
+    "Utilities": [
+      "cat",
+      "cd",
+      "chezmoi",
+      "clear",
+      "cp",
+      "echo",
+      "git",
+      "grep",
+      "jq",
+      "ln",
+      "ls",
+      "make",
+      "man",
+      "mkdir",
+      "mv",
+      "ps",
+      "pwd",
+      "rg",
+      "rm",
+      "rmdir",
+      "sort",
+      "touch",
+      "wc"
+    ]
+  }
+}

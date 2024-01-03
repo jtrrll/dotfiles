@@ -30,3 +30,8 @@ fi
 # Use the up and down arrow keys for finding a command in history
 bind '"\e[A":history-search-backward'
 bind '"\e[B":history-search-forward'
+
+# Source environment-specific config if available
+if [ -f "$HOME"/.envrc ]; then
+  . "$HOME"/.envrc
+fi

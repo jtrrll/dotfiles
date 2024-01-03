@@ -1,6 +1,6 @@
 #!/bin/sh
 error() {
-  printf "Error: %s\n" "$1" 1>&2
+  printf "\033[91mError: %s\n\033[0m" "$1" 1>&2
   exit 1
 }
 
@@ -28,6 +28,6 @@ install_rust_programs() (
   fi
 )
 
-sudo printf "Installing custom programs...\n"
+printf "Installing custom programs...\n"
 install_rust_programs
 printf "All custom programs installed\n"

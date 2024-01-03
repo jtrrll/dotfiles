@@ -22,3 +22,8 @@ if [ -n "$SSH_CLIENT" ]; then
 else
   PROMPT='%F{magenta}%1~%f %F{green}%#%f ' # dir %
 fi
+
+# Source environment-specific config if available
+if [ -f "$HOME"/.envrc ]; then
+  . "$HOME"/.envrc
+fi
