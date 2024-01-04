@@ -21,10 +21,10 @@ jobs:
       run:
         working-directory: programs/rust
     steps:
-      - name: Install dependencies
-        run: sudo apt install libdbus-1-dev pkg-config
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Install dependencies
+        run: sudo apt install libdbus-1-dev pkg-config
       - name: Check format
         run: cargo fmt --all -- --check
       - name: Lint
