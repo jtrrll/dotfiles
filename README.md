@@ -1,5 +1,5 @@
 # ~/.dotfiles
-![GitHub Actions CI Status](https://img.shields.io/github/actions/workflow/status/jtrrll/dotfiles/test.yml?logo=github&label=ci&link=https%3A%2F%2Fgithub.com%2Fjtrrll%2Fdotfiles%2Factions%2Fworkflows%2Ftest.yml)
+![GitHub Actions CI Status](https://img.shields.io/github/actions/workflow/status/jtrrll/dotfiles/ci.yml?logo=github&label=ci&link=https%3A%2F%2Fgithub.com%2Fjtrrll%2Fdotfiles%2Factions%2Fworkflows%2Fci.yml)
 ![License](https://img.shields.io/github/license/jtrrll/dotfiles?link=https%3A%2F%2Fgithub.com%2Fjtrrll%2Fdotfiles%2Fblob%2Fmain%2FLICENSE)
 
 My dotfiles collection for configuring frequently used programs. Managed via [chezmoi](https://www.chezmoi.io/)
