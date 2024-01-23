@@ -1,31 +1,28 @@
+" Color
 set termguicolors
 colorscheme codedark
+filetype on
 syntax on
 
 " UI
 set number                " show line numbers
 set relativenumber        " show relative line numbers
-set cul                   " highlight current line
+set cursorline            " highlight current line
 
 " Indentation
 set autoindent            " auto-indent
 set tabstop=2             " tab spacing
 set softtabstop=2         " unify
 set shiftwidth=2          " indent/outdent by 2 columns
-set shiftround            " always indent/outdent to the nearest tabstop
+set shiftround            " always indent/outdent to nearest tabstop
 set expandtab             " use spaces instead of tabs
 set smartindent           " automatically insert one extra level of indentation
-set smarttab              " use tabs at the start of a line, spaces elsewhere
 set nowrap                " don't wrap text
 
 " Input
 " switch between block and beam cursor shapes
 augroup cursorRefresh
-  au!
-  autocmd BufEnter * silent !printf "\e[1 q"
-  autocmd VimLeave * silent !printf "\e[5 q"
-  autocmd InsertEnter * silent !printf "\e[5 q"
-  autocmd InsertLeave * silent !printf "\e[1 q"
-  autocmd CmdlineEnter * silent !printf "\e[5 q"
-  autocmd CmdlineLeave * silent !printf "\e[1 q"
+  autocmd!
+  autocmd BufEnter,InsertLeave,CmdlineLeave * silent !printf "\e[1 q"
+  autocmd VimLeave,InsertEnter,CmdlineEnter * silent !printf "\e[5 q"
 augroup END

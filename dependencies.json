@@ -27,29 +27,12 @@
       "sh"
     ],
     "Utilities": [
-      "cat",
-      "cd",
       "chezmoi",
-      "clear",
-      "cp",
-      "echo",
       "git",
-      "grep",
       "jq",
-      "ln",
-      "ls",
       "make",
-      "man",
-      "mkdir",
-      "mv",
-      "ps",
-      "pwd",
       "rg",
-      "rm",
-      "rmdir",
-      "sort",
-      "touch",
-      "wc"
+      "task"
     ]
   }
 }
