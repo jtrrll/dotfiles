@@ -1,4 +1,4 @@
-import = ["/home/jtrrll/.config/alacritty/vscode-dark-plus.toml"]
+import = ["/home/jtrrll/.config/alacritty/vscode-dark-modern.toml"]
 
 [cursor]
 blink_interval = 500

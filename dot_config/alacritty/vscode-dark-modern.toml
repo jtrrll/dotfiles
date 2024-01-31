@@ -1,0 +1,29 @@
+# Colors (VS Code Dark Modern)
+
+# Default colors
+[colors.primary]
+background = "#1f1f1f"
+foreground = "#cccccc"
+bright_foreground = "#e5e5e5"
+
+# Normal colors
+[colors.normal]
+black   = "#181818"
+blue    = "#569cd6"
+cyan    = "#9cdcfe"
+green   = "#6a9955"
+magenta = "#c586c0"
+red     = "#f44747"
+white   = "#cccccc"
+yellow  = "#dcdcaa"
+
+# Bright colors
+[colors.bright]
+black   = "#1f1f1f"
+blue    = "#569cd6" # same as normal
+cyan    = "#9cdcfe" # same as normal
+green   = "#4ec9b0"
+magenta = "#c586c0" # same as normal
+red     = "#f85149"
+white   = "#e5e5e5"
+yellow  = "#dcdcaa" # same as normal

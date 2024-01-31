@@ -24,9 +24,9 @@ indent 1 && printf "\033[1m%s\033[0m\n" "Fonts"
 jq -r '.Fonts | sort | .[]' dependencies.json |
 while IFS= read -r font; do
   if fc-list : family | grep -x "$font" > /dev/null; then
-    indent 2 && printf "\033[92m%s installed\033[0m\n" "$font"
+    indent 2 && printf "\033[32m%s installed\033[0m\n" "$font"
   else
-    indent 2 && printf "\033[91m%s not installed\033[0m\n" "$font"
+    indent 2 && printf "\033[31m%s not installed\033[0m\n" "$font"
   fi
 done
 
@@ -38,9 +38,9 @@ while IFS= read -r category; do
   jq -r ".Programs.\"$category\" | sort[]" dependencies.json |
   while IFS= read -r program; do
     if command -v "$program" > /dev/null; then
-      indent 3 && printf "\033[92m%s installed\033[0m\n" "$program"
+      indent 3 && printf "\033[32m%s installed\033[0m\n" "$program"
     else
-      indent 3 && printf "\033[91m%s not installed\033[0m\n" "$program"
+      indent 3 && printf "\033[31m%s not installed\033[0m\n" "$program"
     fi
   done
 done
