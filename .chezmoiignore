@@ -3,3 +3,5 @@ LICENSE
 assets/
 .github/
 programs/
+dependencies.json
+.pre-commit-config.yaml
