@@ -1,6 +1,6 @@
 #!/bin/sh
 error() {
-  printf "\033[91mError: %s\n\033[0m" "$1" 1>&2
+  printf "\033[31mError: %s\n\033[0m" "$1" 1>&2
   exit 1
 }
 

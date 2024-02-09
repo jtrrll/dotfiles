@@ -1,4 +1,0 @@
-[".vim/colors/codedark.vim"]
-  type = "file"
-  url = "https://raw.githubusercontent.com/tomasiser/vim-code-dark/master/colors/codedark.vim"
-  refreshPeriod = "168h"

@@ -1,6 +1,6 @@
 #!/bin/sh
 error() {
-  printf "\033[91mError: %s\033[0m\n" "$1" 1>&2
+  printf "\033[31mError: %s\033[0m\n" "$1" 1>&2
   exit 1
 }
 
@@ -8,7 +8,7 @@ indent() {
   if [ "$1" -lt 1 ]; then
     error "no indents specified"
   fi
-  i=0; while [ "$i" -lt "$1" ]; do  
+  i=0; while [ "$i" -lt "$1" ]; do
     printf "  "
     i=$(( i + 1 ))
   done
