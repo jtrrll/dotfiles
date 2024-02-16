@@ -1,21 +1,15 @@
-name: ci
+---
+name: misc-ci
 
 on:
-  push:
-    branches: [ "*" ]
   pull_request:
     branches: [ "main" ]
+  push:
+    branches: [ "*" ]
+  workflow_dispatch:
 
 jobs:
-  shell-check:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Lint with ShellCheck
-        uses: ludeeus/action-shellcheck@2.0.0
-
-  rust-test:
+  rust:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -31,3 +25,12 @@ jobs:
         run: cargo clippy --all-targets --all-features
       - name: Run tests
         run: cargo test
+  shell:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Lint with ShellCheck
+        uses: ludeeus/action-shellcheck@2.0.0
+
+...
