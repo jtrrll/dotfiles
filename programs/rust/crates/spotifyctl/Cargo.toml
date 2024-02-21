@@ -13,5 +13,5 @@ thiserror = "1.0.57"
 
 [build-dependencies]
 clap = "4.5.1"
-clap_complete = "4.5.0"
+clap_complete = "4.5.1"
 mpris = "2.0.1"
