@@ -1,0 +1,15 @@
+[core]
+  editor = vim
+
+[fetch]
+  prune = true
+
+[init]
+  defaultBranch = main
+
+[push]
+  autoSetupRemote = true
+
+[user]
+  name = jtrrll
+	useConfigOnly = true ; require an email to be defined in local .gitconfig before pushing
