@@ -9,7 +9,7 @@ edition.workspace = true
 [dependencies]
 clap = { version = "4.5.1", features = ["derive"] }
 mpris = "2.0.1"
-thiserror = "1.0.57"
+thiserror = "1.0.58"
 
 [build-dependencies]
 clap = "4.5.1"
