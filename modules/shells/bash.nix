@@ -12,15 +12,6 @@
       EDITOR = "vim";
     };
     initExtra = ''
-      # Source completions if available
-      if [ -d /usr/local/completions ]; then
-        for file in /usr/local/completions/*.bash; do
-          if [ -f "$file" ]; then
-            . "$file"
-          fi
-        done
-      fi
-
       # Set prompt
       format_git_branch() {
         git branch 2>/dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1 /'
