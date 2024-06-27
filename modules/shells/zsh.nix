@@ -9,16 +9,6 @@
       # If not running interactively, don't do anything
       [[ $- != *i* ]] && return
 
-      # Source completions if available
-      if [ -d /usr/local/completions ]; then
-        autoload -U compinit; compinit
-        for file in /usr/local/completions/*.zsh; do
-          if [ -f "$file" ]; then
-            . "$file"
-          fi
-        done
-      fi
-
       # Set prompt
       format_git_branch() {
         git branch 2>/dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1 /'
