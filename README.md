@@ -1,7 +1,7 @@
 # ~/.dotfiles
 
-![GitHub Actions CI Status](https://img.shields.io/github/actions/workflow/status/jtrrll/dotfiles/ci.yaml?logo=github&label=CI&link=https%3A%2F%2Fgithub.com%2Fjtrrll%2Fdotfiles%2Factions%2Fworkflows%2Fci.yaml)
-![License](https://img.shields.io/github/license/jtrrll/dotfiles?link=https%3A%2F%2Fgithub.com%2Fjtrrll%2Fdotfiles%2Fblob%2Fmain%2FLICENSE)
+![GitHub Actions CI Status](https://img.shields.io/github/actions/workflow/status/jtrrll/dotfiles/ci.yaml?branch=main&logo=github&label=CI)
+![License](https://img.shields.io/github/license/jtrrll/dotfiles?label=License)
 
 My dotfiles collection for configuring frequently used programs. Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-community/home-manager)
 

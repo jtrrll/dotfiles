@@ -6,6 +6,9 @@
   programs.vscode = {
     enable = true;
     extensions = with vscode-extensions.vscode-marketplace; [
+      astro-build.astro-vscode
+      biomejs.biome
+      bradlc.vscode-tailwindcss
       geequlim.godot-tools
       gleam.gleam
       golang.go
