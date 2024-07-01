@@ -14,15 +14,17 @@ concurrency:
 
 jobs:
   lint:
+    name: Lint
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@main
-      - name: Check Nix formatting
+      - name: Lint Nix code
         run: nix develop --impure -c alejandra -c .
   build:
+    name: Build
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
