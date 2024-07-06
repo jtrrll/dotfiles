@@ -61,6 +61,7 @@
                   deadnix.enable = true;
                   end-of-file-fixer.enable = true;
                   flake-checker.enable = true;
+                  markdownlint.enable = true;
                   mixed-line-endings.enable = true;
                   nil.enable = true;
                   no-commit-to-branch = {

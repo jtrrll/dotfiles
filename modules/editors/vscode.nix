@@ -26,6 +26,9 @@
       rust-lang.rust-analyzer
       shopify.ruby-lsp
       sorbet.sorbet-vscode-extension
+      sumneko.lua
+      vscodevim.vim
+      xadillax.viml
       ziglang.vscode-zig
     ];
     package = pkgs.vscodium;
