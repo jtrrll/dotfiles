@@ -5,18 +5,8 @@
 }: {
   programs.home-manager.enable = true;
   imports = [
-    ./modules/editors
-    ./modules/shells
-
-    ./modules/alacritty.nix
-    ./modules/bat.nix
-    ./modules/btop.nix
-    ./modules/eza.nix
-    ./modules/fastfetch.nix
+    ./modules/programs
     ./modules/fonts.nix
-    ./modules/git.nix
-    ./modules/zellij.nix
-    ./modules/zoxide.nix
   ];
 
   home = {

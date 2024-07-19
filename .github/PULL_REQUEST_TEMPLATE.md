@@ -9,17 +9,17 @@ Before opening a pull request, please ensure you've done the following:
 Please be patient! We will review your pull request as soon as possible.
 -->
 
-## Description
+# Description
 <!--
 What does this change accomplish? Why did you make this change?
 -->
 
-## Testing
+# Testing
 <!--
 How did you test your changes?
 -->
 
-## Related Issues
+# Related Issues
 <!--
 For pull requests that close an issue, please include them below.
 We follow [Github's guidance on linking issues to pull requests](https://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-request-to-an-issue).
