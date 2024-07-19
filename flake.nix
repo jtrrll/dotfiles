@@ -58,7 +58,12 @@
                     stages = ["pre-commit"];
                   };
                   check-yaml.enable = true;
+                  commitizen.enable = true;
                   deadnix.enable = true;
+                  detect-private-keys = {
+                    enable = true;
+                    stages = ["pre-commit"];
+                  };
                   end-of-file-fixer.enable = true;
                   flake-checker.enable = true;
                   markdownlint.enable = true;
@@ -68,6 +73,12 @@
                     enable = true;
                     stages = ["pre-commit"];
                   };
+                  ripsecrets = {
+                    enable = true;
+                    stages = ["pre-commit"];
+                  };
+                  shellcheck.enable = true;
+                  shfmt.enable = true;
                   statix.enable = true;
                 };
               };
@@ -90,6 +101,7 @@
               inherit pkgs;
               extraSpecialArgs = {
                 inherit username homeDirectory vscode-extensions;
+                colors = import ./modules/colors.nix;
               };
             };
         in {

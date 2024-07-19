@@ -1,32 +1,32 @@
-{
+{colors, ...}: {
   programs.alacritty = {
     enable = true;
     settings = {
       colors = {
         bright = {
-          black = "#6e7681";
-          blue = "#569cd6"; # same as normal
-          cyan = "#9cdcfe"; # same as normal
-          green = "#4ec9b0";
-          magenta = "#c586c0"; # same as normal
-          red = "#ce9178";
-          white = "#e5e5e5";
-          yellow = "#dcdcaa"; # same as normal
+          black = colors.GRAY;
+          blue = colors.BLUE;
+          cyan = colors.CYAN;
+          green = colors.TEAL;
+          magenta = colors.PINK;
+          red = colors.ORANGE;
+          white = colors.WHITE;
+          yellow = colors.YELLOW;
         };
         normal = {
-          black = "#181818";
-          blue = "#569cd6";
-          cyan = "#9cdcfe";
-          green = "#6a9955";
-          magenta = "#c586c0";
-          red = "#f44747";
-          white = "#cccccc";
-          yellow = "#dcdcaa";
+          black = colors.BLACK;
+          blue = colors.BLUE;
+          cyan = colors.CYAN;
+          green = colors.GREEN;
+          magenta = colors.PINK;
+          red = colors.RED;
+          white = colors.SILVER;
+          yellow = colors.YELLOW;
         };
         primary = {
-          background = "#1f1f1f";
-          foreground = "#cccccc";
-          bright_foreground = "#e5e5e5";
+          background = colors.DARK_GRAY;
+          foreground = colors.SILVER;
+          bright_foreground = colors.WHITE;
         };
       };
       cursor = {
