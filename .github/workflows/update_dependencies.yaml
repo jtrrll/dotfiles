@@ -1,9 +1,9 @@
 ---
-name: cron
+name: Update dependencies
 
 on:
   schedule:
-    - cron: '0 23 * * FRI' # Run weekly at 6pm EST (23 UTC) on Fridays
+    - cron: '0 22 * * FRI'
   workflow_dispatch:
 
 concurrency:
@@ -11,7 +11,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  update-nix-flake-deps:
+  nix-flake:
     name: Update Nix flake dependencies
     runs-on: ubuntu-latest
     steps:
@@ -27,4 +27,5 @@ jobs:
             automated
             dependencies
             nix
+          token: ${{ secrets.UPDATE_DEPENDENCIES_TOKEN }}
 ...
