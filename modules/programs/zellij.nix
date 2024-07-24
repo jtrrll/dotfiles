@@ -1,19 +1,19 @@
-{colors, ...}: {
+{COLORS, ...}: {
   programs.zellij = {
     enable = true;
     settings = {
       themes.default = {
-        bg = colors.DARK_GRAY;
-        fg = colors.SILVER;
-        black = colors.BLACK;
-        blue = colors.BLUE;
-        cyan = colors.CYAN;
-        green = colors.GREEN;
-        magenta = colors.PINK;
-        red = colors.RED;
-        white = colors.SILVER;
-        yellow = colors.YELLOW;
-        orange = colors.ORANGE;
+        bg = COLORS.DARK_GRAY;
+        fg = COLORS.SILVER;
+        black = COLORS.BLACK;
+        blue = COLORS.BLUE;
+        cyan = COLORS.CYAN;
+        green = COLORS.GREEN;
+        magenta = COLORS.PINK;
+        red = COLORS.RED;
+        white = COLORS.SILVER;
+        yellow = COLORS.YELLOW;
+        orange = COLORS.ORANGE;
       };
     };
   };
