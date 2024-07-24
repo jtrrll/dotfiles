@@ -1,5 +1,5 @@
 {
-  colors = {
+  COLORS = {
     AMETHYST = "#646695";
     BLACK = "#181818";
     BLUE = "#569cd6";
@@ -24,10 +24,4 @@
     YELLOW = "#dcdcaa";
     WHITE = "#e5e5e5";
   };
-  systems = [
-    "aarch64-darwin"
-    "aarch64-linux"
-    "x86_64-darwin"
-    "x86_64-linux"
-  ];
 }
