@@ -3,6 +3,7 @@
 
   inputs = {
     devenv.url = "github:cachix/devenv";
+    flake-parts.url = "github:hercules-ci/flake-parts";
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -13,41 +14,57 @@
 
   outputs = {
     devenv,
+    flake-parts,
     home-manager,
     nix-vscode-extensions,
     nixpkgs,
     ...
   } @ inputs: let
-    constants = import ./constants.nix;
-    lib = import ./lib.nix {
-      inherit home-manager;
-    };
-  in {
-    inherit constants lib;
-    devShells = lib.forEachSystem (system: let
-      pkgs = nixpkgs.legacyPackages.${system};
-    in {
-      default = devenv.lib.mkShell {
-        inherit inputs pkgs;
-        modules = [./devshell.nix];
+    home = import ./home.nix;
+  in
+    flake-parts.lib.mkFlake {inherit inputs;} {
+      flake = {
+        inherit home;
+        homeConfigurations = let
+          mkHomeConfiguration = {
+            args,
+            pkgs,
+          }:
+            home-manager.lib.homeManagerConfiguration {
+              inherit pkgs;
+              modules = [home {_module.args = args;}];
+            };
+          ### start "impure" ###
+          HOME = builtins.getEnv "HOME";
+          SYSTEM = builtins.currentSystem;
+          USER = builtins.getEnv "USER";
+          ### end "impure" ###
+          pkgs = nixpkgs.legacyPackages.${SYSTEM};
+          vscode-extensions = nix-vscode-extensions.extensions.${SYSTEM};
+        in {
+          # default configuration
+          "${USER}" = mkHomeConfiguration {
+            inherit pkgs;
+            args = {
+              inherit vscode-extensions;
+              homeDirectory = HOME;
+              username = USER;
+            };
+          };
+        };
       };
-    });
-    formatter = lib.forEachSystem (system: nixpkgs.legacyPackages.${system}.alejandra);
-    homeConfigurations = let
-      ### start "impure" ###
-      HOME = builtins.getEnv "HOME";
-      SYSTEM = builtins.currentSystem;
-      USER = builtins.getEnv "USER";
-      ### end "impure" ###
-      pkgs = nixpkgs.legacyPackages.${SYSTEM};
-      vscode-extensions = nix-vscode-extensions.extensions.${SYSTEM};
-    in {
-      # default configuration
-      "${USER}" = lib.mkHomeConfiguration {
-        inherit pkgs vscode-extensions;
-        username = USER;
-        homeDirectory = HOME;
+      perSystem = {pkgs, ...}: {
+        devShells.default = devenv.lib.mkShell {
+          inherit inputs pkgs;
+          modules = [./devshell.nix];
+        };
+        formatter = pkgs.alejandra;
       };
+      systems = [
+        "aarch64-darwin"
+        "aarch64-linux"
+        "x86_64-darwin"
+        "x86_64-linux"
+      ];
     };
-  };
 }
