@@ -1,4 +1,8 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  LINE_LENGTH,
+  ...
+}: {
   programs.vim = {
     enable = true;
     plugins = with pkgs.vimPlugins; [
@@ -23,7 +27,7 @@
 
       " UI
       set cursorline            " highlight current line
-      set colorcolumn=80,120    " highlight columns
+      set colorcolumn=${toString LINE_LENGTH.WARNING},${toString LINE_LENGTH.MAX} " highlight columns
       set signcolumn=yes        " always show the sign column
       set scrolloff=8           " attempt to keep space above/below the cursor
 

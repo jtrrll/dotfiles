@@ -1,5 +1,5 @@
 {
-  COLORS = {
+  COLOR = {
     AMETHYST = "#646695";
     BLACK = "#181818";
     BLUE = "#569cd6";
@@ -23,5 +23,9 @@
     TEAL = "#4ec9b0";
     YELLOW = "#dcdcaa";
     WHITE = "#e5e5e5";
+  };
+  LINE_LENGTH = {
+    WARNING = 100;
+    MAX = 120;
   };
 }

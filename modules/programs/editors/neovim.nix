@@ -1,4 +1,4 @@
-{
+{LINE_LENGTH, ...}: {
   programs.neovim = {
     enable = true;
     extraLuaConfig = ''
@@ -12,7 +12,7 @@
       vim.opt.number = true             -- show line numbers
       vim.opt.relativenumber = true     -- show relative line numbers
       vim.opt.cursorline = true         -- highlight current line
-      vim.opt.colorcolumn = { 80, 120 } -- highlight columns
+      vim.opt.colorcolumn = { ${toString LINE_LENGTH.WARNING}, ${toString LINE_LENGTH.MAX} } -- highlight columns
       vim.opt.signcolumn = "yes"        -- always show the sign column
       vim.opt.scrolloff = 8             -- attempt to keep space above/below the cursor
 
