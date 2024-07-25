@@ -1,6 +1,7 @@
 {
   pkgs,
   vscode-extensions,
+  LINE_LENGTH,
   ...
 }: {
   programs.vscode = {
@@ -36,6 +37,7 @@
       editor = {
         minimap.enabled = false;
         tabSize = 2;
+        rulers = [LINE_LENGTH.WARNING LINE_LENGTH.MAX];
       };
       nix = {
         enableLanguageServer = true;
