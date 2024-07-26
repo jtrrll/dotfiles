@@ -1,5 +1,6 @@
 {
   pkgs,
+  INDENT_WIDTH,
   LINE_LENGTH,
   ...
 }: {
@@ -12,8 +13,8 @@
       expandtab = true;
       number = true;
       relativenumber = true;
-      shiftwidth = 2;
-      tabstop = 2;
+      shiftwidth = INDENT_WIDTH;
+      tabstop = INDENT_WIDTH;
       undofile = true;
     };
     extraConfig = ''

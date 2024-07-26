@@ -1,6 +1,7 @@
 {
   pkgs,
   vscode-extensions,
+  INDENT_WIDTH,
   LINE_LENGTH,
   ...
 }: {
@@ -36,7 +37,7 @@
     userSettings = {
       editor = {
         minimap.enabled = false;
-        tabSize = 2;
+        tabSize = INDENT_WIDTH;
         rulers = [LINE_LENGTH.WARNING LINE_LENGTH.MAX];
       };
       nix = {
