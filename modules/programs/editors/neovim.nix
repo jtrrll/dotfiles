@@ -1,4 +1,8 @@
-{LINE_LENGTH, ...}: {
+{
+  INDENT_WIDTH,
+  LINE_LENGTH,
+  ...
+}: {
   programs.neovim = {
     enable = true;
     extraLuaConfig = ''
@@ -17,9 +21,9 @@
       vim.opt.scrolloff = 8             -- attempt to keep space above/below the cursor
 
       -- Indentation
-      vim.opt.tabstop = 2               -- tab spacing
-      vim.opt.softtabstop = 2           -- unify
-      vim.opt.shiftwidth = 2            -- indent/outdent by 2 columns
+      vim.opt.tabstop = ${toString INDENT_WIDTH}      -- tab spacing
+      vim.opt.softtabstop = ${toString INDENT_WIDTH}  -- unify
+      vim.opt.shiftwidth = ${toString INDENT_WIDTH}   -- indent/outdent
       vim.opt.shiftround = true         -- always indent/outdent to nearest tabstop
       vim.opt.expandtab = true          -- use spaces instead of tabs
       vim.opt.smartindent = true        -- automatically insert one extra level of indentation
