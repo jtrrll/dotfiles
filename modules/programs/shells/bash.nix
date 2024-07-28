@@ -7,10 +7,6 @@
     ];
     historyFileSize = 1000000;
     historySize = 1000000;
-    sessionVariables = {
-      DIRENV_LOG_FORMAT = ""; # Silence direnv logs
-      EDITOR = "vim";
-    };
     initExtra = ''
       # Set prompt
       format_git_branch() {

@@ -1,11 +1,12 @@
-{
-  INDENT_WIDTH,
-  LINE_LENGTH,
-  ...
-}: {
-  programs.neovim = {
+{constants, ...}: {
+  programs.nixvim = {
     enable = true;
-    extraLuaConfig = ''
+    colorschemes.vscode.enable = true;
+    defaultEditor = true;
+    viAlias = true;
+    vimAlias = true;
+    vimdiffAlias = true;
+    extraConfigLua = ''
       -- General
       vim.opt.undofile = true           -- persist undo history
 
@@ -16,14 +17,14 @@
       vim.opt.number = true             -- show line numbers
       vim.opt.relativenumber = true     -- show relative line numbers
       vim.opt.cursorline = true         -- highlight current line
-      vim.opt.colorcolumn = { ${toString LINE_LENGTH.WARNING}, ${toString LINE_LENGTH.MAX} } -- highlight columns
+      vim.opt.colorcolumn = { ${toString constants.LINE_LENGTH.WARNING}, ${toString constants.LINE_LENGTH.MAX} } -- highlight columns
       vim.opt.signcolumn = "yes"        -- always show the sign column
       vim.opt.scrolloff = 8             -- attempt to keep space above/below the cursor
 
       -- Indentation
-      vim.opt.tabstop = ${toString INDENT_WIDTH}      -- tab spacing
-      vim.opt.softtabstop = ${toString INDENT_WIDTH}  -- unify
-      vim.opt.shiftwidth = ${toString INDENT_WIDTH}   -- indent/outdent
+      vim.opt.tabstop = ${toString constants.INDENT_WIDTH}      -- tab spacing
+      vim.opt.softtabstop = ${toString constants.INDENT_WIDTH}  -- unify
+      vim.opt.shiftwidth = ${toString constants.INDENT_WIDTH}   -- indent/outdent
       vim.opt.shiftround = true         -- always indent/outdent to nearest tabstop
       vim.opt.expandtab = true          -- use spaces instead of tabs
       vim.opt.smartindent = true        -- automatically insert one extra level of indentation

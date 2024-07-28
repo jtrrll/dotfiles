@@ -10,6 +10,10 @@
     };
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    nixvim = {
+      url = "github:nix-community/nixvim";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {
@@ -18,38 +22,41 @@
     home-manager,
     nix-vscode-extensions,
     nixpkgs,
+    nixvim,
     ...
   } @ inputs: let
-    home = import ./home.nix;
+    lib = import ./lib.nix;
   in
     flake-parts.lib.mkFlake {inherit inputs;} {
-      flake = {
-        inherit home;
+      flake = let
+        home = lib.mkHome {
+          inherit (nixvim.homeManagerModules) nixvim;
+          constants = import ./constants.nix;
+        };
+        overlay = final: _: {
+          vscode-extensions = nix-vscode-extensions.extensions.${final.system}.vscode-marketplace;
+        };
+      in {
+        inherit home overlay;
         homeConfigurations = let
-          mkHomeConfiguration = {
-            args,
-            pkgs,
-          }:
-            home-manager.lib.homeManagerConfiguration {
-              inherit pkgs;
-              modules = [home {_module.args = args;}];
-            };
           ### start "impure" ###
           HOME = builtins.getEnv "HOME";
           SYSTEM = builtins.currentSystem;
           USER = builtins.getEnv "USER";
           ### end "impure" ###
-          pkgs = nixpkgs.legacyPackages.${SYSTEM};
-          vscode-extensions = nix-vscode-extensions.extensions.${SYSTEM};
         in {
           # default configuration
-          "${USER}" = mkHomeConfiguration {
-            inherit pkgs;
-            args = {
-              inherit vscode-extensions;
-              homeDirectory = HOME;
-              username = USER;
+          "${USER}" = home-manager.lib.homeManagerConfiguration {
+            pkgs = import nixpkgs {
+              inherit SYSTEM;
+              overlays = [overlay];
             };
+            modules = [
+              (home {
+                homeDirectory = HOME;
+                username = USER;
+              })
+            ];
           };
         };
       };
