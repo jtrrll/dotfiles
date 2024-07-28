@@ -1,10 +1,6 @@
 {
   programs.zsh = {
     enable = true;
-    sessionVariables = {
-      DIRENV_LOG_FORMAT = ""; # Silence direnv logs
-      EDITOR = "vim";
-    };
     initExtra = ''
       # If not running interactively, don't do anything
       [[ $- != *i* ]] && return

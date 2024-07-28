@@ -1,32 +1,32 @@
-{COLOR, ...}: {
+{constants, ...}: {
   programs.alacritty = {
     enable = true;
     settings = {
-      colors = {
+      colors = with constants.COLOR; {
         bright = {
-          black = COLOR.GRAY;
-          blue = COLOR.BLUE;
-          cyan = COLOR.CYAN;
-          green = COLOR.TEAL;
-          magenta = COLOR.PINK;
-          red = COLOR.ORANGE;
-          white = COLOR.WHITE;
-          yellow = COLOR.YELLOW;
+          black = GRAY;
+          blue = BLUE;
+          cyan = CYAN;
+          green = TEAL;
+          magenta = PINK;
+          red = ORANGE;
+          white = WHITE;
+          yellow = YELLOW;
         };
         normal = {
-          black = COLOR.BLACK;
-          blue = COLOR.BLUE;
-          cyan = COLOR.CYAN;
-          green = COLOR.GREEN;
-          magenta = COLOR.PINK;
-          red = COLOR.RED;
-          white = COLOR.SILVER;
-          yellow = COLOR.YELLOW;
+          black = BLACK;
+          blue = BLUE;
+          cyan = CYAN;
+          green = GREEN;
+          magenta = PINK;
+          red = RED;
+          white = SILVER;
+          yellow = YELLOW;
         };
         primary = {
-          background = COLOR.DARK_GRAY;
-          foreground = COLOR.SILVER;
-          bright_foreground = COLOR.WHITE;
+          background = DARK_GRAY;
+          foreground = SILVER;
+          bright_foreground = WHITE;
         };
       };
       cursor = {

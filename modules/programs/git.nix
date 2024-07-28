@@ -2,7 +2,6 @@
   programs.git = {
     enable = true;
     extraConfig = {
-      core.editor = "vim";
       fetch.prune = true;
       init.defaultBranch = "main";
       push.autoSetupRemote = true;

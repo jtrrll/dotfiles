@@ -1,13 +1,11 @@
 {
+  constants,
   pkgs,
-  vscode-extensions,
-  INDENT_WIDTH,
-  LINE_LENGTH,
   ...
 }: {
   programs.vscode = {
     enable = true;
-    extensions = with vscode-extensions.vscode-marketplace; [
+    extensions = with pkgs.vscode-extensions; [
       astro-build.astro-vscode
       biomejs.biome
       bradlc.vscode-tailwindcss
@@ -37,8 +35,8 @@
     userSettings = {
       editor = {
         minimap.enabled = false;
-        tabSize = INDENT_WIDTH;
-        rulers = [LINE_LENGTH.WARNING LINE_LENGTH.MAX];
+        tabSize = constants.INDENT_WIDTH;
+        rulers = [constants.LINE_LENGTH.WARNING constants.LINE_LENGTH.MAX];
       };
       nix = {
         enableLanguageServer = true;

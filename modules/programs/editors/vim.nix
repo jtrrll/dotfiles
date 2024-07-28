@@ -1,7 +1,6 @@
 {
+  constants,
   pkgs,
-  INDENT_WIDTH,
-  LINE_LENGTH,
   ...
 }: {
   programs.vim = {
@@ -13,8 +12,8 @@
       expandtab = true;
       number = true;
       relativenumber = true;
-      shiftwidth = INDENT_WIDTH;
-      tabstop = INDENT_WIDTH;
+      shiftwidth = constants.INDENT_WIDTH;
+      tabstop = constants.INDENT_WIDTH;
       undofile = true;
     };
     extraConfig = ''
@@ -28,7 +27,7 @@
 
       " UI
       set cursorline            " highlight current line
-      set colorcolumn=${toString LINE_LENGTH.WARNING},${toString LINE_LENGTH.MAX} " highlight columns
+      set colorcolumn=${toString constants.LINE_LENGTH.WARNING},${toString constants.LINE_LENGTH.MAX} " highlight columns
       set signcolumn=yes        " always show the sign column
       set scrolloff=8           " attempt to keep space above/below the cursor
 
