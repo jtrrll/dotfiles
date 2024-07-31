@@ -34,6 +34,7 @@
         installCargo = false;
         installRustc = false;
       };
+      solargraph.enable = true;
       sqls.enable = true;
       svelte.enable = true;
       tailwindcss.enable = true;
