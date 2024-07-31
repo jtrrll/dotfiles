@@ -24,12 +24,10 @@
     nixpkgs,
     nixvim,
     ...
-  } @ inputs: let
-    lib = import ./lib.nix;
-  in
+  } @ inputs:
     flake-parts.lib.mkFlake {inherit inputs;} {
       flake = let
-        home = lib.mkHome {
+        home = import ./home.nix {
           inherit (nixvim.homeManagerModules) nixvim;
           constants = import ./constants.nix;
         };
