@@ -3,5 +3,6 @@
     ./programs
 
     ./fonts.nix
+    ./scripts.nix
   ];
 }
