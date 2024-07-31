@@ -5,5 +5,6 @@
     ./indent-blankline.nix
     ./lsp.nix
     ./mini.nix
+    ./treesitter.nix
   ];
 }
