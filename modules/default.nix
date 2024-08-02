@@ -1,8 +1,8 @@
 {
   imports = [
     ./programs
+    ./scripts
 
     ./fonts.nix
-    ./scripts.nix
   ];
 }
