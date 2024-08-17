@@ -1,6 +1,7 @@
 {
   constants,
   nixvim,
+  stylix,
 }: args: {
   imports = [
     ({
@@ -22,6 +23,7 @@
 
       imports = [
         nixvim
+        stylix
         ./modules
       ];
 

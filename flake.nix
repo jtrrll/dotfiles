@@ -14,6 +14,7 @@
       url = "github:nix-community/nixvim";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    stylix.url = "github:danth/stylix";
   };
 
   outputs = {
@@ -23,12 +24,14 @@
     nix-vscode-extensions,
     nixpkgs,
     nixvim,
+    stylix,
     ...
   } @ inputs:
     flake-parts.lib.mkFlake {inherit inputs;} {
       flake = let
         home = import ./home.nix {
           inherit (nixvim.homeManagerModules) nixvim;
+          inherit (stylix.homeManagerModules) stylix;
           constants = import ./constants.nix;
         };
         overlay = final: _: {
