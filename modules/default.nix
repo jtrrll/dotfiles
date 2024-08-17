@@ -4,5 +4,6 @@
     ./scripts
 
     ./fonts.nix
+    ./stylix.nix
   ];
 }
