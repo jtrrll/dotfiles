@@ -2,7 +2,10 @@
   description = "jtrrll's declarative dotfiles";
 
   inputs = {
-    devenv.url = "github:cachix/devenv";
+    devenv = {
+      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:cachix/devenv";
+    };
     flake-parts.url = "github:hercules-ci/flake-parts";
     home-manager = {
       inputs.nixpkgs.follows = "nixpkgs";
@@ -24,7 +27,6 @@
   };
 
   outputs = {
-    devenv,
     flake-parts,
     home-manager,
     nix-vscode-extensions,
@@ -34,17 +36,19 @@
     ...
   } @ inputs:
     flake-parts.lib.mkFlake {inherit inputs;} {
+      imports = [
+        ./modules
+      ];
       flake = let
-        home = import ./home.nix {
-          inherit (nixvim.homeManagerModules) nixvim;
-          inherit (stylix.homeManagerModules) stylix;
-          constants = import ./constants.nix;
-        };
+        dotfiles = import ./dotfiles [
+          nixvim.homeManagerModules.nixvim
+          stylix.homeManagerModules.stylix
+        ];
         overlay = final: _: {
           vscode-extensions = nix-vscode-extensions.extensions.${final.system}.vscode-marketplace;
         };
       in {
-        inherit home overlay;
+        inherit dotfiles overlay;
         homeConfigurations = let
           ### start "impure" ###
           HOME = builtins.getEnv "HOME";
@@ -59,26 +63,17 @@
               overlays = [overlay];
             };
             modules = [
-              (home {
-                homeDirectory = HOME;
-                username = USER;
-              })
+              dotfiles
+              {
+                dotfiles = {
+                  enable = true;
+                  homeDirectory = HOME;
+                  username = USER;
+                };
+              }
             ];
           };
         };
       };
-      perSystem = {pkgs, ...}: {
-        devShells.default = devenv.lib.mkShell {
-          inherit inputs pkgs;
-          modules = [./devshell.nix];
-        };
-        formatter = pkgs.alejandra;
-      };
-      systems = [
-        "aarch64-darwin"
-        "aarch64-linux"
-        "x86_64-darwin"
-        "x86_64-linux"
-      ];
     };
 }
