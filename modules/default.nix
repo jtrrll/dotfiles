@@ -1,9 +1,7 @@
 {
   imports = [
-    ./programs
-    ./scripts
-
-    ./fonts.nix
-    ./stylix.nix
+    ./devenv.nix
+    ./formatter.nix
+    ./systems.nix
   ];
 }
