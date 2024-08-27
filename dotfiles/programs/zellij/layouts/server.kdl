@@ -1,0 +1,42 @@
+layout {
+  default_tab_template {
+    pane size=1 borderless=true {
+      plugin location="zellij:tab-bar"
+    }
+    children
+    pane size=2 borderless=true {
+      plugin location="zellij:status-bar"
+    }
+  }
+  tab name="server" split_direction="vertical"{
+    pane size=82 {
+      pane {
+        name "server"
+      }
+      pane {
+        command "btop"
+        name "monitor"
+      }
+    }
+    pane {
+      focus true
+      name "console"
+    }
+  }
+  tab focus=true name="workspace" split_direction="vertical"{
+    pane size=82 {
+      pane {
+        args "60" "git" "-c" "color.status=always" "status" "--short" 
+        command "repeat"
+        name "git status"
+      }
+      pane {
+        name "git"
+      }
+    }
+    pane {
+      focus true
+      name "workspace"
+    }
+  }
+}
