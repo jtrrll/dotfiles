@@ -3,6 +3,7 @@ with lib; {
   imports = [
     ./editors
     ./shells
+    ./zellij
 
     ./alacritty.nix
     ./bat.nix
@@ -11,7 +12,6 @@ with lib; {
     ./fastfetch.nix
     ./fzf.nix
     ./git.nix
-    ./zellij.nix
     ./zoxide.nix
   ];
   options = {
