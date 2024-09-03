@@ -55,24 +55,47 @@
           SYSTEM = builtins.currentSystem;
           USER = builtins.getEnv "USER";
           ### end "impure" ###
-        in {
-          # default configuration
-          "${USER}" = home-manager.lib.homeManagerConfiguration {
-            pkgs = import nixpkgs {
-              inherit SYSTEM;
-              overlays = [overlay];
+          mkConfig = modules:
+            home-manager.lib.homeManagerConfiguration {
+              inherit pkgs;
+              modules =
+                [
+                  dotfiles
+                  {
+                    dotfiles = {
+                      enable = true;
+                      homeDirectory = HOME;
+                      username = USER;
+                    };
+                  }
+                ]
+                ++ modules;
             };
-            modules = [
-              dotfiles
-              {
-                dotfiles = {
-                  enable = true;
-                  homeDirectory = HOME;
-                  username = USER;
-                };
-              }
-            ];
+          pkgs = import nixpkgs {
+            inherit SYSTEM;
+            overlays = [overlay];
           };
+        in {
+          # default configuration.
+          "${USER}" = mkConfig [
+            {
+              dotfiles.theme = {
+                enable = true;
+                base16Scheme = "${pkgs.base16-schemes}/share/themes/gruvbox-material-dark-medium.yaml";
+              };
+            }
+          ];
+          # default configuration with modifications to support CI.
+          # - neovim is not included because it is slow to build and bloats the filesystem.
+          # - the theme module is disabled because it doesn't work on headless systems.
+          "ci" = mkConfig [
+            {
+              dotfiles = {
+                programs.editors = ["vscode"];
+                theme.enable = false;
+              };
+            }
+          ];
         };
       };
     };

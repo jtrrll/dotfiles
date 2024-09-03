@@ -4,11 +4,20 @@
   pkgs,
   ...
 }:
-with lib; {
+with lib; let
+  backgroundImageExists = builtins.pathExists config.dotfiles.theme.backgroundImage;
+  schemeDefined = config.dotfiles.theme.base16Scheme != null;
+in {
   config = mkIf config.dotfiles.theme.enable {
+    assertions = [
+      {
+        assertion = backgroundImageExists || schemeDefined;
+        message = "either a valid background image or base16 scheme must be defined.";
+      }
+    ];
     stylix =
       {
-        enable = builtins.pathExists config.dotfiles.theme.backgroundImage;
+        enable = true;
         cursor = {
           name = "Adwaita";
           package = pkgs.adwaita-icon-theme;
@@ -32,12 +41,9 @@ with lib; {
             name = "Hack Nerd Font Mono";
           };
         };
-        image = builtins.fetchurl {url = "file://${config.dotfiles.theme.backgroundImage}";};
+        image = config.lib.stylix.pixel "base0D";
       }
-      // (
-        if (config.dotfiles.theme.base16Scheme != null)
-        then {inherit (config.dotfiles.theme) base16Scheme;}
-        else {}
-      );
+      // optionalAttrs backgroundImageExists {image = builtins.fetchurl {url = "file://${config.dotfiles.theme.backgroundImage}";};}
+      // optionalAttrs schemeDefined {inherit (config.dotfiles.theme) base16Scheme;};
   };
 }
