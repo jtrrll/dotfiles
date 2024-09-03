@@ -1,7 +1,6 @@
 homeManagerModules: {
   config,
   lib,
-  pkgs,
   ...
 }:
 with lib;
@@ -32,15 +31,6 @@ with lib;
         stateVersion = "23.11";
       };
       programs.home-manager.enable = true;
-
-      dotfiles = {
-        programs.enable = true;
-        scripts.enable = true;
-        theme = {
-          enable = true;
-          base16Scheme = "${pkgs.base16-schemes}/share/themes/gruvbox-material-dark-medium.yaml";
-        };
-      };
     };
   }
   // {

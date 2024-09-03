@@ -6,7 +6,11 @@ with lib; {
   ];
   options = {
     dotfiles.scripts = {
-      enable = mkEnableOption "A collection of useful scripts.";
+      enable = mkOption {
+        default = true;
+        description = "Whether to enable a collection of useful scripts.";
+        type = types.bool;
+      };
     };
   };
 }
