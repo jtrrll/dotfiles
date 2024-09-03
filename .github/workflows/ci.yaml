@@ -44,6 +44,6 @@ jobs:
         uses: actions/checkout@v4
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@main
-      - name: Activate default configuration
-        run: nix-shell -p home-manager --run "home-manager switch -b backup --impure --flake ."
+      - name: Activate CI configuration
+        run: nix-shell -p home-manager --run "home-manager switch -b backup --impure --flake .#ci"
 ...

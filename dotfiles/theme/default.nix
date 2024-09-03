@@ -15,7 +15,11 @@ with lib; {
   ];
   options = {
     dotfiles.theme = {
-      enable = mkEnableOption "A configurable system-wide theme.";
+      enable = mkOption {
+        default = false;
+        description = "Whether to enable a configurable system-wide theme.";
+        type = types.bool;
+      };
       backgroundImage = mkOption {
         default = "${config.dotfiles.homeDirectory}/.config/background";
         description = "The file path of the background image to use.";
