@@ -6,7 +6,7 @@
   ...
 }:
 with lib; {
-  config = mkIf config.dotfiles.programs.enable {
+  config = mkIf (config.dotfiles.programs.enable && elem "vscode" config.dotfiles.programs.editors) {
     programs.vscode = {
       enable = true;
       extensions = with pkgs.vscode-extensions; [
@@ -23,7 +23,6 @@ with lib; {
         ms-pyright.pyright
         ms-python.python
         ms-toolsai.jupyter
-        ms-vscode.cpptools
         redhat.java
         redhat.vscode-xml
         redhat.vscode-yaml

@@ -5,7 +5,7 @@
   ...
 }:
 with lib; {
-  config = mkIf config.dotfiles.programs.enable {
+  config = mkIf (config.dotfiles.programs.enable && elem "neovim" config.dotfiles.programs.editors) {
     programs.nixvim.opts = {
       breakindent = true; # indent wrapped lines
       clipboard = "unnamedplus"; # use system clipboard
