@@ -1,6 +1,6 @@
-# License
-
+<!-- markdownlint-disable MD041 -->
 MIT License
+<!-- markdownlint-enable MD041 -->
 
 Copyright (c) 2024 Jackson Terrill
 
