@@ -6,6 +6,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
       url = "github:cachix/devenv";
     };
+    env-help = {
+      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:jtrrll/env-help";
+    };
     flake-parts.url = "github:hercules-ci/flake-parts";
     home-manager = {
       inputs.nixpkgs.follows = "nixpkgs";
