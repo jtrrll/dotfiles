@@ -13,6 +13,7 @@ with lib; {
         astro-build.astro-vscode
         biomejs.biome
         bradlc.vscode-tailwindcss
+        evzen-wybitul.magic-racket
         geequlim.godot-tools
         gleam.gleam
         golang.go
