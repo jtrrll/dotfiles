@@ -1,35 +1,20 @@
-{lib, ...}:
-with lib; {
+{
   imports = [
-    ./editors
-    ./shells
+    ./neovim
+    ./vscode
     ./zellij
 
     ./alacritty.nix
+    ./bash.nix
     ./bat.nix
     ./btop.nix
+    ./direnv.nix
     ./eza.nix
     ./fastfetch.nix
     ./fzf.nix
     ./git.nix
+    ./home-manager.nix
     ./zoxide.nix
+    ./zsh.nix
   ];
-  options = {
-    dotfiles.programs = {
-      enable = mkOption {
-        default = true;
-        description = "Whether to enable a collection of useful program configurations.";
-        type = types.bool;
-      };
-      editors = mkOption {
-        default = ["neovim" "vscode"];
-        description = ''
-          A list of editors to be enabled. Valid values are:
-          - "neovim"
-          - "vscode"
-        '';
-        type = types.listOf (types.enum ["neovim" "vscode"]);
-      };
-    };
-  };
 }

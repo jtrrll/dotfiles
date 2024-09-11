@@ -3,12 +3,11 @@
   lib,
   pkgs,
   ...
-}:
-with lib; let
+}: let
   backgroundImageExists = builtins.pathExists config.dotfiles.theme.backgroundImage;
   schemeDefined = config.dotfiles.theme.base16Scheme != null;
 in {
-  config = mkIf config.dotfiles.theme.enable {
+  config = lib.mkIf config.dotfiles.theme.enable {
     assertions = [
       {
         assertion = backgroundImageExists || schemeDefined;
@@ -43,7 +42,7 @@ in {
         };
         image = config.lib.stylix.pixel "base0D";
       }
-      // optionalAttrs backgroundImageExists {image = builtins.fetchurl {url = "file://${config.dotfiles.theme.backgroundImage}";};}
-      // optionalAttrs schemeDefined {inherit (config.dotfiles.theme) base16Scheme;};
+      // lib.optionalAttrs backgroundImageExists {image = builtins.fetchurl {url = "file://${config.dotfiles.theme.backgroundImage}";};}
+      // lib.optionalAttrs schemeDefined {inherit (config.dotfiles.theme) base16Scheme;};
   };
 }

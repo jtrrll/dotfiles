@@ -1,18 +1,22 @@
 {
-  args,
   config,
   lib,
   ...
-}:
-with lib; {
-  config = mkIf config.dotfiles.programs.enable {
+}: {
+  config = lib.mkIf config.dotfiles.programs.zellij.enable {
     programs.zellij = {
       enable = true;
     };
 
     home.file."layouts" = {
       source = ./layouts;
-      target = "${args.homeDirectory}/.config/zellij/layouts";
+      target = "${config.dotfiles.homeDirectory}/.config/zellij/layouts";
+    };
+  };
+
+  options = {
+    dotfiles.programs.zellij = {
+      enable = lib.mkEnableOption "Zellij";
     };
   };
 }

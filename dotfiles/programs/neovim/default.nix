@@ -2,16 +2,8 @@
   config,
   lib,
   ...
-}:
-with lib; {
-  imports = [
-    ./plugins
-
-    ./aliases.nix
-    ./keymaps.nix
-    ./opts.nix
-  ];
-  config = mkIf (config.dotfiles.programs.enable && elem "neovim" config.dotfiles.programs.editors) {
+}: {
+  config = lib.mkIf config.dotfiles.programs.neovim.enable {
     programs.nixvim = {
       enable = true;
       extraConfigLua = ''
@@ -61,6 +53,20 @@ with lib; {
           end
         })
       '';
+    };
+  };
+
+  imports = [
+    ./plugins
+
+    ./aliases.nix
+    ./keymaps.nix
+    ./opts.nix
+  ];
+
+  options = {
+    dotfiles.programs.neovim = {
+      enable = lib.mkEnableOption "neovim";
     };
   };
 }

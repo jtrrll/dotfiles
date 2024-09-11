@@ -2,9 +2,8 @@
   config,
   lib,
   ...
-}:
-with lib; {
-  config = mkIf config.dotfiles.programs.enable {
+}: {
+  config = lib.mkIf config.dotfiles.programs.bash.enable {
     programs.bash = {
       enable = true;
       historyControl = [
@@ -41,6 +40,12 @@ with lib; {
         bind 'set show-all-if-unmodified on'
         bind 'set skip-completed-text on'
       '';
+    };
+  };
+
+  options = {
+    dotfiles.programs.bash = {
+      enable = lib.mkEnableOption "Bash";
     };
   };
 }

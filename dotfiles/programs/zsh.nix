@@ -2,9 +2,8 @@
   config,
   lib,
   ...
-}:
-with lib; {
-  config = mkIf config.dotfiles.programs.enable {
+}: {
+  config = lib.mkIf config.dotfiles.programs.zsh.enable {
     programs.zsh = {
       enable = true;
       initExtra = ''
@@ -23,6 +22,12 @@ with lib; {
           PROMPT='%F{magenta}%1~%f %F{yellow}%"$(format_git_branch)%f%F{green}%#%f ' # dir branch %
         fi
       '';
+    };
+  };
+
+  options = {
+    dotfiles.programs.zsh = {
+      enable = lib.mkEnableOption "Zsh";
     };
   };
 }
