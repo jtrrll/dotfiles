@@ -3,9 +3,8 @@
   lib,
   pkgs,
   ...
-}:
-with lib; {
-  config = mkIf config.dotfiles.scripts.enable {
+}: {
+  config = lib.mkIf config.dotfiles.scripts.home.enable {
     home.packages = [
       (pkgs.writers.writePython3Bin "home" {
           libraries = [pkgs.python312Packages.cyclopts];
@@ -37,12 +36,12 @@ with lib; {
 
           @app.command
           def activate_latest(config: str = ""):
-              """Activate the latest version of a home configuration.
+              """Activate latest version of a home
 
               Parameters
               ----------
               config
-                  The home configuration to activate.
+                  hometo activate.
               """
 
               if config:
@@ -76,5 +75,11 @@ with lib; {
               app()
         '')
     ];
+  };
+
+  options = {
+    dotfiles.scripts.home = {
+      enable = lib.mkEnableOption "The 'home' script.";
+    };
   };
 }

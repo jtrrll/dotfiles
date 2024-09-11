@@ -20,7 +20,7 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 <!-- markdownlint-enable MD013 -->
 
    Alternatively, activate a specific configuration by running the following command.
-   Replace `<CONFIG>` with the name of a configuration defined in [`flake.nix`](flake.nix):
+   Replace `<CONFIG>` with name of adefined in [`flake.nix`](flake.nix):
 
 <!-- markdownlint-disable MD013 -->
    ```sh

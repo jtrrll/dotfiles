@@ -2,9 +2,8 @@
   config,
   lib,
   ...
-}:
-with lib; {
-  config = mkIf config.dotfiles.programs.enable {
+}: {
+  config = lib.mkIf config.dotfiles.programs.alacritty.enable {
     programs.alacritty = {
       enable = true;
       settings = {
@@ -21,6 +20,12 @@ with lib; {
           y = 8;
         };
       };
+    };
+  };
+
+  options = {
+    dotfiles.programs.alacritty = {
+      enable = lib.mkEnableOption "Alacritty";
     };
   };
 }

@@ -3,9 +3,8 @@
   constants,
   lib,
   ...
-}:
-with lib; {
-  config = mkIf (config.dotfiles.theme.enable && config.dotfiles.theme.classicCode) {
+}: {
+  config = lib.mkIf (config.dotfiles.theme.enable && config.dotfiles.theme.classicCode) {
     programs.zellij = {
       settings.themes.default = with constants.COLOR; {
         bg = DARK_GRAY;

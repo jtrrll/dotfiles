@@ -3,9 +3,8 @@
   lib,
   pkgs,
   ...
-}:
-with lib; {
-  config = mkIf config.dotfiles.theme.enable {
+}: {
+  config = lib.mkIf config.dotfiles.theme.enable {
     fonts.fontconfig.enable = true;
     home.packages = with pkgs; [
       ibm-plex

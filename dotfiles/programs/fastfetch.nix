@@ -2,11 +2,14 @@
   config,
   lib,
   ...
-}:
-with lib; {
-  config = mkIf config.dotfiles.programs.enable {
-    programs.fastfetch = {
-      enable = true;
+}: {
+  config = lib.mkIf config.dotfiles.programs.fastfetch.enable {
+    programs.fastfetch.enable = true;
+  };
+
+  options = {
+    dotfiles.programs.fastfetch = {
+      enable = lib.mkEnableOption "fastfetch";
     };
   };
 }
