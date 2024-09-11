@@ -3,9 +3,8 @@
   lib,
   pkgs,
   ...
-}:
-with lib; {
-  config = mkIf config.dotfiles.scripts.enable {
+}: {
+  config = lib.mkIf config.dotfiles.scripts.repeat.enable {
     home.packages = [
       (pkgs.writeShellScriptBin "repeat" ''
         if [[ "$#" -lt 2 ]]; then
@@ -19,5 +18,11 @@ with lib; {
         ${pkgs.watch}/bin/watch --color -n "$INTERVAL" "$@"
       '')
     ];
+  };
+
+  options = {
+    dotfiles.scripts.repeat = {
+      enable = lib.mkEnableOption "The 'repeat' script.";
+    };
   };
 }

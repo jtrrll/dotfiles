@@ -40,9 +40,7 @@
     ...
   } @ inputs:
     flake-parts.lib.mkFlake {inherit inputs;} {
-      imports = [
-        ./modules
-      ];
+      imports = [./modules];
       flake = let
         dotfiles = import ./dotfiles [
           nixvim.homeManagerModules.nixvim
@@ -69,6 +67,11 @@
                     dotfiles = {
                       enable = true;
                       homeDirectory = HOME;
+                      programs = {
+                        bash.enable = true;
+                        git.enable = true;
+                        home-manager.enable = true;
+                      };
                       username = USER;
                     };
                   }
@@ -83,23 +86,35 @@
           # default configuration.
           "${USER}" = mkConfig [
             {
-              dotfiles.theme = {
-                enable = true;
-                base16Scheme = "${pkgs.base16-schemes}/share/themes/gruvbox-material-dark-medium.yaml";
-              };
-            }
-          ];
-          # default configuration with modifications to support CI.
-          # - neovim is not included because it is slow to build and bloats the filesystem.
-          # - the theme module is disabled because it doesn't work on headless systems.
-          "ci" = mkConfig [
-            {
               dotfiles = {
-                programs.editors = ["vscode"];
-                theme.enable = false;
+                programs = {
+                  alacritty.enable = true;
+                  bat.enable = true;
+                  btop.enable = true;
+                  direnv.enable = true;
+                  eza.enable = true;
+                  fastfetch.enable = true;
+                  fzf.enable = true;
+                  neovim.enable = true;
+                  vscode.enable = true;
+                  zellij.enable = true;
+                  zoxide.enable = true;
+                  zsh.enable = true;
+                };
+                scripts = {
+                  home.enable = true;
+                  repeat.enable = true;
+                };
+                theme = {
+                  enable = true;
+                  base16Scheme = "${pkgs.base16-schemes}/share/themes/gruvbox-material-dark-medium.yaml";
+                };
               };
             }
           ];
+          # a basic configuration to support CI.
+          # - the theme module is disabled because it doesn't work on headless systems.
+          "ci" = mkConfig [{dotfiles.theme.enable = false;}];
         };
       };
     };

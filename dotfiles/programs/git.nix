@@ -2,9 +2,8 @@
   config,
   lib,
   ...
-}:
-with lib; {
-  config = mkIf config.dotfiles.programs.enable {
+}: {
+  config = lib.mkIf config.dotfiles.programs.git.enable {
     programs.git = {
       enable = true;
       extraConfig = {
@@ -16,6 +15,12 @@ with lib; {
           useConfigOnly = true; # require an email to be defined in local .gitconfig
         };
       };
+    };
+  };
+
+  options = {
+    dotfiles.programs.git = {
+      enable = lib.mkEnableOption "Git";
     };
   };
 }

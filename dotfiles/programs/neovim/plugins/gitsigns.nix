@@ -2,9 +2,8 @@
   config,
   lib,
   ...
-}:
-with lib; {
-  config = mkIf (config.dotfiles.programs.enable && elem "neovim" config.dotfiles.programs.editors) {
+}: {
+  config = lib.mkIf config.dotfiles.programs.neovim.enable {
     programs.nixvim.plugins.gitsigns = {
       enable = true;
       settings = let
