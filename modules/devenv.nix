@@ -1,4 +1,8 @@
-{inputs, ...}: {
+{
+  inputs,
+  self,
+  ...
+}: {
   imports = [
     inputs.devenv.flakeModule
   ];
@@ -21,13 +25,17 @@
             ░   ░\n" | ${pkgs.lolcat}/bin/lolcat
           printf "\033[0;1;36mDEVSHELL ACTIVATED\033[0m\n"
         '';
+
         env-help.enable = true;
+
         languages = {
           nix.enable = true;
         };
+
         packages = [
           pkgs.commitizen
         ];
+
         pre-commit = {
           default_stages = ["pre-push"];
           hooks = {
@@ -60,6 +68,21 @@
             shellcheck.enable = true;
             shfmt.enable = true;
             statix.enable = true;
+          };
+        };
+
+        scripts = {
+          "activate" = {
+            description = "Activates a configuration.";
+            exec = let
+              configurations = builtins.attrNames self.homeConfigurations;
+            in ''
+              CONFIG=$(${pkgs.uutils-coreutils-noprefix}/bin/printf "%s" "${builtins.concatStringsSep "\n" configurations}" \
+              | ${pkgs.gum}/bin/gum filter)
+
+              ${pkgs.gum}/bin/gum spin --show-error --spinner line --title "Activating $CONFIG..." -- \
+              ${pkgs.home-manager}/bin/home-manager switch -b backup --flake "$DEVENV_ROOT"#"$CONFIG" --impure
+            '';
           };
         };
       };
