@@ -12,7 +12,12 @@
 
   options = {
     dotfiles.programs.btop = {
-      enable = lib.mkEnableOption "btop";
+      enable = lib.mkOption {
+        default = true;
+        description = "Whether to enable btop.";
+        example = false;
+        type = lib.types.bool;
+      };
     };
   };
 }

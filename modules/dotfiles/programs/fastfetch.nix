@@ -9,7 +9,12 @@
 
   options = {
     dotfiles.programs.fastfetch = {
-      enable = lib.mkEnableOption "fastfetch";
+      enable = lib.mkOption {
+        default = true;
+        description = "Whether to enable fastfetch.";
+        example = false;
+        type = lib.types.bool;
+      };
     };
   };
 }

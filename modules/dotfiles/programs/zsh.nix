@@ -27,7 +27,12 @@
 
   options = {
     dotfiles.programs.zsh = {
-      enable = lib.mkEnableOption "Zsh";
+      enable = lib.mkOption {
+        default = true;
+        description = "Whether to enable Zsh.";
+        example = false;
+        type = lib.types.bool;
+      };
     };
   };
 }

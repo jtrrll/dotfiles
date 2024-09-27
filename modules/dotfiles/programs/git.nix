@@ -20,7 +20,12 @@
 
   options = {
     dotfiles.programs.git = {
-      enable = lib.mkEnableOption "Git";
+      enable = lib.mkOption {
+        default = true;
+        description = "Whether to enable Git.";
+        example = false;
+        type = lib.types.bool;
+      };
     };
   };
 }

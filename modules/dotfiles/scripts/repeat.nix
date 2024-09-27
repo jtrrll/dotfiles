@@ -22,7 +22,12 @@
 
   options = {
     dotfiles.scripts.repeat = {
-      enable = lib.mkEnableOption "The 'repeat' script.";
+      enable = lib.mkOption {
+        default = true;
+        description = "Whether to enable the 'repeat' script.";
+        example = false;
+        type = lib.types.bool;
+      };
     };
   };
 }
