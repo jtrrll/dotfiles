@@ -66,7 +66,12 @@
 
   options = {
     dotfiles.programs.neovim = {
-      enable = lib.mkEnableOption "neovim";
+      enable = lib.mkOption {
+        default = true;
+        description = "Whether to enable Neovim.";
+        example = false;
+        type = lib.types.bool;
+      };
     };
   };
 }

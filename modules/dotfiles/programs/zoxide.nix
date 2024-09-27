@@ -13,7 +13,12 @@
 
   options = {
     dotfiles.programs.zoxide = {
-      enable = lib.mkEnableOption "Zoxide";
+      enable = lib.mkOption {
+        default = true;
+        description = "Whether to enable zoxide.";
+        example = false;
+        type = lib.types.bool;
+      };
     };
   };
 }

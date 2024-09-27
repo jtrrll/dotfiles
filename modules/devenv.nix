@@ -72,7 +72,7 @@
         };
 
         scripts = {
-          "activate" = {
+          activate = {
             description = "Activates a configuration.";
             exec = let
               configurations = builtins.attrNames self.homeConfigurations;
@@ -82,6 +82,12 @@
 
               ${pkgs.gum}/bin/gum spin --show-error --spinner line --title "Activating $CONFIG..." -- \
               ${pkgs.home-manager}/bin/home-manager switch -b backup --flake "$DEVENV_ROOT"#"$CONFIG" --impure
+            '';
+          };
+          lint = {
+            description = "Lints the project.";
+            exec = ''
+              ${pkgs.gum}/bin/gum spin --show-error --spinner line --title "nix fmt" -- nix fmt
             '';
           };
         };

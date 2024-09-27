@@ -18,7 +18,12 @@
 
   options = {
     dotfiles.programs.bat = {
-      enable = lib.mkEnableOption "bat";
+      enable = lib.mkOption {
+        default = true;
+        description = "Whether to enable bat.";
+        example = false;
+        type = lib.types.bool;
+      };
     };
   };
 }

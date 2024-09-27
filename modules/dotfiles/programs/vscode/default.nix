@@ -32,7 +32,12 @@
 
   options = {
     dotfiles.programs.vscode = {
-      enable = lib.mkEnableOption "VSCode";
+      enable = lib.mkOption {
+        default = true;
+        description = "Whether to enable VSCode.";
+        example = false;
+        type = lib.types.bool;
+      };
     };
   };
 }

@@ -25,7 +25,12 @@
 
   options = {
     dotfiles.programs.alacritty = {
-      enable = lib.mkEnableOption "Alacritty";
+      enable = lib.mkOption {
+        default = true;
+        description = "Whether to enable Alacritty.";
+        example = false;
+        type = lib.types.bool;
+      };
     };
   };
 }
