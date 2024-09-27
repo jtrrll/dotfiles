@@ -13,7 +13,12 @@
 
   options = {
     dotfiles.programs.direnv = {
-      enable = lib.mkEnableOption "direnv";
+      enable = lib.mkOption {
+        default = true;
+        description = "Whether to enable direnv.";
+        example = false;
+        type = lib.types.bool;
+      };
     };
   };
 }

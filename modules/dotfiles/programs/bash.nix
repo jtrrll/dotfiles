@@ -45,7 +45,12 @@
 
   options = {
     dotfiles.programs.bash = {
-      enable = lib.mkEnableOption "Bash";
+      enable = lib.mkOption {
+        default = true;
+        description = "Whether to enable Bash.";
+        example = false;
+        type = lib.types.bool;
+      };
     };
   };
 }

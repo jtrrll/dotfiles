@@ -14,7 +14,12 @@
 
   options = {
     dotfiles.programs.eza = {
-      enable = lib.mkEnableOption "eza";
+      enable = lib.mkOption {
+        default = true;
+        description = "Whether to enable eza.";
+        example = false;
+        type = lib.types.bool;
+      };
     };
   };
 }

@@ -15,7 +15,7 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 
 <!-- markdownlint-disable MD013 -->
    ```sh
-   nix-shell -p home-manager --run "home-manager switch -b backup --impure --flake github:jtrrll/dotfiles"
+   nix-shell -p home-manager --run "home-manager switch -b backup --impure --flake github:jtrrll/dotfiles#default"
    ```
 <!-- markdownlint-enable MD013 -->
 
