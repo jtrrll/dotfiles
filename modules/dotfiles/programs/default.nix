@@ -1,7 +1,6 @@
 {
   imports = [
     ./neovim
-    ./vscode
     ./zellij
 
     ./alacritty.nix
@@ -14,7 +13,7 @@
     ./fzf.nix
     ./git.nix
     ./home-manager.nix
+    ./vscode.nix
     ./zoxide.nix
-    ./zsh.nix
   ];
 }

@@ -9,10 +9,7 @@
       settings = {
         cursor = {
           blink_interval = 500;
-          style = {
-            blinking = "Always";
-            shape = "Beam";
-          };
+          style.blinking = "Always";
           unfocused_hollow = true;
         };
         window.padding = {

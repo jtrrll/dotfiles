@@ -4,11 +4,8 @@
   ...
 }: {
   config = lib.mkIf config.dotfiles.programs.neovim.enable {
-    programs.nixvim.plugins.indent-blankline = {
+    programs.nixvim.plugins.nvim-autopairs = {
       enable = true;
-      settings = {
-        scope.enabled = true;
-      };
     };
   };
 }
