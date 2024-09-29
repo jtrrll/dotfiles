@@ -44,7 +44,7 @@
         svelte.enable = true;
         tailwindcss.enable = true;
         texlab.enable = true;
-        tsserver.enable = true;
+        ts-ls.enable = true;
         yamlls.enable = true;
         zls.enable = true;
       };
