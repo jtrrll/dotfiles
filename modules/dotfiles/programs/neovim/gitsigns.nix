@@ -16,6 +16,7 @@
         };
       in {
         current_line_blame = true;
+        current_line_blame_opts.virt_text_priority = 5000; # Display blame after diagnostics
         inherit signs;
         signs_staged = signs;
       };
