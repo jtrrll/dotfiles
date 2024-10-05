@@ -47,16 +47,17 @@
   imports = [
     ./alpha.nix
     ./autopairs.nix
-    ./autosave.nix
     ./barbar.nix
     ./barbecue.nix
     ./cmp.nix
     ./gitsigns.nix
     ./keymaps.nix
     ./lsp.nix
+    ./markdown.nix
     ./mini.nix
     ./neotree.nix
     ./opts.nix
+    ./save.nix
     ./treesitter.nix
   ];
 

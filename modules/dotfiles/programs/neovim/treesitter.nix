@@ -11,6 +11,14 @@
           scope.enabled = true;
         };
       };
+      rainbow-delimiters = {
+        enable = true;
+        highlight = [
+          "RainbowDelimiterYellow"
+          "RainbowDelimiterRed"
+          "RainbowDelimiterBlue"
+        ];
+      };
       treesitter = {
         enable = true;
         settings = {
