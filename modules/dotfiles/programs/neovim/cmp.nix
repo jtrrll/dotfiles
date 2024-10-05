@@ -24,9 +24,7 @@
           ];
         };
       };
-      cmp-nvim-lsp = {
-        enable = true;
-      };
+      cmp-nvim-lsp.enable = true;
     };
   };
 }

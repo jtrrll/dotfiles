@@ -4,6 +4,6 @@
   ...
 }: {
   config = lib.mkIf config.dotfiles.programs.neovim.enable {
-    programs.nixvim.plugins.barbecue.enable = true;
+    programs.nixvim.plugins.markdown-preview.enable = true;
   };
 }
