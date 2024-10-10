@@ -11,8 +11,7 @@
       colorcolumn = "${toString constants.LINE_LENGTH.WARNING},${toString constants.LINE_LENGTH.MAX}"; # highlight columns
       cursorline = true; # highlight current line
       expandtab = true; # use spaces instead of tabs
-      foldlevel = 3; # the fold levels that should be open to start
-      foldmethod = "indent"; # automatically define folds by indent
+      foldlevel = 5; # the fold levels that should be open to start
       guicursor = "n-sm-v-:block,c-ci-i-ve:ver25,r-cr-o:hor20"; # set cursor shape for various modes
       inccommand = "split"; # preview substitutions
       list = true; # show characters in white spaces

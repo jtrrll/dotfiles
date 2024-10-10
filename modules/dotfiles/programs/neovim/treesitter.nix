@@ -38,6 +38,9 @@
           max_lines = 2;
         };
       };
+      nvim-ufo = {
+        enable = true;
+      };
     };
   };
 }
