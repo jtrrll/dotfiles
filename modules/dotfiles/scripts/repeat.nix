@@ -15,7 +15,9 @@
         INTERVAL="$1"
         shift
 
-        ${pkgs.watch}/bin/watch --color -n "$INTERVAL" "$@"
+        ${pkgs.watch}/bin/watch --color --no-title \
+          --interval "$INTERVAL" \
+          --exec ${pkgs.bashInteractive}/bin/bash -ic "$* || true"
       '')
     ];
   };
