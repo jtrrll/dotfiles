@@ -6,6 +6,7 @@
   config = lib.mkIf config.dotfiles.programs.zellij.enable {
     programs.zellij = {
       enable = true;
+      enableBashIntegration = true;
     };
 
     home.file.layouts = {
