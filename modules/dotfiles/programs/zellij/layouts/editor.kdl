@@ -1,0 +1,33 @@
+layout {
+  tab {
+    pane borderless=true size=1 {
+      plugin location="zellij:tab-bar"
+    }
+    pane split_direction="vertical" {
+      pane size="25%" {
+        pane {
+          args "60" "git -c color.status=always status --short"
+          command "repeat"
+          name "git status"
+        }
+        pane name="lint"
+        pane {
+          command "bonsai"
+          name "zen"
+          size "40%"
+        }
+      }
+      pane {
+        pane {
+          command "nvim"
+          focus true
+          name "editor"
+        }
+        pane size="20%" name="workspace"
+      }
+    }
+    pane borderless=true size=2 {
+      plugin location="zellij:status-bar"
+    }
+  }
+}
