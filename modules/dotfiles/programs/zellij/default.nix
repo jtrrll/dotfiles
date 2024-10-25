@@ -6,12 +6,16 @@
   config = lib.mkIf config.dotfiles.programs.zellij.enable {
     programs.zellij = {
       enable = true;
-      enableBashIntegration = true;
     };
 
-    home.file.layouts = {
-      source = ./layouts;
-      target = "${config.dotfiles.homeDirectory}/.config/zellij/layouts";
+    home = {
+      file.layouts = {
+        source = ./layouts;
+        target = "${config.dotfiles.homeDirectory}/.config/zellij/layouts";
+      };
+      shellAliases = {
+        zedit = "zellij --layout editor"; # starts zellij with the editor layout
+      };
     };
   };
 
