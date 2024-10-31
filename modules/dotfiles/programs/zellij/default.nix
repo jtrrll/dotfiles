@@ -6,6 +6,9 @@
   config = lib.mkIf config.dotfiles.programs.zellij.enable {
     programs.zellij = {
       enable = true;
+      settings = {
+        default_layout = "sessions";
+      };
     };
 
     home = {
@@ -14,7 +17,7 @@
         target = "${config.dotfiles.homeDirectory}/.config/zellij/layouts";
       };
       shellAliases = {
-        zedit = "zellij --layout editor"; # starts zellij with the editor layout
+        z = "zellij";
       };
     };
   };

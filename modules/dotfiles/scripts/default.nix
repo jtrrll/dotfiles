@@ -1,6 +1,7 @@
 {
   imports = [
-    ./bonsai.nix
+    ./screensavers
+
     ./repeat.nix
   ];
 }

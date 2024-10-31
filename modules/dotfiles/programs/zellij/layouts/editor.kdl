@@ -1,8 +1,15 @@
 layout {
-  tab {
+  default_tab_template {
     pane borderless=true size=1 {
       plugin location="zellij:tab-bar"
     }
+    children
+    pane borderless=true size=2 {
+      plugin location="zellij:status-bar"
+    }
+  }
+  tab name="background"
+  tab focus=true name="editor" {
     pane split_direction="vertical" {
       pane size="25%" {
         pane {
@@ -25,9 +32,6 @@ layout {
         }
         pane size="20%" name="workspace"
       }
-    }
-    pane borderless=true size=2 {
-      plugin location="zellij:status-bar"
     }
   }
 }
