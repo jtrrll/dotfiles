@@ -1,7 +1,0 @@
-{
-  imports = [
-    ./screensavers
-
-    ./repeat.nix
-  ];
-}
