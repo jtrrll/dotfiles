@@ -2,6 +2,7 @@
   imports = [
     ./multiplexer
 
+    ./direnv.nix
     ./emulator.nix
     ./shell.nix
   ];

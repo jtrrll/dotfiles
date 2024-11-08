@@ -4,7 +4,7 @@
   pkgs,
   ...
 }: {
-  config = lib.mkIf config.dotfiles.matrix.enable {
+  config = lib.mkIf config.dotfiles.screensavers.enable {
     home.packages = [
       (pkgs.writeShellScriptBin "matrix" ''
         if [[ "$#" -ne 0 ]]; then
@@ -22,14 +22,5 @@
           --maxdpc 1
       '')
     ];
-  };
-
-  options.dotfiles.matrix = {
-    enable = lib.mkOption {
-      default = true;
-      description = "Whether to enable the matrix script.";
-      example = false;
-      type = lib.types.bool;
-    };
   };
 }
