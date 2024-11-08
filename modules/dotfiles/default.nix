@@ -23,19 +23,17 @@
       inputs.stylix.homeManagerModules.stylix
 
       ./editors
+      ./file_system
+      ./screensavers
       ./services
       ./terminal
       ./theme
 
       ./bat.nix
-      ./bonsai.nix
       ./btop.nix
-      ./direnv.nix
       ./fastfetch.nix
-      ./file_system.nix
       ./git.nix
       ./home_manager.nix
-      ./matrix.nix
       ./repeat.nix
 
       {
