@@ -24,9 +24,4 @@
     YELLOW = "#dcdcaa";
     WHITE = "#e5e5e5";
   };
-  INDENT_WIDTH = 2;
-  LINE_LENGTH = {
-    WARNING = 100;
-    MAX = 120;
-  };
 }
