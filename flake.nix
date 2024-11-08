@@ -24,6 +24,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
       url = "github:nix-community/nixvim";
     };
+    snek-check = {
+      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:jtrrll/snek-check";
+    };
     stylix = {
       inputs.nixpkgs.follows = "nixpkgs";
       url = "github:danth/stylix";
