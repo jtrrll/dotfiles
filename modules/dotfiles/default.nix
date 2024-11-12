@@ -24,6 +24,7 @@
 
       ./editors
       ./file_system
+      ./git
       ./screensavers
       ./services
       ./terminal
@@ -32,7 +33,6 @@
       ./bat.nix
       ./btop.nix
       ./fastfetch.nix
-      ./git.nix
       ./home_manager.nix
       ./repeat.nix
 

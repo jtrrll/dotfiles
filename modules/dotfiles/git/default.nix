@@ -18,10 +18,14 @@
     };
   };
 
+  imports = [
+    ./git_trim.nix
+  ];
+
   options.dotfiles.git = {
     enable = lib.mkOption {
       default = true;
-      description = "Whether to enable Git.";
+      description = "Whether to enable the Git configuration.";
       example = false;
       type = lib.types.bool;
     };
