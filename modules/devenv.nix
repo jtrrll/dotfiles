@@ -6,7 +6,11 @@
   imports = [
     inputs.devenv.flakeModule
   ];
-  perSystem = {pkgs, ...}: {
+  perSystem = {
+    pkgs,
+    system,
+    ...
+  }: {
     devenv = {
       modules = [
         inputs.env-help.devenvModule
@@ -67,6 +71,11 @@
             };
             shellcheck.enable = true;
             shfmt.enable = true;
+            snekcheck = {
+              enable = true;
+              entry = "${inputs.snekcheck.packages.${system}.snekcheck}/bin/snekcheck";
+              name = "snekcheck";
+            };
             statix.enable = true;
           };
         };

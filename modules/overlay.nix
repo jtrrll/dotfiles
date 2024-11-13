@@ -1,6 +1,6 @@
 {inputs, ...}: {
   flake.overlay = final: _: {
-    inherit (inputs.snek-check.packages.${final.system}) snek-check;
+    inherit (inputs.snekcheck.packages.${final.system}) snekcheck;
     vscode-extensions = inputs.nix-vscode-extensions.extensions.${final.system}.vscode-marketplace;
   };
 }

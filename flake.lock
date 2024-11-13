@@ -208,17 +208,17 @@
       "inputs": {
         "devenv": "devenv_8",
         "flake-compat": [
-          "snek-check",
+          "snekcheck",
           "devenv",
           "flake-compat"
         ],
         "git-hooks": [
-          "snek-check",
+          "snekcheck",
           "devenv",
           "pre-commit-hooks"
         ],
         "nixpkgs": [
-          "snek-check",
+          "snekcheck",
           "devenv",
           "nixpkgs"
         ]
@@ -241,21 +241,21 @@
       "inputs": {
         "devenv": "devenv_9",
         "flake-compat": [
-          "snek-check",
+          "snekcheck",
           "devenv",
           "cachix",
           "devenv",
           "flake-compat"
         ],
         "nixpkgs": [
-          "snek-check",
+          "snekcheck",
           "devenv",
           "cachix",
           "devenv",
           "nixpkgs"
         ],
         "pre-commit-hooks": [
-          "snek-check",
+          "snekcheck",
           "devenv",
           "cachix",
           "devenv",
@@ -280,19 +280,19 @@
       "inputs": {
         "devenv": "devenv_11",
         "flake-compat": [
-          "snek-check",
+          "snekcheck",
           "env-help",
           "devenv",
           "flake-compat"
         ],
         "git-hooks": [
-          "snek-check",
+          "snekcheck",
           "env-help",
           "devenv",
           "pre-commit-hooks"
         ],
         "nixpkgs": [
-          "snek-check",
+          "snekcheck",
           "env-help",
           "devenv",
           "nixpkgs"
@@ -316,7 +316,7 @@
       "inputs": {
         "devenv": "devenv_12",
         "flake-compat": [
-          "snek-check",
+          "snekcheck",
           "env-help",
           "devenv",
           "cachix",
@@ -324,7 +324,7 @@
           "flake-compat"
         ],
         "nixpkgs": [
-          "snek-check",
+          "snekcheck",
           "env-help",
           "devenv",
           "cachix",
@@ -332,7 +332,7 @@
           "nixpkgs"
         ],
         "pre-commit-hooks": [
-          "snek-check",
+          "snekcheck",
           "env-help",
           "devenv",
           "cachix",
@@ -384,7 +384,7 @@
         "flake-compat": "flake-compat_10",
         "nix": "nix_12",
         "nixpkgs": [
-          "snek-check",
+          "snekcheck",
           "env-help",
           "nixpkgs"
         ],
@@ -408,7 +408,7 @@
       "inputs": {
         "cachix": "cachix_8",
         "flake-compat": [
-          "snek-check",
+          "snekcheck",
           "env-help",
           "devenv",
           "cachix",
@@ -416,14 +416,14 @@
         ],
         "nix": "nix_11",
         "nixpkgs": [
-          "snek-check",
+          "snekcheck",
           "env-help",
           "devenv",
           "cachix",
           "nixpkgs"
         ],
         "pre-commit-hooks": [
-          "snek-check",
+          "snekcheck",
           "env-help",
           "devenv",
           "cachix",
@@ -447,7 +447,7 @@
     "devenv_12": {
       "inputs": {
         "flake-compat": [
-          "snek-check",
+          "snekcheck",
           "env-help",
           "devenv",
           "cachix",
@@ -459,7 +459,7 @@
         "nixpkgs": "nixpkgs_8",
         "poetry2nix": "poetry2nix_4",
         "pre-commit-hooks": [
-          "snek-check",
+          "snekcheck",
           "env-help",
           "devenv",
           "cachix",
@@ -657,7 +657,7 @@
         "flake-compat": "flake-compat_8",
         "nix": "nix_9",
         "nixpkgs": [
-          "snek-check",
+          "snekcheck",
           "nixpkgs"
         ],
         "pre-commit-hooks": "pre-commit-hooks_6"
@@ -680,20 +680,20 @@
       "inputs": {
         "cachix": "cachix_6",
         "flake-compat": [
-          "snek-check",
+          "snekcheck",
           "devenv",
           "cachix",
           "flake-compat"
         ],
         "nix": "nix_8",
         "nixpkgs": [
-          "snek-check",
+          "snekcheck",
           "devenv",
           "cachix",
           "nixpkgs"
         ],
         "pre-commit-hooks": [
-          "snek-check",
+          "snekcheck",
           "devenv",
           "cachix",
           "git-hooks"
@@ -716,7 +716,7 @@
     "devenv_9": {
       "inputs": {
         "flake-compat": [
-          "snek-check",
+          "snekcheck",
           "devenv",
           "cachix",
           "devenv",
@@ -727,7 +727,7 @@
         "nixpkgs": "nixpkgs_6",
         "poetry2nix": "poetry2nix_3",
         "pre-commit-hooks": [
-          "snek-check",
+          "snekcheck",
           "devenv",
           "cachix",
           "devenv",
@@ -798,7 +798,7 @@
         "devenv": "devenv_10",
         "flake-parts": "flake-parts_8",
         "nixpkgs": [
-          "snek-check",
+          "snekcheck",
           "nixpkgs"
         ]
       },
@@ -1095,7 +1095,7 @@
     "flake-parts_6": {
       "inputs": {
         "nixpkgs-lib": [
-          "snek-check",
+          "snekcheck",
           "devenv",
           "nix",
           "nixpkgs"
@@ -1118,7 +1118,7 @@
     "flake-parts_7": {
       "inputs": {
         "nixpkgs-lib": [
-          "snek-check",
+          "snekcheck",
           "env-help",
           "devenv",
           "nix",
@@ -1498,7 +1498,7 @@
     "gitignore_4": {
       "inputs": {
         "nixpkgs": [
-          "snek-check",
+          "snekcheck",
           "devenv",
           "pre-commit-hooks",
           "nixpkgs"
@@ -1521,7 +1521,7 @@
     "gitignore_5": {
       "inputs": {
         "nixpkgs": [
-          "snek-check",
+          "snekcheck",
           "env-help",
           "devenv",
           "pre-commit-hooks",
@@ -1563,7 +1563,7 @@
       "inputs": {
         "flake-utils": "flake-utils_11",
         "nixpkgs": [
-          "snek-check",
+          "snekcheck",
           "nixpkgs"
         ]
       },
@@ -1841,7 +1841,7 @@
     "nix-github-actions_3": {
       "inputs": {
         "nixpkgs": [
-          "snek-check",
+          "snekcheck",
           "devenv",
           "cachix",
           "devenv",
@@ -1868,7 +1868,7 @@
     "nix-github-actions_4": {
       "inputs": {
         "nixpkgs": [
-          "snek-check",
+          "snekcheck",
           "env-help",
           "devenv",
           "cachix",
@@ -1919,7 +1919,7 @@
       "inputs": {
         "flake-compat": "flake-compat_9",
         "nixpkgs": [
-          "snek-check",
+          "snekcheck",
           "env-help",
           "devenv",
           "cachix",
@@ -1948,7 +1948,7 @@
     "nix_11": {
       "inputs": {
         "flake-compat": [
-          "snek-check",
+          "snekcheck",
           "env-help",
           "devenv",
           "cachix",
@@ -1956,7 +1956,7 @@
           "flake-compat"
         ],
         "nixpkgs": [
-          "snek-check",
+          "snekcheck",
           "env-help",
           "devenv",
           "cachix",
@@ -1983,7 +1983,7 @@
     "nix_12": {
       "inputs": {
         "flake-compat": [
-          "snek-check",
+          "snekcheck",
           "env-help",
           "devenv",
           "flake-compat"
@@ -2164,7 +2164,7 @@
       "inputs": {
         "flake-compat": "flake-compat_7",
         "nixpkgs": [
-          "snek-check",
+          "snekcheck",
           "devenv",
           "cachix",
           "devenv",
@@ -2192,14 +2192,14 @@
     "nix_8": {
       "inputs": {
         "flake-compat": [
-          "snek-check",
+          "snekcheck",
           "devenv",
           "cachix",
           "devenv",
           "flake-compat"
         ],
         "nixpkgs": [
-          "snek-check",
+          "snekcheck",
           "devenv",
           "cachix",
           "devenv",
@@ -2225,7 +2225,7 @@
     "nix_9": {
       "inputs": {
         "flake-compat": [
-          "snek-check",
+          "snekcheck",
           "devenv",
           "flake-compat"
         ],
@@ -2874,7 +2874,7 @@
         "flake-utils": "flake-utils_7",
         "nix-github-actions": "nix-github-actions_3",
         "nixpkgs": [
-          "snek-check",
+          "snekcheck",
           "devenv",
           "cachix",
           "devenv",
@@ -2902,7 +2902,7 @@
         "flake-utils": "flake-utils_9",
         "nix-github-actions": "nix-github-actions_4",
         "nixpkgs": [
-          "snek-check",
+          "snekcheck",
           "env-help",
           "devenv",
           "cachix",
@@ -3061,24 +3061,24 @@
     "pre-commit-hooks_5": {
       "inputs": {
         "flake-compat": [
-          "snek-check",
+          "snekcheck",
           "devenv",
           "nix"
         ],
         "flake-utils": "flake-utils_8",
         "gitignore": [
-          "snek-check",
+          "snekcheck",
           "devenv",
           "nix"
         ],
         "nixpkgs": [
-          "snek-check",
+          "snekcheck",
           "devenv",
           "nix",
           "nixpkgs"
         ],
         "nixpkgs-stable": [
-          "snek-check",
+          "snekcheck",
           "devenv",
           "nix",
           "nixpkgs"
@@ -3101,13 +3101,13 @@
     "pre-commit-hooks_6": {
       "inputs": {
         "flake-compat": [
-          "snek-check",
+          "snekcheck",
           "devenv",
           "flake-compat"
         ],
         "gitignore": "gitignore_4",
         "nixpkgs": [
-          "snek-check",
+          "snekcheck",
           "devenv",
           "nixpkgs"
         ],
@@ -3130,27 +3130,27 @@
     "pre-commit-hooks_7": {
       "inputs": {
         "flake-compat": [
-          "snek-check",
+          "snekcheck",
           "env-help",
           "devenv",
           "nix"
         ],
         "flake-utils": "flake-utils_10",
         "gitignore": [
-          "snek-check",
+          "snekcheck",
           "env-help",
           "devenv",
           "nix"
         ],
         "nixpkgs": [
-          "snek-check",
+          "snekcheck",
           "env-help",
           "devenv",
           "nix",
           "nixpkgs"
         ],
         "nixpkgs-stable": [
-          "snek-check",
+          "snekcheck",
           "env-help",
           "devenv",
           "nix",
@@ -3174,14 +3174,14 @@
     "pre-commit-hooks_8": {
       "inputs": {
         "flake-compat": [
-          "snek-check",
+          "snekcheck",
           "env-help",
           "devenv",
           "flake-compat"
         ],
         "gitignore": "gitignore_5",
         "nixpkgs": [
-          "snek-check",
+          "snekcheck",
           "env-help",
           "devenv",
           "nixpkgs"
@@ -3211,11 +3211,11 @@
         "nix-vscode-extensions": "nix-vscode-extensions",
         "nixpkgs": "nixpkgs_5",
         "nixvim": "nixvim",
-        "snek-check": "snek-check",
+        "snekcheck": "snekcheck",
         "stylix": "stylix"
       }
     },
-    "snek-check": {
+    "snekcheck": {
       "inputs": {
         "devenv": "devenv_7",
         "env-help": "env-help_2",
@@ -3226,16 +3226,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1730859784,
-        "narHash": "sha256-x8yUxFBQLbD32pSghp/w/TczctUXZS9leKlFYmnOMIs=",
+        "lastModified": 1731465031,
+        "narHash": "sha256-wkW0U6nQQY2CXuo7fBaVVfMm9Iw7fXDbEtKmzVaCvJo=",
         "owner": "jtrrll",
-        "repo": "snek-check",
-        "rev": "cfa67699dfba0a78f700e7cf8e84c4cd69a18281",
+        "repo": "snekcheck",
+        "rev": "3fb92643a6f0d3a5fd6490198358be4c81d9c337",
         "type": "github"
       },
       "original": {
         "owner": "jtrrll",
-        "repo": "snek-check",
+        "repo": "snekcheck",
         "type": "github"
       }
     },

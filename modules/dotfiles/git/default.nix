@@ -19,7 +19,7 @@
   };
 
   imports = [
-    ./git_trim.nix
+    ./operations.nix
   ];
 
   options.dotfiles.git = {
