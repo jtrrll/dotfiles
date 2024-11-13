@@ -19,6 +19,7 @@
   };
 
   imports = [
+    ./navigation.nix
     ./operations.nix
   ];
 
