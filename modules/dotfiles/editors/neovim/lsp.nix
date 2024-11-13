@@ -48,7 +48,6 @@
           texlab.enable = true;
           ts_ls.enable = true;
           yamlls.enable = true;
-          zls.enable = true;
         };
       };
       lsp-lines.enable = true;

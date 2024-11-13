@@ -24,9 +24,9 @@
       inputs.nixpkgs.follows = "nixpkgs";
       url = "github:nix-community/nixvim";
     };
-    snek-check = {
+    snekcheck = {
       inputs.nixpkgs.follows = "nixpkgs";
-      url = "github:jtrrll/snek-check";
+      url = "github:jtrrll/snekcheck";
     };
     stylix = {
       inputs.nixpkgs.follows = "nixpkgs";
