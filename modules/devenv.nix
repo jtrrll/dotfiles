@@ -86,11 +86,11 @@
             exec = let
               configurations = builtins.attrNames self.homeConfigurations;
             in ''
-              CONFIG=$(${pkgs.uutils-coreutils-noprefix}/bin/printf "%s" "${builtins.concatStringsSep "\n" configurations}" \
+              config=$(${pkgs.uutils-coreutils-noprefix}/bin/printf "%s" "${builtins.concatStringsSep "\n" configurations}" \
               | ${pkgs.gum}/bin/gum filter)
 
-              ${pkgs.gum}/bin/gum spin --show-error --spinner line --title "Activating $CONFIG..." -- \
-              ${pkgs.home-manager}/bin/home-manager switch -b backup --flake "$DEVENV_ROOT"#"$CONFIG" --impure
+              ${pkgs.gum}/bin/gum spin --show-error --spinner line --title "Activating $config..." -- \
+              ${pkgs.home-manager}/bin/home-manager switch -b backup --flake "$DEVENV_ROOT"#"$config" --impure
             '';
           };
           lint = {
