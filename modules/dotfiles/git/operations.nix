@@ -26,11 +26,11 @@
 
             git switch "$main_branch"
 
-            git pull origin "$main_branch"
-
-            for branch in $(git branch | grep -vE "^\*| $main_branch"); do
+            for branch in $(git branch --format="%(refname:short)" | grep -v "$main_branch"); do
                 git branch -D "$branch"
             done
+
+            git pull
           '';
         })
     ];
