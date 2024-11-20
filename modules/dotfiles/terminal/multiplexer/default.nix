@@ -12,7 +12,7 @@
     };
 
     home = {
-      file.layouts = {
+      file.zellij-layouts = {
         source = ./layouts;
         target = "${config.dotfiles.homeDirectory}/.config/zellij/layouts";
       };
