@@ -17,7 +17,6 @@
             self.dotfiles
             {
               dotfiles = {
-                enable = true;
                 homeDirectory = HOME;
                 username = USER;
               };
