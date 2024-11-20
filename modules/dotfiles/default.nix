@@ -4,7 +4,7 @@
     lib,
     ...
   }: {
-    config = lib.mkIf config.dotfiles.enable {
+    config = {
       assertions = [
         {
           assertion = lib.strings.hasInfix config.dotfiles.username config.dotfiles.homeDirectory;
@@ -25,8 +25,8 @@
       ./editors
       ./file_system
       ./git
+      ./nix
       ./screensavers
-      ./services
       ./terminal
       ./theme
 
@@ -44,12 +44,6 @@
     ];
 
     options.dotfiles = {
-      enable = lib.mkOption {
-        default = true;
-        description = "Whether to enable jtrrll's declarative dotfiles.";
-        example = false;
-        type = lib.types.bool;
-      };
       homeDirectory = lib.mkOption {
         default = "/home/${config.dotfiles.username}";
         description = "The home directory of the user.";
