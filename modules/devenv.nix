@@ -6,6 +6,7 @@
   imports = [
     inputs.devenv.flakeModule
   ];
+
   perSystem = {
     pkgs,
     system,
@@ -36,10 +37,6 @@
           nix.enable = true;
         };
 
-        packages = [
-          pkgs.commitizen
-        ];
-
         pre-commit = {
           default_stages = ["pre-push"];
           hooks = {
@@ -50,7 +47,6 @@
               stages = ["pre-commit"];
             };
             check-yaml.enable = true;
-            commitizen.enable = true;
             deadnix.enable = true;
             detect-private-keys = {
               enable = true;
@@ -90,13 +86,15 @@
               | ${pkgs.gum}/bin/gum filter)
 
               ${pkgs.gum}/bin/gum spin --show-error --spinner line --title "Activating $config..." -- \
-              ${pkgs.home-manager}/bin/home-manager switch -b backup --flake "$DEVENV_ROOT"#"$config" --impure
+                ${pkgs.home-manager}/bin/home-manager switch -b backup --flake "$DEVENV_ROOT"#"$config" --impure
             '';
           };
           lint = {
             description = "Lints the project.";
             exec = ''
               ${pkgs.gum}/bin/gum spin --show-error --spinner line --title "nix fmt" -- nix fmt
+              ${pkgs.gum}/bin/gum spin --show-error --spinner line --title "snekcheck" -- \
+                ${inputs.snekcheck.packages.${system}.snekcheck}/bin/snekcheck "$DEVENV_ROOT"
             '';
           };
         };

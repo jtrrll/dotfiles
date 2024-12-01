@@ -10,20 +10,21 @@
     USER = builtins.getEnv "USER";
     ### end "impure" ###
     mkConfig = modules:
-      inputs.home-manager.lib.homeManagerConfiguration {
-        inherit pkgs;
-        modules =
-          [
-            self.dotfiles
-            {
-              dotfiles = {
-                homeDirectory = HOME;
-                username = USER;
-              };
-            }
-          ]
-          ++ modules;
-      };
+      assert (builtins.isList modules) && (builtins.all builtins.isAttrs modules);
+        inputs.home-manager.lib.homeManagerConfiguration {
+          inherit pkgs;
+          modules =
+            [
+              self.dotfiles
+              {
+                dotfiles = {
+                  homeDirectory = HOME;
+                  username = USER;
+                };
+              }
+            ]
+            ++ modules;
+        };
     pkgs = import inputs.nixpkgs {
       inherit SYSTEM;
       overlays = [self.overlay];

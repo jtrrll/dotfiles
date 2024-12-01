@@ -1,6 +1,14 @@
-{lib, ...}: {
+{
+  config,
+  lib,
+  ...
+}: {
+  config = lib.mkIf config.dotfiles.file-system.enable {
+    xdg.enable = true;
+  };
+
   imports = [
-    ./list.nix
+    ./code.nix
     ./navigation.nix
     ./operations.nix
   ];
