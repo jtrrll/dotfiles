@@ -14,7 +14,7 @@
     home = {
       file.zellij-layouts = {
         source = ./layouts;
-        target = "${config.dotfiles.homeDirectory}/.config/zellij/layouts";
+        target = ".config/zellij/layouts";
       };
       shellAliases = {
         z = "zellij";
