@@ -25,6 +25,7 @@
       ./editors
       ./file_system
       ./git
+      ./input
       ./nix
       ./screensavers
       ./terminal

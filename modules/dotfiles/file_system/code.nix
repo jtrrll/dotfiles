@@ -11,7 +11,7 @@
 
         A working directory for code. All repositories *should* be stored on an external Git server.
 
-        ## Services (TODO)
+        ## Services
 
         <!-- TODO: Implement services -->
         1. Daily Git fetch

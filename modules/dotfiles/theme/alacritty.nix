@@ -33,23 +33,9 @@
           bright_foreground = WHITE;
         };
       };
-      font = {
-        bold = {
-          family = "Hack Nerd Font Mono";
-          style = "Bold";
-        };
-        bold_italic = {
-          family = "Hack Nerd Font Mono";
-          style = "Bold Italic";
-        };
-        italic = {
-          family = "Hack Nerd Font Mono";
-          style = "Italic";
-        };
-        normal = {
-          family = "Hack Nerd Font Mono";
-          style = "Regular";
-        };
+      font.normal = {
+        family = "Hack Nerd Font Mono";
+        style = "Regular";
       };
     };
     stylix.targets.alacritty.enable = false;
