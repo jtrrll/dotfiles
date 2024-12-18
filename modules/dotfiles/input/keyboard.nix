@@ -30,16 +30,31 @@
           )
 
           (deflayermap (arrows)
-            h left
-            j down
-            k up
-            l right
+            j left
+            k down
+            l up
+            ; right
           )
         '';
       };
-      # TODO: Install package on Darwin (macOS) once kanata fixes its build.
-      packages = lib.mkIf pkgs.stdenv.isLinux [
-        pkgs.kanata
+      packages = [
+        (pkgs.writeShellApplication
+          {
+            name = "keyboard";
+            # TODO: Install package on Darwin (macOS) once kanata fixes its build.
+            runtimeInputs =
+              if pkgs.stdenv.isLinux
+              then [pkgs.kanata]
+              else [];
+            text = ''
+              if [[ "$#" -ne 0 ]]; then
+                echo "Usage: $(basename "$0")"
+                exit 1
+              fi
+
+              sudo kanata --cfg "${config.home.homeDirectory}/${config.home.file.kanata-config.target}"
+            '';
+          })
       ];
     };
     # TODO: Run kanata at startup.

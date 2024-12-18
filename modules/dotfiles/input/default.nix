@@ -1,6 +1,6 @@
 {lib, ...}: {
   imports = [
-    ./kanata.nix
+    ./keyboard.nix
   ];
 
   options.dotfiles.input = {
