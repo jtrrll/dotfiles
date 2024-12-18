@@ -6,7 +6,6 @@
   config = lib.mkIf config.dotfiles.editors.enable {
     programs.nixvim.opts = {
       breakindent = true; # indent wrapped lines
-      clipboard = "unnamedplus"; # use system clipboard
       colorcolumn = lib.concatStringsSep "," (map toString config.dotfiles.editors.lineLengthRulers); # highlight columns
       cursorline = true; # highlight current line
       expandtab = true; # use spaces instead of tabs
