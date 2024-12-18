@@ -44,7 +44,6 @@
           solargraph.enable = true;
           sqls.enable = true;
           svelte.enable = true;
-          tailwindcss.enable = true;
           texlab.enable = true;
           ts_ls.enable = true;
           yamlls.enable = true;
