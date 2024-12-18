@@ -37,7 +37,8 @@
           )
         '';
       };
-      packages = [
+      # TODO: Install package on Darwin (macOS) once kanata fixes its build.
+      packages = lib.mkIf pkgs.stdenv.isLinux [
         pkgs.kanata
       ];
     };
