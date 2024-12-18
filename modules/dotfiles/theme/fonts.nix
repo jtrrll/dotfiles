@@ -9,7 +9,7 @@
     home.packages = [
       pkgs.ibm-plex
       pkgs.monocraft
-      (pkgs.nerdfonts.override {fonts = ["Hack"];})
+      pkgs.nerd-fonts.hack
     ];
   };
 }

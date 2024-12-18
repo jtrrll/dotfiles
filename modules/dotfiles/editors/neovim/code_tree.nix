@@ -5,12 +5,7 @@
 }: {
   config = lib.mkIf config.dotfiles.editors.enable {
     programs.nixvim.plugins = {
-      indent-blankline = {
-        enable = true;
-        settings = {
-          scope.enabled = true;
-        };
-      };
+      barbecue.enable = true;
       rainbow-delimiters = {
         enable = true;
         highlight = [
@@ -31,15 +26,6 @@
             disable = ["ruby"];
           };
         };
-      };
-      treesitter-context = {
-        enable = true;
-        settings = {
-          max_lines = 2;
-        };
-      };
-      nvim-ufo = {
-        enable = true;
       };
     };
   };
