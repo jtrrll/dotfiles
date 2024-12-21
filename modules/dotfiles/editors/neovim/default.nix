@@ -19,6 +19,7 @@
     ./completion.nix
     ./files.nix
     ./git.nix
+    ./keymaps.nix
     ./lsp.nix
     ./misc_lua.nix
     ./save.nix
