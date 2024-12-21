@@ -92,6 +92,7 @@
           enable = true;
           settings.auto_hide = 1; # hides the tabline when only one tab is open
         };
+        fzf-lua.enable = true;
         neo-tree = {
           enable = true;
           eventHandlers = {
@@ -104,6 +105,25 @@
           };
           window.position = "right";
         };
+        which-key.settings.spec = [
+          {
+            __unkeyed-1 = "<leader>f";
+            group = "files";
+            icon = "󰈔";
+          }
+          {
+            __unkeyed-1 = "<leader>ff";
+            __unkeyed-2 = "<cmd>FzfLua files<CR>";
+            desc = "fuzzy-find a file";
+            icon = "󰱼";
+          }
+          {
+            __unkeyed-1 = "<leader>ft";
+            __unkeyed-2 = "<cmd>Neotree toggle<CR>";
+            desc = "toggle file tree";
+            icon = "󰙅";
+          }
+        ];
       };
     };
   };
