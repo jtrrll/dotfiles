@@ -15,7 +15,7 @@
 
         <!-- TODO: Implement services -->
         1. Daily Git fetch
-        2. Daily top-level snekcheck
+        2. Monthly top-level snekcheck
 
       '';
     };
