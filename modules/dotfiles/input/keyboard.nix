@@ -52,7 +52,7 @@
                 exit 1
               fi
 
-              sudo kanata --cfg "${config.home.homeDirectory}/${config.home.file.kanata-config.target}"
+              kanata --cfg "${config.home.homeDirectory}/${config.home.file.kanata-config.target}"
             '';
           })
       ];

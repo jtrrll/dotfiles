@@ -12,7 +12,6 @@
           bashls.enable = true;
           biome.enable = true;
           clangd.enable = true;
-          csharp_ls.enable = true;
           docker_compose_language_service.enable = true;
           elixirls.enable = true;
           eslint.enable = true;

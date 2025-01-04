@@ -93,8 +93,7 @@
                 | ${pkgs.gum}/bin/gum filter)
               fi
 
-              ${pkgs.gum}/bin/gum spin --show-error --spinner line --title "Activating $config..." -- \
-                ${pkgs.home-manager}/bin/home-manager switch -b backup --flake "$DEVENV_ROOT"#"$config" --impure
+              ${pkgs.home-manager}/bin/home-manager switch -b backup --flake "$DEVENV_ROOT"#"$config" --impure
             '';
           };
           lint = {
