@@ -8,7 +8,7 @@
       text = ''
         extra-experimental-features = flakes nix-command no-url-literals
       '';
-      target = "${config.dotfiles.homeDirectory}/.config/nix/nix.conf";
+      target = ".config/nix/nix.conf";
     };
   };
 }
