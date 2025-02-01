@@ -7,8 +7,9 @@
     programs.nixvim.plugins = {
       blink-cmp = {
         enable = true;
+        lazyLoad.settings.event = ["BufEnter"];
         settings = {
-          fuzzy.max_items = 10;
+          completion.list.max_items = 10;
           keymap = {
             "<Down>" = [
               "select_next"
@@ -25,7 +26,10 @@
           };
         };
       };
-      nvim-autopairs.enable = true;
+      nvim-autopairs = {
+        enable = true;
+        lazyLoad.settings.event = ["BufEnter"];
+      };
     };
   };
 }

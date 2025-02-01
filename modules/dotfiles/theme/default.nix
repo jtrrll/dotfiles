@@ -6,6 +6,7 @@
   imports = [
     ./alacritty.nix
     ./bat.nix
+    ./fish.nix
     ./fonts.nix
     ./nixvim.nix
     ./stylix.nix
