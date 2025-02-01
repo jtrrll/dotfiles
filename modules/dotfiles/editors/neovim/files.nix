@@ -8,7 +8,7 @@
       keymaps = [
         {
           action = "<cmd>BufferClose<CR>";
-          key = "<C-c>";
+          key = "<C-w>";
           mode = "n";
           options = {
             desc = "close tab";
@@ -90,6 +90,7 @@
       plugins = {
         barbar = {
           enable = true;
+          lazyLoad.settings.event = ["BufAdd"];
           settings.auto_hide = 1; # hides the tabline when only one tab is open
         };
         fzf-lua.enable = true;
