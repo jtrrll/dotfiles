@@ -11,6 +11,13 @@
       viAlias = true;
       vimAlias = true;
       vimdiffAlias = true;
+      plugins.snacks = {
+        enable = true;
+        settings = {
+          bigfile.enabled = true;
+          quickfile.enabled = true;
+        };
+      };
     };
   };
 
@@ -22,9 +29,9 @@
     ./git.nix
     ./keymaps.nix
     ./lsp.nix
-    ./misc_lua.nix
     ./save.nix
     ./status_line.nix
+    ./tabs.nix
     ./vim_options.nix
     ./welcome.nix
   ];
