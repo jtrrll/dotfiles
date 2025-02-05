@@ -8,6 +8,7 @@
   ];
 
   perSystem = {
+    config,
     pkgs,
     system,
     ...
@@ -17,25 +18,32 @@
         inputs.env-help.devenvModule
       ];
       shells.default = {
-        enterShell = ''
-          printf "    ▓█████▄  ▒█████  ▄▄▄█████▓  █████▒██▓ ██▓    ▓█████   ██████
-              ▒██▀ ██▌▒██▒  ██▒▓  ██▒ ▓▒▓██   ▒▓██▒▓██▒    ▓█   ▀ ▒██    ▒
-              ░██   █▌▒██░  ██▒▒ ▓██░ ▒░▒████ ░▒██▒▒██░    ▒███   ░ ▓██▄
-              ░▓█▄   ▌▒██   ██░░ ▓██▓ ░ ░▓█▒  ░░██░▒██░    ▒▓█  ▄   ▒   ██▒
-          ██▓ ░▒████▓ ░ ████▓▒░  ▒██▒ ░ ░▒█░   ░██░░██████▒░▒████▒▒██████▒▒
-          ▒▓▒  ▒▒▓  ▒ ░ ▒░▒░▒░   ▒ ░░    ▒ ░   ░▓  ░ ▒░▓  ░░░ ▒░ ░▒ ▒▓▒ ▒ ░
-          ░▒   ░ ▒  ▒   ░ ▒ ▒░     ░     ░      ▒ ░░ ░ ▒  ░ ░ ░  ░░ ░▒  ░ ░
-          ░    ░ ░  ░ ░ ░ ░ ▒    ░       ░ ░    ▒ ░  ░ ░      ░   ░  ░  ░
-            ░     ░        ░ ░                   ░      ░  ░   ░  ░      ░
-            ░   ░\n" | ${pkgs.lolcat}/bin/lolcat
-          printf "\033[0;1;36mDEVSHELL ACTIVATED\033[0m\n"
-        '';
+        enterShell = "${pkgs.writeShellApplication {
+          name = "splashScreen";
+          runtimeInputs = [
+            pkgs.lolcat
+            pkgs.uutils-coreutils-noprefix
+          ];
+          text = ''
+            printf "    ▓█████▄  ▒█████  ▄▄▄█████▓  █████▒██▓ ██▓    ▓█████   ██████
+                ▒██▀ ██▌▒██▒  ██▒▓  ██▒ ▓▒▓██   ▒▓██▒▓██▒    ▓█   ▀ ▒██    ▒
+                ░██   █▌▒██░  ██▒▒ ▓██░ ▒░▒████ ░▒██▒▒██░    ▒███   ░ ▓██▄
+                ░▓█▄   ▌▒██   ██░░ ▓██▓ ░ ░▓█▒  ░░██░▒██░    ▒▓█  ▄   ▒   ██▒
+            ██▓ ░▒████▓ ░ ████▓▒░  ▒██▒ ░ ░▒█░   ░██░░██████▒░▒████▒▒██████▒▒
+            ▒▓▒  ▒▒▓  ▒ ░ ▒░▒░▒░   ▒ ░░    ▒ ░   ░▓  ░ ▒░▓  ░░░ ▒░ ░▒ ▒▓▒ ▒ ░
+            ░▒   ░ ▒  ▒   ░ ▒ ▒░     ░     ░      ▒ ░░ ░ ▒  ░ ░ ░  ░░ ░▒  ░ ░
+            ░    ░ ░  ░ ░ ░ ░ ▒    ░       ░ ░    ▒ ░  ░ ░      ░   ░  ░  ░
+              ░     ░        ░ ░                   ░      ░  ░   ░  ░      ░
+              ░   ░\n" | lolcat
+            printf "\033[0;1;36mDEVSHELL ACTIVATED\033[0m\n"
+          '';
+        }}/bin/splashScreen";
+
+        env.PROJECT_ROOT = config.devenv.shells.default.env.DEVENV_ROOT;
 
         env-help.enable = true;
 
-        languages = {
-          nix.enable = true;
-        };
+        languages.nix.enable = true;
 
         pre-commit = {
           default_stages = ["pre-push"];
@@ -54,6 +62,12 @@
             };
             end-of-file-fixer.enable = true;
             flake-checker.enable = true;
+            lint = {
+              enable = true;
+              entry = "lint";
+              name = "lint";
+              pass_filenames = false;
+            };
             markdownlint.enable = true;
             mixed-line-endings.enable = true;
             nil.enable = true;
@@ -67,11 +81,6 @@
             };
             shellcheck.enable = true;
             shfmt.enable = true;
-            snekcheck = {
-              enable = true;
-              entry = "${inputs.snekcheck.packages.${system}.snekcheck}/bin/snekcheck";
-              name = "snekcheck";
-            };
             statix.enable = true;
           };
         };
@@ -81,27 +90,39 @@
             description = "Activates a configuration.";
             exec = let
               configurations = builtins.attrNames self.homeConfigurations;
-            in ''
-              if [[ "$#" -gt 1 ]]; then
-                echo "Usage: $(basename "$0") <config>"
-                exit 1
-              fi
+            in "${pkgs.writeShellApplication {
+              name = "activate";
+              runtimeInputs = [
+                pkgs.gum
+                pkgs.home-manager
+                pkgs.uutils-coreutils-noprefix
+              ];
+              text = ''
+                if [[ "$#" -eq 1 ]]; then
+                  config="$1"
+                elif [[ "$#" -eq 0 ]]; then
+                  config=$(printf "%s" "${builtins.concatStringsSep "\n" configurations}" | gum filter)
+                else
+                  echo "Usage: $(basename "$0") <config>"
+                  exit 1
+                fi
 
-              config="$1"
-              if [[ "$#" -eq 0 ]]; then
-                config=$(${pkgs.uutils-coreutils-noprefix}/bin/printf "%s" "${builtins.concatStringsSep "\n" configurations}" \
-                | ${pkgs.gum}/bin/gum filter)
-              fi
-
-              ${pkgs.home-manager}/bin/home-manager switch -b backup --flake "$DEVENV_ROOT"#"$config" --impure
-            '';
+                home-manager switch -b backup --flake "$PROJECT_ROOT"#"$config" --impure
+              '';
+            }}/bin/activate $@";
           };
           lint = {
             description = "Lints the project.";
-            exec = ''
-              nix fmt "$DEVENV_ROOT" -- --quiet
-              ${inputs.snekcheck.packages.${system}.snekcheck}/bin/snekcheck --fix "$DEVENV_ROOT"
-            '';
+            exec = "${pkgs.writeShellApplication {
+              name = "lint";
+              runtimeInputs = [
+                inputs.snekcheck.packages.${system}.snekcheck
+              ];
+              text = ''
+                snekcheck --fix "$PROJECT_ROOT" && \
+                nix fmt "$PROJECT_ROOT" -- --quiet
+              '';
+            }}/bin/lint";
           };
         };
       };
