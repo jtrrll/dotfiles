@@ -15,16 +15,19 @@
         historySize = 1000000;
         initExtra = ''
           # Set prompt
-          format_git_branch() {
-            git branch 2>/dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1 /'
+          git_branch() {
+            branch=$(git branch --show-current 2>/dev/null)
+            if [ -n "$branch" ]; then
+              echo -n "$branch "
+            fi
           }
 
           if [ -n "$SSH_CLIENT" ]; then
             # username@host dir branch $
-            PS1='\[\033[34m\]\u@\h \[\033[35m\]\W \[\033[33m\]$(format_git_branch)\[\033[32m\]$\[\033[0m\] \[\e[6 q\]'
+            PS1='\[\033[34m\]\u@\h \[\033[35m\]\W \[\033[33m\]$(git_branch)\[\033[32m\]$\[\033[0m\] \[\e[6 q\]'
           else
             # dir branch $
-            PS1='\[\033[35m\]\W \[\033[33m\]$(format_git_branch)\[\033[32m\]$\[\033[0m\] \[\e[6 q\]'
+            PS1='\[\033[35m\]\W \[\033[33m\]$(git_branch)\[\033[32m\]$\[\033[0m\] \[\e[6 q\]'
           fi
 
           # Improve command history
@@ -46,10 +49,9 @@
       };
       fish = {
         enable = true;
-        interactiveShellInit = ''
-          set --erase fish_greeting
-
-          function fish_prompt
+        functions = {
+          fish_greeting.body = '''';
+          fish_prompt.body = ''
             set --local last_status $status
 
             if set --query SSH_CLIENT
@@ -58,7 +60,11 @@
             end
 
             set_color magenta
-            echo -n (basename $PWD)' '
+            if test (pwd) = "$HOME"
+              echo -n '~ '
+            else
+              echo -n (basename (pwd))' '
+            end
 
             set --local branch (git branch --show-current 2>/dev/null)
             if test -n $branch
@@ -75,8 +81,8 @@
 
             set_color normal
             echo -ne '\e[6 q'
-          end
-        '';
+          '';
+        };
       };
     };
   };
