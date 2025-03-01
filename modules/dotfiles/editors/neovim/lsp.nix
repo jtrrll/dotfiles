@@ -55,7 +55,6 @@
             gleam.enable = true;
             golangci_lint_ls.enable = true;
             gopls.enable = true;
-            graphql.enable = true;
             hls = {
               enable = true;
               installGhc = true;
