@@ -9,11 +9,7 @@
         enable = true;
         lazyLoad.settings.event = ["BufLeave"];
       };
-      lsp-format = {
-        enable = true;
-        # TODO: This needs to be loaded before LSP somehow
-        # lazyLoad.settings.event = ["BufLeave"];
-      };
+      lsp-format.enable = true;
     };
   };
 }

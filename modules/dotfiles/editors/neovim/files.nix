@@ -5,51 +5,61 @@
 }: {
   config = lib.mkIf config.dotfiles.editors.enable {
     programs.nixvim = {
-      keymaps = [
-        {
-          action = "<cmd>Neotree toggle<CR>";
-          key = "<Tab>";
-          mode = "n";
-          options = {
-            desc = "toggle neotree";
-            silent = true;
-            unique = true;
-          };
-        }
-      ];
       plugins = {
-        fzf-lua.enable = true;
-        neo-tree = {
+        snacks = {
           enable = true;
-          eventHandlers = {
-            file_opened = ''
-              function(file_path)
-                --auto close
-                require("neo-tree").close_all()
-              end
-            '';
+          settings = {
+            explorer.enabled = true;
+            picker = {
+              enabled = true;
+              sources.explorer = {
+                auto_close = true;
+                hidden = true;
+                layout.layout.position = "right";
+              };
+            };
           };
-          window.position = "right";
         };
-        which-key.settings.spec = [
-          {
-            __unkeyed-1 = "<leader>f";
-            group = "files";
-            icon = "󰈔";
-          }
-          {
-            __unkeyed-1 = "<leader>ff";
-            __unkeyed-2 = "<cmd>FzfLua files<CR>";
-            desc = "fuzzy-find a file";
-            icon = "󰱼";
-          }
-          {
-            __unkeyed-1 = "<leader>ft";
-            __unkeyed-2 = "<cmd>Neotree toggle<CR>";
-            desc = "toggle file tree";
-            icon = "󰙅";
-          }
-        ];
+        which-key = {
+          enable = true;
+          settings.spec = [
+            {
+              __unkeyed-1 = "<leader>f";
+              group = "Find";
+              icon = "󰍉";
+            }
+            {
+              __unkeyed-1 = "<leader>ff";
+              __unkeyed-2.__raw = ''
+                function()
+                  require("snacks").picker.git_files()
+                end
+              '';
+              desc = "File";
+              icon = "󰈔";
+            }
+            {
+              __unkeyed-1 = "<leader>ft";
+              __unkeyed-2.__raw = ''
+                function()
+                  require("snacks").picker.git_grep()
+                end
+              '';
+              desc = "Text";
+              icon = "󰊄";
+            }
+            {
+              __unkeyed-1 = "<leader>e";
+              __unkeyed-2.__raw = ''
+                function()
+                  require("snacks").explorer()
+                end
+              '';
+              desc = "Explore Files";
+              icon = "󰙅";
+            }
+          ];
+        };
       };
     };
   };
