@@ -12,6 +12,7 @@
         icons = "auto";
       };
       fzf.enable = true;
+      ripgrep.enable = true;
       zoxide = {
         enable = true;
         options = ["--cmd cd"];

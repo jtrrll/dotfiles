@@ -79,8 +79,7 @@
       ];
       plugins.barbar = {
         enable = true;
-        lazyLoad.settings.event = ["BufAdd"];
-        settings.auto_hide = 1; # hides the tabline when only one tab is open
+        settings.auto_hide = 1;
       };
     };
   };
