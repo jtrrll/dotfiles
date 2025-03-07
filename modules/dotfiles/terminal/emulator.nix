@@ -12,7 +12,8 @@
           style.blinking = "Always";
           unfocused_hollow = true;
         };
-        terminal.shell = "${config.programs.fish.package}/bin/fish";
+        env.SHELL = "${config.programs.fish.package}/bin/fish";
+        terminal.shell.program = "${config.programs.zellij.package}/bin/zellij";
         window.padding = {
           x = 8;
           y = 8;

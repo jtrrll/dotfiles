@@ -4,20 +4,12 @@
   ...
 }: {
   config = lib.mkIf config.dotfiles.terminal.enable {
-    programs.zellij = {
-      enable = true;
-      settings = {
-        default_layout = "sessions";
-      };
-    };
+    programs.zellij.enable = true;
 
     home = {
       file.zellij-layouts = {
         source = ./layouts;
         target = ".config/zellij/layouts";
-      };
-      shellAliases = {
-        z = "zellij";
       };
     };
   };
