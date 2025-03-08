@@ -34,6 +34,7 @@
       ./btop.nix
       ./fastfetch.nix
       ./home_manager.nix
+      ./media.nix
       ./repeat.nix
 
       {
