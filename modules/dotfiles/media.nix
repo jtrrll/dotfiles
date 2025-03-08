@@ -5,9 +5,19 @@
   ...
 }: {
   config = lib.mkIf config.dotfiles.media.enable {
-    home.packages = [pkgs.vlc];
+    home.packages =
+      if pkgs.stdenv.isDarwin
+      then []
+      else [pkgs.vlc];
     programs.beets = {
       enable = true;
+      package = pkgs.beets.override {
+        pluginOverrides = {
+          embedart.enable = true;
+          fetchart.enabled = true;
+          thumbnails.enabled = true;
+        };
+      };
       settings = {
         directory = "~/music";
         import = {
@@ -15,6 +25,7 @@
           move = false;
         };
         library = "~/music/library.db";
+        plugins = ["embedart" "fetchart" "thumbnails"];
       };
     };
   };
