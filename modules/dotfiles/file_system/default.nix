@@ -9,6 +9,7 @@
 
   imports = [
     ./code.nix
+    ./music.nix
     ./navigation.nix
     ./operations.nix
   ];
