@@ -15,6 +15,7 @@
         pluginOverrides = {
           embedart.enable = true;
           fetchart.enabled = true;
+          lyrics.enabled = true;
           thumbnails.enabled = true;
         };
       };
@@ -25,7 +26,7 @@
           move = false;
         };
         library = "~/music/library.db";
-        plugins = ["embedart" "fetchart" "thumbnails"];
+        plugins = ["embedart" "fetchart" "lyrics" "thumbnails"];
       };
     };
   };
