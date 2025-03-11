@@ -11,14 +11,6 @@
       else [pkgs.vlc];
     programs.beets = {
       enable = true;
-      package = pkgs.beets.override {
-        pluginOverrides = {
-          embedart.enable = true;
-          fetchart.enabled = true;
-          lyrics.enabled = true;
-          thumbnails.enabled = true;
-        };
-      };
       settings = {
         directory = "~/music";
         import = {
@@ -26,7 +18,7 @@
           move = false;
         };
         library = "~/music/library.db";
-        plugins = ["embedart" "fetchart" "lyrics" "thumbnails"];
+        plugins = ["autobpm" "badfiles" "embedart" "fetchart" "fish" "fuzzy" "lastgenre" "lyrics" "thumbnails" "types"];
       };
     };
   };
