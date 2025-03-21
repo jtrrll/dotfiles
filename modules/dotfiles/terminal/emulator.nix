@@ -5,6 +5,9 @@
   ...
 }: {
   config = lib.mkIf config.dotfiles.terminal.enable {
+    home.sessionVariables = {
+      SHELL = "${config.programs.fish.package}/bin/fish";
+    };
     programs = {
       alacritty = {
         enable = true;
@@ -17,7 +20,7 @@
         enable = true;
         installBatSyntax = !pkgs.stdenv.isDarwin;
         installVimSyntax = !pkgs.stdenv.isDarwin;
-        settings.command = "SHELL=${config.programs.fish.package}/bin/fish ${config.programs.zellij.package}/bin/zellij";
+        settings.command = "${config.programs.zellij.package}/bin/zellij";
       };
     };
   };
