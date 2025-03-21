@@ -4,7 +4,10 @@
   ...
 }: {
   config = lib.mkIf config.dotfiles.terminal.enable {
-    programs.zellij.enable = true;
+    programs.zellij = {
+      enable = true;
+      settings.show_startup_tips = false;
+    };
 
     home = {
       file.zellij-layouts = {

@@ -24,10 +24,10 @@
 
           if [ -n "$SSH_CLIENT" ]; then
             # username@host dir branch $
-            PS1='\[\033[34m\]\u@\h \[\033[35m\]\W \[\033[33m\]$(git_branch)\[\033[32m\]$\[\033[0m\] \[\e[6 q\]'
+            PS1='\[\033[34m\]\u@\h \[\033[35m\]\W \[\033[33m\]$(git_branch)\[\033[32m\]$\[\033[0m\] '
           else
             # dir branch $
-            PS1='\[\033[35m\]\W \[\033[33m\]$(git_branch)\[\033[32m\]$\[\033[0m\] \[\e[6 q\]'
+            PS1='\[\033[35m\]\W \[\033[33m\]$(git_branch)\[\033[32m\]$\[\033[0m\] '
           fi
 
           # Improve command history
@@ -80,7 +80,6 @@
             echo -n '> '
 
             set_color normal
-            echo -ne '\e[6 q'
           '';
         };
       };

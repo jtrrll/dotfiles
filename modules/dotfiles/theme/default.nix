@@ -8,6 +8,7 @@
     ./bat.nix
     ./fish.nix
     ./fonts.nix
+    ./ghostty.nix
     ./nixvim.nix
     ./stylix.nix
     ./vscode.nix
@@ -36,14 +37,6 @@
       '';
       example = "path/to/gruvbox-material-dark-medium.yaml";
       type = lib.types.nullOr (lib.types.oneOf [lib.types.path lib.types.lines lib.types.attrs]);
-    };
-    classicCode = lib.mkOption {
-      default = true;
-      description = ''
-        Whether code should be displayed with a VSCode theme instead of the system-wide theme.
-      '';
-      example = false;
-      type = lib.types.bool;
     };
   };
 }
