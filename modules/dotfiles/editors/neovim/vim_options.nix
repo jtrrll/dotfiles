@@ -10,7 +10,7 @@
       cursorline = true; # highlight current line
       expandtab = true; # use spaces instead of tabs
       foldlevel = 5; # the fold levels that should be open to start
-      guicursor = "n-sm-v-:block,c-ci-i-ve:ver25,r-cr-o:hor20"; # set cursor shape for various modes
+      guicursor = "n-v-sm:block-blinkon1,c-i-ve:ver25-blinkon1,r-cr-o:hor20-blinkon1"; # set cursor shape for various modes
       inccommand = "split"; # preview substitutions
       list = true; # show characters in white spaces
       listchars = "extends:>,nbsp:_,precedes:<,tab:  ,trail:_"; # characters to use in list mode

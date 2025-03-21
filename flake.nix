@@ -24,6 +24,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
       url = "github:nix-community/nixvim";
     };
+    nur = {
+      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:nix-community/NUR";
+    };
     snekcheck = {
       inputs.nixpkgs.follows = "nixpkgs";
       url = "github:jtrrll/snekcheck";

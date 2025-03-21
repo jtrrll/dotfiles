@@ -7,12 +7,13 @@
   config = lib.mkIf config.dotfiles.bat.enable {
     programs.bat = {
       enable = true;
-      extraPackages = with pkgs.bat-extras; [batgrep batman];
+      extraPackages = with pkgs.bat-extras; [batdiff batgrep batman];
     };
     home.shellAliases = {
-      cat = "bat --paging=never"; # print file (replaces cat)
-      grep = "batgrep"; # ripgrep with bat as the formatter (replaces grep)
-      man = "batman"; # read manual pages with bat as the formatter
+      cat = "bat --paging=never";
+      diff = "batdiff";
+      grep = "batgrep";
+      man = "batman";
     };
   };
 

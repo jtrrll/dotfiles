@@ -1,23 +1,23 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }: {
   config = lib.mkIf config.dotfiles.terminal.enable {
-    programs.alacritty = {
-      enable = true;
-      settings = {
-        cursor = {
-          blink_interval = 500;
-          style.blinking = "Always";
-          unfocused_hollow = true;
+    programs = {
+      alacritty = {
+        enable = true;
+        settings = {
+          env.SHELL = "${config.programs.fish.package}/bin/fish";
+          terminal.shell.program = "${config.programs.zellij.package}/bin/zellij";
         };
-        env.SHELL = "${config.programs.fish.package}/bin/fish";
-        terminal.shell.program = "${config.programs.zellij.package}/bin/zellij";
-        window.padding = {
-          x = 8;
-          y = 8;
-        };
+      };
+      ghostty = {
+        enable = true;
+        installBatSyntax = !pkgs.stdenv.isDarwin;
+        installVimSyntax = !pkgs.stdenv.isDarwin;
+        settings.command = "SHELL=${config.programs.fish.package}/bin/fish ${config.programs.zellij.package}/bin/zellij";
       };
     };
   };
