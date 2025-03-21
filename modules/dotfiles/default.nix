@@ -36,6 +36,7 @@
       ./home_manager.nix
       ./media.nix
       ./repeat.nix
+      ./utils.nix
 
       {
         _module.args = {
