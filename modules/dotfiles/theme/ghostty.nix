@@ -8,6 +8,7 @@
     programs.ghostty = {
       settings = {
         font-family = "Hack Nerd Font Mono";
+        font-thicken = true;
         theme = "VS Code";
         window-padding-x = 8;
         window-padding-y = 8;
@@ -34,10 +35,6 @@
           ];
           background = DARK_GRAY;
           foreground = SILVER;
-          cursor-color = SILVER;
-          cursor-invert-fg-bg = true;
-          selection-background = BLUE;
-          selection-foreground = SILVER;
         };
       };
     };

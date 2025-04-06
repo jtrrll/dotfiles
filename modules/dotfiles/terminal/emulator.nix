@@ -20,7 +20,10 @@
         enable = true;
         installBatSyntax = !pkgs.stdenv.isDarwin;
         installVimSyntax = !pkgs.stdenv.isDarwin;
-        settings.command = "${config.programs.zellij.package}/bin/zellij";
+        settings = {
+          auto-update = "off";
+          command = "${config.programs.zellij.package}/bin/zellij";
+        };
       };
     };
   };
