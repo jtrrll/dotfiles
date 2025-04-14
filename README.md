@@ -1,8 +1,8 @@
 # ~/.dotfiles
 
 <!-- markdownlint-disable MD013 -->
-![GitHub Actions CI Status](https://img.shields.io/github/actions/workflow/status/jtrrll/dotfiles/ci.yaml?branch=main&logo=github&label=CI)
-![License](https://img.shields.io/github/license/jtrrll/dotfiles?label=License)
+![CI Status](https://img.shields.io/github/actions/workflow/status/jtrrll/dotfiles/ci.yaml?branch=main&label=ci&logo=github)
+![License](https://img.shields.io/github/license/jtrrll/dotfiles?label=license&logo=googledocs&logoColor=white)
 <!-- markdownlint-enable MD013 -->
 
 My dotfiles collection for configuring frequently used programs.
