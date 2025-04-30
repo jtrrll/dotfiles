@@ -26,10 +26,6 @@
           };
         };
       };
-      nvim-autopairs = {
-        enable = true;
-        lazyLoad.settings.event = ["BufEnter"];
-      };
     };
   };
 }
