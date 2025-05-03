@@ -4,7 +4,6 @@
   ...
 }: {
   imports = [
-    ./alacritty.nix
     ./bat.nix
     ./fish.nix
     ./fonts.nix
