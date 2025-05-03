@@ -48,16 +48,6 @@
               desc = "Text";
               icon = "󰊄";
             }
-            {
-              __unkeyed-1 = "<leader>e";
-              __unkeyed-2.__raw = ''
-                function()
-                  require("snacks").explorer()
-                end
-              '';
-              desc = "Explore Files";
-              icon = "󰙅";
-            }
           ];
         };
       };

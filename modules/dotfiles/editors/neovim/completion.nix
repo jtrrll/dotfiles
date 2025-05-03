@@ -8,7 +8,7 @@
       blink-cmp = {
         enable = true;
         settings = {
-          completion.list.max_items = 10;
+          completion.list.max_items = 15;
           fuzzy.implementation = "prefer_rust";
           keymap = {
             "<Down>" = [
@@ -24,8 +24,20 @@
               "fallback"
             ];
           };
+          sources = {
+            default = ["lsp" "path" "snippets" "buffer" "copilot"];
+            providers = {
+              copilot = {
+                async = true;
+                module = "blink-copilot";
+                name = "copilot";
+                score_offset = -1;
+              };
+            };
+          };
         };
       };
+      blink-copilot.enable = true;
     };
   };
 }

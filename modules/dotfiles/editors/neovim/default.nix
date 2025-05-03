@@ -22,6 +22,7 @@
   };
 
   imports = [
+    ./ai.nix
     ./clipboard.nix
     ./code_tree.nix
     ./completion.nix
