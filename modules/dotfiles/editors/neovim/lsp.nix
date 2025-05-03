@@ -5,7 +5,7 @@
 }: {
   config = lib.mkIf config.dotfiles.editors.enable {
     programs.nixvim = {
-      diagnostics.float.border = "rounded";
+      diagnostic.settings.float.border = "rounded";
       extraConfigLua = ''
         local open_hint_float = function()
           local cursor_row = vim.api.nvim_win_get_cursor(0)[1]

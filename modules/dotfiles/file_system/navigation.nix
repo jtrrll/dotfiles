@@ -11,6 +11,7 @@
         git = true;
         icons = "auto";
       };
+      fd.enable = true;
       fzf.enable = true;
       ripgrep.enable = true;
       zoxide = {

@@ -107,7 +107,7 @@
                   exit 1
                 fi
 
-                home-manager switch -b backup --flake "$PROJECT_ROOT"#"$config" --impure
+                home-manager switch -b bak --flake "$PROJECT_ROOT"#"$config" --impure
               '';
             }}/bin/activate $@";
           };
