@@ -42,7 +42,7 @@
         vim.api.nvim_create_autocmd("BufEnter", {
           callback = function(args)
             apply_arrow_key_remaps(args.buf)
-          end,
+          end
         })
       '';
       globals = {
@@ -67,6 +67,16 @@
                 __unkeyed-1 = "<leader>t";
                 group = "Toggle";
                 icon = "";
+              }
+              {
+                __unkeyed-1 = "<leader>te";
+                __unkeyed-2.__raw = ''
+                  function()
+                    require("snacks").explorer()
+                  end
+                '';
+                desc = "Explorer";
+                icon = "󰙅";
               }
               {
                 __unkeyed-1 = "<leader>tn";
