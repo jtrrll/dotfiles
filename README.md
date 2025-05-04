@@ -15,7 +15,7 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 
    ```sh
    nix-shell \
-     -p home-manager \
+     --packages "home-manager" \
      --run "home-manager switch -b bak --impure --flake github:jtrrll/dotfiles#default"
    ```
 
@@ -24,6 +24,6 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 
    ```sh
    nix-shell \
-     -p home-manager \
+     --packages "home-manager" \
      --run "home-manager switch -b bak --impure --flake github:jtrrll/dotfiles#<CONFIG>"
    ```
