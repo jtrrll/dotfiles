@@ -69,6 +69,16 @@
                 icon = "";
               }
               {
+                __unkeyed-1 = "<leader>tc";
+                __unkeyed-2.__raw = ''
+                  function()
+                    require("codecompanion").toggle()
+                  end
+                '';
+                desc = "Chat";
+                icon = "󱋊";
+              }
+              {
                 __unkeyed-1 = "<leader>te";
                 __unkeyed-2.__raw = ''
                   function()

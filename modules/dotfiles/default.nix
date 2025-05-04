@@ -16,6 +16,7 @@
         inherit (config.dotfiles) homeDirectory username;
         stateVersion = "23.11";
       };
+      news.display = "silent";
     };
 
     imports = [
