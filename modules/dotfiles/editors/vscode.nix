@@ -19,7 +19,6 @@
           graphql.vscode-graphql
           graphql.vscode-graphql-syntax
           jnoortheen.nix-ide
-          ms-dotnettools.csharp
           ms-pyright.pyright
           ms-python.python
           ms-toolsai.jupyter
@@ -30,8 +29,6 @@
           shopify.ruby-lsp
           sorbet.sorbet-vscode-extension
           sumneko.lua
-          vscodevim.vim
-          xadillax.viml
           ziglang.vscode-zig
         ];
         userSettings = {

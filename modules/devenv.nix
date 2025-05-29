@@ -43,9 +43,7 @@
 
         env-help.enable = true;
 
-        languages.nix.enable = true;
-
-        pre-commit = {
+        git-hooks = {
           default_stages = ["pre-push"];
           hooks = {
             actionlint.enable = true;
@@ -84,6 +82,8 @@
             statix.enable = true;
           };
         };
+
+        languages.nix.enable = true;
 
         scripts = {
           activate = {
