@@ -21,7 +21,7 @@
 
     imports = [
       inputs.nixvim.homeManagerModules.nixvim
-      inputs.stylix.homeManagerModules.stylix
+      inputs.stylix.homeModules.stylix
 
       ./editors
       ./file_system
