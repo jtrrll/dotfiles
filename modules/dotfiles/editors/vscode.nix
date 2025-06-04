@@ -8,8 +8,11 @@
     programs.vscode = {
       enable = true;
       package = pkgs.vscodium;
-      profiles.default = {
-        extensions = with pkgs.vscode-extensions; [
+      profiles.default = let
+        filterAvailable = pkgsList:
+          builtins.filter (pkg: lib.meta.availableOn pkgs.stdenv.system pkg) pkgsList;
+      in {
+        extensions = filterAvailable (with pkgs.vscode-extensions; [
           astro-build.astro-vscode
           biomejs.biome
           bradlc.vscode-tailwindcss
@@ -30,7 +33,7 @@
           sorbet.sorbet-vscode-extension
           sumneko.lua
           ziglang.vscode-zig
-        ];
+        ]);
         userSettings = {
           editor = {
             minimap.enabled = false;
