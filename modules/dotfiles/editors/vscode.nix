@@ -32,6 +32,7 @@
           shopify.ruby-lsp
           sorbet.sorbet-vscode-extension
           sumneko.lua
+          vscodevim.vim
           ziglang.vscode-zig
         ]);
         userSettings = {
