@@ -32,6 +32,7 @@
       ./theme
 
       ./bat.nix
+      ./browser.nix
       ./btop.nix
       ./fastfetch.nix
       ./home_manager.nix
