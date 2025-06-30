@@ -15,8 +15,8 @@
           topdelete.text = "-";
         };
       in {
-        current_line_blame = true;
         inherit signs;
+        current_line_blame = true;
         signs_staged = signs;
       };
     };

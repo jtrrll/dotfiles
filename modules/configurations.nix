@@ -3,7 +3,7 @@
   self,
   ...
 }: {
-  flake.homeConfigurations = let
+  flake.homeManagerConfigurations = let
     ### start "impure" ###
     HOME = builtins.getEnv "HOME";
     SYSTEM = builtins.currentSystem;
@@ -15,7 +15,7 @@
           inherit pkgs;
           modules =
             [
-              self.dotfiles
+              self.homeManagerModules.dotfiles
               {
                 dotfiles = {
                   homeDirectory = HOME;

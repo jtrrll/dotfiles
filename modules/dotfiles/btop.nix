@@ -13,7 +13,7 @@
   options.dotfiles.btop = {
     enable = lib.mkOption {
       default = true;
-      description = "Whether to enable btop.";
+      description = "Whether to enable `btop`.";
       example = false;
       type = lib.types.bool;
     };

@@ -20,7 +20,7 @@
   options.dotfiles.bat = {
     enable = lib.mkOption {
       default = true;
-      description = "Whether to enable bat.";
+      description = "Whether to enable `bat`.";
       example = false;
       type = lib.types.bool;
     };
