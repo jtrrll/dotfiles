@@ -172,5 +172,4 @@ If unset, defaults to a scheme generated from the background image.
 * Description: The name of the user.
 * Example: `"username"`
 * Type: `string`
-
 <!-- END OPTIONS -->

@@ -50,18 +50,14 @@
         )
         options);
     in
-      pkgs.runCommand "build-options" {
+      pkgs.writeTextFile {
         meta = {
           description = "Options documentation for the dotfiles module";
           homepage = "https://github.com/jtrrll/dotfiles";
           license = lib.licenses.mit;
         };
-      } ''
-        mkdir -p $out/docs
-
-        cat <<'EOF' > $out/docs/options.md
-        ${optionsMarkdown}
-        EOF
-      '';
+        name = "options.md";
+        text = optionsMarkdown;
+      };
   };
 }
