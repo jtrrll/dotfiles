@@ -3,7 +3,7 @@
   self,
   ...
 }: {
-  flake.homeManagerConfigurations = let
+  flake.homeConfigurations = let
     ### start "impure" ###
     HOME = builtins.getEnv "HOME";
     SYSTEM = builtins.currentSystem;

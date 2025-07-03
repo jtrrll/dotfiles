@@ -9,7 +9,6 @@
 
   perSystem = {
     config,
-    lib,
     pkgs,
     system,
     ...
@@ -90,7 +89,7 @@
           activate = {
             description = "Activates a configuration.";
             exec = let
-              configurations = builtins.attrNames self.homeManagerConfigurations;
+              configurations = builtins.attrNames self.homeConfigurations;
             in "${pkgs.writeShellApplication {
               name = "activate";
               runtimeInputs = [
@@ -114,66 +113,15 @@
           };
           generate-docs = {
             description = "Inserts options documentation for the dotfiles module into the README.";
-            exec = let
-              eval = lib.evalModules {
-                modules = [
-                  self.homeManagerModules.dotfiles
-                  {dotfiles.username = "\${config.dotfiles.username}";}
-                  {options.programs.__stub = lib.mkSinkUndeclaredOptions {};}
-                  {
-                    config._module = {
-                      check = false;
-                      dotfiles.username = "";
-                      lib.stylix = {};
-                      stylix.targets = {};
-                    };
-                  }
-                ];
-              };
-              flattenOptions = prefix: opts:
-                lib.foldlAttrs (
-                  acc: name: opt: let
-                    fullName =
-                      if prefix == ""
-                      then name
-                      else "${prefix}.${name}";
-                    result =
-                      if opt ? type
-                      then {"${fullName}" = opt;}
-                      else flattenOptions fullName opt;
-                  in
-                    acc // result
-                ) {}
-                opts;
-              options = flattenOptions "dotfiles" eval.options.dotfiles;
-              optionsMarkdown = lib.concatStringsSep "\n" (lib.mapAttrsToList
-                (
-                  name: opt: let
-                    defaultLine = lib.optionalString (opt ? default) "* Default: `${builtins.toJSON opt.default}`\n";
-                    descriptionLine = lib.optionalString (opt ? description) "* Description: ${opt.description}\n";
-                    exampleLine = lib.optionalString (opt ? example) "* Example: `${builtins.toJSON opt.example}`\n";
-                    typeLine = lib.optionalString (opt ? type && opt.type ? description) "* Type: `${opt.type.description}`";
-                  in ''
-                    ### `${name}`
-
-                    ${defaultLine}${descriptionLine}${exampleLine}${typeLine}
-                  ''
-                )
-                options);
-            in "${pkgs.writeShellApplication {
+            exec = "${pkgs.writeShellApplication {
               name = "generate-docs";
               runtimeInputs = [
                 pkgs.gawk
                 pkgs.uutils-coreutils-noprefix
               ];
               text = ''
-                cat <<'EOF' > options.md
-                ${optionsMarkdown}
-                EOF
-
-                awk '/<!-- BEGIN OPTIONS -->/{flag=1;print;system("cat options.md");next}/<!-- END OPTIONS -->/{flag=0} !flag' README.md > README.tmp
+                awk '/<!-- BEGIN OPTIONS -->/{flag=1;print;system("cat ${self.packages.${system}.options}");next}/<!-- END OPTIONS -->/{flag=0} !flag' README.md > README.tmp
                 mv README.tmp README.md
-                rm options.md
               '';
             }}/bin/generate-docs";
           };
