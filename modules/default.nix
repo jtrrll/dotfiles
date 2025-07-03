@@ -1,11 +1,16 @@
-{
+{inputs, ...}: {
   imports = [
     ./dotfiles
 
     ./configurations.nix
     ./devenv.nix
-    ./formatter.nix
     ./overlay.nix
-    ./systems.nix
+    ./packages.nix
   ];
+
+  perSystem = {pkgs, ...}: {
+    formatter = pkgs.alejandra;
+  };
+
+  systems = inputs.nixpkgs.lib.systems.flakeExposed;
 }

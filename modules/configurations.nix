@@ -15,7 +15,7 @@
           inherit pkgs;
           modules =
             [
-              self.dotfiles
+              self.homeManagerModules.dotfiles
               {
                 dotfiles = {
                   homeDirectory = HOME;
