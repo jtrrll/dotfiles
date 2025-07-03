@@ -29,7 +29,7 @@
   options.dotfiles.repeat = {
     enable = lib.mkOption {
       default = true;
-      description = "Whether to enable the repeat script.";
+      description = "Whether to enable the `repeat` script.";
       example = false;
       type = lib.types.bool;
     };

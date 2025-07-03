@@ -10,7 +10,7 @@
   options.dotfiles.home-manager = {
     enable = lib.mkOption {
       default = true;
-      description = "Whether to enable home-manager.";
+      description = "Whether to enable `home-manager`.";
       example = false;
       type = lib.types.bool;
     };

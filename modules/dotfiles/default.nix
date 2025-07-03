@@ -1,5 +1,5 @@
 {inputs, ...}: {
-  flake.dotfiles = {
+  flake.homeManagerModules.dotfiles = {
     config,
     lib,
     ...
