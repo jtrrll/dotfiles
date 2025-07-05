@@ -11,21 +11,10 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 ## Usage
 
 1. [Install Nix](https://zero-to-nix.com/start/install)
-2. Activate a default configuration by running the following:
+2. Activate a configuration interactively by running the following:
 
    ```sh
-   nix-shell \
-     --packages "home-manager" \
-     --run "home-manager switch -b bak --impure --flake github:jtrrll/dotfiles#default"
-   ```
-
-   Alternatively, activate a specific configuration by running the following command.
-   Replace `<CONFIG>` with name of a configuration defined in [`flake.nix`](flake.nix):
-
-   ```sh
-   nix-shell \
-     --packages "home-manager" \
-     --run "home-manager switch -b bak --impure --flake github:jtrrll/dotfiles#<CONFIG>"
+   nix run github:jtrrll/dotfiles
    ```
 
 ## Options

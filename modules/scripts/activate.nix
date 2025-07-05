@@ -1,5 +1,13 @@
 {self, ...}: {
-  perSystem = {pkgs, ...}: {
+  perSystem = {
+    pkgs,
+    system,
+    ...
+  }: {
+    apps.default = {
+      program = self.scripts.${system}.activate;
+      type = "app";
+    };
     scripts.activate = pkgs.writeShellApplication {
       meta.description = "Activates a home configuration.";
       name = "activate";
