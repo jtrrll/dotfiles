@@ -42,7 +42,11 @@ in {
         };
         image = config.lib.stylix.pixel "base0D";
       }
-      // lib.optionalAttrs backgroundImageExists {image = builtins.fetchurl {url = "file://${config.dotfiles.theme.backgroundImage}";};}
+      // lib.optionalAttrs backgroundImageExists {
+        image =
+          builtins.addErrorContext "while fetching background image"
+          (builtins.fetchurl {url = "file://${config.dotfiles.theme.backgroundImage}";});
+      }
       // lib.optionalAttrs schemeDefined {inherit (config.dotfiles.theme) base16Scheme;};
   };
 }

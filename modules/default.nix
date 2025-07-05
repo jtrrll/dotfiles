@@ -1,6 +1,7 @@
 {inputs, ...}: {
   imports = [
     ./dotfiles
+    ./scripts
 
     ./configurations.nix
     ./devenv.nix

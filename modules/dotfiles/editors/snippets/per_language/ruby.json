@@ -1,0 +1,21 @@
+{
+  "method definition": {
+    "body": [
+      "sig { params(${1:params}).returns(${2:T.anything}) }",
+      "def ${3:method_name}(${4:params})",
+      "\t$0",
+      "end"
+    ],
+    "description": "Defines a method.",
+    "prefix": "def"
+  },
+  "rspec it block": {
+    "body": [
+      "it '${1:does something}' do",
+      "\t$0",
+      "end"
+    ],
+    "description": "Defines expected behavior.",
+    "prefix": "it"
+  }
+}
