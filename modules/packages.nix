@@ -5,7 +5,7 @@
     ...
   }: {
     packages.options = let
-      eval = lib.evalModules {
+      eval = builtins.addErrorContext "while evaluating dotfiles module" lib.evalModules {
         modules = [
           self.homeManagerModules.dotfiles
           {dotfiles.username = "\${config.dotfiles.username}";}
@@ -35,7 +35,7 @@
         ) {}
         opts;
       options = flattenOptions "dotfiles" eval.options.dotfiles;
-      optionsMarkdown = lib.concatStringsSep "\n" (lib.mapAttrsToList
+      optionsMarkdown = builtins.addErrorContext "while formatting options as markdown text" (lib.concatStringsSep "\n" (lib.mapAttrsToList
         (
           name: opt: let
             defaultLine = lib.optionalString (opt ? default) "* Default: `${builtins.toJSON opt.default}`\n";
@@ -48,7 +48,7 @@
             ${defaultLine}${descriptionLine}${exampleLine}${typeLine}
           ''
         )
-        options);
+        options));
     in
       pkgs.writeTextFile {
         meta = {

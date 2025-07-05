@@ -10,7 +10,8 @@
     USER = builtins.getEnv "USER";
     ### end "impure" ###
     mkConfig = modules:
-      assert (builtins.isList modules) && (builtins.all builtins.isAttrs modules);
+      assert builtins.isList modules;
+      assert builtins.all builtins.isAttrs modules;
         inputs.home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
           modules =
@@ -30,6 +31,7 @@
       overlays = [self.overlay];
     };
   in {
+    ci = mkConfig [{dotfiles.theme.enable = false;}]; # the theme module is disabled because it doesn't work on headless systems.
     default = mkConfig [
       {
         dotfiles = {
@@ -37,6 +39,5 @@
         };
       }
     ];
-    ci = mkConfig [{dotfiles.theme.enable = false;}]; # the theme module is disabled because it doesn't work on headless systems.
   };
 }
