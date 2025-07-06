@@ -43,27 +43,30 @@
       '';
     };
     launchd.agents = lib.mkIf pkgs.stdenv.isDarwin {
-      gitFetch.serviceConfig = {
-        Label = "code-dir-git-fetch";
-        ProgramArguments = ["${codeDirGitFetch}/bin/code-dir-git-fetch"];
-        RunAtLoad = true;
-        StandardErrorPath = "/tmp/code_dir_git_fetch.err";
-        StandardOutPath = "/tmp/code_dir_git_fetch.log";
-        StartCalendarInterval = {
-          Hour = 8;
-          Minute = 0;
+      codeDirGitFetch = {
+        config = {
+          Label = "code-dir-git-fetch";
+          ProgramArguments = ["${codeDirGitFetch}/bin/code-dir-git-fetch"];
+          RunAtLoad = true;
+          StandardErrorPath = "/tmp/code_dir_git_fetch.err";
+          StandardOutPath = "/tmp/code_dir_git_fetch.log";
+          StartCalendarInterval = {
+            Hour = 8;
+            Minute = 0;
+          };
         };
+        enable = true;
       };
     };
     systemd.user = lib.mkIf (!pkgs.stdenv.isDarwin) {
-      services.gitFetch = {
+      services.codeDirGitFetch = {
         Service = {
           Type = "oneshot";
           ExecStart = "${codeDirGitFetch}/bin/code-dir-git-fetch";
         };
         Unit.Description = "Daily Git fetch for all repos in ~/code";
       };
-      timers.gitFetch = {
+      timers.codeDirGitFetch = {
         Install.WantedBy = ["timers.target"];
         Timer = {
           OnCalendar = "08:00";
