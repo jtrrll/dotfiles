@@ -1,9 +1,32 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }: {
-  config = lib.mkIf config.dotfiles.file-system.enable {
+  config = lib.mkIf config.dotfiles.file-system.enable (let
+    codeDirGitFetch = pkgs.writeShellApplication {
+      name = "code-dir-git-fetch";
+      runtimeInputs = [
+        pkgs.git
+        pkgs.uutils-coreutils-noprefix
+        pkgs.uutils-findutils
+      ];
+      text = let
+        codeDir = "${config.home.homeDirectory}/code";
+      in ''
+        printf "[code-dir-git-fetch] scanning %s...\n" "${codeDir}"
+        find "${codeDir}" -mindepth 1 -maxdepth 1 -type d | while read -r dir; do
+          if [ -d "$dir/.git" ]; then
+            printf "[code-dir-git-fetch] fetching: %s\n" "$dir"
+            if ! git -C "$dir" fetch --all --quiet; then
+              printf "[code-dir-git-fetch] failed: %s\n" "$dir"
+            fi
+          fi
+        done
+      '';
+    };
+  in {
     home.file.code = {
       target = "code/README.md";
       text = ''
@@ -13,11 +36,41 @@
 
         ## Services
 
-        <!-- TODO: Implement services -->
+        <!-- TODO: Implement snekcheck service -->
         1. Daily Git fetch
         2. Monthly top-level snekcheck
 
       '';
     };
-  };
+    launchd.agents = lib.mkIf pkgs.stdenv.isDarwin {
+      gitFetch.serviceConfig = {
+        Label = "code-dir-git-fetch";
+        ProgramArguments = ["${codeDirGitFetch}/bin/code-dir-git-fetch"];
+        RunAtLoad = true;
+        StandardErrorPath = "/tmp/code_dir_git_fetch.err";
+        StandardOutPath = "/tmp/code_dir_git_fetch.log";
+        StartCalendarInterval = {
+          Hour = 8;
+          Minute = 0;
+        };
+      };
+    };
+    systemd.user = lib.mkIf (!pkgs.stdenv.isDarwin) {
+      services.gitFetch = {
+        Service = {
+          Type = "oneshot";
+          ExecStart = "${codeDirGitFetch}/bin/code-dir-git-fetch";
+        };
+        Unit.Description = "Daily Git fetch for all repos in ~/code";
+      };
+      timers.gitFetch = {
+        Install.WantedBy = ["timers.target"];
+        Timer = {
+          OnCalendar = "08:00";
+          Persistent = true;
+        };
+        Unit.Description = "Daily Git fetch for all repos in ~/code";
+      };
+    };
+  });
 }

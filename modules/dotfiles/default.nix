@@ -33,11 +33,11 @@
 
       ./bat.nix
       ./browser.nix
-      ./btop.nix
-      ./fastfetch.nix
+      ./gaming.nix
       ./home_manager.nix
       ./media.nix
       ./repeat.nix
+      ./system_info.nix
 
       {
         _module.args = {
