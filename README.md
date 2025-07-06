@@ -8,6 +8,8 @@
 My dotfiles collection for configuring frequently used programs.
 Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-community/home-manager)
 
+![Demo](./demo.gif)
+
 ## Usage
 
 1. [Install Nix](https://zero-to-nix.com/start/install)
@@ -46,14 +48,14 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 * Default: `2`
 * Description: The number of spaces per indent.
 * Example: `4`
-* Type: `signed integer`
+* Type: `unsigned integer, meaning >=0`
 
 ### `dotfiles.editors.lineLengthRulers`
 
 * Default: `[100,120]`
 * Description: The columns to place vertical lines on.
 * Example: `[80]`
-* Type: `list of signed integer`
+* Type: `list of (unsigned integer, meaning >=0)`
 
 ### `dotfiles.file-system.enable`
 

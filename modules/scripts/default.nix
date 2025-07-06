@@ -15,8 +15,8 @@
     })
 
     ./activate.nix
-    ./generate_docs.nix
     ./lint.nix
     ./splash.nix
+    ./update_docs.nix
   ];
 }
