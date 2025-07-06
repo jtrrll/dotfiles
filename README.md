@@ -34,13 +34,6 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 * Example: `false`
 * Type: `boolean`
 
-### `dotfiles.btop.enable`
-
-* Default: `true`
-* Description: Whether to enable `btop`.
-* Example: `false`
-* Type: `boolean`
-
 ### `dotfiles.editors.enable`
 
 * Default: `true`
@@ -62,17 +55,17 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 * Example: `[80]`
 * Type: `list of signed integer`
 
-### `dotfiles.fastfetch.enable`
-
-* Default: `true`
-* Description: Whether to enable `fastfetch`.
-* Example: `false`
-* Type: `boolean`
-
 ### `dotfiles.file-system.enable`
 
 * Default: `true`
 * Description: Whether to enable the file-system configuration.
+* Example: `false`
+* Type: `boolean`
+
+### `dotfiles.gaming.enable`
+
+* Default: `true`
+* Description: Whether to enable the gaming configuration.
 * Example: `false`
 * Type: `boolean`
 
@@ -122,6 +115,13 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 
 * Default: `true`
 * Description: Whether to enable screensavers.
+* Example: `false`
+* Type: `boolean`
+
+### `dotfiles.system-info.enable`
+
+* Default: `true`
+* Description: Whether to enable the system information configuration.
 * Example: `false`
 * Type: `boolean`
 

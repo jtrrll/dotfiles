@@ -5,6 +5,7 @@
 
     ./configurations.nix
     ./devenv.nix
+    ./lib.nix
     ./overlay.nix
     ./packages.nix
   ];

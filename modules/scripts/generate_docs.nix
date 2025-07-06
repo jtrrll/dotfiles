@@ -14,6 +14,7 @@
       text = ''
         awk '/<!-- BEGIN OPTIONS -->/{flag=1;print;system("cat ${self.packages.${system}.options}");next}/<!-- END OPTIONS -->/{flag=0} !flag' README.md > README.tmp
         mv README.tmp README.md
+        printf "Updated README.md with options documentation\n"
       '';
     };
   };

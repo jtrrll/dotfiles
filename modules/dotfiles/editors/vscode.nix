@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  lib',
   pkgs,
   ...
 }: {
@@ -8,13 +9,10 @@
     programs.vscode = {
       enable = true;
       package = pkgs.vscodium;
-      profiles.default = let
-        filterAvailable = pkgsList:
-          builtins.filter (pkg: lib.meta.availableOn pkgs.stdenv.system pkg) pkgsList;
-      in {
+      profiles.default = {
         enableUpdateCheck = false;
         enableExtensionUpdateCheck = false;
-        extensions = builtins.addErrorContext "while evaluating VSCode extensions" (filterAvailable (with pkgs.vscode-extensions; [
+        extensions = builtins.addErrorContext "while evaluating VSCode extensions" (lib'.filterAvailable pkgs.stdenv.system (with pkgs.vscode-extensions; [
           astro-build.astro-vscode
           biomejs.biome
           bradlc.vscode-tailwindcss
