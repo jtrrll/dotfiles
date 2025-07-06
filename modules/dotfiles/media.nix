@@ -1,14 +1,12 @@
 {
   config,
   lib,
+  lib',
   pkgs,
   ...
 }: {
   config = lib.mkIf config.dotfiles.media.enable {
-    home.packages =
-      if pkgs.stdenv.isDarwin
-      then []
-      else [pkgs.vlc];
+    home.packages = lib'.filterAvailable pkgs.stdenv.system [pkgs.vlc];
     programs.beets = {
       enable = true;
       settings = {

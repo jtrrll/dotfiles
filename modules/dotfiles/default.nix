@@ -1,4 +1,8 @@
-{inputs, ...}: {
+{
+  inputs,
+  self,
+  ...
+}: {
   flake.homeManagerModules.dotfiles = {
     config,
     lib,
@@ -42,6 +46,7 @@
       {
         _module.args = {
           constants = import ./constants.nix;
+          lib' = lib // self.lib;
         };
       }
     ];

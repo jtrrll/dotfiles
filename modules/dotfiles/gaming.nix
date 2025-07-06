@@ -1,11 +1,12 @@
 {
   config,
   lib,
+  lib',
   pkgs,
   ...
 }: {
   config = lib.mkIf config.dotfiles.gaming.enable {
-    home.packages = [
+    home.packages = lib'.filterAvailable pkgs.stdenv.system [
       pkgs.prismlauncher
       pkgs.steam-rom-manager
     ];
