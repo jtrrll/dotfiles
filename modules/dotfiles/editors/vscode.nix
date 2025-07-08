@@ -19,19 +19,23 @@
         postInstall =
           (old.postInstall or "")
           + (let
-            productPath =
+            vscodeProductJSON =
               if pkgs.stdenv.isDarwin
-              then "/Applications/VSCodium/Contents/Resources/app/product.json"
-              else "/lib/vscode/resources/app/product.json";
+              then "Applications/Visual Studio Code.app/Contents/Resources/app/product.json"
+              else "lib/vscode/resources/app/product.json";
+            vscodiumProductJSON =
+              if pkgs.stdenv.isDarwin
+              then "Applications/VSCodium.app/Contents/Resources/app/product.json"
+              else "lib/vscode/resources/app/product.json";
           in ''
-            product_file="$out/${productPath}"
+            product_file="$out/${vscodiumProductJSON}"
 
             if [ -f "$product_file" ]; then
               printf "Patching product.json to enable GitHub Copilot Chat\n"
 
               tmp_file="$product_file.tmp"
 
-              jq --slurpfile vscode ${pkgs.vscode}/${productPath} '
+              jq --slurpfile vscode "${pkgs.vscode}/${vscodeProductJSON}" '
                 .defaultChatAgent = $vscode[0]["defaultChatAgent"]
               ' "$product_file" > "$tmp_file"
 
