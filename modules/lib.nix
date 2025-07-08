@@ -1,5 +1,5 @@
 {lib, ...}: {
   flake.lib = builtins.addErrorContext "while defining lib" {
-    filterAvailable = system: pkgsList: builtins.filter (pkg: lib.meta.availableOn system pkg) pkgsList;
+    filterAvailable = system: pkgsList: builtins.filter (pkg: (builtins.tryEval (lib.meta.availableOn system pkg)).value) pkgsList;
   };
 }
