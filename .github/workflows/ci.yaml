@@ -15,16 +15,28 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  lint:
-    name: Lint
-    runs-on: ubuntu-latest
+  activate:
+    name: Activate
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, ubuntu-latest, ubuntu-24.04-arm]
+    runs-on: ${{ matrix.os }}
     steps:
+      - name: Free disk space
+        if: runner.os == 'Linux'
+        uses: endersonmenezes/free-disk-space@v2
+        with:
+          remove_dotnet: true
+          remove_haskell: true
+          remove_packages: "azure-cli microsoft-edge-stable google-chrome-stable firefox postgresql* *llvm* mysql*"
+          testing: false
       - name: Check out repository
         uses: actions/checkout@v4
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@main
-      - name: Lint
-        run: nix develop --impure --command lint
+      - name: Activate CI configuration
+        run: nix run . ci
   build:
     name: Build
     strategy:
@@ -45,6 +57,16 @@ jobs:
         uses: actions/checkout@v4
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@main
-      - name: Activate CI configuration
-        run: nix develop --impure --command activate ci
+      - name: Build default configuration
+        run: nix build --impure .#homeConfigurations.default.activationPackage
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@main
+      - name: Lint
+        run: nix develop --impure --command lint
 ...
