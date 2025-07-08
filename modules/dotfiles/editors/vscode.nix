@@ -8,7 +8,39 @@
   config = lib.mkIf config.dotfiles.editors.enable {
     programs.vscode = {
       enable = true;
-      package = pkgs.vscodium;
+      package = pkgs.vscodium.overrideAttrs (old: {
+        nativeBuildInputs =
+          (old.nativeBuildInputs or [])
+          ++ [
+            pkgs.jq
+            pkgs.uutils-coreutils-noprefix
+          ];
+
+        postInstall =
+          (old.postInstall or "")
+          + (let
+            productPath =
+              if pkgs.stdenv.isDarwin
+              then "/Applications/VSCodium/Contents/Resources/app/product.json"
+              else "/lib/vscode/resources/app/product.json";
+          in ''
+            product_file="$out/${productPath}"
+
+            if [ -f "$product_file" ]; then
+              printf "Patching product.json to enable GitHub Copilot Chat\n"
+
+              tmp_file="$product_file.tmp"
+
+              jq --slurpfile vscode ${pkgs.vscode}/${productPath} '
+                .defaultChatAgent = $vscode[0]["defaultChatAgent"]
+              ' "$product_file" > "$tmp_file"
+
+              mv "$tmp_file" "$product_file"
+            else
+              printf "product.json not found at %s\n" "$product_file"
+            fi
+          '');
+      });
       profiles.default = {
         enableUpdateCheck = false;
         enableExtensionUpdateCheck = false;
