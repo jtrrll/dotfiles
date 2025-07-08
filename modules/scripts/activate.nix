@@ -44,7 +44,7 @@
           --show-error \
           --spinner line \
           --title "Activating $styled_config configuration..." \
-          -- home-manager switch -b bak --flake "$PROJECT_ROOT"#"$config" --impure
+          -- home-manager switch -b bak --flake "${self}#$config" --impure
 
         printf "Activated %s configuration successfully!\n" "$styled_config"
       '';
