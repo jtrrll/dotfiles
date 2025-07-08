@@ -12,29 +12,39 @@
       profiles.default = {
         enableUpdateCheck = false;
         enableExtensionUpdateCheck = false;
-        extensions = builtins.addErrorContext "while evaluating VSCode extensions" (lib'.filterAvailable pkgs.stdenv.system (with pkgs.vscode-extensions; [
-          astro-build.astro-vscode
-          biomejs.biome
-          bradlc.vscode-tailwindcss
-          geequlim.godot-tools
-          gleam.gleam
-          golang.go
-          graphql.vscode-graphql
-          graphql.vscode-graphql-syntax
-          jnoortheen.nix-ide
-          ms-pyright.pyright
-          ms-python.python
-          ms-toolsai.jupyter
-          redhat.java
-          redhat.vscode-xml
-          redhat.vscode-yaml
-          rust-lang.rust-analyzer
-          shopify.ruby-lsp
-          sorbet.sorbet-vscode-extension
-          sumneko.lua
-          vscodevim.vim
-          ziglang.vscode-zig
-        ]));
+        extensions =
+          builtins.addErrorContext "while evaluating VSCode extensions"
+          (lib'.filterAvailable pkgs.stdenv.system (
+            (with pkgs.nix-vscode-extensions.open-vsx; [
+              golang.go
+              sorbet.sorbet-vscode-extension
+            ])
+            ++ (with pkgs.unfree-vscode-extensions; [
+              github.copilot
+              github.copilot-chat
+            ])
+            ++ (with pkgs.vscode-extensions; [
+              astro-build.astro-vscode
+              biomejs.biome
+              bradlc.vscode-tailwindcss
+              geequlim.godot-tools
+              gleam.gleam
+              graphql.vscode-graphql
+              graphql.vscode-graphql-syntax
+              jnoortheen.nix-ide
+              ms-pyright.pyright
+              ms-python.python
+              ms-toolsai.jupyter
+              redhat.java
+              redhat.vscode-xml
+              redhat.vscode-yaml
+              rust-lang.rust-analyzer
+              shopify.ruby-lsp
+              sumneko.lua
+              vscodevim.vim
+              ziglang.vscode-zig
+            ])
+          ));
         globalSnippets = builtins.addErrorContext "while parsing global snippets for VSCode" (let
           path = ./snippets/global.json;
           json =
