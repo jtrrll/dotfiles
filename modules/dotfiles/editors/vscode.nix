@@ -8,6 +8,9 @@
   config = lib.mkIf config.dotfiles.editors.enable {
     programs.vscode = {
       enable = true;
+      # This patch is needed to enable GitHub Copilot Chat in VSCodium.
+      # macOS will block this program from running because the patch modifies a signed app bundle.
+      # This can be resolved by running it with admin permissions once.
       package = pkgs.vscodium.overrideAttrs (old: {
         nativeBuildInputs =
           (old.nativeBuildInputs or [])
@@ -15,7 +18,6 @@
             pkgs.jq
             pkgs.uutils-coreutils-noprefix
           ];
-
         postInstall =
           (old.postInstall or "")
           + (let
@@ -117,6 +119,12 @@
             serverPath = "nil";
           };
           redhat.telemetry.enabled = false;
+          telemetry = {
+            enableCrashReporter = false; # Only relevant for base VSCode, not VSCodium.
+            enableTelemetry = false; # Only relavent for base VSCode, not VSCodium.
+            feedback.enabled = false;
+            telemetryLevel = "off";
+          };
           window.zoomLevel = 2;
           workbench.sideBar.location = "right";
         };
