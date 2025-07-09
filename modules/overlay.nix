@@ -6,6 +6,7 @@
     };
   in {
     inherit (inputs.snekcheck.packages.${final.system}) snekcheck;
+    inherit (unfreePkgs) vscode;
     ghostty =
       if final.stdenv.isDarwin
       then inputs.nur.legacyPackages.${final.system}.repos.DimitarNestorov.ghostty
