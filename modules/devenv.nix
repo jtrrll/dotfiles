@@ -1,8 +1,4 @@
-{
-  inputs,
-  self,
-  ...
-}: {
+{inputs, ...}: {
   imports = [
     inputs.devenv.flakeModule
   ];
@@ -11,7 +7,6 @@
     config,
     lib,
     pkgs,
-    system,
     ...
   }: {
     devenv = {
@@ -19,12 +14,13 @@
         inputs.env-help.devenvModule
       ];
       shells.default = {
+        containers = lib.mkForce {}; # Workaround to remove containers from flake checks.
         enterShell = "${pkgs.writeShellApplication {
           name = "splashScreen";
           runtimeInputs = [
             pkgs.lolcat
             pkgs.uutils-coreutils-noprefix
-            self.scripts.${system}.splash
+            config.scripts.splash
           ];
           text = ''
             splash
@@ -83,7 +79,7 @@
             inherit (pkg.meta) description;
             exec = "${pkg}/bin/${pkg.name} $@";
           })
-          self.scripts.${system});
+          config.scripts);
       };
     };
   };

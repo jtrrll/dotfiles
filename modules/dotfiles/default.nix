@@ -1,9 +1,11 @@
 {
+  config,
   inputs,
-  self,
   ...
-}: {
-  flake.homeManagerModules.dotfiles = {
+}: let
+  lib' = config.flake.lib;
+in {
+  flake.homeModules.dotfiles = {
     config,
     lib,
     ...
@@ -45,8 +47,8 @@
 
       {
         _module.args = {
+          inherit lib';
           constants = import ./constants.nix;
-          lib' = lib // self.lib;
         };
       }
     ];

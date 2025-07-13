@@ -109,6 +109,7 @@
             })
           filenames));
         userSettings = {
+          biome.suggestInstallingGlobally = false;
           editor = {
             minimap.enabled = false;
             tabSize = config.dotfiles.editors.indentWidth;
