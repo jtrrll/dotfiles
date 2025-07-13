@@ -10,13 +10,10 @@
     ...
   }: {
     checks = {
-      nix-lint =
-        pkgs.runCommandLocal "nix-lint" {
-          buildInputs = [pkgs.nix];
-        } ''
-          ${config.formatter}/bin/* --check ${self}/**
-          touch $out
-        '';
+      nix-lint = pkgs.runCommandLocal "nix-lint" {} ''
+        ${config.formatter}/bin/* --check ${self}/**
+        touch $out
+      '';
       snekcheck =
         pkgs.runCommandLocal "snekcheck" {
           buildInputs = [inputs.snekcheck.packages.${system}.snekcheck];
