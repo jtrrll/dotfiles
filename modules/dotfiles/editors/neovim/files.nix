@@ -6,6 +6,10 @@
   config = lib.mkIf config.dotfiles.editors.enable {
     programs.nixvim = {
       plugins = {
+        barbar = {
+          enable = true;
+          settings.auto_hide = 1;
+        };
         snacks = {
           enable = true;
           settings = {
@@ -19,36 +23,6 @@
               };
             };
           };
-        };
-        which-key = {
-          enable = true;
-          settings.spec = [
-            {
-              __unkeyed-1 = "<leader>f";
-              group = "Find";
-              icon = "󰍉";
-            }
-            {
-              __unkeyed-1 = "<leader>ff";
-              __unkeyed-2.__raw = ''
-                function()
-                  require("snacks").picker.git_files()
-                end
-              '';
-              desc = "File";
-              icon = "󰈔";
-            }
-            {
-              __unkeyed-1 = "<leader>ft";
-              __unkeyed-2.__raw = ''
-                function()
-                  require("snacks").picker.git_grep()
-                end
-              '';
-              desc = "Text";
-              icon = "󰊄";
-            }
-          ];
         };
       };
     };

@@ -1,6 +1,8 @@
 {
+  config,
   inputs,
   lib,
+  self,
   ...
 }: {
   imports = [
@@ -13,10 +15,32 @@
       };
       file = "./default.nix";
     })
-
-    ./activate.nix
-    ./lint.nix
-    ./splash.nix
-    ./update_docs.nix
   ];
+
+  perSystem = let
+    configurations = builtins.attrNames config.flake.homeConfigurations;
+  in
+    {
+      config,
+      pkgs,
+      system,
+      ...
+    }: {
+      apps.default = {
+        program = config.scripts.activate;
+        type = "app";
+      };
+      scripts = {
+        activate = pkgs.callPackage ./activate.nix {
+          inherit configurations self;
+        };
+        lint = pkgs.callPackage ./lint.nix {
+          inherit (inputs.snekcheck.packages.${system}) snekcheck;
+        };
+        splash = pkgs.callPackage ./splash.nix {};
+        update-docs = pkgs.callPackage ./update_docs.nix {
+          inherit (config.packages) options;
+        };
+      };
+    };
 }

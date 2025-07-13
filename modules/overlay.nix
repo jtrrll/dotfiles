@@ -1,5 +1,5 @@
 {inputs, ...}: {
-  flake.overlay = builtins.addErrorContext "while defining overlay" (final: prev: let
+  flake.overlays.default = builtins.addErrorContext "while defining overlay" (final: prev: let
     unfreePkgs = import inputs.nixpkgs {
       inherit (final) system;
       config.allowUnfree = true;

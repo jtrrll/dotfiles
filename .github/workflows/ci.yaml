@@ -11,8 +11,8 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
+  group: ${{ github.workflow }}-${{ github.ref }}
 
 jobs:
   activate:
@@ -35,8 +35,8 @@ jobs:
         uses: actions/checkout@v4
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@main
-      - name: Activate CI configuration
-        run: nix run . ci
+      - name: Activate headless configuration
+        run: nix run . headless
   build:
     name: Build
     strategy:
@@ -59,8 +59,8 @@ jobs:
         uses: DeterminateSystems/nix-installer-action@main
       - name: Build default configuration
         run: nix build --impure .#homeConfigurations.default.activationPackage
-  lint:
-    name: Lint
+  check:
+    name: Check
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
@@ -68,5 +68,5 @@ jobs:
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@main
       - name: Lint
-        run: nix develop --impure --command lint
+        run: nix flake check --impure
 ...

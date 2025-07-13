@@ -1,6 +1,6 @@
 {
+  config,
   inputs,
-  self,
   ...
 }: {
   flake.homeConfigurations = let
@@ -9,12 +9,12 @@
     SYSTEM = builtins.currentSystem;
     USER = builtins.getEnv "USER";
     ### end "impure" ###
-    mkConfig = config:
-      assert builtins.isAttrs config;
+    mkConfig = cfg:
+      assert builtins.isAttrs cfg;
         inputs.home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
           modules = [
-            self.homeManagerModules.dotfiles
+            config.flake.homeModules.dotfiles
             {
               dotfiles =
                 {
@@ -22,17 +22,22 @@
                   theme.base16Scheme = "${pkgs.base16-schemes}/share/themes/gruvbox-material-dark-medium.yaml";
                   username = USER;
                 }
-                // config;
+                // cfg;
             }
           ];
         };
     pkgs = import inputs.nixpkgs {
       inherit SYSTEM;
-      overlays = [self.overlay];
+      overlays = [config.flake.overlays.default];
     };
   in {
-    ci = mkConfig {theme.enable = false;}; # the theme module is disabled because it doesn't work on headless systems.
     default = mkConfig {};
+    headless = mkConfig {
+      browser.enable = false;
+      gaming.enable = false;
+      screensavers.enable = false;
+      theme.enable = false;
+    };
     work = mkConfig {gaming.enable = false;};
   };
 }

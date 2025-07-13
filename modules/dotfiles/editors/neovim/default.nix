@@ -22,18 +22,15 @@
   };
 
   imports = [
-    ./ai.nix
     ./clipboard.nix
     ./code_tree.nix
     ./completion.nix
-    ./dashboard.nix
     ./files.nix
     ./git.nix
     ./keymaps.nix
     ./lsp.nix
     ./save.nix
     ./status_line.nix
-    ./tabs.nix
     ./vim_options.nix
   ];
 }

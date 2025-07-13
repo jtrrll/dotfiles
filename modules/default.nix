@@ -1,13 +1,14 @@
 {inputs, ...}: {
   imports = [
     ./dotfiles
+    ./packages
     ./scripts
 
+    ./checks.nix
     ./configurations.nix
     ./devenv.nix
     ./lib.nix
     ./overlay.nix
-    ./packages.nix
   ];
 
   perSystem = {pkgs, ...}: {
