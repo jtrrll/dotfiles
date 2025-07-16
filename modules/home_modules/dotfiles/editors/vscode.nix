@@ -115,6 +115,7 @@
             tabSize = config.dotfiles.editors.indentWidth;
             rulers = config.dotfiles.editors.lineLengthRulers;
           };
+          files.autoSave = "afterDelay";
           nix = {
             enableLanguageServer = true;
             serverPath = "nil";
@@ -122,7 +123,7 @@
           redhat.telemetry.enabled = false;
           telemetry = {
             enableCrashReporter = false; # Only relevant for base VSCode, not VSCodium.
-            enableTelemetry = false; # Only relavent for base VSCode, not VSCodium.
+            enableTelemetry = false; # Only relevant for base VSCode, not VSCodium.
             feedback.enabled = false;
             telemetryLevel = "off";
           };
