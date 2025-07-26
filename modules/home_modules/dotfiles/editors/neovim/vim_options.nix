@@ -17,7 +17,7 @@
       mouse = "a"; # enable mouse control
       number = true; # show line numbers
       relativenumber = true; # show relative line numbers
-      scrolloff = 8; # number of lines to preserve above/below the cursor
+      scrolloff = config.dotfiles.editors.linesAroundCursor; # number of lines to preserve above/below the cursor
       shiftround = true; # indent to nearest indent level
       shiftwidth = config.dotfiles.editors.indentWidth; # spaces per indent level
       showmode = false; # hide current mode because it is in the status line

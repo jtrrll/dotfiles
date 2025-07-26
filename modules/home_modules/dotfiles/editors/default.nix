@@ -24,5 +24,11 @@
       example = [80];
       type = lib.types.listOf lib.types.ints.unsigned;
     };
+    linesAroundCursor = lib.mkOption {
+      default = 8;
+      description = "The number of lines to show above and below the cursor.";
+      example = 2;
+      type = lib.types.ints.unsigned;
+    };
   };
 }
