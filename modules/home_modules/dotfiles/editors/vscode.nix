@@ -111,11 +111,22 @@
         userSettings = {
           biome.suggestInstallingGlobally = false;
           editor = {
+            cursorSurroundingLines = config.dotfiles.editors.linesAroundCursor;
+            cursorSurroundingLinesStyle = "all";
+            formatOnSave = false;
             minimap.enabled = false;
-            tabSize = config.dotfiles.editors.indentWidth;
             rulers = config.dotfiles.editors.lineLengthRulers;
+            tabSize = config.dotfiles.editors.indentWidth;
           };
-          files.autoSave = "afterDelay";
+          files = {
+            autoSave = "afterDelay";
+            enableTrash = false;
+            exclude = {
+              "**/.devenv" = true;
+              "**/.direnv" = true;
+              "**/node_modules" = true;
+            };
+          };
           nix = {
             enableLanguageServer = true;
             serverPath = "nil";
