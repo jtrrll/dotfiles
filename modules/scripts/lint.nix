@@ -7,7 +7,9 @@ writeShellApplication {
   name = "lint";
   runtimeInputs = [snekcheck];
   text = ''
-    snekcheck --fix "$PROJECT_ROOT" && \
+    find "$PROJECT_ROOT" \
+      ! -path "$PROJECT_ROOT/.*" \
+      -exec snekcheck --fix {} +
     nix fmt "$PROJECT_ROOT" -- --quiet
   '';
 }

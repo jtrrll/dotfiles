@@ -35,7 +35,7 @@
           inherit configurations self;
         };
         lint = pkgs.callPackage ./lint.nix {
-          inherit (inputs.snekcheck.packages.${system}) snekcheck;
+          snekcheck = inputs.snekcheck.packages.${system}.default;
         };
         splash = pkgs.callPackage ./splash.nix {};
         update-docs = pkgs.callPackage ./update_docs.nix {
