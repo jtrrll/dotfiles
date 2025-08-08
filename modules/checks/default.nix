@@ -16,9 +16,9 @@
       '';
       snekcheck =
         pkgs.runCommandLocal "snekcheck" {
-          buildInputs = [inputs.snekcheck.packages.${system}.snekcheck];
+          buildInputs = [inputs.snekcheck.packages.${system}.default];
         } ''
-          snekcheck ${self}/**
+          find ${self} -exec snekcheck {} +
           touch $out
         '';
     };
