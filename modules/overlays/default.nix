@@ -5,13 +5,13 @@
       config.allowUnfree = true;
     };
   in {
-    inherit (inputs.snekcheck.packages.${final.system}) snekcheck;
     inherit (unfreePkgs) vscode;
     ghostty =
       if final.stdenv.isDarwin
       then inputs.nur.legacyPackages.${final.system}.repos.DimitarNestorov.ghostty
       else prev.ghostty;
     nix-vscode-extensions = inputs.nix-vscode-extensions.extensions.${final.system};
+    snekcheck = inputs.snekcheck.packages.${final.system}.default;
     unfree-vscode-extensions = unfreePkgs.vscode-extensions;
   });
 }
