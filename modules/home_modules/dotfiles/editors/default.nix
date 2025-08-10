@@ -1,4 +1,5 @@
-{lib, ...}: {
+{ lib, ... }:
+{
   imports = [
     ./neovim
 
@@ -19,9 +20,12 @@
       type = lib.types.ints.unsigned;
     };
     lineLengthRulers = lib.mkOption {
-      default = [100 120];
+      default = [
+        100
+        120
+      ];
       description = "The columns to place vertical lines on.";
-      example = [80];
+      example = [ 80 ];
       type = lib.types.listOf lib.types.ints.unsigned;
     };
     linesAroundCursor = lib.mkOption {

@@ -1,5 +1,5 @@
 {
-  configurations ? [],
+  configurations ? [ ],
   gum,
   home-manager,
   self,
@@ -26,7 +26,10 @@ writeShellApplication {
     if [[ "$#" -eq 1 ]]; then
       config="$1"
     elif [[ "$#" -eq 0 ]]; then
-      config=$(printf "${assert builtins.isList configurations && builtins.all builtins.isString configurations; builtins.concatStringsSep "\n" configurations}" | gum choose --header="Select a configuration to activate" --selected="default")
+      config=$(printf "${
+        assert builtins.isList configurations && builtins.all builtins.isString configurations;
+        builtins.concatStringsSep "\n" configurations
+      }" | gum choose --header="Select a configuration to activate" --selected="default")
     else
       gum style \
         --foreground=1 \

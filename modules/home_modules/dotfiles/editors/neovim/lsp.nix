@@ -2,7 +2,8 @@
   config,
   lib,
   ...
-}: {
+}:
+{
   config = lib.mkIf config.dotfiles.editors.enable {
     programs.nixvim = {
       diagnostic.settings.float.border = "rounded";
@@ -88,7 +89,10 @@
           enable = true;
           settings.hint_enable = false;
         };
-        lspkind.enable = true;
+        lspkind = {
+          enable = true;
+          settings.cmp.enable = false;
+        };
       };
     };
   };

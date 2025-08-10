@@ -2,7 +2,8 @@
   config,
   lib,
   ...
-}: {
+}:
+{
   config = lib.mkIf config.dotfiles.home-manager.enable {
     programs.home-manager.enable = true;
   };
