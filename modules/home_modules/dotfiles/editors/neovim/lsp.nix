@@ -90,8 +90,8 @@
           settings.hint_enable = false;
         };
         lspkind = {
+          cmp.enable = false;
           enable = true;
-          settings.cmp.enable = false;
         };
       };
     };
