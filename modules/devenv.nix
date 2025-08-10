@@ -41,7 +41,6 @@
             default_stages = [ "pre-push" ];
             hooks = {
               actionlint.enable = true;
-              alejandra.enable = true;
               check-added-large-files = {
                 enable = true;
                 stages = [ "pre-commit" ];
