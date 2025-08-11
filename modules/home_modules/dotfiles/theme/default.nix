@@ -2,7 +2,8 @@
   config,
   lib,
   ...
-}: {
+}:
+{
   imports = [
     ./bat.nix
     ./fish.nix
@@ -35,7 +36,13 @@
         If unset, defaults to a scheme generated from the background image.
       '';
       example = "path/to/gruvbox-material-dark-medium.yaml";
-      type = lib.types.nullOr (lib.types.oneOf [lib.types.path lib.types.lines lib.types.attrs]);
+      type = lib.types.nullOr (
+        lib.types.oneOf [
+          lib.types.path
+          lib.types.lines
+          lib.types.attrs
+        ]
+      );
     };
   };
 }

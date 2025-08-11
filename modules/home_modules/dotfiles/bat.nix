@@ -3,11 +3,16 @@
   lib,
   pkgs,
   ...
-}: {
+}:
+{
   config = lib.mkIf config.dotfiles.bat.enable {
     programs.bat = {
       enable = true;
-      extraPackages = with pkgs.bat-extras; [batdiff batgrep batman];
+      extraPackages = with pkgs.bat-extras; [
+        batdiff
+        batgrep
+        batman
+      ];
     };
     home.shellAliases = {
       cat = "bat --paging=never";

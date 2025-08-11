@@ -4,9 +4,10 @@
   lib',
   pkgs,
   ...
-}: {
+}:
+{
   config = lib.mkIf config.dotfiles.media.enable {
-    home.packages = lib'.filterAvailable pkgs.stdenv.system [pkgs.vlc];
+    home.packages = lib'.filterAvailable pkgs.stdenv.system [ pkgs.vlc ];
     programs.beets = {
       enable = true;
       settings = {
@@ -16,7 +17,18 @@
           move = false;
         };
         library = "~/music/library.db";
-        plugins = ["autobpm" "badfiles" "embedart" "fetchart" "fish" "fuzzy" "lastgenre" "lyrics" "thumbnails" "types"];
+        plugins = [
+          "autobpm"
+          "badfiles"
+          "embedart"
+          "fetchart"
+          "fish"
+          "fuzzy"
+          "lastgenre"
+          "lyrics"
+          "thumbnails"
+          "types"
+        ];
       };
     };
   };

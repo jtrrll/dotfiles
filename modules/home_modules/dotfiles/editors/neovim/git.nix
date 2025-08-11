@@ -2,23 +2,26 @@
   config,
   lib,
   ...
-}: {
+}:
+{
   config = lib.mkIf config.dotfiles.editors.enable {
     programs.nixvim.plugins.gitsigns = {
       enable = true;
-      settings = let
-        signs = {
-          add.text = "+";
-          change.text = "~";
-          changedelete.text = "~";
-          delete.text = "-";
-          topdelete.text = "-";
+      settings =
+        let
+          signs = {
+            add.text = "+";
+            change.text = "~";
+            changedelete.text = "~";
+            delete.text = "-";
+            topdelete.text = "-";
+          };
+        in
+        {
+          inherit signs;
+          current_line_blame = true;
+          signs_staged = signs;
         };
-      in {
-        inherit signs;
-        current_line_blame = true;
-        signs_staged = signs;
-      };
     };
   };
 }

@@ -2,7 +2,8 @@
   config,
   lib,
   ...
-}: {
+}:
+{
   config = lib.mkIf config.dotfiles.editors.enable {
     programs.nixvim.opts = {
       breakindent = true; # indent wrapped lines
