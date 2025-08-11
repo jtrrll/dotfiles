@@ -3,7 +3,8 @@
   lib,
   pkgs,
   ...
-}: {
+}:
+{
   config = lib.mkIf config.dotfiles.terminal.enable {
     home.sessionVariables = {
       SHELL = "${config.programs.fish.package}/bin/fish";

@@ -2,7 +2,8 @@
   config,
   lib,
   ...
-}: {
+}:
+{
   config = lib.mkIf config.dotfiles.editors.enable {
     programs.nixvim.plugins = {
       dropbar.enable = true;
@@ -19,11 +20,11 @@
         settings = {
           highlight = {
             enable = true;
-            additional_vim_regex_highlighting = ["ruby"];
+            additional_vim_regex_highlighting = [ "ruby" ];
           };
           indent = {
             enable = true;
-            disable = ["ruby"];
+            disable = [ "ruby" ];
           };
         };
       };

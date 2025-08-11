@@ -2,7 +2,8 @@
   config,
   lib,
   ...
-}: {
+}:
+{
   config = lib.mkIf config.dotfiles.system-info.enable {
     programs = {
       btop = {

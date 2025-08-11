@@ -1,18 +1,21 @@
-{inputs, ...}: {
+{ inputs, ... }:
+{
   imports = [
-    ./checks
-    ./devenv
-    ./home_configurations
     ./home_modules
-    ./lib
-    ./overlays
     ./packages
     ./scripts
+
+    ./checks.nix
+    ./devenv.nix
+    ./home_configurations.nix
+    ./lib.nix
+    ./overlays.nix
   ];
 
-  perSystem = {pkgs, ...}: {
-    formatter = pkgs.alejandra;
-  };
-
+  perSystem =
+    { pkgs, ... }:
+    {
+      formatter = pkgs.nixfmt-tree;
+    };
   systems = inputs.nixpkgs.lib.systems.flakeExposed;
 }

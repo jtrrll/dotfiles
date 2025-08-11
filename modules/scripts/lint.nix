@@ -5,7 +5,7 @@
 writeShellApplication {
   meta.description = "Lints the project.";
   name = "lint";
-  runtimeInputs = [snekcheck];
+  runtimeInputs = [ snekcheck ];
   text = ''
     find "$PROJECT_ROOT" \
       ! -path "$PROJECT_ROOT/.*" \

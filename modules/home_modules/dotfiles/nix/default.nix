@@ -1,4 +1,5 @@
-{lib, ...}: {
+{ lib, ... }:
+{
   imports = [
     ./conf.nix
     ./garbage_collection.nix

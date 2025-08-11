@@ -3,7 +3,8 @@
   constants,
   lib,
   ...
-}: {
+}:
+{
   config = lib.mkIf config.dotfiles.theme.enable {
     programs.zellij = {
       settings = {

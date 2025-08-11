@@ -2,12 +2,13 @@
   config,
   lib,
   ...
-}: {
+}:
+{
   config = lib.mkIf config.dotfiles.file-system.enable {
     programs = {
       eza = {
         enable = true;
-        extraOptions = ["--header"];
+        extraOptions = [ "--header" ];
         git = true;
         icons = "auto";
       };
@@ -16,7 +17,7 @@
       ripgrep.enable = true;
       zoxide = {
         enable = true;
-        options = ["--cmd cd"];
+        options = [ "--cmd cd" ];
       };
     };
   };

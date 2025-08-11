@@ -2,7 +2,8 @@
   config,
   lib,
   ...
-}: {
+}:
+{
   config = lib.mkIf config.dotfiles.git.enable {
     programs.git = {
       enable = true;

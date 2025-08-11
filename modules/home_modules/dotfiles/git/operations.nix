@@ -3,11 +3,11 @@
   lib,
   pkgs,
   ...
-}: {
+}:
+{
   config = lib.mkIf config.dotfiles.git.enable {
     programs.git.aliases.trim = "!${
-      pkgs.writeShellApplication
-      {
+      pkgs.writeShellApplication {
         name = "git-trim";
         runtimeInputs = [
           pkgs.coreutils
