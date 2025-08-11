@@ -18,7 +18,7 @@
               buildInputs = [ pkgs.nixfmt ];
             }
             ''
-              find ${self} -type f -name '*.nix' -exec nixfmt --check {} +
+              find ${self}/** -type f -name '*.nix' -exec nixfmt --check {} +
               touch $out
             '';
         snekcheck =
@@ -27,7 +27,7 @@
               buildInputs = [ inputs.snekcheck.packages.${system}.default ];
             }
             ''
-              find ${self} -exec snekcheck {} +
+              find ${self}/** -exec snekcheck {} +
               touch $out
             '';
       };
