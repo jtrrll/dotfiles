@@ -32,7 +32,7 @@ jobs:
           remove_packages: "azure-cli microsoft-edge-stable google-chrome-stable firefox postgresql* *llvm* mysql*"
           testing: false
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@main
       - name: Activate headless configuration
@@ -54,7 +54,7 @@ jobs:
           remove_packages: "azure-cli microsoft-edge-stable google-chrome-stable firefox postgresql* *llvm* mysql*"
           testing: false
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@main
       - name: Build default configuration
@@ -64,7 +64,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@main
       - name: Lint
