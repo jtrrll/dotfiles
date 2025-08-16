@@ -12,7 +12,7 @@
       inherit (unfreePkgs) vscode;
       ghostty =
         if final.stdenv.isDarwin then
-          inputs.nur.legacyPackages.${final.system}.repos.DimitarNestorov.ghostty
+          prev.ghostty-bin
         else
           prev.ghostty;
       nix-vscode-extensions = inputs.nix-vscode-extensions.extensions.${final.system};
