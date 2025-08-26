@@ -24,10 +24,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
       url = "github:nix-community/nixvim";
     };
-    nur = {
-      inputs.nixpkgs.follows = "nixpkgs";
-      url = "github:nix-community/NUR";
-    };
     snekcheck = {
       inputs.nixpkgs.follows = "nixpkgs";
       url = "github:jtrrll/snekcheck";
@@ -36,12 +32,26 @@
       inputs.nixpkgs.follows = "nixpkgs";
       url = "github:danth/stylix";
     };
+    treefmt-nix = {
+      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:numtide/treefmt-nix";
+    };
   };
 
   outputs =
-    { flake-parts, nixpkgs, ... }@inputs:
+    {
+      flake-parts,
+      home-manager,
+      nixpkgs,
+      treefmt-nix,
+      ...
+    }@inputs:
     flake-parts.lib.mkFlake { inherit inputs; } {
-      imports = [ ./modules ];
+      imports = [
+        home-manager.flakeModules.home-manager
+        treefmt-nix.flakeModule
+        ./nix
+      ];
       systems = nixpkgs.lib.systems.flakeExposed;
     };
 }
