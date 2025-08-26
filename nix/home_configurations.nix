@@ -37,8 +37,8 @@
               theme
             ])
             ++ [
-              {
-                config = {
+              (
+                {
                   home = {
                     homeDirectory = HOME;
                     stateVersion = "23.11";
@@ -69,8 +69,8 @@
                     };
                   };
                 }
-                // cfg;
-              }
+                // cfg
+              )
             ];
         };
       pkgs = import inputs.nixpkgs {
