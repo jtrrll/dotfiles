@@ -42,9 +42,9 @@ writeShellApplication {
 
     Wait+Screen /Select/
     Sleep 2s
-    Up
-    Sleep 500ms
     Down
+    Sleep 500ms
+    Up
     Sleep 500ms
     Enter
 
