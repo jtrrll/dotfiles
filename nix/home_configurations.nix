@@ -82,7 +82,7 @@
       default = mkConfig { };
       headless = mkConfig {
         jtrrllDotfiles = {
-          browser.enable = false;
+          browsers.brave.enable = false;
           gaming.enable = false;
           screensavers.enable = false;
           theme.enable = false;
