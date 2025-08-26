@@ -3,7 +3,6 @@
   lib,
   writeTextFile,
 }:
-# TODO: Evaluate the new individual modules
 let
   eval = builtins.addErrorContext "while evaluating dotfiles module" lib.evalModules {
     modules = (lib.attrsets.mapAttrsToList (_: value: value) homeModules) ++ [

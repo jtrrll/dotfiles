@@ -22,126 +22,147 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 ## Options
 
 <!-- BEGIN OPTIONS -->
-### `dotfiles.bat.enable`
+### `jtrrllDotfiles.bat.enable`
 
-* Default: `true`
-* Description: Whether to enable `bat`.
-* Example: `false`
+* Default: `false`
+* Description: Whether to enable jtrrll's bat configuration.
+* Example: `true`
 * Type: `boolean`
 
-### `dotfiles.browser.enable`
+### `jtrrllDotfiles.browsers.brave.enable`
 
-* Default: `true`
-* Description: Whether to enable the browser configuration.
-* Example: `false`
+* Default: `false`
+* Description: Whether to enable jtrrll's Brave browser configuration.
+* Example: `true`
 * Type: `boolean`
 
-### `dotfiles.editors.enable`
+### `jtrrllDotfiles.codeDirectory.enable`
 
-* Default: `true`
-* Description: Whether to enable the editor configurations.
-* Example: `false`
+* Default: `false`
+* Description: Whether to enable jtrrll's code directory configuration.
+* Example: `true`
 * Type: `boolean`
 
-### `dotfiles.editors.indentWidth`
+### `jtrrllDotfiles.editors.indentWidth`
 
 * Default: `2`
 * Description: The number of spaces per indent.
 * Example: `4`
 * Type: `unsigned integer, meaning >=0`
 
-### `dotfiles.editors.lineLengthRulers`
+### `jtrrllDotfiles.editors.lineLengthRulers`
 
 * Default: `[100,120]`
 * Description: The columns to place vertical lines on.
 * Example: `[80]`
 * Type: `list of (unsigned integer, meaning >=0)`
 
-### `dotfiles.file-system.enable`
+### `jtrrllDotfiles.editors.linesAroundCursor`
 
-* Default: `true`
-* Description: Whether to enable the file-system configuration.
-* Example: `false`
+* Default: `8`
+* Description: The number of lines to show above and below the cursor.
+* Example: `2`
+* Type: `unsigned integer, meaning >=0`
+
+### `jtrrllDotfiles.editors.neovim.enable`
+
+* Default: `false`
+* Description: Whether to enable jtrrll's Neovim configuration.
+* Example: `true`
 * Type: `boolean`
 
-### `dotfiles.gaming.enable`
+### `jtrrllDotfiles.editors.vscode.enable`
 
-* Default: `true`
-* Description: Whether to enable the gaming configuration.
-* Example: `false`
+* Default: `false`
+* Description: Whether to enable jtrrll's VSCode configuration.
+* Example: `true`
 * Type: `boolean`
 
-### `dotfiles.git.enable`
+### `jtrrllDotfiles.fileSystem.enable`
 
-* Default: `true`
-* Description: Whether to enable the Git configuration.
-* Example: `false`
+* Default: `false`
+* Description: Whether to enable jtrrll's file-system configuration.
+* Example: `true`
 * Type: `boolean`
 
-### `dotfiles.home-manager.enable`
+### `jtrrllDotfiles.gaming.enable`
 
-* Default: `true`
-* Description: Whether to enable `home-manager`.
-* Example: `false`
+* Default: `false`
+* Description: Whether to enable jtrrll's gaming configuration.
+* Example: `true`
 * Type: `boolean`
 
-### `dotfiles.homeDirectory`
+### `jtrrllDotfiles.git.enable`
 
-* Default: `"/home/${config.dotfiles.username}"`
-* Description: The home directory of the user.
-* Example: `"/home/username"`
-* Type: `absolute path`
-
-### `dotfiles.media.enable`
-
-* Default: `true`
-* Description: Whether to enable the media configuration.
-* Example: `false`
+* Default: `false`
+* Description: Whether to enable jtrrll's Git configuration.
+* Example: `true`
 * Type: `boolean`
 
-### `dotfiles.nix.enable`
+### `jtrrllDotfiles.homeManager.enable`
 
-* Default: `true`
-* Description: Whether to enable the Nix configuration.
-* Example: `false`
+* Default: `false`
+* Description: Whether to enable jtrrll's home-manager configuration.
+* Example: `true`
 * Type: `boolean`
 
-### `dotfiles.repeat.enable`
+### `jtrrllDotfiles.mediaPlayback.enable`
 
-* Default: `true`
-* Description: Whether to enable the `repeat` script.
-* Example: `false`
+* Default: `false`
+* Description: Whether to enable jtrrll's media playback configuration.
+* Example: `true`
 * Type: `boolean`
 
-### `dotfiles.screensavers.enable`
+### `jtrrllDotfiles.musicLibrary.enable`
 
-* Default: `true`
-* Description: Whether to enable screensavers.
-* Example: `false`
+* Default: `false`
+* Description: Whether to enable jtrrll's music library configuration.
+* Example: `true`
 * Type: `boolean`
 
-### `dotfiles.system-info.enable`
+### `jtrrllDotfiles.nix.enable`
 
-* Default: `true`
-* Description: Whether to enable the system information configuration.
-* Example: `false`
+* Default: `false`
+* Description: Whether to enable jtrrll's Nix configuration.
+* Example: `true`
 * Type: `boolean`
 
-### `dotfiles.terminal.enable`
+### `jtrrllDotfiles.repeat.enable`
 
-* Default: `true`
-* Description: Whether to enable the terminal configuration.
-* Example: `false`
+* Default: `false`
+* Description: Whether to enable the repeat script.
+* Example: `true`
 * Type: `boolean`
 
-### `dotfiles.theme.backgroundImage`
+### `jtrrllDotfiles.screensavers.enable`
 
-* Default: `"/home/${config.dotfiles.username}/.config/background"`
+* Default: `false`
+* Description: Whether to enable jtrrll's screensavers.
+* Example: `true`
+* Type: `boolean`
+
+### `jtrrllDotfiles.systemInfo.enable`
+
+* Default: `false`
+* Description: Whether to enable jtrrll's system information configuration.
+* Example: `true`
+* Type: `boolean`
+
+### `jtrrllDotfiles.terminal.enable`
+
+* Default: `false`
+* Description: Whether to enable jtrrll's terminal configuration.
+* Example: `true`
+* Type: `boolean`
+
+### `jtrrllDotfiles.theme.backgroundImage`
+
+* Default: `"/home/${config.home.username}/.config/background"`
 * Description: The file path of the background image to use.
 * Example: `"path/to/background.png"`
 * Type: `absolute path`
 
-### `dotfiles.theme.base16Scheme`
+### `jtrrllDotfiles.theme.base16Scheme`
 
 * Default: `null`
 * Description: A scheme following the base16 standard.
@@ -151,16 +172,10 @@ If unset, defaults to a scheme generated from the background image.
 * Example: `"path/to/gruvbox-material-dark-medium.yaml"`
 * Type: `null or absolute path or strings concatenated with "\n" or (attribute set)`
 
-### `dotfiles.theme.enable`
+### `jtrrllDotfiles.theme.enable`
 
-* Default: `true`
-* Description: Whether to enable a configurable system-wide theme.
-* Example: `false`
+* Default: `false`
+* Description: Whether to enable jtrrll's system-wide theme.
+* Example: `true`
 * Type: `boolean`
-
-### `dotfiles.username`
-
-* Description: The name of the user.
-* Example: `"username"`
-* Type: `string`
 <!-- END OPTIONS -->
