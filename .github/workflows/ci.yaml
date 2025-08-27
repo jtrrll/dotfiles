@@ -20,7 +20,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-latest, ubuntu-latest, ubuntu-24.04-arm]
+        configuration: [default, work]
+        os: [macos-latest, ubuntu-latest]
     runs-on: ${{ matrix.os }}
     steps:
       - name: Free disk space
@@ -35,8 +36,8 @@ jobs:
         uses: actions/checkout@v5
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@main
-      - name: Activate headless configuration
-        run: nix run . headless
+      - name: Activate ${{ matrix.configuration }} configuration
+        run: nix run . ${{ matrix.configuration }}
   build:
     name: Build
     strategy:
@@ -68,6 +69,6 @@ jobs:
         uses: actions/checkout@v5
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@main
-      - name: Lint
+      - name: Check flake
         run: nix flake check --impure
 ...

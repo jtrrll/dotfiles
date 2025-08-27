@@ -61,14 +61,6 @@
     in
     {
       default = mkConfig { };
-      headless = mkConfig {
-        jtrrllDotfiles = {
-          browsers.brave.enable = lib.mkForce false;
-          gaming.enable = lib.mkForce false;
-          screensavers.enable = lib.mkForce false;
-          theme.enable = lib.mkForce false;
-        };
-      };
       work = mkConfig { jtrrllDotfiles.gaming.enable = lib.mkForce false; };
     };
 }
