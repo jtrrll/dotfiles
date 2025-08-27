@@ -42,6 +42,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        configuration: [default, work]
         os: [macos-latest, ubuntu-latest, ubuntu-24.04-arm]
     runs-on: ${{ matrix.os }}
     steps:
@@ -57,8 +58,8 @@ jobs:
         uses: actions/checkout@v5
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@main
-      - name: Build default configuration
-        run: nix build --impure .#homeConfigurations.default.activationPackage
+      - name: Build ${{ matrix.configuration }} configuration
+        run: nix build --impure .#homeConfigurations.${{ matrix.configuration }}.activationPackage
   check:
     name: Check
     runs-on: ubuntu-latest

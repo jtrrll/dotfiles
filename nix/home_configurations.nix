@@ -1,6 +1,7 @@
 {
   config,
   inputs,
+  lib,
   ...
 }:
 {
@@ -23,6 +24,8 @@
                 stateVersion = "23.11";
                 username = USER;
               };
+            }
+            {
               jtrrllDotfiles = {
                 bat.enable = true;
                 browsers.brave.enable = true;
@@ -46,9 +49,9 @@
                   base16Scheme = "${pkgs.base16-schemes}/share/themes/gruvbox-material-dark-medium.yaml";
                   enable = true;
                 };
-              }
-              // cfg;
+              };
             }
+            cfg
           ];
         };
       pkgs = import inputs.nixpkgs {
@@ -59,11 +62,13 @@
     {
       default = mkConfig { };
       headless = mkConfig {
-        browsers.brave.enable = false;
-        gaming.enable = false;
-        screensavers.enable = false;
-        theme.enable = false;
+        jtrrllDotfiles = {
+          browsers.brave.enable = lib.mkForce false;
+          gaming.enable = lib.mkForce false;
+          screensavers.enable = lib.mkForce false;
+          theme.enable = lib.mkForce false;
+        };
       };
-      work = mkConfig { gaming.enable = false; };
+      work = mkConfig { jtrrllDotfiles.gaming.enable = lib.mkForce false; };
     };
 }
