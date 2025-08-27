@@ -5,7 +5,7 @@
 }:
 let
   eval = builtins.addErrorContext "while evaluating dotfiles module" lib.evalModules {
-    modules = (lib.attrsets.mapAttrsToList (_: value: value) homeModules) ++ [
+    modules = (builtins.attrValues homeModules) ++ [
       {
         options.home = {
           username = lib.mkOption {
