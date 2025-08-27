@@ -13,7 +13,7 @@
     };
     nix.gc = {
       automatic = true;
-      frequency = "monthly";
+      dates = "monthly";
     };
   };
 
