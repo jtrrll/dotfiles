@@ -1,11 +1,11 @@
 {
-  config,
   inputs,
   lib,
+  self,
   ...
 }:
 {
-  flake.homeConfigurations =
+  flake.homeConfigurations = builtins.addErrorContext "while defining home configurations" (
     let
       ### start "impure" ###
       HOME = builtins.getEnv "HOME";
@@ -17,7 +17,7 @@
         assert builtins.isAttrs cfg;
         inputs.home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
-          modules = (builtins.attrValues config.flake.homeModules) ++ [
+          modules = (builtins.attrValues self.homeModules) ++ [
             {
               home = {
                 homeDirectory = HOME;
@@ -56,11 +56,12 @@
         };
       pkgs = import inputs.nixpkgs {
         inherit SYSTEM;
-        overlays = [ config.flake.overlays.default ];
+        overlays = [ self.overlays.default ];
       };
     in
     {
       default = mkConfig { };
       work = mkConfig { jtrrllDotfiles.gaming.enable = lib.mkForce false; };
-    };
+    }
+  );
 }

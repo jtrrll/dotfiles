@@ -13,7 +13,7 @@
         fonts.fontconfig.enable = true;
         home = {
           packages = [ pkgs.nerd-fonts.hack ];
-          sessionVariables.SHELL = "${config.programs.fish.package}/bin/fish";
+          sessionVariables.SHELL = lib.getExe config.programs.fish.package;
         };
         programs.ghostty = {
           enable = true;
@@ -21,7 +21,7 @@
           installVimSyntax = !pkgs.stdenv.isDarwin;
           settings = {
             auto-update = "off";
-            command = "${config.programs.zellij.package}/bin/zellij";
+            command = lib.getExe config.programs.zellij.package;
             font-family = "Hack Nerd Font Mono";
             font-thicken = true;
             theme = "VS Code";

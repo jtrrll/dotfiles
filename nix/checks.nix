@@ -1,21 +1,20 @@
 {
-  inputs,
   self,
   ...
 }:
 {
   perSystem =
     {
+      inputs',
       pkgs,
-      system,
       ...
     }:
     {
-      checks = {
+      checks = builtins.addErrorContext "while defining checks" {
         snekcheck =
           pkgs.runCommandLocal "snekcheck"
             {
-              buildInputs = [ inputs.snekcheck.packages.${system}.default ];
+              buildInputs = [ inputs'.snekcheck.packages.default ];
             }
             ''
               find ${self}/** -exec snekcheck {} +

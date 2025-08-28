@@ -40,6 +40,7 @@
 
   outputs =
     {
+      devenv,
       flake-parts,
       home-manager,
       nixpkgs,
@@ -48,6 +49,7 @@
     }@inputs:
     flake-parts.lib.mkFlake { inherit inputs; } {
       imports = [
+        devenv.flakeModule
         home-manager.flakeModules.home-manager
         treefmt-nix.flakeModule
         ./nix

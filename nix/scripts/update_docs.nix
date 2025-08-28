@@ -6,8 +6,11 @@
   vhs,
   writeShellApplication,
 }:
-writeShellApplication {
-  meta.description = "Updates project documentation in the README.";
+writeShellApplication rec {
+  meta = {
+    description = "Updates project documentation in the README.";
+    mainProgram = name;
+  };
   name = "update-docs";
   runtimeInputs = [
     bashInteractive

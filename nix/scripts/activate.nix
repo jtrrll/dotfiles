@@ -2,12 +2,15 @@
   configurations ? [ ],
   gum,
   home-manager,
-  self,
+  rootPath,
   uutils-coreutils-noprefix,
   writeShellApplication,
 }:
-writeShellApplication {
-  meta.description = "Activates a home configuration.";
+writeShellApplication rec {
+  meta = {
+    description = "Activates a home configuration.";
+    mainProgram = name;
+  };
   name = "activate";
   runtimeInputs = [
     gum
@@ -43,7 +46,7 @@ writeShellApplication {
       --show-error \
       --spinner line \
       --title "Activating $styled_config configuration..." \
-      -- home-manager switch -b bak --flake "${self}#$config" --impure
+      -- home-manager switch -b bak --flake "${rootPath}#$config" --impure
 
     printf "Activated %s configuration successfully!\n" "$styled_config"
   '';

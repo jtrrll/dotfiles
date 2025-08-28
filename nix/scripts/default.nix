@@ -1,5 +1,4 @@
 {
-  config,
   inputs,
   lib,
   self,
@@ -20,29 +19,33 @@
 
   perSystem =
     let
-      configurations = builtins.attrNames config.flake.homeConfigurations;
+      configurations = builtins.attrNames self.homeConfigurations;
     in
     {
-      config,
+      inputs',
       pkgs,
-      system,
+      self',
       ...
     }:
     {
-      apps.default = {
-        program = config.scripts.activate;
-        type = "app";
+      apps = builtins.addErrorContext "while defining apps" {
+        default = {
+          program = self'.scripts.activate;
+          type = "app";
+        };
       };
-      scripts = {
+      scripts = builtins.addErrorContext "while defining scripts" {
         activate = pkgs.callPackage ./activate.nix {
-          inherit configurations self;
+          inherit configurations;
+          rootPath = self;
         };
         lint = pkgs.callPackage ./lint.nix {
-          snekcheck = inputs.snekcheck.packages.${system}.default;
+          rootPath = self;
+          snekcheck = inputs'.snekcheck.packages.default;
         };
         splash = pkgs.callPackage ./splash.nix { };
         update-docs = pkgs.callPackage ./update_docs.nix {
-          inherit (config.packages) options;
+          inherit (self'.packages) options;
         };
       };
     };
