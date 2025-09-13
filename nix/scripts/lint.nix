@@ -1,15 +1,19 @@
 {
+  rootPath,
   snekcheck,
   writeShellApplication,
 }:
-writeShellApplication {
-  meta.description = "Lints the project.";
+writeShellApplication rec {
+  meta = {
+    description = "Lints the project.";
+    mainProgram = name;
+  };
   name = "lint";
   runtimeInputs = [ snekcheck ];
   text = ''
-    find "$PROJECT_ROOT" \
-      ! -path "$PROJECT_ROOT/.*" \
+    find "${rootPath}" \
+      ! -path "${rootPath}/.*" \
       -exec snekcheck --fix {} +
-    nix fmt "$PROJECT_ROOT" -- --quiet
+    nix fmt "${rootPath}" -- --quiet
   '';
 }

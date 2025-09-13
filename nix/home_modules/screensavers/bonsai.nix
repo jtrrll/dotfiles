@@ -7,7 +7,8 @@
 {
   config = lib.mkIf config.jtrrllDotfiles.screensavers.enable {
     home.packages = [
-      (pkgs.writeShellApplication {
+      (pkgs.writeShellApplication rec {
+        meta.mainProgram = name;
         name = "bonsai";
         runtimeInputs = [
           pkgs.cbonsai

@@ -3,8 +3,11 @@
   uutils-coreutils-noprefix,
   writeShellApplication,
 }:
-writeShellApplication {
-  meta.description = "Prints a splash screen.";
+writeShellApplication rec {
+  meta = {
+    description = "Prints a splash screen.";
+    mainProgram = name;
+  };
   name = "splash";
   runtimeInputs = [
     lolcat

@@ -7,7 +7,8 @@
 {
   config = lib.mkIf config.jtrrllDotfiles.codeDirectory.enable (
     let
-      codeDirGitFetch = pkgs.writeShellApplication {
+      codeDirGitFetch = pkgs.writeShellApplication rec {
+        meta.mainProgram = name;
         name = "code-dir-git-fetch";
         runtimeInputs = [
           pkgs.git
@@ -51,7 +52,7 @@
         code-dir-git-fetch = {
           config = {
             Label = "code-dir-git-fetch";
-            ProgramArguments = [ "${codeDirGitFetch}/bin/code-dir-git-fetch" ];
+            ProgramArguments = [ (lib.getExe codeDirGitFetch) ];
             RunAtLoad = true;
             StandardErrorPath = "/tmp/code_dir_git_fetch.err";
             StandardOutPath = "/tmp/code_dir_git_fetch.log";
@@ -67,7 +68,7 @@
         services.code-dir-git-fetch = {
           Service = {
             Type = "oneshot";
-            ExecStart = "${codeDirGitFetch}/bin/code-dir-git-fetch";
+            ExecStart = lib.getExe codeDirGitFetch;
           };
           Unit.Description = "Daily Git fetch for all repos in ~/code";
         };
