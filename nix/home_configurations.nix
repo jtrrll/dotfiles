@@ -5,6 +5,7 @@
   ...
 }:
 {
+  imports = [ inputs.home-manager.flakeModules.home-manager ];
   flake.homeConfigurations = builtins.addErrorContext "while defining home configurations" (
     let
       ### start "impure" ###

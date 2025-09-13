@@ -40,20 +40,12 @@
 
   outputs =
     {
-      devenv,
       flake-parts,
-      home-manager,
       nixpkgs,
-      treefmt-nix,
       ...
     }@inputs:
     flake-parts.lib.mkFlake { inherit inputs; } {
-      imports = [
-        devenv.flakeModule
-        home-manager.flakeModules.home-manager
-        treefmt-nix.flakeModule
-        ./nix
-      ];
+      imports = [ ./nix ];
       systems = nixpkgs.lib.systems.flakeExposed;
     };
 }
