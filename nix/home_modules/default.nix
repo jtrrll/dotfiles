@@ -1,9 +1,10 @@
-{ config, inputs, ... }:
+{ inputs, self, ... }:
 {
-  flake.homeModules =
+  imports = [ inputs.home-manager.flakeModules.home-manager ];
+  flake.homeModules = builtins.addErrorContext "while defining home modules" (
     let
       constants = import ./constants.nix;
-      lib' = config.flake.lib;
+      lib' = self.lib;
     in
     {
       bat = import ./bat;
@@ -34,5 +35,6 @@
       theme = import ./theme {
         inherit (inputs.stylix.homeModules) stylix;
       };
-    };
+    }
+  );
 }

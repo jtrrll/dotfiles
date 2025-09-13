@@ -1,39 +1,57 @@
 { inputs, ... }:
 {
-  imports = [
-    inputs.devenv.flakeModule
-  ];
-
+  imports = [ inputs.devenv.flakeModule ];
   perSystem =
     {
-      config,
       lib,
       pkgs,
+      self',
       ...
     }:
     {
-      devenv = {
+      devenv = builtins.addErrorContext "while defining devenv" {
         modules = [
           inputs.env-help.devenvModule
+          {
+            containers = lib.mkForce { }; # Workaround to remove containers from flake checks.
+          }
+          (
+            { config, ... }:
+            {
+              scripts = builtins.addErrorContext "while defining devenv scripts" (
+                let
+                  pkgToScript = pkg: {
+                    inherit (pkg.meta) description;
+                    exec = "${lib.getExe pkg} $@";
+                  };
+                  rootPath = config.devenv.root;
+                in
+                with self'.scripts;
+                {
+                  activate = pkgToScript (activate.override { inherit rootPath; });
+                  lint = pkgToScript (lint.override { inherit rootPath; });
+                  update-docs = pkgToScript update-docs;
+                }
+              );
+            }
+          )
         ];
-        shells.default = {
-          containers = lib.mkForce { }; # Workaround to remove containers from flake checks.
-          enterShell = "${
-            pkgs.writeShellApplication {
+        shells.default = builtins.addErrorContext "while defining default devenv shell" {
+          enterShell = lib.getExe (
+            pkgs.writeShellApplication rec {
+              meta.mainProgram = name;
               name = "splashScreen";
               runtimeInputs = [
                 pkgs.lolcat
                 pkgs.uutils-coreutils-noprefix
-                config.scripts.splash
+                self'.scripts.splash
               ];
               text = ''
                 splash
                 printf "\033[0;1;36mDEVSHELL ACTIVATED\033[0m\n"
               '';
             }
-          }/bin/splashScreen";
-
-          env.PROJECT_ROOT = config.devenv.shells.default.env.DEVENV_ROOT;
+          );
 
           env-help.enable = true;
 
@@ -78,13 +96,6 @@
           };
 
           languages.nix.enable = true;
-
-          scripts = builtins.addErrorContext "while building devenv scripts" (
-            lib.mapAttrs (_: pkg: {
-              inherit (pkg.meta) description;
-              exec = "${pkg}/bin/${pkg.name} $@";
-            }) config.scripts
-          );
         };
       };
     };

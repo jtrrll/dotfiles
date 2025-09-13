@@ -7,7 +7,8 @@
 {
   config = lib.mkIf config.jtrrllDotfiles.repeat.enable {
     home.packages = [
-      (pkgs.writeShellApplication {
+      (pkgs.writeShellApplication rec {
+        meta.mainProgram = name;
         name = "repeat";
         runtimeInputs = [
           pkgs.bashInteractive
