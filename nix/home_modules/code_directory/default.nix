@@ -56,10 +56,7 @@
             RunAtLoad = true;
             StandardErrorPath = "/tmp/code_dir_git_fetch.err";
             StandardOutPath = "/tmp/code_dir_git_fetch.log";
-            StartCalendarInterval = {
-              Hour = 8;
-              Minute = 0;
-            };
+            StartCalendarInterval = lib.hm.darwin.mkCalendarInterval "08:00";
           };
           enable = true;
         };
