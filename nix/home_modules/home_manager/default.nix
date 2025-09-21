@@ -7,6 +7,7 @@
   config = lib.mkIf config.jtrrllDotfiles.homeManager.enable {
     news.display = "silent";
     programs.home-manager.enable = true;
+    services.home-manager.autoExpire.enable = true;
   };
 
   options.jtrrllDotfiles.homeManager = {

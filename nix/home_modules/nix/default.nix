@@ -11,10 +11,7 @@
       '';
       target = ".config/nix/nix.conf";
     };
-    nix.gc = {
-      automatic = true;
-      dates = "monthly";
-    };
+    nix.gc.automatic = true;
   };
 
   options.jtrrllDotfiles.nix = {
