@@ -9,7 +9,7 @@
     athena = lib.makeOverridable (import ./athena) {
       inherit (inputs.nixos-hardware.nixosModules) lenovo-thinkpad-x1;
       inherit (inputs.nixpkgs.lib) nixosSystem;
-      inherit (self.nixosModules) dotfiles;
+      dotfiles = self.nixosModules.default;
     };
   };
 }

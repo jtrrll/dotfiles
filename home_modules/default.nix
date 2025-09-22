@@ -2,7 +2,7 @@
 {
   imports = [ inputs.home-manager.flakeModules.home-manager ];
   flake.homeModules = builtins.addErrorContext "while defining Home Manager modules" {
-    dotfiles = {
+    default = {
       imports =
         let
           constants = import ./constants.nix;

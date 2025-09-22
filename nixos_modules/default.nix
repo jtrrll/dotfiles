@@ -1,8 +1,8 @@
 { inputs, self, ... }:
 {
   flake.nixosModules = builtins.addErrorContext "while defining NixOS modules" {
-    dotfiles = {
-      home-manager.sharedModules = [ self.homeModules.dotfiles ];
+    default = {
+      home-manager.sharedModules = [ self.homeModules.default ];
       imports = [ inputs.home-manager.nixosModules.home-manager ];
     };
   };

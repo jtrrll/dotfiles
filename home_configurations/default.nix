@@ -19,7 +19,7 @@
         inputs.home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
           modules = [
-            self.homeModules.dotfiles
+            self.homeModules.default
             {
               home = {
                 homeDirectory = HOME;

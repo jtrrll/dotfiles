@@ -6,7 +6,7 @@
 let
   eval = builtins.addErrorContext "while evaluating dotfiles module" lib.evalModules {
     modules = [
-      homeModules.dotfiles
+      homeModules.default
       {
         options.home = {
           username = lib.mkOption {
