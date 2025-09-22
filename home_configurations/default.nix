@@ -63,7 +63,12 @@
     in
     {
       default = mkConfig { };
-      work = mkConfig { jtrrllDotfiles.gaming.enable = lib.mkForce false; };
+      work = mkConfig {
+        jtrrllDotfiles = {
+          gaming.enable = lib.mkForce false;
+          musicLibrary.enable = lib.mkForce false;
+        };
+      };
     }
   );
 }
