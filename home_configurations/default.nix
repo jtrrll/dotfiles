@@ -6,7 +6,7 @@
 }:
 {
   imports = [ inputs.home-manager.flakeModules.home-manager ];
-  flake.homeConfigurations = builtins.addErrorContext "while defining home configurations" (
+  flake.homeConfigurations = builtins.addErrorContext "while defining Home Manager configurations" (
     let
       ### start "impure" ###
       HOME = builtins.getEnv "HOME";
@@ -18,7 +18,8 @@
         assert builtins.isAttrs cfg;
         inputs.home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
-          modules = (builtins.attrValues self.homeModules) ++ [
+          modules = [
+            self.homeModules.default
             {
               home = {
                 homeDirectory = HOME;
@@ -62,7 +63,12 @@
     in
     {
       default = mkConfig { };
-      work = mkConfig { jtrrllDotfiles.gaming.enable = lib.mkForce false; };
+      work = mkConfig {
+        jtrrllDotfiles = {
+          gaming.enable = lib.mkForce false;
+          musicLibrary.enable = lib.mkForce false;
+        };
+      };
     }
   );
 }

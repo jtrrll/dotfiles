@@ -2,40 +2,17 @@
   description = "jtrrll's declarative dotfiles";
 
   inputs = {
-    devenv = {
-      inputs.nixpkgs.follows = "nixpkgs";
-      url = "github:cachix/devenv";
-    };
-    env-help = {
-      inputs.nixpkgs.follows = "nixpkgs";
-      url = "github:jtrrll/env-help";
-    };
+    devenv.url = "github:cachix/devenv";
+    env-help.url = "github:jtrrll/env-help";
     flake-parts.url = "github:hercules-ci/flake-parts";
-    home-manager = {
-      inputs.nixpkgs.follows = "nixpkgs";
-      url = "github:nix-community/home-manager";
-    };
-    nix-vscode-extensions = {
-      inputs.nixpkgs.follows = "nixpkgs";
-      url = "github:nix-community/nix-vscode-extensions";
-    };
+    home-manager.url = "github:nix-community/home-manager";
+    nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
+    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    nixvim = {
-      inputs.nixpkgs.follows = "nixpkgs";
-      url = "github:nix-community/nixvim";
-    };
-    snekcheck = {
-      inputs.nixpkgs.follows = "nixpkgs";
-      url = "github:jtrrll/snekcheck";
-    };
-    stylix = {
-      inputs.nixpkgs.follows = "nixpkgs";
-      url = "github:danth/stylix";
-    };
-    treefmt-nix = {
-      inputs.nixpkgs.follows = "nixpkgs";
-      url = "github:numtide/treefmt-nix";
-    };
+    nixvim.url = "github:nix-community/nixvim";
+    snekcheck.url = "github:jtrrll/snekcheck";
+    stylix.url = "github:danth/stylix";
+    treefmt-nix.url = "github:numtide/treefmt-nix";
   };
 
   outputs =
@@ -45,7 +22,19 @@
       ...
     }@inputs:
     flake-parts.lib.mkFlake { inherit inputs; } {
-      imports = [ ./nix ];
+      imports = [
+        ./checks
+        ./dev_shells
+        ./formatter
+        ./home_configurations
+        ./home_modules
+        ./lib
+        ./nixos_configurations
+        ./nixos_modules
+        ./overlays
+        ./packages
+        ./scripts
+      ];
       systems = nixpkgs.lib.systems.flakeExposed;
     };
 }
