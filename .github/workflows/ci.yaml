@@ -44,11 +44,9 @@ jobs:
       fail-fast: false
       matrix:
         configuration: [athena]
-        os: [macos-latest, ubuntu-latest, ubuntu-24.04-arm]
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     steps:
       - name: Free disk space
-        if: runner.os == 'Linux'
         uses: endersonmenezes/free-disk-space@v2
         with:
           remove_dotnet: true
