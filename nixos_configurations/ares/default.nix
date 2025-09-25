@@ -1,6 +1,5 @@
 {
   dotfiles,
-  lenovo-thinkpad-x1,
   nixosSystem,
 }:
 nixosSystem {
@@ -14,7 +13,6 @@ nixosSystem {
         useUserPackages = true;
       };
     }
-    lenovo-thinkpad-x1
     ./hardware_configuration.nix
     {
       users.users.jtrrll = {
@@ -24,39 +22,36 @@ nixosSystem {
       };
     }
     {
-      # Bootloader
-      boot.loader = {
-        systemd-boot.enable = true;
-        efi.canTouchEfiVariables = true;
+      boot = {
+        initrd.kernelModules = [ "amdgpu" ];
+        loader = {
+          systemd-boot.enable = true;
+          efi.canTouchEfiVariables = true;
+        };
       };
 
-      # Networking
       networking = {
-        hostName = "athena";
+        hostName = "ares";
         networkmanager.enable = true;
       };
 
       services = {
-        # Time zone
         automatic-timezoned.enable = true;
 
-        # GNOME Desktop Environment
         displayManager.gdm.enable = true;
         desktopManager.gnome.enable = true;
 
-        # X11
         xserver = {
           enable = true;
+          videoDrivers = [ "amdgpu" ];
           xkb = {
             layout = "us";
             variant = "colemak_dh";
           };
         };
 
-        # CUPS printing
         printing.enable = true;
 
-        # Sound
         pipewire = {
           enable = true;
           pulse.enable = true;
