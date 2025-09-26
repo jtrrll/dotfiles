@@ -22,12 +22,9 @@ nixosSystem {
       };
     }
     {
-      boot = {
-        initrd.kernelModules = [ "amdgpu" ];
-        loader = {
-          systemd-boot.enable = true;
-          efi.canTouchEfiVariables = true;
-        };
+      boot.loader = {
+        systemd-boot.enable = true;
+        efi.canTouchEfiVariables = true;
       };
 
       networking = {
@@ -43,7 +40,6 @@ nixosSystem {
 
         xserver = {
           enable = true;
-          videoDrivers = [ "amdgpu" ];
           xkb = {
             layout = "us";
             variant = "colemak_dh";
