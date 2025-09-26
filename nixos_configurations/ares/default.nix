@@ -1,6 +1,5 @@
 {
   dotfiles,
-  lenovo-thinkpad-x1,
   nixosSystem,
 }:
 nixosSystem {
@@ -42,7 +41,6 @@ nixosSystem {
           };
       };
     }
-    lenovo-thinkpad-x1
     ./hardware_configuration.nix
     {
       users.users.jtrrll = {
@@ -62,7 +60,7 @@ nixosSystem {
       };
 
       networking = {
-        hostName = "athena";
+        hostName = "ares";
         networkmanager.enable = true;
       };
 
