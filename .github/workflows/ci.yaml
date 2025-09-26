@@ -43,7 +43,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        configuration: [athena]
+        configuration: [ares, athena]
     runs-on: ubuntu-latest
     steps:
       - name: Free disk space
