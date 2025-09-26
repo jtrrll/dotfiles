@@ -11,6 +11,7 @@ nixosSystem {
         sharedModules = [ { home.stateVersion = "25.05"; } ];
         useGlobalPkgs = true;
         useUserPackages = true;
+        users.jtrrll = { };
       };
     }
     ./hardware_configuration.nix
