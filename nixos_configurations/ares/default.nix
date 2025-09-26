@@ -18,12 +18,9 @@ nixosSystem {
     {
       users.users.jtrrll = {
         name = "jtrrll";
-        groups = {
-          "networkmanager" = { };
-          "wheel" = { };
-        };
         home = "/home/jtrrll";
         isNormalUser = true;
+        extraGroups = [ "networkmanager" "wheel" ];
       };
     }
     {
