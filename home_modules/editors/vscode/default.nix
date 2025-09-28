@@ -79,6 +79,8 @@
                   gleam.gleam
                   graphql.vscode-graphql
                   graphql.vscode-graphql-syntax
+                  hashicorp.hcl
+                  hashicorp.terraform
                   jnoortheen.nix-ide
                   ms-pyright.pyright
                   ms-python.python
