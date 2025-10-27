@@ -89,7 +89,10 @@
                 enable = true;
                 stages = [ "pre-commit" ];
               };
-              shellcheck.enable = true;
+              shellcheck = {
+                enable = true;
+                excludes = [ ".envrc" ];
+              };
               shfmt.enable = true;
               statix = {
                 enable = true;
