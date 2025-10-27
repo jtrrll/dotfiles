@@ -29,6 +29,7 @@
             }
             {
               jtrrllDotfiles = {
+                ai.enable = true;
                 bat.enable = true;
                 browsers.brave.enable = true;
                 codeDirectory.enable = true;

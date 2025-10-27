@@ -14,6 +14,9 @@ concurrency:
   cancel-in-progress: true
   group: ${{ github.workflow }}-${{ github.ref }}
 
+env:
+  NIXPKGS_ALLOW_UNFREE: 1
+
 jobs:
   build-home-configuration:
     name: Build Home Manager configuration
