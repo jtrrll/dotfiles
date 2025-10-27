@@ -61,7 +61,7 @@ jobs:
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@main
       - name: Build ${{ matrix.configuration }} configuration
-        run: nix build .#nixosConfigurations.${{ matrix.configuration }}.config.system.build.toplevel
+        run: nix build --impure .#nixosConfigurations.${{ matrix.configuration }}.config.system.build.toplevel
   check:
     name: Check
     runs-on: ubuntu-latest
