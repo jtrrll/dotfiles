@@ -16,6 +16,10 @@
           useConfigOnly = true; # require an email to be defined in local .gitconfig
         };
       };
+      ignores = [
+        ".claude/settings.local.json"
+        "*.log"
+      ];
     };
   };
 
