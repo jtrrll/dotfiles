@@ -9,6 +9,7 @@
           lib' = self.lib;
         in
         [
+          ./ai
           ./bat
           ./browsers
           ./code_directory

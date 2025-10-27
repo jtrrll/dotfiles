@@ -40,8 +40,8 @@ writeShellApplication rec {
       exit 1
     fi
 
-    styled_config=$(gum style --bold --foreground=212 "$config")
-
+    export NIXPKGS_ALLOW_UNFREE=1
+    styled_config=$(gum style --bold --foreground=212 "$config")  
     gum spin \
       --show-error \
       --spinner line \

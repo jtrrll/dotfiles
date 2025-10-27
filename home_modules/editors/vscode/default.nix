@@ -67,10 +67,6 @@
                   golang.go
                   sorbet.sorbet-vscode-extension
                 ])
-                ++ (with pkgs.unfree-vscode-extensions; [
-                  github.copilot
-                  github.copilot-chat
-                ])
                 ++ (with pkgs.vscode-extensions; [
                   astro-build.astro-vscode
                   biomejs.biome
