@@ -64,7 +64,9 @@
             extensions = builtins.addErrorContext "while evaluating VSCode extensions" (
               lib'.filterAvailable pkgs.stdenv.system (
                 (with pkgs.nix-vscode-extensions.open-vsx; [
+                  a-h.templ
                   golang.go
+                  nvarner.typst-lsp
                   sorbet.sorbet-vscode-extension
                 ])
                 ++ (with pkgs.vscode-extensions; [
@@ -139,6 +141,7 @@
                   "**/.devenv" = true;
                   "**/.direnv" = true;
                   "**/node_modules" = true;
+                  "**/*_templ.go" = true;
                 };
               };
               nix = {
