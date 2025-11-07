@@ -6,7 +6,7 @@
 }:
 {
   config = lib.mkIf config.jtrrllDotfiles.git.enable {
-    programs.git.aliases.ezswitch = "!${
+    programs.git.settings.alias.ezswitch = "!${
       lib.getExe (
         pkgs.writeShellApplication rec {
           meta.mainProgram = name;
