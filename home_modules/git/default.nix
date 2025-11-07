@@ -7,7 +7,7 @@
   config = lib.mkIf config.jtrrllDotfiles.git.enable {
     programs.git = {
       enable = true;
-      extraConfig = {
+      settings = {
         fetch.prune = true;
         init.defaultBranch = "main";
         push.autoSetupRemote = true;
