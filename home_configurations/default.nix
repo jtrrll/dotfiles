@@ -18,8 +18,7 @@
         assert builtins.isAttrs cfg;
         inputs.home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
-          modules = [
-            self.homeModules.default
+          modules = builtins.attrValues self.homeModules ++ [
             {
               home = {
                 homeDirectory = HOME;

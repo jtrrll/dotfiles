@@ -6,7 +6,7 @@
 }:
 {
   config = lib.mkIf config.jtrrllDotfiles.git.enable {
-    programs.git.aliases.trim = "!${
+    programs.git.settings.alias.trim = "!${
       lib.getExe (
         pkgs.writeShellApplication rec {
           meta.mainProgram = name;

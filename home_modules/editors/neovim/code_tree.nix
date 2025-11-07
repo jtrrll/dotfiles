@@ -9,7 +9,7 @@
       dropbar.enable = true;
       rainbow-delimiters = {
         enable = true;
-        highlight = [
+        settings.highlight = [
           "RainbowDelimiterYellow"
           "RainbowDelimiterRed"
           "RainbowDelimiterBlue"
