@@ -32,6 +32,5 @@
           (import ./theme { inherit (inputs.stylix.homeModules) stylix; })
         ];
     };
-    retroarch = import ./retroarch;
   };
 }
