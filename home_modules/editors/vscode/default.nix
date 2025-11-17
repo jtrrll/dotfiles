@@ -16,53 +16,12 @@
         ];
         programs.vscode = {
           enable = true;
-          # This patch is needed to enable GitHub Copilot Chat in VSCodium.
-          # macOS will block this program from running because the patch modifies a signed app bundle.
-          # This can be resolved by running it with admin permissions once.
-          package = pkgs.vscodium.overrideAttrs (old: {
-            nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
-              pkgs.jq
-              pkgs.uutils-coreutils-noprefix
-            ];
-            postInstall =
-              (old.postInstall or "")
-              + (
-                let
-                  vscodeProductJSON =
-                    if pkgs.stdenv.isDarwin then
-                      "Applications/Visual Studio Code.app/Contents/Resources/app/product.json"
-                    else
-                      "lib/vscode/resources/app/product.json";
-                  vscodiumProductJSON =
-                    if pkgs.stdenv.isDarwin then
-                      "Applications/VSCodium.app/Contents/Resources/app/product.json"
-                    else
-                      "lib/vscode/resources/app/product.json";
-                in
-                ''
-                  product_file="$out/${vscodiumProductJSON}"
-
-                  if [ -f "$product_file" ]; then
-                    printf "Patching product.json to enable GitHub Copilot Chat\n"
-
-                    tmp_file="$product_file.tmp"
-
-                    jq --slurpfile vscode "${pkgs.vscode}/${vscodeProductJSON}" '
-                      .defaultChatAgent = $vscode[0]["defaultChatAgent"]
-                    ' "$product_file" > "$tmp_file"
-
-                    mv "$tmp_file" "$product_file"
-                  else
-                    printf "product.json not found at %s\n" "$product_file"
-                  fi
-                ''
-              );
-          });
+          package = pkgs.vscodium;
           profiles.default = {
             enableUpdateCheck = false;
             enableExtensionUpdateCheck = false;
             extensions = builtins.addErrorContext "while evaluating VSCode extensions" (
-              lib'.filterAvailable pkgs.stdenv.system (
+              lib'.filterAvailable pkgs.stdenv.hostPlatform.system (
                 (with pkgs.nix-vscode-extensions.open-vsx; [
                   a-h.templ
                   golang.go

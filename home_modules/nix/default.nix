@@ -1,17 +1,18 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }:
 {
   config = lib.mkIf config.jtrrllDotfiles.nix.enable {
-    home.file.nix-conf = {
-      text = ''
-        extra-experimental-features = flakes nix-command no-url-literals
-      '';
-      target = ".config/nix/nix.conf";
+    nix = {
+      gc.automatic = true;
+      package = lib.mkDefault pkgs.nix;
+      settings = {
+        extra-experimental-features = "flakes nix-command no-url-literals";
+      };
     };
-    nix.gc.automatic = true;
   };
 
   options.jtrrllDotfiles.nix = {
