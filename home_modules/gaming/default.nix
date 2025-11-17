@@ -28,7 +28,7 @@
           '';
         };
       };
-      packages = lib'.filterAvailable pkgs.stdenv.system [
+      packages = lib'.filterAvailable pkgs.stdenv.hostPlatform.system [
         pkgs.prismlauncher
         pkgs.steam-rom-manager
       ];
@@ -48,6 +48,13 @@
           swanstation.enable = true;
         };
         settings = {
+          all_users_control_menu = "true";
+          content_show_images = "false";
+          content_show_music = "false";
+          content_show_netplay = "false";
+          content_show_video = "false";
+          input_max_users = "4";
+          menu_driver = "ozone";
           netplay_nickname = "jtrrll";
           rgui_browser_directory = "${config.home.homeDirectory}/game_library";
           video_driver = "vulkan";

@@ -11,7 +11,6 @@
     {
       devenv = builtins.addErrorContext "while defining devenv" {
         modules = [
-          inputs.env-help.devenvModule
           {
             containers = lib.mkForce { }; # Workaround to remove containers from flake checks.
           }
@@ -52,8 +51,6 @@
               '';
             }
           );
-
-          env-help.enable = true;
 
           git-hooks = {
             default_stages = [ "pre-push" ];
