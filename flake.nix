@@ -3,7 +3,6 @@
 
   inputs = {
     devenv.url = "github:cachix/devenv";
-    env-help.url = "github:jtrrll/env-help";
     flake-parts.url = "github:hercules-ci/flake-parts";
     home-manager.url = "github:nix-community/home-manager";
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
