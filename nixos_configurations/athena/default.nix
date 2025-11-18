@@ -16,6 +16,7 @@ nixosSystem {
           { pkgs, ... }:
           {
             jtrrllDotfiles = {
+              ai.enable = true;
               bat.enable = true;
               browsers.brave.enable = true;
               codeDirectory.enable = true;
@@ -64,6 +65,10 @@ nixosSystem {
       networking = {
         hostName = "athena";
         networkmanager.enable = true;
+      };
+
+      programs = {
+        xwayland.enable = true;
       };
 
       services = {
