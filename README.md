@@ -16,12 +16,19 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 2. Activate a configuration interactively by running the following:
 
    ```sh
-   nix run github:jtrrll/dotfiles
+   nix run github:jtrrll/dotfiles home
    ```
 
 ## Options
 
 <!-- BEGIN OPTIONS -->
+### `jtrrllDotfiles.ai.enable`
+
+* Default: `false`
+* Description: Whether to enable jtrrll's AI configuration.
+* Example: `true`
+* Type: `boolean`
+
 ### `jtrrllDotfiles.bat.enable`
 
 * Default: `false`
