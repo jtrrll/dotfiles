@@ -58,7 +58,10 @@ nixosSystem {
     }
     {
       boot.loader = {
-        systemd-boot.enable = true;
+        systemd-boot = {
+          configurationLimit = 2;
+          enable = true;
+        };
         efi.canTouchEfiVariables = true;
       };
 
@@ -68,6 +71,10 @@ nixosSystem {
       };
 
       programs = {
+        steam = {
+          enable = true;
+          remotePlay.openFirewall = true;
+        };
         xwayland.enable = true;
       };
 

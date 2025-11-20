@@ -19,7 +19,8 @@
 
   perSystem =
     let
-      configurations = builtins.attrNames self.homeConfigurations;
+      homeConfigurations = builtins.attrNames self.homeConfigurations;
+      nixosConfigurations = builtins.attrNames (self.nixosConfigurations or { });
     in
     {
       inputs',
@@ -35,8 +36,8 @@
         };
       };
       scripts = builtins.addErrorContext "while defining scripts" {
-        activate = pkgs.callPackage ./activate.nix {
-          inherit configurations;
+        activate = pkgs.callPackage ./activate {
+          inherit homeConfigurations nixosConfigurations;
           rootPath = self;
         };
         lint = pkgs.callPackage ./lint.nix {

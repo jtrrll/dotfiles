@@ -39,7 +39,7 @@ writeShellApplication rec {
 
     Sleep 1s
 
-    Type "nix run github:jtrrll/dotfiles"
+    Type "nix run github:jtrrll/dotfiles home"
     Sleep 1s
     Enter
 
