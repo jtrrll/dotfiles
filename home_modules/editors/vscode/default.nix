@@ -27,6 +27,7 @@
                   golang.go
                   nvarner.typst-lsp
                   sorbet.sorbet-vscode-extension
+                  thenuprojectcontributors.vscode-nushell-lang
                 ])
                 ++ (with pkgs.vscode-extensions; [
                   astro-build.astro-vscode
