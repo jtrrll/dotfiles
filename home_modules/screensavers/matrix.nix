@@ -11,8 +11,8 @@
         meta.mainProgram = name;
         name = "matrix";
         runtimeInputs = [
-          pkgs.coreutils
           pkgs.neo
+          pkgs.uutils-coreutils-noprefix
         ];
         text = ''
           if [[ "$#" -ne 0 ]]; then

@@ -12,7 +12,7 @@
         name = "repeat";
         runtimeInputs = [
           pkgs.bashInteractive
-          pkgs.coreutils
+          pkgs.uutils-coreutils-noprefix
           pkgs.watch
         ];
         text = ''
