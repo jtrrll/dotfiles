@@ -12,9 +12,9 @@
           meta.mainProgram = name;
           name = "git-ezswitch";
           runtimeInputs = [
-            pkgs.coreutils
-            pkgs.git
+            config.programs.git.package
             pkgs.gum
+            pkgs.uutils-coreutils-noprefix
           ];
           text = ''
             if [[ "$#" -eq 0 ]]; then

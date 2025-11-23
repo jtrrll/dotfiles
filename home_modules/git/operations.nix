@@ -12,10 +12,10 @@
           meta.mainProgram = name;
           name = "git-trim";
           runtimeInputs = [
-            pkgs.coreutils
-            pkgs.git
+            config.programs.git.package
             pkgs.gnugrep
             pkgs.gum
+            pkgs.uutils-coreutils-noprefix
           ];
           text = ''
             if [[ "$#" -ne 1 ]]; then
