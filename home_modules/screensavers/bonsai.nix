@@ -12,7 +12,7 @@
         name = "bonsai";
         runtimeInputs = [
           pkgs.cbonsai
-          pkgs.coreutils
+          pkgs.uutils-coreutils-noprefix
         ];
         text = ''
           if [[ "$#" -ne 0 ]]; then
