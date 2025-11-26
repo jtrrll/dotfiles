@@ -7,7 +7,6 @@
   nixos-rebuild,
   replaceVars,
   rootPath,
-  uutils-coreutils-noprefix,
   writers,
 }:
 let
@@ -34,7 +33,6 @@ in
       gum
       home-manager
       nixos-rebuild
-      uutils-coreutils-noprefix
     ])
   ];
 } (lib.readFile script)).overrideAttrs
