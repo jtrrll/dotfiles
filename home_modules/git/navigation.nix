@@ -14,7 +14,6 @@
           runtimeInputs = [
             config.programs.git.package
             pkgs.gum
-            pkgs.uutils-coreutils-noprefix
           ];
           text = ''
             if [[ "$#" -eq 0 ]]; then
