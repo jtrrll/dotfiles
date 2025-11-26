@@ -36,8 +36,8 @@ jobs:
           remove_packages: "azure-cli microsoft-edge-stable google-chrome-stable firefox postgresql* *llvm* mysql*"
           testing: false
       - uses: actions/checkout@v6
-      - uses: DeterminateSystems/nix-installer-action@21
-      - uses: DeterminateSystems/magic-nix-cache-action@13
+      - uses: DeterminateSystems/nix-installer-action@v21
+      - uses: DeterminateSystems/magic-nix-cache-action@v13
       - name: Build ${{ matrix.configuration }} configuration
         run: nix build --impure .#homeConfigurations.${{ matrix.configuration }}.activationPackage
   build-nixos-configuration:
@@ -56,8 +56,8 @@ jobs:
           remove_packages: "azure-cli microsoft-edge-stable google-chrome-stable firefox postgresql* *llvm* mysql*"
           testing: false
       - uses: actions/checkout@v6
-      - uses: DeterminateSystems/nix-installer-action@21
-      - uses: DeterminateSystems/magic-nix-cache-action@13
+      - uses: DeterminateSystems/nix-installer-action@v21
+      - uses: DeterminateSystems/magic-nix-cache-action@v13
       - name: Build ${{ matrix.configuration }} configuration
         run: nix build --impure .#nixosConfigurations.${{ matrix.configuration }}.config.system.build.toplevel
   check:
@@ -65,8 +65,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - uses: DeterminateSystems/nix-installer-action@21
-      - uses: DeterminateSystems/magic-nix-cache-action@13
+      - uses: DeterminateSystems/nix-installer-action@v21
+      - uses: DeterminateSystems/magic-nix-cache-action@v13
       - uses: DeterminateSystems/flake-checker-action@v12
       - name: Check flake
         run: nix flake check --impure
