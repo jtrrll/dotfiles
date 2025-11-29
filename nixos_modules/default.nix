@@ -2,7 +2,10 @@
 {
   flake.nixosModules = builtins.addErrorContext "while defining NixOS modules" {
     default = {
-      home-manager.sharedModules = builtins.attrValues self.homeModules;
+      home-manager = {
+        backupFileExtension = "bak";
+        sharedModules = builtins.attrValues self.homeModules;
+      };
       imports = [ inputs.home-manager.nixosModules.home-manager ];
       nixpkgs.overlays = [ self.overlays.default ];
     };

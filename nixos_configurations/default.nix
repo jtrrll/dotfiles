@@ -15,5 +15,10 @@
       inherit (inputs.nixpkgs.lib) nixosSystem;
       dotfiles = self.nixosModules.default;
     };
+    hestia = lib.makeOverridable (import ./hestia) {
+      inherit (inputs.nixos-hardware.nixosModules) raspberry-pi-3;
+      inherit (inputs.nixpkgs.lib) nixosSystem;
+      dotfiles = self.nixosModules.default;
+    };
   };
 }
