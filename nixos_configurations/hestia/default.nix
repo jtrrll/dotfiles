@@ -1,6 +1,7 @@
 {
   dotfiles,
   nixosSystem,
+  raspberry-pi-3,
 }:
 nixosSystem {
   system = "aarch64-linux";
@@ -27,6 +28,7 @@ nixosSystem {
         };
       };
     }
+    raspberry-pi-3
     ./hardware_configuration.nix
     {
       users.users.jtrrll = {
