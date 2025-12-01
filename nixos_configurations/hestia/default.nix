@@ -1,5 +1,6 @@
 {
   dotfiles,
+  homeAssistant,
   nixosSystem,
   raspberry-pi-3,
 }:
@@ -7,6 +8,7 @@ nixosSystem {
   system = "aarch64-linux";
   modules = [
     dotfiles
+    homeAssistant
     {
       home-manager = {
         sharedModules = [ { home.stateVersion = "25.05"; } ];
@@ -61,12 +63,11 @@ nixosSystem {
           };
         };
 
-        printing.enable = true;
-
-        pipewire = {
+        caddy = {
           enable = true;
-          pulse.enable = true;
         };
+
+        openssh.enable = true;
       };
 
       system.stateVersion = "25.05";
