@@ -66,6 +66,11 @@ nixosSystem {
         };
       };
 
+      hardware = {
+        amdgpu.initrd.enable = true;
+        enableRedistributableFirmware = true;
+      };
+
       networking = {
         hostName = "ares";
         networkmanager.enable = true;
@@ -87,6 +92,7 @@ nixosSystem {
 
         xserver = {
           enable = true;
+          videoDrivers = [ "amdgpu" ];
           xkb = {
             layout = "us";
             variant = "colemak_dh";

@@ -17,8 +17,6 @@ nixosSystem {
         users.jtrrll = {
           jtrrllDotfiles = {
             bat.enable = true;
-            browsers.brave.enable = true;
-            codeDirectory.enable = true;
             editors.neovim.enable = true;
             fileSystem.enable = true;
             git.enable = true;
@@ -52,9 +50,6 @@ nixosSystem {
       services = {
         automatic-timezoned.enable = true;
 
-        displayManager.gdm.enable = true;
-        desktopManager.gnome.enable = true;
-
         xserver = {
           enable = true;
           xkb = {
@@ -63,9 +58,7 @@ nixosSystem {
           };
         };
 
-        caddy = {
-          enable = true;
-        };
+        caddy.enable = true;
 
         openssh.enable = true;
       };
