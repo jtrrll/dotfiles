@@ -45,8 +45,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        configuration: [ares, athena]
-    runs-on: ubuntu-latest
+        include:
+          - configuration: ares
+            runs-on: ubuntu-latest
+          - configuration: athena
+            runs-on: ubuntu-latest
+          - configuration: hestia
+            runs-on: ubuntu-24.04-arm
+    runs-on: ${{ matrix.runs-on }}
     steps:
       - name: Free disk space
         uses: endersonmenezes/free-disk-space@v3

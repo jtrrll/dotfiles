@@ -92,6 +92,8 @@ nixosSystem {
           };
         };
 
+        openssh.enable = true;
+
         printing.enable = true;
 
         pipewire = {

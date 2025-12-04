@@ -55,12 +55,20 @@ nixosSystem {
       };
     }
     {
-      boot.loader = {
-        systemd-boot = {
-          configurationLimit = 2;
-          enable = true;
+      boot = {
+        binfmt.emulatedSystems = [ "aarch64-linux" ]; # For building ARM packages
+        loader = {
+          systemd-boot = {
+            configurationLimit = 2;
+            enable = true;
+          };
+          efi.canTouchEfiVariables = true;
         };
-        efi.canTouchEfiVariables = true;
+      };
+
+      hardware = {
+        amdgpu.initrd.enable = true;
+        enableRedistributableFirmware = true;
       };
 
       networking = {
@@ -84,11 +92,14 @@ nixosSystem {
 
         xserver = {
           enable = true;
+          videoDrivers = [ "amdgpu" ];
           xkb = {
             layout = "us";
             variant = "colemak_dh";
           };
         };
+
+        openssh.enable = true;
 
         printing.enable = true;
 
