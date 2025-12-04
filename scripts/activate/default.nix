@@ -2,9 +2,8 @@
   homeConfigurations ? [ ],
   nixosConfigurations ? [ ],
   gum,
-  home-manager,
   lib,
-  nixos-rebuild,
+  nh,
   replaceVars,
   rootPath,
   writers,
@@ -31,8 +30,7 @@ in
     ":"
     (lib.makeBinPath [
       gum
-      home-manager
-      nixos-rebuild
+      nh
     ])
   ];
 } (lib.readFile script)).overrideAttrs

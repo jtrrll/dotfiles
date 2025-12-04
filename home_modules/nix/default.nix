@@ -6,12 +6,13 @@
 }:
 {
   config = lib.mkIf config.jtrrllDotfiles.nix.enable {
+    programs.nh = {
+      enable = true;
+      clean.enable = true;
+    };
     nix = {
-      gc.automatic = true;
       package = lib.mkDefault pkgs.nix;
-      settings = {
-        extra-experimental-features = "flakes nix-command no-url-literals";
-      };
+      settings.extra-experimental-features = "flakes nix-command no-url-literals";
     };
   };
 
