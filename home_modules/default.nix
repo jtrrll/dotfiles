@@ -1,7 +1,7 @@
 { inputs, self, ... }:
 {
   imports = [ inputs.home-manager.flakeModules.home-manager ];
-  flake.homeModules = builtins.addErrorContext "while defining Home Manager modules" {
+  flake.homeModules = {
     default = {
       imports =
         let

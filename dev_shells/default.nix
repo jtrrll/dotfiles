@@ -9,33 +9,57 @@
       ...
     }:
     {
-      devenv = builtins.addErrorContext "while defining devenv" {
+      devenv = {
         modules = [
+          inputs.justix.devenvModules.default
           {
             containers = lib.mkForce { }; # Workaround to remove containers from flake checks.
+          }
+          {
+            justix = {
+              enable = true;
+              justfile = {
+                recipes = {
+                  default = {
+                    attributes = {
+                      default = true;
+                      doc = "Lists available recipes";
+                      private = true;
+                    };
+                    commands = "@just --list";
+                  };
+                  fmt = {
+                    attributes.doc = "Formats and lints files";
+                    commands = ''
+                      @find "{{ paths }}" ! -path '*/.*' -exec snekcheck --fix {} +
+                      @nix fmt -- {{ paths }}
+                    '';
+                    parameters = [ "*paths='.'" ];
+                  };
+                };
+              };
+            };
           }
           (
             { config, ... }:
             {
-              scripts = builtins.addErrorContext "while defining devenv scripts" (
+              justix.justfile.recipes =
                 let
-                  pkgToScript = pkg: {
-                    inherit (pkg.meta) description;
-                    exec = "${lib.getExe pkg} $@";
+                  pkgToRecipe = pkg: {
+                    attributes.doc = pkg.meta.description;
+                    commands = "@${lib.getExe pkg} {{ args }}";
+                    parameters = [ "*args" ];
                   };
                   rootPath = config.devenv.root;
                 in
-                with self'.scripts;
                 {
-                  activate = pkgToScript (activate.override { inherit rootPath; });
-                  lint = pkgToScript (lint.override { inherit rootPath; });
-                  update-docs = pkgToScript update-docs;
-                }
-              );
+                  activate = pkgToRecipe (self'.scripts.activate.override { inherit rootPath; });
+                  update-docs = pkgToRecipe self'.scripts.update-docs;
+                };
             }
           )
         ];
-        shells.default = builtins.addErrorContext "while defining default devenv shell" {
+        shells.default = {
           enterShell = lib.getExe (
             pkgs.writeShellApplication rec {
               meta.mainProgram = name;
@@ -69,11 +93,10 @@
               };
               end-of-file-fixer.enable = true;
               flake-checker.enable = true;
-              lint = {
+              fmt = {
                 enable = true;
-                entry = "lint";
-                name = "lint";
-                pass_filenames = false;
+                entry = "just fmt";
+                name = "fmt";
               };
               markdownlint.enable = true;
               mixed-line-endings.enable = true;

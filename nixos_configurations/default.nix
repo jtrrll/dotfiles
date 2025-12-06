@@ -5,7 +5,7 @@
   ...
 }:
 {
-  flake.nixosConfigurations = builtins.addErrorContext "while defining NixOS configurations" {
+  flake.nixosConfigurations = {
     ares = lib.makeOverridable (import ./ares) {
       inherit (inputs.nixpkgs.lib) nixosSystem;
       dotfiles = self.nixosModules.homeManager;

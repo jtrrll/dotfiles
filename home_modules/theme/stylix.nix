@@ -44,9 +44,7 @@ in
       image = config.lib.stylix.pixel "base0D";
     }
     // lib.optionalAttrs backgroundImageExists {
-      image = builtins.addErrorContext "while fetching background image" (
-        builtins.fetchurl { url = "file://${config.jtrrllDotfiles.theme.backgroundImage}"; }
-      );
+      image = builtins.fetchurl { url = "file://${config.jtrrllDotfiles.theme.backgroundImage}"; };
     }
     // lib.optionalAttrs schemeDefined { inherit (config.jtrrllDotfiles.theme) base16Scheme; };
   };

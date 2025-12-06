@@ -39,6 +39,8 @@ def "main os" [
       | gum choose --header="Select a configuration to activate"
   }
 
+  sudo --validate
+
   let styled_config = (gum style --bold --foreground=212 $selected_config)
 
   with-env {

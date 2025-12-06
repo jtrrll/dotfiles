@@ -4,7 +4,7 @@
   ...
 }:
 {
-  flake.nixosModules = builtins.addErrorContext "while defining NixOS modules" {
+  flake.nixosModules = {
     homeAssistant = import ./home_assistant { };
     homeManager = import ./home_manager {
       inherit (self) homeModules;

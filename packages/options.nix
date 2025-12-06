@@ -4,7 +4,7 @@
   writeTextFile,
 }:
 let
-  eval = builtins.addErrorContext "while evaluating dotfiles module" lib.evalModules {
+  eval = lib.evalModules {
     modules = [
       homeModules.default
       {
@@ -39,8 +39,7 @@ let
       acc // result
     ) { } opts;
   options = flattenOptions "jtrrllDotfiles" eval.options.jtrrllDotfiles;
-  optionsMarkdown = builtins.addErrorContext "while formatting options as markdown text" (
-    lib.concatStringsSep "\n" (
+  optionsMarkdown = lib.concatStringsSep "\n" (
       lib.mapAttrsToList (
         name: opt:
         let
@@ -57,8 +56,7 @@ let
           ${defaultLine}${descriptionLine}${exampleLine}${typeLine}
         ''
       ) options
-    )
-  );
+    );
 in
 writeTextFile {
   meta = {
