@@ -20,8 +20,7 @@
           profiles.default = {
             enableUpdateCheck = false;
             enableExtensionUpdateCheck = false;
-            extensions = builtins.addErrorContext "while evaluating VSCode extensions" (
-              lib'.filterAvailable pkgs.stdenv.hostPlatform.system (
+            extensions = lib'.filterAvailable pkgs.stdenv.hostPlatform.system (
                 (with pkgs.nix-vscode-extensions.open-vsx; [
                   a-h.templ
                   golang.go
@@ -52,18 +51,14 @@
                   vscodevim.vim
                   ziglang.vscode-zig
                 ])
-              )
-            );
-            globalSnippets = builtins.addErrorContext "while parsing global snippets for VSCode" (
-              let
+              );
+            globalSnippets = let
                 path = ./snippets/global.json;
                 json = if (builtins.pathExists path) then (builtins.fromJSON (builtins.readFile path)) else { };
               in
               assert builtins.isAttrs json;
-              json
-            );
-            languageSnippets = builtins.addErrorContext "while parsing per-language snippets for VSCode" (
-              let
+              json;
+            languageSnippets = let
                 dir = ./snippets/per_language;
                 filenames = builtins.attrNames (if (builtins.pathExists dir) then (builtins.readDir dir) else { });
               in
@@ -81,8 +76,7 @@
                       json;
                   }
                 ) filenames
-              )
-            );
+              );
             userSettings = {
               biome.suggestInstallingGlobally = false;
               editor = {

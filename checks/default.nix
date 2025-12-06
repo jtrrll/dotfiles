@@ -10,7 +10,7 @@
       ...
     }:
     {
-      checks = builtins.addErrorContext "while defining checks" {
+      checks = {
         snekcheck =
           pkgs.runCommandLocal "snekcheck"
             {

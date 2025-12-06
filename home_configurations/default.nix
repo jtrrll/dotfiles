@@ -6,8 +6,7 @@
 }:
 {
   imports = [ inputs.home-manager.flakeModules.home-manager ];
-  flake.homeConfigurations = builtins.addErrorContext "while defining Home Manager configurations" (
-    let
+  flake.homeConfigurations = let
       ### start "impure" ###
       HOME = builtins.getEnv "HOME";
       SYSTEM = builtins.currentSystem;
@@ -69,6 +68,5 @@
           musicLibrary.enable = lib.mkForce false;
         };
       };
-    }
-  );
+    };
 }

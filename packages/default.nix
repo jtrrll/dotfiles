@@ -3,7 +3,7 @@
   perSystem =
     { pkgs, ... }:
     {
-      packages = builtins.addErrorContext "while defining packages" {
+      packages = {
         options = pkgs.callPackage ./options.nix {
           inherit (config.flake) homeModules;
         };
