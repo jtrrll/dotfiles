@@ -5,21 +5,25 @@
   ...
 }:
 {
-  flake.nixosConfigurations = {
-    ares = lib.makeOverridable (import ./ares) {
-      inherit (inputs.nixpkgs.lib) nixosSystem;
-      dotfiles = self.nixosModules.homeManager;
+  flake.nixosConfigurations =
+    let
+      inherit (inputs.nixpkgs-nixos.lib) nixosSystem;
+    in
+    {
+      ares = lib.makeOverridable (import ./ares) {
+        inherit nixosSystem;
+        dotfiles = self.nixosModules.homeManager;
+      };
+      athena = lib.makeOverridable (import ./athena) {
+        inherit (inputs.nixos-hardware.nixosModules) lenovo-thinkpad-x1;
+        inherit nixosSystem;
+        dotfiles = self.nixosModules.homeManager;
+      };
+      hestia = lib.makeOverridable (import ./hestia) {
+        inherit (inputs.nixos-hardware.nixosModules) raspberry-pi-3;
+        inherit (self.nixosModules) homeAssistant;
+        inherit nixosSystem;
+        dotfiles = self.nixosModules.homeManager;
+      };
     };
-    athena = lib.makeOverridable (import ./athena) {
-      inherit (inputs.nixos-hardware.nixosModules) lenovo-thinkpad-x1;
-      inherit (inputs.nixpkgs.lib) nixosSystem;
-      dotfiles = self.nixosModules.homeManager;
-    };
-    hestia = lib.makeOverridable (import ./hestia) {
-      inherit (inputs.nixos-hardware.nixosModules) raspberry-pi-3;
-      inherit (inputs.nixpkgs.lib) nixosSystem;
-      dotfiles = self.nixosModules.homeManager;
-      inherit (self.nixosModules) homeAssistant;
-    };
-  };
 }

@@ -6,7 +6,8 @@
 }:
 {
   imports = [ inputs.home-manager.flakeModules.home-manager ];
-  flake.homeConfigurations = let
+  flake.homeConfigurations =
+    let
       ### start "impure" ###
       HOME = builtins.getEnv "HOME";
       SYSTEM = builtins.currentSystem;
@@ -55,7 +56,7 @@
             cfg
           ];
         };
-      pkgs = import inputs.nixpkgs {
+      pkgs = import inputs.nixpkgs-home-manager {
         inherit SYSTEM;
         overlays = [ self.overlays.default ];
       };
