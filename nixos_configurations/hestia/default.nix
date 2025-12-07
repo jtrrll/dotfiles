@@ -12,8 +12,6 @@ nixosSystem {
     {
       home-manager = {
         sharedModules = [ { home.stateVersion = "25.05"; } ];
-        useGlobalPkgs = true;
-        useUserPackages = true;
         users.jtrrll = {
           jtrrllDotfiles = {
             bat.enable = true;
