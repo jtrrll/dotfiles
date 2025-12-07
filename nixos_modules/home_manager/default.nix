@@ -9,7 +9,7 @@
   home-manager = {
     backupFileExtension = "bak";
     sharedModules = lib.attrValues homeModules;
-    useUserPkgs = true;
+    useUserPackages = true;
     extraSpecialArgs = {
       pkgs = import nixpkgs {
         inherit (pkgs) system;
