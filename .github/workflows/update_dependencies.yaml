@@ -11,8 +11,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  nix-flake:
-    name: Update Nix flake dependencies
+  development:
+    name: Update development dependencies
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -21,9 +21,47 @@ jobs:
       - name: Update flake.lock
         uses: DeterminateSystems/update-flake-lock@v28
         with:
-          pr-title: "deps: update Nix flake dependencies"
+          branch: "update_flake_lock_development"
+          inputs: devenv flake-parts justix nixpkgs treefmt-nix
+          pr-title: "deps: update development dependencies"
           pr-labels: |
             automated
             dependencies
             nix
           token: ${{ secrets.PR_BOT_PERSONAL_ACCESS_TOKEN }}
+  home-manager:
+    name: Update Home Manager dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: DeterminateSystems/nix-installer-action@v21
+      - uses: DeterminateSystems/magic-nix-cache-action@v13
+      - name: Update flake.lock
+        uses: DeterminateSystems/update-flake-lock@v28
+        with:
+          branch: "update_flake_lock_home_manager"
+          inputs: home-manager nix-vscode-extensions nixpkgs-home-manager nixvim snekcheck stylix
+          pr-title: "deps: update Home Manager dependencies"
+          pr-labels: |
+            automated
+            dependencies
+            nix
+          token: ${{ secrets.PR_BOT_PERSONAL_ACCESS_TOKEN }}
+  nixos:
+    name: Update NixOS dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: DeterminateSystems/nix-installer-action@v21
+      - uses: DeterminateSystems/magic-nix-cache-action@v13
+      - name: Update flake.lock
+        uses: DeterminateSystems/update-flake-lock@v28
+        with:
+          branch: "update_flake_lock_nixos"
+          inputs: nixos-hardware nixpkgs-nixos 
+          pr-title: "deps: update NixOS dependencies"
+          pr-labels: |
+            automated
+            dependencies
+            nix
+          token: ${{ secrets.PR_BOT_PERSONAL_ACCESS_TOKEN }} 
