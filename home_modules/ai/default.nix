@@ -11,18 +11,8 @@
       agentsDir = ./claude_agents;
       mcpServers = {
         atlassian = {
-          type = "http";
+          type = "sse";
           url = "https://mcp.atlassian.com/v1/sse";
-        };
-        filesystem = {
-          type = "stdio";
-          command = "${pkgs.bun}/bin/bunx";
-          args = [ "@modelcontextprotocol/server-filesystem" ];
-        };
-        git = {
-          type = "stdio";
-          command = "${pkgs.bun}/bin/bunx";
-          args = [ "@cyanheads/git-mcp-server@latest" ];
         };
         github = {
           type = "http";

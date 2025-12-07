@@ -4,7 +4,7 @@
   writeTextFile,
 }:
 let
-  eval = builtins.addErrorContext "while evaluating dotfiles module" lib.evalModules {
+  eval = lib.evalModules {
     modules = [
       homeModules.default
       {
@@ -39,25 +39,23 @@ let
       acc // result
     ) { } opts;
   options = flattenOptions "jtrrllDotfiles" eval.options.jtrrllDotfiles;
-  optionsMarkdown = builtins.addErrorContext "while formatting options as markdown text" (
-    lib.concatStringsSep "\n" (
-      lib.mapAttrsToList (
-        name: opt:
-        let
-          defaultLine = lib.optionalString (opt ? default) "* Default: `${builtins.toJSON opt.default}`\n";
-          descriptionLine = lib.optionalString (opt ? description) "* Description: ${opt.description}\n";
-          exampleLine = lib.optionalString (opt ? example) "* Example: `${builtins.toJSON opt.example}`\n";
-          typeLine = lib.optionalString (
-            opt ? type && opt.type ? description
-          ) "* Type: `${opt.type.description}`";
-        in
-        ''
-          ### `${name}`
+  optionsMarkdown = lib.concatStringsSep "\n" (
+    lib.mapAttrsToList (
+      name: opt:
+      let
+        defaultLine = lib.optionalString (opt ? default) "* Default: `${builtins.toJSON opt.default}`\n";
+        descriptionLine = lib.optionalString (opt ? description) "* Description: ${opt.description}\n";
+        exampleLine = lib.optionalString (opt ? example) "* Example: `${builtins.toJSON opt.example}`\n";
+        typeLine = lib.optionalString (
+          opt ? type && opt.type ? description
+        ) "* Type: `${opt.type.description}`";
+      in
+      ''
+        ### `${name}`
 
-          ${defaultLine}${descriptionLine}${exampleLine}${typeLine}
-        ''
-      ) options
-    )
+        ${defaultLine}${descriptionLine}${exampleLine}${typeLine}
+      ''
+    ) options
   );
 in
 writeTextFile {

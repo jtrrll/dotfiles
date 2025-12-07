@@ -20,49 +20,46 @@
           profiles.default = {
             enableUpdateCheck = false;
             enableExtensionUpdateCheck = false;
-            extensions = builtins.addErrorContext "while evaluating VSCode extensions" (
-              lib'.filterAvailable pkgs.stdenv.hostPlatform.system (
-                (with pkgs.nix-vscode-extensions.open-vsx; [
-                  a-h.templ
-                  golang.go
-                  nvarner.typst-lsp
-                  sorbet.sorbet-vscode-extension
-                  thenuprojectcontributors.vscode-nushell-lang
-                ])
-                ++ (with pkgs.vscode-extensions; [
-                  astro-build.astro-vscode
-                  biomejs.biome
-                  bradlc.vscode-tailwindcss
-                  geequlim.godot-tools
-                  gleam.gleam
-                  graphql.vscode-graphql
-                  graphql.vscode-graphql-syntax
-                  hashicorp.hcl
-                  hashicorp.terraform
-                  jnoortheen.nix-ide
-                  ms-pyright.pyright
-                  ms-python.python
-                  ms-toolsai.jupyter
-                  redhat.java
-                  redhat.vscode-xml
-                  redhat.vscode-yaml
-                  rust-lang.rust-analyzer
-                  shopify.ruby-lsp
-                  sumneko.lua
-                  vscodevim.vim
-                  ziglang.vscode-zig
-                ])
-              )
+            extensions = lib'.filterAvailable pkgs.stdenv.hostPlatform.system (
+              (with pkgs.nix-vscode-extensions.open-vsx; [
+                a-h.templ
+                golang.go
+                nvarner.typst-lsp
+                sorbet.sorbet-vscode-extension
+                thenuprojectcontributors.vscode-nushell-lang
+              ])
+              ++ (with pkgs.vscode-extensions; [
+                astro-build.astro-vscode
+                biomejs.biome
+                bradlc.vscode-tailwindcss
+                geequlim.godot-tools
+                gleam.gleam
+                graphql.vscode-graphql
+                graphql.vscode-graphql-syntax
+                hashicorp.hcl
+                hashicorp.terraform
+                jnoortheen.nix-ide
+                ms-pyright.pyright
+                ms-python.python
+                ms-toolsai.jupyter
+                redhat.java
+                redhat.vscode-xml
+                redhat.vscode-yaml
+                rust-lang.rust-analyzer
+                shopify.ruby-lsp
+                sumneko.lua
+                vscodevim.vim
+                ziglang.vscode-zig
+              ])
             );
-            globalSnippets = builtins.addErrorContext "while parsing global snippets for VSCode" (
+            globalSnippets =
               let
                 path = ./snippets/global.json;
                 json = if (builtins.pathExists path) then (builtins.fromJSON (builtins.readFile path)) else { };
               in
               assert builtins.isAttrs json;
-              json
-            );
-            languageSnippets = builtins.addErrorContext "while parsing per-language snippets for VSCode" (
+              json;
+            languageSnippets =
               let
                 dir = ./snippets/per_language;
                 filenames = builtins.attrNames (if (builtins.pathExists dir) then (builtins.readDir dir) else { });
@@ -81,8 +78,7 @@
                       json;
                   }
                 ) filenames
-              )
-            );
+              );
             userSettings = {
               biome.suggestInstallingGlobally = false;
               editor = {

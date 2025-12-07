@@ -29,13 +29,11 @@
       ...
     }:
     {
-      apps = builtins.addErrorContext "while defining apps" {
-        default = {
-          program = self'.scripts.activate;
-          type = "app";
-        };
+      apps.default = {
+        program = self'.scripts.activate;
+        type = "app";
       };
-      scripts = builtins.addErrorContext "while defining scripts" {
+      scripts = {
         activate = pkgs.callPackage ./activate {
           inherit homeConfigurations nixosConfigurations;
           rootPath = self;
