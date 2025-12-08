@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }:
 {
@@ -9,7 +10,9 @@
       enable = true;
       clean.enable = true;
     };
-    nix.settings.extra-experimental-features = "flakes nix-command no-url-literals";
+    nix.settings = lib.mkIf (!pkgs.stdenv.isDarwin) {
+      extra-experimental-features = "flakes nix-command no-url-literals";
+    };
   };
 
   options.jtrrllDotfiles.nix = {
