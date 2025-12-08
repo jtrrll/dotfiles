@@ -13,7 +13,7 @@
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nixpkgs-home-manager.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    nixpkgs-nixos.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    nixpkgs-nixos.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixvim.url = "github:nix-community/nixvim";
     snekcheck.url = "github:jtrrll/snekcheck";
     stylix.url = "github:danth/stylix";

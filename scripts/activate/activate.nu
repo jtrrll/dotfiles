@@ -21,7 +21,7 @@ def "main home" [
   let styled_config = (gum style --bold --foreground=212 $selected_config)
 
   with-env { NIXPKGS_ALLOW_UNFREE: "1" } {
-    gum spin --show-error --spinner line --title $"Activating ($styled_config) home configuration..." -- nh home switch --backup-extension bak --configuration $selected_config --impure @ROOT_PATH@
+    gum spin --show-error --spinner line --title $"Activating ($styled_config) home configuration..." -- nh home switch --backup-extension bak --configuration $selected_config --impure --keep-going @ROOT_PATH@
   }
 
   print $"Activated ($styled_config) home configuration successfully!"
