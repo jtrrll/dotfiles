@@ -1,6 +1,7 @@
 {
   dotfiles,
   homeAssistant,
+  nix,
   nixosSystem,
   raspberry-pi-3,
 }:
@@ -9,6 +10,7 @@ nixosSystem {
   modules = [
     dotfiles
     homeAssistant
+    nix
     {
       home-manager = {
         sharedModules = [ { home.stateVersion = "25.05"; } ];

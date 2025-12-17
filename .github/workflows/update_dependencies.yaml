@@ -18,6 +18,7 @@ jobs:
       - uses: actions/checkout@v6
       - uses: DeterminateSystems/nix-installer-action@v21
       - name: Update flake.lock
+        id: update
         uses: DeterminateSystems/update-flake-lock@v28
         with:
           branch: "update_flake_lock_development"
@@ -28,6 +29,11 @@ jobs:
             dependencies
             nix
           token: ${{ secrets.PR_BOT_PERSONAL_ACCESS_TOKEN }}
+      - name: Enable auto-merge
+        if: steps.update.outputs.pull-request-number != ''
+        env:
+          GH_TOKEN: ${{ secrets.PR_BOT_PERSONAL_ACCESS_TOKEN }}
+        run: gh pr merge ${{ steps.update.outputs.pull-request-number }} --auto --squash
   home-manager:
     name: Update Home Manager dependencies
     runs-on: ubuntu-latest
@@ -35,6 +41,7 @@ jobs:
       - uses: actions/checkout@v6
       - uses: DeterminateSystems/nix-installer-action@v21
       - name: Update flake.lock
+        id: update
         uses: DeterminateSystems/update-flake-lock@v28
         with:
           branch: "update_flake_lock_home_manager"
@@ -45,6 +52,11 @@ jobs:
             dependencies
             nix
           token: ${{ secrets.PR_BOT_PERSONAL_ACCESS_TOKEN }}
+      - name: Enable auto-merge
+        if: steps.update.outputs.pull-request-number != ''
+        env:
+          GH_TOKEN: ${{ secrets.PR_BOT_PERSONAL_ACCESS_TOKEN }}
+        run: gh pr merge ${{ steps.update.outputs.pull-request-number }} --auto --squash
   nixos:
     name: Update NixOS dependencies
     runs-on: ubuntu-latest
@@ -52,13 +64,19 @@ jobs:
       - uses: actions/checkout@v6
       - uses: DeterminateSystems/nix-installer-action@v21
       - name: Update flake.lock
+        id: update
         uses: DeterminateSystems/update-flake-lock@v28
         with:
           branch: "update_flake_lock_nixos"
-          inputs: nixos-hardware nixpkgs-nixos 
+          inputs: nixos-hardware nixpkgs-nixos
           pr-title: "deps: update NixOS dependencies"
           pr-labels: |
             automated
             dependencies
             nix
-          token: ${{ secrets.PR_BOT_PERSONAL_ACCESS_TOKEN }} 
+          token: ${{ secrets.PR_BOT_PERSONAL_ACCESS_TOKEN }}
+      - name: Enable auto-merge
+        if: steps.update.outputs.pull-request-number != ''
+        env:
+          GH_TOKEN: ${{ secrets.PR_BOT_PERSONAL_ACCESS_TOKEN }}
+        run: gh pr merge ${{ steps.update.outputs.pull-request-number }} --auto --squash
