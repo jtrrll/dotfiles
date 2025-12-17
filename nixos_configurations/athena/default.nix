@@ -1,12 +1,14 @@
 {
   dotfiles,
   lenovo-thinkpad-x1,
+  nix,
   nixosSystem,
 }:
 nixosSystem {
   system = "x86_64-linux";
   modules = [
     dotfiles
+    nix
     {
       home-manager = {
         sharedModules = [ { home.stateVersion = "25.05"; } ];

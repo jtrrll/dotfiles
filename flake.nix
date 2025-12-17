@@ -2,6 +2,8 @@
   description = "jtrrll's declarative dotfiles";
 
   inputs = {
+    ### Development dependencies ###
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     devenv = {
       inputs.nixpkgs.follows = "nixpkgs";
       url = "github:cachix/devenv";
@@ -10,22 +12,41 @@
       inputs.nixpkgs-lib.follows = "nixpkgs";
       url = "github:hercules-ci/flake-parts";
     };
-    justix.url = "github:jtrrll/justix";
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    justix = {
+      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:jtrrll/justix";
+    };
     treefmt-nix = {
       inputs.nixpkgs.follows = "nixpkgs";
       url = "github:numtide/treefmt-nix";
     };
 
-    home-manager.url = "github:nix-community/home-manager";
-    nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
+    ### Home Manager dependencies ###
     nixpkgs-home-manager.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    nixvim.url = "github:nix-community/nixvim";
-    snekcheck.url = "github:jtrrll/snekcheck";
-    stylix.url = "github:danth/stylix";
+    home-manager = {
+      inputs.nixpkgs.follows = "nixpkgs-home-manager";
+      url = "github:nix-community/home-manager";
+    };
+    nix-vscode-extensions = {
+      inputs.nixpkgs.follows = "nixpkgs-home-manager";
+      url = "github:nix-community/nix-vscode-extensions";
+    };
+    nixvim = {
+      inputs.nixpkgs.follows = "nixpkgs-home-manager";
+      url = "github:nix-community/nixvim";
+    };
+    snekcheck = {
+      inputs.nixpkgs.follows = "nixpkgs-home-manager";
+      url = "github:jtrrll/snekcheck";
+    };
+    stylix = {
+      inputs.nixpkgs.follows = "nixpkgs-home-manager";
+      url = "github:danth/stylix";
+    };
 
-    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+    ### NixOS dependencies ###
     nixpkgs-nixos.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
   };
 
   outputs =

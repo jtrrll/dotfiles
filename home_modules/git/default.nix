@@ -24,8 +24,7 @@
   };
 
   imports = [
-    ./navigation.nix
-    ./operations.nix
+    ./scripts.nix
   ];
 
   options.jtrrllDotfiles.git = {

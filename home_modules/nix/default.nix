@@ -1,7 +1,6 @@
 {
   config,
   lib,
-  pkgs,
   ...
 }:
 {
@@ -9,10 +8,6 @@
     programs.nh = {
       enable = true;
       clean.enable = true;
-    };
-    nix = lib.mkIf (!pkgs.stdenv.isDarwin) {
-      package = lib.mkDefault pkgs.nix;
-      settings.extra-experimental-features = "flakes nix-command no-url-literals";
     };
   };
 
