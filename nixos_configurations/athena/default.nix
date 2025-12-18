@@ -15,7 +15,7 @@ nixosSystem {
         users.jtrrll =
           { pkgs, ... }:
           {
-            jtrrllDotfiles = {
+            dotfiles = {
               ai.enable = true;
               bat.enable = true;
               browsers.brave.enable = true;
@@ -23,6 +23,7 @@ nixosSystem {
               editors = {
                 neovim.enable = true;
                 vscode.enable = true;
+                zed.enable = true;
               };
               fileSystem.enable = true;
               gaming.enable = true;

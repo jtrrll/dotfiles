@@ -27,7 +27,7 @@
               };
             }
             {
-              jtrrllDotfiles = {
+              dotfiles = {
                 ai.enable = true;
                 bat.enable = true;
                 browsers.brave.enable = true;
@@ -35,6 +35,7 @@
                 editors = {
                   neovim.enable = true;
                   vscode.enable = true;
+                  zed.enable = true;
                 };
                 fileSystem.enable = true;
                 gaming.enable = true;
@@ -64,7 +65,7 @@
     {
       default = mkConfig { };
       work = mkConfig {
-        jtrrllDotfiles = {
+        dotfiles = {
           gaming.enable = lib.mkForce false;
           musicLibrary.enable = lib.mkForce false;
         };

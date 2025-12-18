@@ -5,11 +5,11 @@
   ...
 }:
 let
-  backgroundImageExists = builtins.pathExists config.jtrrllDotfiles.theme.backgroundImage;
-  schemeDefined = config.jtrrllDotfiles.theme.base16Scheme != null;
+  backgroundImageExists = builtins.pathExists config.dotfiles.theme.backgroundImage;
+  schemeDefined = config.dotfiles.theme.base16Scheme != null;
 in
 {
-  config = lib.mkIf config.jtrrllDotfiles.theme.enable {
+  config = lib.mkIf config.dotfiles.theme.enable {
     assertions = [
       {
         assertion = backgroundImageExists || schemeDefined;
@@ -44,8 +44,8 @@ in
       image = config.lib.stylix.pixel "base0D";
     }
     // lib.optionalAttrs backgroundImageExists {
-      image = builtins.fetchurl { url = "file://${config.jtrrllDotfiles.theme.backgroundImage}"; };
+      image = builtins.fetchurl { url = "file://${config.dotfiles.theme.backgroundImage}"; };
     }
-    // lib.optionalAttrs schemeDefined { inherit (config.jtrrllDotfiles.theme) base16Scheme; };
+    // lib.optionalAttrs schemeDefined { inherit (config.dotfiles.theme) base16Scheme; };
   };
 }

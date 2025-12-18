@@ -11,7 +11,7 @@
     ./stylix.nix
   ];
 
-  options.jtrrllDotfiles.theme = {
+  options.dotfiles.theme = {
     enable = lib.mkEnableOption "jtrrll's system-wide theme";
     backgroundImage = lib.mkOption {
       default = "${config.home.homeDirectory}/.config/background";

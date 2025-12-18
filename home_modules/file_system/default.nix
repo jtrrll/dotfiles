@@ -5,7 +5,7 @@
   ...
 }:
 {
-  config = lib.mkIf config.jtrrllDotfiles.fileSystem.enable {
+  config = lib.mkIf config.dotfiles.fileSystem.enable {
     home.packages = [
       pkgs.snekcheck
     ];
@@ -26,7 +26,7 @@
     };
   };
 
-  options.jtrrllDotfiles.fileSystem = {
+  options.dotfiles.fileSystem = {
     enable = lib.mkEnableOption "jtrrll's file-system configuration";
   };
 }
