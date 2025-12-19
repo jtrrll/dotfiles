@@ -4,7 +4,7 @@
   ...
 }:
 {
-  config = lib.mkIf config.jtrrllDotfiles.musicLibrary.enable {
+  config = lib.mkIf config.dotfiles.musicLibrary.enable {
     home.file.musicLibrary = {
       target = "music_library/README.md";
       text = ''
@@ -45,7 +45,7 @@
     };
   };
 
-  options.jtrrllDotfiles.musicLibrary = {
+  options.dotfiles.musicLibrary = {
     enable = lib.mkEnableOption "jtrrll's music library configuration";
   };
 }

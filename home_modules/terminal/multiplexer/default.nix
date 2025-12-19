@@ -10,7 +10,7 @@
     ./layouts
   ];
 
-  config = lib.mkIf config.jtrrllDotfiles.terminal.enable (
+  config = lib.mkIf config.dotfiles.terminal.enable (
     lib.mkMerge [
       {
         programs.zellij = {

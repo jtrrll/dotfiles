@@ -6,7 +6,7 @@
   ...
 }:
 {
-  config = lib.mkIf config.jtrrllDotfiles.gaming.enable {
+  config = lib.mkIf config.dotfiles.gaming.enable {
     home = {
       file = {
         gameLibrary = {
@@ -65,7 +65,7 @@
     };
   };
 
-  options.jtrrllDotfiles.gaming = {
+  options.dotfiles.gaming = {
     enable = lib.mkEnableOption "jtrrll's gaming configuration";
   };
 }

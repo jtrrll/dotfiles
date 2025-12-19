@@ -4,7 +4,7 @@
   ...
 }:
 {
-  config = lib.mkIf config.jtrrllDotfiles.editors.neovim.enable {
+  config = lib.mkIf config.dotfiles.editors.neovim.enable {
     programs.nixvim.plugins.blink-cmp = {
       enable = true;
       settings = {

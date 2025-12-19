@@ -9,7 +9,7 @@
     ./shell.nix
   ];
 
-  options.jtrrllDotfiles.terminal = {
+  options.dotfiles.terminal = {
     enable = lib.mkEnableOption "jtrrll's terminal configuration";
   };
 }

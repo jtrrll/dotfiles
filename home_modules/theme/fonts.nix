@@ -5,7 +5,7 @@
   ...
 }:
 {
-  config = lib.mkIf config.jtrrllDotfiles.theme.enable {
+  config = lib.mkIf config.dotfiles.theme.enable {
     fonts.fontconfig.enable = true;
     home.packages = [
       pkgs.ibm-plex

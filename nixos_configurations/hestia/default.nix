@@ -15,7 +15,7 @@ nixosSystem {
       home-manager = {
         sharedModules = [ { home.stateVersion = "25.05"; } ];
         users.jtrrll = {
-          jtrrllDotfiles = {
+          dotfiles = {
             bat.enable = true;
             editors.neovim.enable = true;
             fileSystem.enable = true;

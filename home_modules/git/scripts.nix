@@ -5,7 +5,7 @@
   ...
 }:
 {
-  config = lib.mkIf config.jtrrllDotfiles.git.enable {
+  config = lib.mkIf config.dotfiles.git.enable {
     programs.git.settings.alias = {
       ezswitch = "!${
         lib.getExe (

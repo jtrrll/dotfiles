@@ -7,7 +7,7 @@
   ...
 }:
 {
-  config = lib.mkIf config.jtrrllDotfiles.editors.vscode.enable (
+  config = lib.mkIf config.dotfiles.editors.vscode.enable (
     lib.mkMerge [
       {
         fonts.fontconfig.enable = true;
@@ -82,13 +82,13 @@
             userSettings = {
               biome.suggestInstallingGlobally = false;
               editor = {
-                cursorSurroundingLines = config.jtrrllDotfiles.editors.linesAroundCursor;
+                cursorSurroundingLines = config.dotfiles.editors.linesAroundCursor;
                 cursorSurroundingLinesStyle = "all";
                 fontFamily = "Hack Nerd Font Mono";
                 formatOnSave = false;
                 minimap.enabled = false;
-                rulers = config.jtrrllDotfiles.editors.lineLengthRulers;
-                tabSize = config.jtrrllDotfiles.editors.indentWidth;
+                rulers = config.dotfiles.editors.lineLengthRulers;
+                tabSize = config.dotfiles.editors.indentWidth;
               };
               files = {
                 autoSave = "afterDelay";

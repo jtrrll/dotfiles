@@ -5,7 +5,7 @@
   ...
 }:
 {
-  config = lib.mkIf config.jtrrllDotfiles.repeat.enable {
+  config = lib.mkIf config.dotfiles.repeat.enable {
     home.packages = [
       (pkgs.writeShellApplication rec {
         meta.mainProgram = name;
@@ -31,7 +31,7 @@
     ];
   };
 
-  options.jtrrllDotfiles.repeat = {
+  options.dotfiles.repeat = {
     enable = lib.mkEnableOption "the repeat script";
   };
 }

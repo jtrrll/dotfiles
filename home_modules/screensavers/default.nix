@@ -5,7 +5,7 @@
     ./matrix.nix
   ];
 
-  options.jtrrllDotfiles.screensavers = {
+  options.dotfiles.screensavers = {
     enable = lib.mkEnableOption "jtrrll's screensavers";
   };
 }

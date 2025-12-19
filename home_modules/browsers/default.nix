@@ -5,7 +5,7 @@
 }:
 {
   config = {
-    programs.brave = lib.mkIf config.jtrrllDotfiles.browsers.brave.enable {
+    programs.brave = lib.mkIf config.dotfiles.browsers.brave.enable {
       enable = true;
       extensions = [
         { id = "nngceckbapebfimnlniiiahkandclblb"; } # bitwarden
@@ -16,7 +16,7 @@
     };
   };
 
-  options.jtrrllDotfiles.browsers = {
+  options.dotfiles.browsers = {
     brave.enable = lib.mkEnableOption "jtrrll's Brave browser configuration";
   };
 }

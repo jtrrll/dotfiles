@@ -6,7 +6,7 @@
   ...
 }:
 {
-  config = lib.mkIf config.jtrrllDotfiles.editors.neovim.enable (
+  config = lib.mkIf config.dotfiles.editors.neovim.enable (
     lib.mkMerge [
       {
         programs.nixvim = {

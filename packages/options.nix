@@ -38,7 +38,7 @@ let
       in
       acc // result
     ) { } opts;
-  options = flattenOptions "jtrrllDotfiles" eval.options.jtrrllDotfiles;
+  options = flattenOptions "dotfiles" eval.options.dotfiles;
   optionsMarkdown = lib.concatStringsSep "\n" (
     lib.mapAttrsToList (
       name: opt:
