@@ -5,7 +5,7 @@
   ...
 }:
 {
-  config = lib.mkIf config.jtrrllDotfiles.ai.enable {
+  config = lib.mkIf config.dotfiles.ai.enable {
     programs.claude-code = {
       enable = true;
       agentsDir = ./claude_agents;
@@ -32,7 +32,7 @@
     };
   };
 
-  options.jtrrllDotfiles.ai = {
+  options.dotfiles.ai = {
     enable = lib.mkEnableOption "jtrrll's AI configuration";
   };
 }

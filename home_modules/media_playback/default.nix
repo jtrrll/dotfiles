@@ -6,11 +6,11 @@
   ...
 }:
 {
-  config = lib.mkIf config.jtrrllDotfiles.mediaPlayback.enable {
+  config = lib.mkIf config.dotfiles.mediaPlayback.enable {
     home.packages = lib'.filterAvailable pkgs.stdenv.hostPlatform.system [ pkgs.vlc ];
   };
 
-  options.jtrrllDotfiles.mediaPlayback = {
+  options.dotfiles.mediaPlayback = {
     enable = lib.mkEnableOption "jtrrll's media playback configuration";
   };
 }

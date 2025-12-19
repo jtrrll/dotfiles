@@ -6,7 +6,7 @@
   ...
 }:
 {
-  config = lib.mkIf config.jtrrllDotfiles.bat.enable (
+  config = lib.mkIf config.dotfiles.bat.enable (
     lib.mkMerge [
       {
         home.shellAliases = {
@@ -29,7 +29,7 @@
     ]
   );
 
-  options.jtrrllDotfiles.bat = {
+  options.dotfiles.bat = {
     enable = lib.mkEnableOption "jtrrll's bat configuration";
   };
 }

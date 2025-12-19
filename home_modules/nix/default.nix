@@ -4,14 +4,14 @@
   ...
 }:
 {
-  config = lib.mkIf config.jtrrllDotfiles.nix.enable {
+  config = lib.mkIf config.dotfiles.nix.enable {
     programs.nh = {
       enable = true;
       clean.enable = true;
     };
   };
 
-  options.jtrrllDotfiles.nix = {
+  options.dotfiles.nix = {
     enable = lib.mkEnableOption "jtrrll's Nix configuration";
   };
 }

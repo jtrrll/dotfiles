@@ -123,7 +123,14 @@
             };
           };
 
-          languages.nix.enable = true;
+          languages.nix = {
+            enable = true;
+            lsp.package = pkgs.nixd;
+          };
+
+          packages = [
+            pkgs.nushell
+          ];
         };
       };
     };

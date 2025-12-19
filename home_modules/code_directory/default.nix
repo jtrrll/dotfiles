@@ -5,7 +5,7 @@
   ...
 }:
 {
-  config = lib.mkIf config.jtrrllDotfiles.codeDirectory.enable (
+  config = lib.mkIf config.dotfiles.codeDirectory.enable (
     let
       codeDirGitFetch = pkgs.writeShellApplication rec {
         meta.mainProgram = name;
@@ -81,7 +81,7 @@
     }
   );
 
-  options.jtrrllDotfiles.codeDirectory = {
+  options.dotfiles.codeDirectory = {
     enable = lib.mkEnableOption "jtrrll's code directory configuration";
   };
 }

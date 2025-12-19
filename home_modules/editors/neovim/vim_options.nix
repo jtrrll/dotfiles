@@ -4,12 +4,10 @@
   ...
 }:
 {
-  config = lib.mkIf config.jtrrllDotfiles.editors.neovim.enable {
+  config = lib.mkIf config.dotfiles.editors.neovim.enable {
     programs.nixvim.opts = {
       breakindent = true; # indent wrapped lines
-      colorcolumn = lib.concatStringsSep "," (
-        map toString config.jtrrllDotfiles.editors.lineLengthRulers
-      ); # highlight columns
+      colorcolumn = lib.concatStringsSep "," (map toString config.dotfiles.editors.lineLengthRulers); # highlight columns
       cursorline = true; # highlight current line
       expandtab = true; # use spaces instead of tabs
       foldlevel = 5; # the fold levels that should be open to start
@@ -20,15 +18,15 @@
       mouse = "a"; # enable mouse control
       number = true; # show line numbers
       relativenumber = true; # show relative line numbers
-      scrolloff = config.jtrrllDotfiles.editors.linesAroundCursor; # number of lines to preserve above/below the cursor
+      scrolloff = config.dotfiles.editors.linesAroundCursor; # number of lines to preserve above/below the cursor
       shiftround = true; # indent to nearest indent level
-      shiftwidth = config.jtrrllDotfiles.editors.indentWidth; # spaces per indent level
+      shiftwidth = config.dotfiles.editors.indentWidth; # spaces per indent level
       showmode = false; # hide current mode because it is in the status line
       signcolumn = "yes"; # always show the sign column
       smartindent = true; # automatically indent once when appropriate
       splitbelow = true; # open new horizontal splits below the current window
       splitright = true; # open new vertical splits to the right of the current window
-      tabstop = config.jtrrllDotfiles.editors.indentWidth; # number of spaces per tab
+      tabstop = config.dotfiles.editors.indentWidth; # number of spaces per tab
       termguicolors = true; # enable 24-bit color
       undofile = true; # persist undo history
       updatetime = 1000; # milliseconds of inactivity until cursor is deemed idle

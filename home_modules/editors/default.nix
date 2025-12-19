@@ -4,9 +4,10 @@
   imports = [
     (import ./neovim { inherit nixvim; })
     (import ./vscode { inherit lib'; })
+    ./zed
   ];
 
-  options.jtrrllDotfiles.editors = {
+  options.dotfiles.editors = {
     indentWidth = lib.mkOption {
       default = 2;
       description = "The number of spaces per indent.";
@@ -30,5 +31,6 @@
     };
     neovim.enable = lib.mkEnableOption "jtrrll's Neovim configuration";
     vscode.enable = lib.mkEnableOption "jtrrll's VSCode configuration";
+    zed.enable = lib.mkEnableOption "jtrrll's Zed configuration";
   };
 }

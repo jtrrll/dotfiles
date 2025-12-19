@@ -4,7 +4,7 @@
   ...
 }:
 {
-  config = lib.mkIf config.jtrrllDotfiles.terminal.enable {
+  config = lib.mkIf config.dotfiles.terminal.enable {
     programs.zellij.layouts =
       let
         default_tab_template = {

@@ -5,7 +5,7 @@
   ...
 }:
 {
-  config = lib.mkIf config.jtrrllDotfiles.screensavers.enable {
+  config = lib.mkIf config.dotfiles.screensavers.enable {
     home.packages = [
       (pkgs.writeShellApplication rec {
         meta.mainProgram = name;

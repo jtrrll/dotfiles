@@ -4,7 +4,7 @@
   ...
 }:
 {
-  config = lib.mkIf config.jtrrllDotfiles.git.enable {
+  config = lib.mkIf config.dotfiles.git.enable {
     programs.git = {
       enable = true;
       settings = {
@@ -27,7 +27,7 @@
     ./scripts.nix
   ];
 
-  options.jtrrllDotfiles.git = {
+  options.dotfiles.git = {
     enable = lib.mkEnableOption "jtrrll's Git configuration";
   };
 }

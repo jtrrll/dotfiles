@@ -4,7 +4,7 @@
   ...
 }:
 {
-  config = lib.mkIf config.jtrrllDotfiles.systemInfo.enable {
+  config = lib.mkIf config.dotfiles.systemInfo.enable {
     programs = {
       btop = {
         enable = true;
@@ -14,7 +14,7 @@
     };
   };
 
-  options.jtrrllDotfiles.systemInfo = {
+  options.dotfiles.systemInfo = {
     enable = lib.mkEnableOption "jtrrll's system information configuration";
   };
 }
