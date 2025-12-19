@@ -1,0 +1,44 @@
+---
+name: Update Automated Pull Requests
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  update-pull-requests:
+    name: Update automated pull requests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Update pull requests with automated label
+        env:
+          GH_TOKEN: ${{ secrets.PR_BOT_PERSONAL_ACCESS_TOKEN }}
+        run: |
+          prs=$(gh pr list --label automated --json number,headRefName,baseRefName --jq '.[] | "\(.number)|\(.headRefName)|\(.baseRefName)"')
+
+          if [ -z "$prs" ]; then
+            echo "No automated pull requests to update"
+            exit 0
+          fi
+
+          echo "$prs" | while IFS='|' read -r pr_number branch base_branch; do
+            echo "Updating PR #$pr_number (merging $base_branch into $branch)"
+
+            git fetch origin "$base_branch"
+            git fetch origin "$branch"
+            git checkout "$branch"
+
+            if git merge "origin/$base_branch" --no-edit; then
+              echo "Successfully merged $base_branch into $branch"
+              git push origin "$branch"
+            else
+              echo "Merge conflict detected for PR #$pr_number. Skipping automatic update."
+              git merge --abort
+            fi
+          done

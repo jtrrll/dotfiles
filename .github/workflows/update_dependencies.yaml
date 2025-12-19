@@ -27,7 +27,6 @@ jobs:
           pr-labels: |
             automated
             dependencies
-            nix
           token: ${{ secrets.PR_BOT_PERSONAL_ACCESS_TOKEN }}
       - name: Enable auto-merge
         if: steps.update.outputs.pull-request-number != ''
@@ -50,7 +49,6 @@ jobs:
           pr-labels: |
             automated
             dependencies
-            nix
           token: ${{ secrets.PR_BOT_PERSONAL_ACCESS_TOKEN }}
       - name: Enable auto-merge
         if: steps.update.outputs.pull-request-number != ''
@@ -73,7 +71,6 @@ jobs:
           pr-labels: |
             automated
             dependencies
-            nix
           token: ${{ secrets.PR_BOT_PERSONAL_ACCESS_TOKEN }}
       - name: Enable auto-merge
         if: steps.update.outputs.pull-request-number != ''
