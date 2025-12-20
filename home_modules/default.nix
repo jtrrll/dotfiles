@@ -6,7 +6,6 @@
       {
         config,
         lib,
-        pkgs,
         ...
       }:
       let
@@ -77,10 +76,7 @@
             screensavers.enable = lib.mkDefault true;
             systemInfo.enable = lib.mkDefault true;
             terminal.enable = lib.mkDefault true;
-            theme = {
-              base16Scheme = lib.mkDefault "${pkgs.base16-schemes}/share/themes/gruvbox-material-dark-medium.yaml";
-              enable = lib.mkDefault true;
-            };
+            theme.enable = lib.mkDefault true;
           })
         ];
       };

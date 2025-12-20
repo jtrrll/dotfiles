@@ -12,9 +12,14 @@ nixosSystem {
     {
       home-manager = {
         sharedModules = [ { home.stateVersion = "25.05"; } ];
-        users.jtrrll = {
-          dotfiles.presets.full.enable = true;
-        };
+        users.jtrrll =
+          { pkgs, ... }:
+          {
+            dotfiles = {
+              presets.full.enable = true;
+              theme.base16Scheme = "${pkgs.base16-schemes}/share/themes/gruvbox-material-dark-medium.yaml";
+            };
+          };
       };
     }
     lenovo-thinkpad-x1
