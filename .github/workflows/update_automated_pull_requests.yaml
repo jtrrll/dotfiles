@@ -32,7 +32,7 @@ jobs:
 
             git fetch origin "$base_branch"
             git fetch origin "$branch"
-            git checkout "$branch"
+            git checkout -b "$branch" "origin/$branch"
 
             if git merge "origin/$base_branch" --no-edit; then
               echo "Successfully merged $base_branch into $branch"
