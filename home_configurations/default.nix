@@ -1,6 +1,5 @@
 {
   inputs,
-  lib,
   self,
   ...
 }:
@@ -27,32 +26,7 @@
               };
             }
             {
-              dotfiles = {
-                ai.enable = true;
-                bat.enable = true;
-                browsers.brave.enable = true;
-                codeDirectory.enable = true;
-                editors = {
-                  neovim.enable = true;
-                  vscode.enable = true;
-                  zed.enable = true;
-                };
-                fileSystem.enable = true;
-                gaming.enable = true;
-                git.enable = true;
-                homeManager.enable = true;
-                mediaPlayback.enable = true;
-                musicLibrary.enable = true;
-                nix.enable = true;
-                repeat.enable = true;
-                screensavers.enable = true;
-                systemInfo.enable = true;
-                terminal.enable = true;
-                theme = {
-                  base16Scheme = "${pkgs.base16-schemes}/share/themes/gruvbox-material-dark-medium.yaml";
-                  enable = true;
-                };
-              };
+              dotfiles.theme.base16Scheme = "${pkgs.base16-schemes}/share/themes/gruvbox-material-dark-medium.yaml";
             }
             cfg
           ];
@@ -63,11 +37,14 @@
       };
     in
     {
-      default = mkConfig { };
+      default = mkConfig {
+        dotfiles.presets.full.enable = true;
+      };
       work = mkConfig {
         dotfiles = {
-          gaming.enable = lib.mkForce false;
-          musicLibrary.enable = lib.mkForce false;
+          presets.full.enable = true;
+          gaming.enable = false;
+          musicLibrary.enable = false;
         };
       };
     };

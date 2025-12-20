@@ -44,7 +44,7 @@ jobs:
         uses: DeterminateSystems/update-flake-lock@v28
         with:
           branch: "update_flake_lock_home_manager"
-          inputs: home-manager nix-vscode-extensions nixpkgs-home-manager nixvim snekcheck stylix
+          inputs: home-manager nixpkgs-home-manager nixvim snekcheck stylix
           pr-title: "deps: update Home Manager dependencies"
           pr-labels: |
             automated
