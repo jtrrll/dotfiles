@@ -16,6 +16,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: Configure Git user
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
       - name: Update pull requests with automated label
         env:
           GH_TOKEN: ${{ secrets.PR_BOT_PERSONAL_ACCESS_TOKEN }}
@@ -30,31 +36,21 @@ jobs:
           echo "$prs" | while IFS='|' read -r pr_number branch base_branch; do
             echo "Updating PR #$pr_number (merging $base_branch into $branch)"
 
-            # Reset to a clean state for each PR
-            git checkout main 2>/dev/null || git checkout -b main origin/main
-            git branch -D "$branch" 2>/dev/null || true
-
-            # Fetch and checkout with error handling
-            if ! git fetch origin "$base_branch"; then
-              echo "Failed to fetch $base_branch for PR #$pr_number. Skipping."
+            git fetch origin "$branch" "$base_branch" || {
+              echo "Failed to fetch branches for PR #$pr_number. Skipping."
               continue
-            fi
+            }
 
-            if ! git fetch origin "$branch"; then
-              echo "Failed to fetch $branch for PR #$pr_number. Skipping."
-              continue
-            fi
-
-            if ! git checkout -b "$branch" "origin/$branch"; then
+            git checkout -B "$branch" "origin/$branch" || {
               echo "Failed to checkout $branch for PR #$pr_number. Skipping."
               continue
-            fi
+            }
 
-            if git merge "origin/$base_branch" --no-edit --allow-unrelated-histories; then
+            if git merge "origin/$base_branch" --no-edit; then
               echo "Successfully merged $base_branch into $branch"
               git push origin "$branch"
             else
-              echo "Merge conflict detected for PR #$pr_number. Skipping automatic update."
-              git merge --abort || true
+              echo "Merge conflict detected for PR #$pr_number. Skipping."
+              git merge --abort
             fi
           done
