@@ -16,6 +16,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: Configure Git user
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
       - name: Update pull requests with automated label
         env:
           GH_TOKEN: ${{ secrets.PR_BOT_PERSONAL_ACCESS_TOKEN }}
@@ -30,15 +36,21 @@ jobs:
           echo "$prs" | while IFS='|' read -r pr_number branch base_branch; do
             echo "Updating PR #$pr_number (merging $base_branch into $branch)"
 
-            git fetch origin "$base_branch"
-            git fetch origin "$branch"
-            git checkout "$branch"
+            git fetch origin "$branch" "$base_branch" || {
+              echo "Failed to fetch branches for PR #$pr_number. Skipping."
+              continue
+            }
+
+            git checkout -B "$branch" "origin/$branch" || {
+              echo "Failed to checkout $branch for PR #$pr_number. Skipping."
+              continue
+            }
 
             if git merge "origin/$base_branch" --no-edit; then
               echo "Successfully merged $base_branch into $branch"
               git push origin "$branch"
             else
-              echo "Merge conflict detected for PR #$pr_number. Skipping automatic update."
+              echo "Merge conflict detected for PR #$pr_number. Skipping."
               git merge --abort
             fi
           done

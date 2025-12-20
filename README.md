@@ -78,10 +78,10 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 * Example: `true`
 * Type: `boolean`
 
-### `dotfiles.editors.vscode.enable`
+### `dotfiles.editors.zed.enable`
 
 * Default: `false`
-* Description: Whether to enable jtrrll's VSCode configuration.
+* Description: Whether to enable jtrrll's Zed configuration.
 * Example: `true`
 * Type: `boolean`
 
@@ -131,6 +131,20 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 
 * Default: `false`
 * Description: Whether to enable jtrrll's Nix configuration.
+* Example: `true`
+* Type: `boolean`
+
+### `dotfiles.presets.full.enable`
+
+* Default: `false`
+* Description: Whether to enable jtrrll's full dotfiles.
+* Example: `true`
+* Type: `boolean`
+
+### `dotfiles.presets.minimal.enable`
+
+* Default: `false`
+* Description: Whether to enable jtrrll's minimal dotfiles.
 * Example: `true`
 * Type: `boolean`
 
