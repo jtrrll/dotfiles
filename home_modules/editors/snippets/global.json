@@ -1,7 +1,0 @@
-{
-  "todo": {
-    "body": "$LINE_COMMENT TODO: $0",
-    "description": "Describes a future task.",
-    "prefix": "// todo"
-  }
-}

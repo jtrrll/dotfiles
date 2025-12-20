@@ -27,10 +27,6 @@
       inputs.nixpkgs.follows = "nixpkgs-home-manager";
       url = "github:nix-community/home-manager";
     };
-    nix-vscode-extensions = {
-      inputs.nixpkgs.follows = "nixpkgs-home-manager";
-      url = "github:nix-community/nix-vscode-extensions";
-    };
     nixvim = {
       inputs.nixpkgs.follows = "nixpkgs-home-manager";
       url = "github:nix-community/nixvim";
