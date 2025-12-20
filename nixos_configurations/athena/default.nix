@@ -12,36 +12,9 @@ nixosSystem {
     {
       home-manager = {
         sharedModules = [ { home.stateVersion = "25.05"; } ];
-        users.jtrrll =
-          { pkgs, ... }:
-          {
-            dotfiles = {
-              ai.enable = true;
-              bat.enable = true;
-              browsers.brave.enable = true;
-              codeDirectory.enable = true;
-              editors = {
-                neovim.enable = true;
-                vscode.enable = true;
-                zed.enable = true;
-              };
-              fileSystem.enable = true;
-              gaming.enable = true;
-              git.enable = true;
-              homeManager.enable = true;
-              mediaPlayback.enable = true;
-              musicLibrary.enable = true;
-              nix.enable = true;
-              repeat.enable = true;
-              screensavers.enable = true;
-              systemInfo.enable = true;
-              terminal.enable = true;
-              theme = {
-                base16Scheme = "${pkgs.base16-schemes}/share/themes/gruvbox-material-dark-medium.yaml";
-                enable = true;
-              };
-            };
-          };
+        users.jtrrll = {
+          dotfiles.presets.full.enable = true;
+        };
       };
     }
     lenovo-thinkpad-x1

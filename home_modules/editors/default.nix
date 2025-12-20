@@ -1,9 +1,8 @@
-{ lib', nixvim }:
+{ nixvim }:
 { lib, ... }:
 {
   imports = [
     (import ./neovim { inherit nixvim; })
-    (import ./vscode { inherit lib'; })
     ./zed
   ];
 
@@ -30,7 +29,6 @@
       type = lib.types.ints.unsigned;
     };
     neovim.enable = lib.mkEnableOption "jtrrll's Neovim configuration";
-    vscode.enable = lib.mkEnableOption "jtrrll's VSCode configuration";
     zed.enable = lib.mkEnableOption "jtrrll's Zed configuration";
   };
 }
