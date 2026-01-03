@@ -19,24 +19,22 @@
           {
             justix = {
               enable = true;
-              justfile = {
-                recipes = {
-                  default = {
-                    attributes = {
-                      default = true;
-                      doc = "Lists available recipes";
-                      private = true;
-                    };
-                    commands = "@just --list";
+              justfile.config.recipes = {
+                default = {
+                  attributes = {
+                    default = true;
+                    doc = "Lists available recipes";
+                    private = true;
                   };
-                  fmt = {
-                    attributes.doc = "Formats and lints files";
-                    commands = ''
-                      @find "{{ paths }}" ! -path '*/.*' -exec ${lib.getExe inputs'.snekcheck.packages.default} --fix {} +
-                      @nix fmt -- {{ paths }}
-                    '';
-                    parameters = [ "*paths='.'" ];
-                  };
+                  commands = "@just --list";
+                };
+                fmt = {
+                  attributes.doc = "Formats and lints files";
+                  commands = ''
+                    @find "{{ paths }}" ! -path '*/.*' -exec ${lib.getExe inputs'.snekcheck.packages.default} --fix {} +
+                    @nix fmt -- {{ paths }}
+                  '';
+                  parameters = [ "*paths='.'" ];
                 };
               };
             };
@@ -44,21 +42,28 @@
           (
             { config, ... }:
             {
-              justix.justfile.recipes =
-                let
-                  pkgToRecipe = pkg: {
-                    attributes.doc = pkg.meta.description;
-                    commands = "@${lib.getExe pkg} {{ args }}";
-                    parameters = [ "*args" ];
+              justix = {
+                enable = true;
+                justfile.config.recipes =
+                  let
+                    pkgToRecipe = pkg: {
+                      attributes.doc = pkg.meta.description;
+                      commands = "@${lib.getExe pkg} {{ args }}";
+                      parameters = [ "*args" ];
+                    };
+                    rootPath = config.devenv.root;
+                  in
+                  {
+                    activate = pkgToRecipe (self'.scripts.activate.override { inherit rootPath; });
+                    update-docs = pkgToRecipe self'.scripts.update-docs;
                   };
-                  rootPath = config.devenv.root;
-                in
-                {
-                  activate = pkgToRecipe (self'.scripts.activate.override { inherit rootPath; });
-                  update-docs = pkgToRecipe self'.scripts.update-docs;
-                };
+              };
             }
           )
+          {
+            claude.code.enable = true;
+            justix.mcpServer.enable = true;
+          }
         ];
         shells.default = {
           enterShell = lib.getExe (
