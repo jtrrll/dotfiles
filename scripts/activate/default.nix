@@ -20,7 +20,6 @@ let
   script = replaceVars ./activate.nu {
     HOME_CONFIGURATIONS = homeConfigurationsString;
     NIXOS_CONFIGURATIONS = nixosConfigurationsString;
-    ROOT_PATH = rootPath;
   };
 in
 (writers.writeNuBin "activate" {
@@ -32,6 +31,9 @@ in
       gum
       nh
     ])
+    "--set"
+    "NH_FLAKE"
+    "${rootPath}"
   ];
 } (lib.readFile script)).overrideAttrs
   (oldAttrs: {
