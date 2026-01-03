@@ -22,7 +22,7 @@ def "main home" [
   print $"Activating ($styled_config) home configuration..."
 
   with-env { NIXPKGS_ALLOW_UNFREE: "1" } {
-    nh home switch --backup-extension bak --configuration $selected_config --impure --keep-going @ROOT_PATH@
+    nh home switch --backup-extension bak --configuration $selected_config --impure --keep-going
   }
 
   print $"Activated ($styled_config) home configuration successfully!"
@@ -49,7 +49,7 @@ def "main os" [
     NIX_CONFIG: "extra-experimental-features = nix-command"
     NIXPKGS_ALLOW_UNFREE: "1"
   } {
-    nh os switch --hostname $selected_config --impure @ROOT_PATH@
+    nh os switch --hostname $selected_config --impure
   }
 
   print $"Activated ($styled_config) NixOS configuration successfully!"

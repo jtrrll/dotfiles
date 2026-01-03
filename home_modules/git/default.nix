@@ -17,7 +17,7 @@
         };
       };
       ignores = [
-        ".claude/settings.local.json"
+        ".claude"
         "*.log"
       ];
     };
