@@ -20,14 +20,6 @@
             justix = {
               enable = true;
               justfile.config.recipes = {
-                default = {
-                  attributes = {
-                    default = true;
-                    doc = "Lists available recipes";
-                    private = true;
-                  };
-                  commands = "@just --list";
-                };
                 fmt = {
                   attributes.doc = "Formats and lints files";
                   commands = ''
@@ -35,6 +27,14 @@
                     @nix fmt -- {{ paths }}
                   '';
                   parameters = [ "*paths='.'" ];
+                };
+                list = {
+                  attributes = {
+                    default = true;
+                    doc = "Lists available recipes";
+                    private = true;
+                  };
+                  commands = "@just --list";
                 };
               };
             };
