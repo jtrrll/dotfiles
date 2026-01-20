@@ -21,7 +21,6 @@
           installVimSyntax = !pkgs.stdenv.isDarwin;
           settings = {
             auto-update = "off";
-            command = lib.getExe config.programs.zellij.package;
             font-family = "Hack Nerd Font Mono";
             font-thicken = true;
             theme = "VS Code";

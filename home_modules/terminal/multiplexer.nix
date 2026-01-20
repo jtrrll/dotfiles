@@ -6,10 +6,6 @@
   ...
 }:
 {
-  imports = [
-    ./layouts
-  ];
-
   config = lib.mkIf config.dotfiles.terminal.enable (
     lib.mkMerge [
       {

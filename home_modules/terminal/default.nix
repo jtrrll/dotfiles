@@ -2,10 +2,9 @@
 { lib, ... }:
 {
   imports = [
-    (import ./multiplexer { inherit constants; })
-
     ./direnv.nix
     (import ./emulator.nix { inherit constants; })
+    (import ./multiplexer.nix { inherit constants; })
     ./shell.nix
   ];
 
