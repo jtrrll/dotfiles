@@ -18,14 +18,25 @@
 
           '';
         };
-        retroarchGlobalShader = {
+        globalShader = {
           target = ".config/retroarch/config/global.slangp";
-          text = ''
-            #reference "../shaders/shaders_slang/crt/newpixie-crt.slangp"
-            blur_x = "0.750000"
-            blur_y = "0.750000"
-            curvature = "0.000100"
-          '';
+          source = pkgs.callPackage ./shaders/crt.nix { };
+        };
+        gambatteShader = {
+          target = ".config/retroarch/config/Gambatte/Gambatte.slangp";
+          source = pkgs.callPackage ./shaders/gbc.nix { };
+        };
+        melondsShader = {
+          target = ".config/retroarch/config/melonDS/melonDS.slangp";
+          source = pkgs.callPackage ./shaders/ds.nix { };
+        };
+        mgbaShader = {
+          target = ".config/retroarch/config/mGBA/mGBA.slangp";
+          source = pkgs.callPackage ./shaders/gba.nix { };
+        };
+        ppssppShader = {
+          target = ".config/retroarch/config/PPSSPP/PPSSPP.slangp";
+          source = pkgs.callPackage ./shaders/psp.nix { };
         };
       };
       packages = lib'.filterAvailable pkgs.stdenv.hostPlatform.system [
@@ -44,6 +55,7 @@
           mesen.enable = true;
           mgba.enable = true;
           mupen64plus.enable = true;
+          ppsspp.enable = true;
           snes9x.enable = true;
           swanstation.enable = true;
         };
