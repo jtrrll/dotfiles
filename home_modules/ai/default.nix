@@ -5,15 +5,18 @@
   ...
 }:
 {
+  imports = [
+    ./claude
+  ];
+
   config = lib.mkIf config.dotfiles.ai.enable {
-    programs.claude-code = {
+    programs.mcp = {
       enable = true;
-      agentsDir = ./claude_agents;
-      mcpServers = {
-        playwright = {
+      servers = {
+        context7 = {
           type = "stdio";
           command = "${pkgs.bun}/bin/bunx";
-          args = [ "@playwright/mcp@latest" ];
+          args = [ "@upstash/context7-mcp" ];
         };
       };
     };
