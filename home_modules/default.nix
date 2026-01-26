@@ -30,7 +30,6 @@
             ./git
             ./home_directory
             ./home_manager
-            (import ./media_playback { inherit lib'; })
             ./music_library
             ./nix
             ./repeat
@@ -69,7 +68,6 @@
             gaming.enable = lib.mkDefault true;
             git.enable = lib.mkDefault true;
             homeManager.enable = lib.mkDefault true;
-            mediaPlayback.enable = lib.mkDefault true;
             musicLibrary.enable = lib.mkDefault true;
             nix.enable = lib.mkDefault true;
             repeat.enable = lib.mkDefault true;
