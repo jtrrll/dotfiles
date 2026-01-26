@@ -105,7 +105,12 @@
                 name = "fmt";
                 pass_filenames = false;
               };
-              markdownlint.enable = true;
+              markdownlint = {
+                enable = true;
+                settings.configuration = {
+                  MD013.line_length = 120;
+                };
+              };
               mixed-line-endings.enable = true;
               nil.enable = true;
               no-commit-to-branch = {
