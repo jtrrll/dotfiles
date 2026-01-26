@@ -2,6 +2,7 @@
 name: Dotfiles Developer
 color: cyan
 description: Use for configuring dotfiles and managing systems.
+model: inherit
 ---
 
 # Prompt
