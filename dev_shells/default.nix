@@ -1,9 +1,9 @@
-{ inputs, ... }:
+{ inputs, self, ... }:
 {
   imports = [ inputs.devenv.flakeModule ];
+
   perSystem =
     {
-      inputs',
       lib,
       pkgs,
       self',
@@ -11,55 +11,10 @@
     }:
     {
       devenv = {
-        modules = [
-          inputs.justix.devenvModules.default
+        modules = (lib.attrValues self.modules.devenv) ++ [
           {
             containers = lib.mkForce { }; # Workaround to remove containers from flake checks.
           }
-          {
-            justix = {
-              enable = true;
-              justfile.config.recipes = {
-                fmt = {
-                  attributes.doc = "Formats and lints files";
-                  commands = ''
-                    @find "{{ paths }}" ! -path '*/.*' -exec ${lib.getExe inputs'.snekcheck.packages.default} --fix {} +
-                    @nix fmt -- {{ paths }}
-                  '';
-                  parameters = [ "*paths='.'" ];
-                };
-                list = {
-                  attributes = {
-                    default = true;
-                    doc = "Lists available recipes";
-                    private = true;
-                  };
-                  commands = "@just --list";
-                };
-              };
-            };
-          }
-          (
-            { config, ... }:
-            {
-              justix = {
-                enable = true;
-                justfile.config.recipes =
-                  let
-                    pkgToRecipe = pkg: {
-                      attributes.doc = pkg.meta.description;
-                      commands = "@${lib.getExe pkg} {{ args }}";
-                      parameters = [ "*args" ];
-                    };
-                    rootPath = config.devenv.root;
-                  in
-                  {
-                    activate = pkgToRecipe (self'.scripts.activate.override { inherit rootPath; });
-                    update-docs = pkgToRecipe self'.scripts.update-docs;
-                  };
-              };
-            }
-          )
           {
             claude.code.enable = true;
             justix.mcpServer.enable = true;
@@ -73,7 +28,7 @@
               runtimeInputs = [
                 pkgs.lolcat
                 pkgs.uutils-coreutils-noprefix
-                self'.scripts.splash
+                self'.packages.splash
               ];
               text = ''
                 splash
