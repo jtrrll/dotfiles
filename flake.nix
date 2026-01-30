@@ -53,15 +53,25 @@
       nixpkgs,
       ...
     }@inputs:
-    flake-parts.lib.mkFlake { inherit inputs; } {
-      imports = [
-        ./dev_shells
-        ./home_configurations
-        ./nixos_configurations
-        # Matches top-level `*.nix` files and `default.nix` files that are one level deep.
-        (import-tree.match "^/[^/]+\.nix$|^/[^/]+/default\.nix$" ./modules)
-      ];
+    flake-parts.lib.mkFlake { inherit inputs; } (
+      let
+        modules-tree = nixpkgs.lib.pipe import-tree [
+          (it: it.addPath ./modules)
+          # Matches top-level `*.nix` files and `default.nix` files that are one level deep.
+          (it: it.match "^/[^/]+\.nix$|^/[^/]+/default\.nix$")
+        ];
+      in
+      {
+        imports = [
+          ./dev_shells
+          ./home_configurations
+          ./nixos_configurations
+          modules-tree.result
+        ];
 
-      systems = nixpkgs.lib.systems.flakeExposed;
-    };
+        flake.lib.modules-tree = modules-tree;
+
+        systems = nixpkgs.lib.systems.flakeExposed;
+      }
+    );
 }
