@@ -1,4 +1,4 @@
-{ inputs, self, ... }:
+{ inputs, ... }:
 {
   imports = [ inputs.flake-parts.flakeModules.modules ];
 
@@ -9,6 +9,11 @@
       pkgs,
       ...
     }:
+    let
+      filterAvailable =
+        system: pkgsList:
+        builtins.filter (pkg: (builtins.tryEval (lib.meta.availableOn system pkg)).value) pkgsList;
+    in
     {
       config = lib.mkIf config.dotfiles.gaming.enable {
         home = {
@@ -43,7 +48,7 @@
               source = pkgs.callPackage ./shaders/psp.nix { };
             };
           };
-          packages = self.lib.filterAvailable pkgs.stdenv.hostPlatform.system [
+          packages = filterAvailable pkgs.stdenv.hostPlatform.system [
             pkgs.prismlauncher
             pkgs.steam-rom-manager
           ];

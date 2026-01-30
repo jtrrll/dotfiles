@@ -6,6 +6,7 @@
 }:
 {
   config = lib.mkIf config.dotfiles.ai.enable {
+    dotfiles.ai.packages = [ pkgs.mermaid-cli ];
     programs.claude-code = {
       enable = true;
       enableMcpIntegration = true;
