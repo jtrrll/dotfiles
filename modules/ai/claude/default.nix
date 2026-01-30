@@ -6,6 +6,10 @@
 }:
 {
   config = lib.mkIf config.dotfiles.ai.enable {
+    dotfiles.ai.packages = [
+      pkgs.bashInteractive
+      (pkgs.mermaid-cli.override { chromium = config.programs.brave.finalPackage; })
+    ];
     programs.claude-code = {
       enable = true;
       enableMcpIntegration = true;
