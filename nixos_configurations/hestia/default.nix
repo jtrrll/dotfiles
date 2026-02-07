@@ -15,7 +15,16 @@ nixosSystem {
       home-manager = {
         sharedModules = [ { home.stateVersion = "25.05"; } ];
         users.jtrrll = {
-          dotfiles.presets.minimal.enable = true;
+          dotfiles = {
+            bat.enable = true;
+            editors.neovim.enable = true;
+            fileSystem.enable = true;
+            git.enable = true;
+            homeManager.enable = true;
+            nix.enable = true;
+            systemInfo.enable = true;
+            terminal.enable = true;
+          };
         };
       };
     }
