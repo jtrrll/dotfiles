@@ -12,7 +12,6 @@
     {
       checks.moduleIsolation =
         let
-          flakeModulePaths = (self.lib.modules-tree.withLib lib).files;
           moduleEvaluators = {
             devenv =
               module:
@@ -69,7 +68,6 @@
           testSubModule =
             {
               class,
-              name,
               module,
               ...
             }:
@@ -77,33 +75,33 @@
               evaluator = lib.getAttr class moduleEvaluators;
               result = builtins.tryEval (evaluator module);
             in
-            {
-              inherit class name;
-              inherit (result) success;
-            };
+            result.success;
 
-          results = lib.pipe flakeModulePaths [
-            (lib.map (flakeModulePath: {
-              path = flakeModulePath;
-              flakeModule = moduleEvaluators.flake flakeModulePath;
-            }))
-            (lib.concatMap (x: lib.map (y: x // y) (extractSubModules x.flakeModule)))
-            (lib.map testSubModule)
-          ];
+          flakeModulePaths = (self.lib.modules-tree.withLib lib).files;
+          results = lib.concatMap (
+            flakeModulePath:
+            lib.pipe flakeModulePath [
+              moduleEvaluators.flake
+              extractSubModules
+              (lib.map (subModule: {
+                inherit flakeModulePath;
+                inherit (subModule) class name;
+                isolated = testSubModule subModule;
+              }))
+            ]
+          ) flakeModulePaths;
         in
         pkgs.runCommand "module-isolation-test"
           {
             nativeBuildInputs = [
-              pkgs.jq
               pkgs.gum
-              pkgs.util-linux
+              pkgs.jq
             ];
             passthru = { inherit results; };
           }
           (
             let
               resultsJson = builtins.toJSON results;
-              hasFailures = lib.any (result: !result.success) results;
             in
             ''
               gum style \
@@ -116,11 +114,11 @@
 
               echo '${resultsJson}' \
                 | jq -r '
-                    ["CLASS", "NAME", "SUCCESS"],
+                    ["CLASS", "NAME", "ISOLATED"],
                     (.[] | [
                       .class,
                       .name,
-                      (if .success
+                      (if .isolated
                         then "\u001b[32m✓\u001b[0m"
                         else "\u001b[31m✗\u001b[0m"
                       end)
@@ -130,12 +128,22 @@
                 | gum table --print --border.foreground=63
 
               echo
-              echo "Total modules: $(echo '${resultsJson}' | jq length)"
-              echo "Failures: $(echo '${resultsJson}' | jq '[.[] | select(.success==false)] | length')"
 
-              touch $out
+              total="$(echo '${resultsJson}' | jq length)"
+              failures="$(
+                echo '${resultsJson}' \
+                  | jq '[.[] | select(.isolated == false)] | length'
+              )"
+              gum style \
+                --border=rounded \
+                --border-foreground=63 \
+                --padding "0 1" \
+                "Total modules: $total" "Failures: $failures"
 
-              ${lib.optionalString hasFailures "exit 1"}
+              echo '${resultsJson}' > $out
+              if [ "$failures" -gt 0 ]; then
+                exit 1
+              fi
             ''
           );
     };
