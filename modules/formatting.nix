@@ -1,12 +1,15 @@
 { inputs, self, ... }:
 {
-  imports = [ inputs.treefmt-nix.flakeModule ];
+  imports = [
+    inputs.flake-parts.flakeModules.modules
+    inputs.treefmt-nix.flakeModule
+  ];
 
   perSystem =
     { inputs', pkgs, ... }:
     {
       checks.snekcheck =
-        pkgs.runCommandLocal "snekcheck"
+        pkgs.runCommand "snekcheck"
           {
             buildInputs = [ inputs'.snekcheck.packages.default ];
           }

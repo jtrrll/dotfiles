@@ -29,6 +29,17 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 * Example: `true`
 * Type: `boolean`
 
+### `dotfiles.ai.env`
+
+* Description: An environment of packages for use by AI.
+* Type: `package`
+
+### `dotfiles.ai.packages`
+
+* Default: `[]`
+* Description: The set of packages to appear in the AI environment.
+* Type: `list of package`
+
 ### `dotfiles.bat.enable`
 
 * Default: `false`
@@ -113,13 +124,6 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 * Example: `true`
 * Type: `boolean`
 
-### `dotfiles.mediaPlayback.enable`
-
-* Default: `false`
-* Description: Whether to enable jtrrll's media playback configuration.
-* Example: `true`
-* Type: `boolean`
-
 ### `dotfiles.musicLibrary.enable`
 
 * Default: `false`
@@ -131,20 +135,6 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 
 * Default: `false`
 * Description: Whether to enable jtrrll's Nix configuration.
-* Example: `true`
-* Type: `boolean`
-
-### `dotfiles.presets.full.enable`
-
-* Default: `false`
-* Description: Whether to enable jtrrll's full dotfiles.
-* Example: `true`
-* Type: `boolean`
-
-### `dotfiles.presets.minimal.enable`
-
-* Default: `false`
-* Description: Whether to enable jtrrll's minimal dotfiles.
 * Example: `true`
 * Type: `boolean`
 

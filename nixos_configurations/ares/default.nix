@@ -15,8 +15,28 @@ nixosSystem {
           { pkgs, ... }:
           {
             dotfiles = {
-              presets.full.enable = true;
-              theme.base16Scheme = "${pkgs.base16-schemes}/share/themes/gruvbox-material-dark-medium.yaml";
+              ai.enable = true;
+              bat.enable = true;
+              browsers.brave.enable = true;
+              codeDirectory.enable = true;
+              editors = {
+                neovim.enable = true;
+                zed.enable = true;
+              };
+              fileSystem.enable = true;
+              gaming.enable = true;
+              git.enable = true;
+              homeManager.enable = true;
+              musicLibrary.enable = true;
+              nix.enable = true;
+              repeat.enable = true;
+              screensavers.enable = true;
+              systemInfo.enable = true;
+              terminal.enable = true;
+              theme = {
+                enable = true;
+                base16Scheme = "${pkgs.base16-schemes}/share/themes/gruvbox-material-dark-medium.yaml";
+              };
             };
           };
       };

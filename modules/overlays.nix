@@ -1,5 +1,7 @@
 { inputs, ... }:
 {
+  imports = [ inputs.flake-parts.flakeModules.modules ];
+
   flake.overlays = {
     default = final: prev: {
       ghostty = if final.stdenv.isDarwin then prev.ghostty-bin else prev.ghostty;
