@@ -49,11 +49,11 @@
             };
           };
           packages = filterAvailable pkgs.stdenv.hostPlatform.system [
-            pkgs.prismlauncher
             pkgs.steam-rom-manager
           ];
         };
         programs = {
+          prismlauncher.enable = true;
           retroarch = {
             enable = !pkgs.stdenv.isDarwin;
             cores = {

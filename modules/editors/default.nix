@@ -1,13 +1,21 @@
-{ inputs, ... }:
+{ inputs, self, ... }:
 {
   imports = [ inputs.flake-parts.flakeModules.modules ];
 
   flake.modules.homeManager.editors =
-    { lib, ... }:
+    {
+      config,
+      lib,
+      pkgs,
+      ...
+    }:
+    let
+      cfg = config.dotfiles.editors;
+    in
     {
       imports = [
         (import ./neovim { inherit (inputs.nixvim.homeModules) nixvim; })
-        ./zed
+        ./zed.nix
       ];
 
       options.dotfiles.editors = {
@@ -35,5 +43,26 @@
         neovim.enable = lib.mkEnableOption "jtrrll's Neovim configuration";
         zed.enable = lib.mkEnableOption "jtrrll's Zed configuration";
       };
+
+      config.home = {
+        packages = [
+          self.packages.${pkgs.stdenv.hostPlatform.system}.edit
+        ];
+        sessionVariables = {
+          EDITOR = lib.mkIf cfg.neovim.enable "nvim";
+          VISUAL = lib.mkIf cfg.zed.enable "zeditor";
+        };
+      };
+    };
+  perSystem =
+    { lib, pkgs, ... }:
+    {
+      packages.edit =
+        (pkgs.writers.writeNuBin "edit" { } (lib.readFile ./edit.nu)).overrideAttrs
+          (oldAttrs: {
+            meta = (oldAttrs.meta or { }) // {
+              description = "Launches a text editor.";
+            };
+          });
     };
 }
