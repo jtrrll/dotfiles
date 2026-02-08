@@ -61,6 +61,7 @@
     in
     {
       apps.default = {
+        meta.description = activatePkg.meta.description;
         program = activatePkg;
         type = "app";
       };
