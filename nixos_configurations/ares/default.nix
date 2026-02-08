@@ -14,6 +14,10 @@ nixosSystem {
         users.jtrrll =
           { pkgs, ... }:
           {
+            home.sessionVariables = {
+              EDITOR = "nvim";
+              VISUAL = "zeditor";
+            };
             dotfiles = {
               ai.enable = true;
               bat.enable = true;
