@@ -38,7 +38,15 @@ jobs:
       - uses: actions/checkout@v6
       - uses: DeterminateSystems/nix-installer-action@v21
       - name: Build ${{ matrix.configuration }} configuration
+        env:
+          NIX_SHOW_STATS: 1
+          NIX_SHOW_STATS_PATH: nix_eval_stats.json
         run: nix build --impure .#homeConfigurations.${{ matrix.configuration }}.activationPackage
+      - name: Upload Nix evaluation statistics
+        uses: actions/upload-artifact@v4
+        with:
+          name: nix-eval-stats-home-${{ matrix.configuration }}-${{ matrix.os }}
+          path: nix_eval_stats.json
   build-nixos-configuration:
     name: Build NixOS configuration
     strategy:
@@ -63,7 +71,15 @@ jobs:
       - uses: actions/checkout@v6
       - uses: DeterminateSystems/nix-installer-action@v21
       - name: Build ${{ matrix.configuration }} configuration
+        env:
+          NIX_SHOW_STATS: 1
+          NIX_SHOW_STATS_PATH: nix_eval_stats.json
         run: nix build --impure .#nixosConfigurations.${{ matrix.configuration }}.config.system.build.toplevel
+      - name: Upload Nix evaluation statistics
+        uses: actions/upload-artifact@v4
+        with:
+          name: nix-eval-stats-nixos-${{ matrix.configuration }}
+          path: nix_eval_stats.json
   check:
     name: Check
     runs-on: ubuntu-latest
@@ -72,5 +88,13 @@ jobs:
       - uses: DeterminateSystems/nix-installer-action@v21
       - uses: DeterminateSystems/flake-checker-action@v12
       - name: Check flake
+        env:
+          NIX_SHOW_STATS: 1
+          NIX_SHOW_STATS_PATH: nix_eval_stats.json
         run: nix flake check --impure
+      - name: Upload Nix evaluation statistics
+        uses: actions/upload-artifact@v4
+        with:
+          name: nix-eval-stats-check
+          path: nix_eval_stats.json
 ...
