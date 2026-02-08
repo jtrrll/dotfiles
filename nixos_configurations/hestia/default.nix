@@ -15,6 +15,10 @@ nixosSystem {
       home-manager = {
         sharedModules = [ { home.stateVersion = "25.05"; } ];
         users.jtrrll = {
+          home.sessionVariables = {
+            EDITOR = "nvim";
+            VISUAL = "zeditor";
+          };
           dotfiles = {
             bat.enable = true;
             editors.neovim.enable = true;
