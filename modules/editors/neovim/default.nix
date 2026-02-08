@@ -11,7 +11,6 @@
       {
         programs.nixvim = {
           colorschemes.vscode.enable = true;
-          defaultEditor = true;
           enable = true;
           plugins.lz-n.enable = true;
           viAlias = true;
