@@ -39,6 +39,7 @@ jobs:
       - uses: DeterminateSystems/nix-installer-action@v21
       - name: Build ${{ matrix.configuration }} configuration
         env:
+          NIX_SHOW_STATS: 1
           NIX_SHOW_STATS_PATH: nix_eval_stats.json
         run: nix build --impure .#homeConfigurations.${{ matrix.configuration }}.activationPackage
       - name: Upload Nix evaluation statistics
@@ -71,6 +72,7 @@ jobs:
       - uses: DeterminateSystems/nix-installer-action@v21
       - name: Build ${{ matrix.configuration }} configuration
         env:
+          NIX_SHOW_STATS: 1
           NIX_SHOW_STATS_PATH: nix_eval_stats.json
         run: nix build --impure .#nixosConfigurations.${{ matrix.configuration }}.config.system.build.toplevel
       - name: Upload Nix evaluation statistics
@@ -87,6 +89,7 @@ jobs:
       - uses: DeterminateSystems/flake-checker-action@v12
       - name: Check flake
         env:
+          NIX_SHOW_STATS: 1
           NIX_SHOW_STATS_PATH: nix_eval_stats.json
         run: nix flake check --impure
       - name: Upload Nix evaluation statistics
