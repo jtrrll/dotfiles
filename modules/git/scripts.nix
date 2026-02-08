@@ -77,28 +77,14 @@
                 echo "Usage: $(basename "$0") <main-branch>"
                 exit 1
               fi
-
               main_branch="$1"
-              base="origin/$main_branch"
 
-              git fetch origin --prune
-
-              merged_branches=$(git branch --merged "$base" --format="%(refname:short)" | grep -v "$main_branch" || true)
-
-              if [[ -z "$merged_branches" ]]; then
-                gum style --foreground 2 "✓ No merged branches to delete"
-                exit 0
-              fi
-
-              gum style --bold "The following branches have been merged into $base:"
-              echo "$merged_branches"
-
-              gum confirm "Delete these branches?" || exit 0
+              gum confirm
 
               git switch "$main_branch"
 
-              for branch in $merged_branches; do
-                git branch -d "$branch"
+              for branch in $(git branch --format="%(refname:short)" | grep -v "$main_branch"); do
+                  git branch -D "$branch"
               done
 
               git pull
