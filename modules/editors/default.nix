@@ -4,14 +4,10 @@
 
   flake.modules.homeManager.editors =
     {
-      config,
       lib,
       pkgs,
       ...
     }:
-    let
-      cfg = config.dotfiles.editors;
-    in
     {
       imports = [
         (import ./neovim { inherit (inputs.nixvim.homeModules) nixvim; })
@@ -44,15 +40,9 @@
         zed.enable = lib.mkEnableOption "jtrrll's Zed configuration";
       };
 
-      config.home = {
-        packages = [
-          self.packages.${pkgs.stdenv.hostPlatform.system}.edit
-        ];
-        sessionVariables = {
-          EDITOR = lib.mkIf cfg.neovim.enable "nvim";
-          VISUAL = lib.mkIf cfg.zed.enable "zeditor";
-        };
-      };
+      config.home.packages = [
+        self.packages.${pkgs.stdenv.hostPlatform.system}.edit
+      ];
     };
   perSystem =
     { lib, pkgs, ... }:

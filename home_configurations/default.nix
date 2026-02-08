@@ -26,6 +26,10 @@
                 home = {
                   homeDirectory = HOME;
                   username = USER;
+                  sessionVariables = {
+                    EDITOR = "nvim";
+                    VISUAL = "zeditor";
+                  };
                 };
               }
               {
