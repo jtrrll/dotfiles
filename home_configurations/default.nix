@@ -50,6 +50,7 @@
                   nix.enable = lib.mkDefault true;
                   repeat.enable = lib.mkDefault true;
                   screensavers.enable = lib.mkDefault true;
+                  ssh.enable = lib.mkDefault true;
                   systemInfo.enable = lib.mkDefault true;
                   terminal.enable = lib.mkDefault true;
                   theme = {
