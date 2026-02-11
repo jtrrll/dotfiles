@@ -35,6 +35,7 @@ nixosSystem {
               nix.enable = true;
               repeat.enable = true;
               screensavers.enable = true;
+              ssh.enable = true;
               systemInfo.enable = true;
               terminal.enable = true;
               theme = {
