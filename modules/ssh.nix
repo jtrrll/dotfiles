@@ -25,6 +25,12 @@
               identitiesOnly = true;
               identityFile = [ "${config.home.homeDirectory}/.ssh/github_personal_id_ed25519" ];
             };
+            "github-personal-bot" = {
+              hostname = "github.com";
+              user = "git";
+              identitiesOnly = true;
+              identityFile = [ "${config.home.homeDirectory}/.ssh/github_personal_bot_id_ed25519" ];
+            };
             "github-work" = {
               hostname = "github.com";
               user = "git";
