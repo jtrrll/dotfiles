@@ -51,7 +51,7 @@
           };
         };
       }
-      (if options ? stylix then { stylix.targets.ghostty.enable = false; } else { })
+      (lib.optionalAttrs (options ? stylix) { stylix.targets.ghostty.enable = false; })
     ]
   );
 }
