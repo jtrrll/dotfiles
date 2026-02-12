@@ -31,7 +31,7 @@
           };
         };
       }
-      (if options ? stylix then { stylix.targets.zellij.enable = false; } else { })
+      (lib.optionalAttrs (options ? stylix) { stylix.targets.zellij.enable = false; })
     ]
   );
 }

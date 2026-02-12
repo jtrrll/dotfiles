@@ -59,8 +59,8 @@
                 Label = "code-dir-git-fetch";
                 ProgramArguments = [ (lib.getExe codeDirGitFetch) ];
                 RunAtLoad = true;
-                StandardErrorPath = "/tmp/code_dir_git_fetch.err";
-                StandardOutPath = "/tmp/code_dir_git_fetch.log";
+                StandardErrorPath = "${config.home.homeDirectory}/Library/Logs/code_dir_git_fetch.err";
+                StandardOutPath = "${config.home.homeDirectory}/Library/Logs/code_dir_git_fetch.log";
                 StartCalendarInterval = lib.hm.darwin.mkCalendarInterval "08:00";
               };
               enable = true;

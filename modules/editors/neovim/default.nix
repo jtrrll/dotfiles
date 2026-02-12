@@ -25,7 +25,7 @@
           };
         };
       }
-      (if options ? stylix then { stylix.targets.nixvim.enable = false; } else { })
+      (lib.optionalAttrs (options ? stylix) { stylix.targets.nixvim.enable = false; })
     ]
   );
 

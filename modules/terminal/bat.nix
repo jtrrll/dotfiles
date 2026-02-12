@@ -25,7 +25,7 @@
           ];
         };
       }
-      (if options ? stylix then { stylix.targets.bat.enable = false; } else { })
+      (lib.optionalAttrs (options ? stylix) { stylix.targets.bat.enable = false; })
     ]
   );
 

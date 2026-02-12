@@ -12,7 +12,7 @@
     let
       filterAvailable =
         system: pkgsList:
-        builtins.filter (pkg: (builtins.tryEval (lib.meta.availableOn system pkg)).value) pkgsList;
+        lib.filter (pkg: (builtins.tryEval (lib.meta.availableOn system pkg)).value) pkgsList;
     in
     {
       config = lib.mkIf config.dotfiles.gaming.enable {
