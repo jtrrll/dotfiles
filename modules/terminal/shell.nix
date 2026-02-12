@@ -90,7 +90,7 @@
           };
         };
       }
-      (if options ? stylix then { stylix.targets.fish.enable = false; } else { })
+      (lib.optionalAttrs (options ? stylix) { stylix.targets.fish.enable = false; })
     ]
   );
 }

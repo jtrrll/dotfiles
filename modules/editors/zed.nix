@@ -111,7 +111,7 @@ in
           };
         };
       }
-      (if options ? stylix then { stylix.targets.zed.enable = false; } else { })
+      (lib.optionalAttrs (options ? stylix) { stylix.targets.zed.enable = false; })
     ]
   );
 }
