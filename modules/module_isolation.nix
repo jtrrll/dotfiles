@@ -13,6 +13,16 @@
       checks.moduleIsolation =
         let
           moduleEvaluators = {
+            ai =
+              module:
+              lib.evalModules {
+                modules = [
+                  {
+                    _module.args = { inherit pkgs; };
+                  }
+                  module
+                ];
+              };
             devenv =
               module:
               inputs.devenv.lib.mkEval {
