@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ inputs, self, ... }:
 {
   imports = [ inputs.flake-parts.flakeModules.modules ];
 
@@ -11,18 +11,44 @@
     }:
     {
       imports = [
-        ./claude
-
-        ./env.nix
         ./mcp.nix
       ];
 
-      config = lib.mkIf config.dotfiles.ai.enable {
-        dotfiles.ai.packages = [ pkgs.jq ];
-      };
+      config = lib.mkIf config.dotfiles.ai.enable (
+        let
+          ai = lib.evalModules {
+            modules = lib.optionals (self.modules ? ai) (lib.attrValues self.modules.ai) ++ [
+              {
+                inherit (config.dotfiles.ai) packages;
+                harness = pkgs.claude-code;
+                _module.args = { inherit pkgs; };
+              }
+            ];
+          };
+        in
+        {
+          dotfiles.ai.packages = [
+            pkgs.bashInteractive
+            pkgs.jq
+            (pkgs.mermaid-cli.override { chromium = config.programs.brave.finalPackage; })
+          ];
+          programs.claude-code = {
+            enable = true;
+            enableMcpIntegration = true;
+            agentsDir = ./claude/agents;
+            rulesDir = ./claude/rules;
+            package = ai.config.finalHarness;
+          };
+        }
+      );
 
       options.dotfiles.ai = {
         enable = lib.mkEnableOption "jtrrll's AI configuration";
+        packages = lib.mkOption {
+          type = lib.types.listOf lib.types.package;
+          default = [ ];
+          description = "The set of packages to appear in the AI environment.";
+        };
       };
     };
 }
