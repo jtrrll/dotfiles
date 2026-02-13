@@ -28,9 +28,17 @@
         in
         {
           dotfiles.ai.packages = [
-            pkgs.bashInteractive
+            config.programs.bash.package
+            config.programs.git.package
+
+            pkgs.curlMinimal
+            pkgs.gh
             pkgs.jq
             (pkgs.mermaid-cli.override { chromium = config.programs.brave.finalPackage; })
+            pkgs.ripgrep
+            pkgs.uutils-coreutils-noprefix
+            pkgs.uutils-findutils
+            pkgs.which
           ];
           programs.claude-code = {
             enable = true;
