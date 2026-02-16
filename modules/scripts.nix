@@ -13,11 +13,11 @@
       inherit (pkgs.stdenv.hostPlatform) system;
     in
     {
-      imports = [ inputs.justix.devenvModules.default ];
+      imports = lib.attrValues inputs.justix.modules.devenv;
 
       justix = {
         enable = true;
-        justfile.config.recipes =
+        config.recipes =
           let
             pkgToRecipe = pkg: {
               attributes.doc = pkg.meta.description;
