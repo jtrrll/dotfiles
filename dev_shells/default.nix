@@ -15,12 +15,10 @@
           {
             containers = lib.mkForce { }; # Workaround to remove containers from flake checks.
           }
-          {
-            claude.code.enable = true;
-            justix.mcpServer.enable = true;
-          }
         ];
         shells.default = {
+          claude.code.enable = true;
+
           enterShell = lib.getExe (
             pkgs.writeShellApplication rec {
               meta.mainProgram = name;
