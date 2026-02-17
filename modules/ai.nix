@@ -49,7 +49,7 @@
                   ''
                     mkdir -p $out/bin
                     makeWrapper ${lib.getExe config.harness} $out/bin/${binaryName} \
-                      --set PATH ${config.env}/bin
+                      --prefix PATH : ${config.env}/bin
                   ''
                 ).overrideAttrs
                   { meta.mainProgram = binaryName; }
