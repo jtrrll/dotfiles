@@ -6,6 +6,7 @@
     {
       config,
       lib,
+      pkgs,
       ...
     }:
     let
@@ -39,7 +40,7 @@
               identityFile = [ "${config.home.homeDirectory}/.ssh/github_work_id_ed25519" ];
             };
           };
-          extraConfig = ''
+          extraConfig = lib.mkIf pkgs.stdenv.isDarwin ''
             UseKeychain yes
           '';
         };
