@@ -6,18 +6,22 @@
     {
       config,
       lib,
+      pkgs,
       ...
     }:
     {
       config = lib.mkIf config.dotfiles.musicLibrary.enable {
-        home.file.musicLibrary = {
-          target = "music_library/README.md";
-          text = ''
-            # ~/music_library
+        home = {
+          file.musicLibrary = {
+            target = "music_library/README.md";
+            text = ''
+              # ~/music_library
 
-            A library directory for music.
+              A library directory for music.
 
-          '';
+            '';
+          };
+          packages = [ pkgs.ffmpeg ];
         };
         programs.beets = {
           enable = true;
@@ -27,6 +31,7 @@
             plugins = [
               "autobpm"
               "badfiles"
+              "convert"
               "embedart"
               "fetchart"
               "fish"
