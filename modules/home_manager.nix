@@ -21,9 +21,6 @@
         };
       };
     nixos.homeManager =
-      let
-        overlay = self.overlays.default;
-      in
       { lib, pkgs, ... }:
       {
         home-manager = {
@@ -33,12 +30,10 @@
           extraSpecialArgs = {
             pkgs = import inputs.nixpkgs-home-manager {
               inherit (pkgs) system;
-              overlays = [ overlay ];
             };
           };
         };
         imports = [ inputs.home-manager.nixosModules.home-manager ];
-        nixpkgs.overlays = [ overlay ];
       };
   };
 }

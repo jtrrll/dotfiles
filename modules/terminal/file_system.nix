@@ -1,14 +1,14 @@
 {
+  snekcheck,
+}:
+{
   config,
   lib,
-  pkgs,
   ...
 }:
 {
   config = lib.mkIf config.dotfiles.fileSystem.enable {
-    home.packages = [
-      pkgs.snekcheck
-    ];
+    home.packages = [ snekcheck ];
     programs = {
       eza = {
         enable = true;

@@ -45,14 +45,15 @@
       ];
     };
   perSystem =
-    { lib, pkgs, ... }:
+    { pkgs, ... }:
     {
-      packages.edit =
-        (pkgs.writers.writeNuBin "edit" { } (lib.readFile ./edit.nu)).overrideAttrs
-          (oldAttrs: {
-            meta = (oldAttrs.meta or { }) // {
-              description = "Launches a text editor.";
-            };
-          });
+      packages.edit = pkgs.callPackage (
+        { lib, writers }:
+        (writers.writeNuBin "edit" { } (lib.readFile ./edit.nu)).overrideAttrs (oldAttrs: {
+          meta = (oldAttrs.meta or { }) // {
+            description = "Launches a text editor.";
+          };
+        })
+      ) { };
     };
 }

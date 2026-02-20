@@ -1,14 +1,14 @@
 {
-  dotfiles,
-  nix,
+  nixosModules,
   nixosSystem,
 }:
 nixosSystem {
   system = "x86_64-linux";
-  modules = [
-    dotfiles
-    nix
+  modules = nixosModules ++ [
     {
+      dotfiles = {
+        gaming.enable = true;
+      };
       home-manager = {
         sharedModules = [ { home.stateVersion = "25.05"; } ];
         users.jtrrll =
@@ -80,13 +80,7 @@ nixosSystem {
         networkmanager.enable = true;
       };
 
-      programs = {
-        steam = {
-          enable = true;
-          remotePlay.openFirewall = true;
-        };
-        xwayland.enable = true;
-      };
+      programs.xwayland.enable = true;
 
       services = {
         automatic-timezoned.enable = true;

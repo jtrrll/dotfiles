@@ -10,7 +10,7 @@
       ...
     }:
     let
-      inherit (pkgs.stdenv.hostPlatform) system;
+      inherit (pkgs.stdenv) system;
     in
     {
       imports = lib.attrValues inputs.justix.modules.devenv;
@@ -46,7 +46,10 @@
               commands = "@just --list";
             };
             activate = pkgToRecipe (self.packages.${system}.activate.override { inherit rootPath; });
-            update-docs = pkgToRecipe self.packages.${system}.update-docs;
+            update-docs = {
+              attributes.doc = self.apps.${system}.update-docs.meta.description;
+              commands = "@nix run .#update-docs";
+            };
           };
       };
     };
