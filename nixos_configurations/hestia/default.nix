@@ -1,16 +1,11 @@
 {
-  dotfiles,
-  homeAssistant,
-  nix,
+  nixosModules,
   nixosSystem,
   raspberry-pi-3,
 }:
 nixosSystem {
   system = "aarch64-linux";
-  modules = [
-    dotfiles
-    homeAssistant
-    nix
+  modules = nixosModules ++ [
     {
       home-manager = {
         sharedModules = [ { home.stateVersion = "25.05"; } ];

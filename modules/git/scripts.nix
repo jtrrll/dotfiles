@@ -1,20 +1,20 @@
 {
-  config,
-  lib,
-  pkgs,
-  ...
-}:
-{
-  config = lib.mkIf config.dotfiles.git.enable {
-    programs.git.settings.alias = {
-      ezswitch = "!${
-        lib.getExe (
-          pkgs.writeShellApplication rec {
+  config.perSystem =
+    { lib, pkgs, ... }:
+    {
+      packages = {
+        gitEzSwitch = pkgs.callPackage (
+          {
+            git,
+            gum,
+            writeShellApplication,
+          }:
+          writeShellApplication rec {
             meta.mainProgram = name;
             name = "git-ezswitch";
             runtimeInputs = [
-              config.programs.git.package
-              pkgs.gum
+              git
+              gum
             ];
             text = ''
               if [[ "$#" -eq 0 ]]; then
@@ -25,18 +25,23 @@
               fi
             '';
           }
-        )
-      }";
-      open = "!${
-        lib.getExe (
-          pkgs.writeShellApplication rec {
+        ) { };
+        gitOpen = pkgs.callPackage (
+          {
+            git,
+            gnused,
+            stdenv,
+            writeShellApplication,
+            xdg-utils,
+          }:
+          writeShellApplication rec {
             meta.mainProgram = name;
             name = "git-open";
             runtimeInputs = [
-              config.programs.git.package
-              pkgs.gnused
+              git
+              gnused
             ]
-            ++ lib.optional pkgs.stdenv.isLinux pkgs.xdg-utils;
+            ++ lib.optional stdenv.isLinux xdg-utils;
             text = ''
               remote_url=$(git remote get-url origin 2>/dev/null)
 
@@ -55,22 +60,27 @@
               fi
 
               echo "Opening: $browser_url"
-              ${if pkgs.stdenv.isLinux then "xdg-open" else "open"} "$browser_url" >/dev/null 2>&1 &
+              ${if stdenv.isLinux then "xdg-open" else "open"} "$browser_url" >/dev/null 2>&1 &
               disown
             '';
           }
-        )
-      }";
-      trim = "!${
-        lib.getExe (
-          pkgs.writeShellApplication rec {
+        ) { };
+        gitTrim = pkgs.callPackage (
+          {
+            git,
+            gnugrep,
+            gum,
+            uutils-coreutils-noprefix,
+            writeShellApplication,
+          }:
+          writeShellApplication rec {
             meta.mainProgram = name;
             name = "git-trim";
             runtimeInputs = [
-              config.programs.git.package
-              pkgs.gnugrep
-              pkgs.gum
-              pkgs.uutils-coreutils-noprefix
+              git
+              gnugrep
+              gum
+              uutils-coreutils-noprefix
             ];
             text = ''
               if [[ "$#" -ne 1 ]]; then
@@ -90,8 +100,7 @@
               git pull
             '';
           }
-        )
-      }";
+        ) { };
+      };
     };
-  };
 }

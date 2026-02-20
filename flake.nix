@@ -70,13 +70,15 @@
           modules-tree.result
         ];
 
-        flake = {
-          lib.modules-tree = modules-tree;
-          homeModules = self.modules.homeManager;
-          nixosModules = self.modules.nixos;
-        };
+        config = {
+          flake = {
+            lib.modules-tree = modules-tree;
+            homeModules = self.modules.homeManager;
+            nixosModules = self.modules.nixos;
+          };
 
-        systems = nixpkgs.lib.systems.flakeExposed;
+          systems = nixpkgs.lib.systems.flakeExposed;
+        };
       }
     );
 }

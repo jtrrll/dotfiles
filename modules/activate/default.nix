@@ -1,6 +1,5 @@
 {
   inputs,
-  lib,
   self,
   ...
 }:
@@ -12,10 +11,17 @@
       pkgs,
       ...
     }:
-    let
-      homeConfigurations = lib.attrNames (self.homeConfigurations or { });
-      nixosConfigurations = lib.attrNames (self.nixosConfigurations or { });
-      activatePkg = pkgs.callPackage (
+    {
+      apps.default =
+        let
+          activatePkg = self.packages.${pkgs.stdenv.hostPlatform.system}.activate;
+        in
+        {
+          meta.description = activatePkg.meta.description;
+          program = activatePkg;
+          type = "app";
+        };
+      packages.activate = pkgs.callPackage (
         {
           gum,
           lib,
@@ -25,6 +31,9 @@
           writers,
         }:
         let
+          homeConfigurations = lib.attrNames (self.homeConfigurations or { });
+          nixosConfigurations = lib.attrNames (self.nixosConfigurations or { });
+
           homeConfigurationsString =
             assert lib.isList homeConfigurations && lib.all lib.isString homeConfigurations;
             lib.concatStringsSep "\n" homeConfigurations;
@@ -58,13 +67,5 @@
             };
           })
       ) { rootPath = self; };
-    in
-    {
-      apps.default = {
-        meta.description = activatePkg.meta.description;
-        program = activatePkg;
-        type = "app";
-      };
-      packages.activate = activatePkg;
     };
 }

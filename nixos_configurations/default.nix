@@ -11,22 +11,18 @@
     in
     {
       ares = lib.makeOverridable (import ./ares) {
-        inherit (self.nixosModules) nix;
         inherit nixosSystem;
-        dotfiles = self.nixosModules.homeManager;
+        nixosModules = lib.attrValues self.nixosModules;
       };
       athena = lib.makeOverridable (import ./athena) {
         inherit (inputs.nixos-hardware.nixosModules) lenovo-thinkpad-x1;
-        inherit (self.nixosModules) nix;
         inherit nixosSystem;
-        dotfiles = self.nixosModules.homeManager;
+        nixosModules = lib.attrValues self.nixosModules;
       };
       hestia = lib.makeOverridable (import ./hestia) {
         inherit (inputs.nixos-hardware.nixosModules) raspberry-pi-3;
-        inherit (self.nixosModules) homeAssistant;
-        inherit (self.nixosModules) nix;
         inherit nixosSystem;
-        dotfiles = self.nixosModules.homeManager;
+        nixosModules = lib.attrValues self.nixosModules;
       };
     };
 }

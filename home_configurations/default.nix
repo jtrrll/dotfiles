@@ -64,7 +64,6 @@
         };
       pkgs = import inputs.nixpkgs-home-manager {
         inherit SYSTEM;
-        overlays = [ self.overlays.default ];
       };
     in
     {
