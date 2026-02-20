@@ -3,19 +3,19 @@
   imports = [ inputs.flake-parts.flakeModules.modules ];
 
   flake.modules.homeManager.terminal =
-    { lib, ... }:
+    { lib, pkgs, ... }:
     {
       imports =
         let
           constants = import ./constants.nix;
         in
         [
-          ./screensavers
-
           ./bat.nix
           ./direnv.nix
           (import ./emulator.nix { inherit constants; })
-          ./file_system.nix
+          (import ./file_system.nix {
+            snekcheck = inputs.snekcheck.packages.${pkgs.stdenv.hostPlatform.system}.default;
+          })
           (import ./multiplexer.nix { inherit constants; })
           ./repeat.nix
           ./shell.nix

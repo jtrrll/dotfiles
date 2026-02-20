@@ -17,8 +17,6 @@
           }
         ];
         shells.default = {
-          claude.code.enable = true;
-
           enterShell = lib.getExe (
             pkgs.writeShellApplication rec {
               meta.mainProgram = name;

@@ -1,11 +1,15 @@
-{ inputs, ... }:
+{ inputs, self, ... }:
 {
-  imports = [ inputs.flake-parts.flakeModules.modules ];
+  imports = [
+    inputs.flake-parts.flakeModules.modules
+    ./scripts.nix
+  ];
 
   flake.modules.homeManager.git =
     {
       config,
       lib,
+      pkgs,
       ...
     }:
     {
@@ -13,6 +17,29 @@
         programs.git = {
           enable = true;
           settings = {
+            alias = {
+              ezswitch = "!${
+                lib.getExe (
+                  self.packages.${pkgs.stdenv.hostPlatform.system}.gitEzSwitch.override {
+                    git = config.programs.git.package;
+                  }
+                )
+              }";
+              open = "!${
+                lib.getExe (
+                  self.packages.${pkgs.stdenv.hostPlatform.system}.gitOpen.override {
+                    git = config.programs.git.package;
+                  }
+                )
+              }";
+              trim = "!${
+                lib.getExe (
+                  self.packages.${pkgs.stdenv.hostPlatform.system}.gitTrim.override {
+                    git = config.programs.git.package;
+                  }
+                )
+              }";
+            };
             fetch.prune = true;
             init.defaultBranch = "main";
             push.autoSetupRemote = true;
@@ -27,10 +54,6 @@
           ];
         };
       };
-
-      imports = [
-        ./scripts.nix
-      ];
 
       options.dotfiles.git = {
         enable = lib.mkEnableOption "jtrrll's Git configuration";
