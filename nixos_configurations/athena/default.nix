@@ -34,7 +34,6 @@ nixosSystem {
               homeManager.enable = true;
               musicLibrary.enable = true;
               nix.enable = true;
-              repeat.enable = true;
               screensavers.enable = true;
               ssh.enable = true;
               systemInfo.enable = true;
