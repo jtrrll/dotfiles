@@ -54,7 +54,7 @@
           fish = {
             enable = true;
             functions = {
-              fish_greeting.body = '''';
+              fish_greeting.body = "";
               fish_prompt.body = ''
                 set --local last_status $status
 
