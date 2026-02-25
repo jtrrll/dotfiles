@@ -2,6 +2,7 @@
 {
   config,
   lib,
+  pkgs,
   options,
   ...
 }:
@@ -9,6 +10,7 @@
   config = lib.mkIf config.dotfiles.terminal.enable (
     lib.mkMerge [
       {
+        home.packages = [ pkgs.watch ];
         programs.zellij = {
           enable = true;
           settings = {
