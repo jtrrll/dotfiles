@@ -67,11 +67,6 @@
       };
     in
     {
-      default = mkHomeConfiguration [
-        {
-          home.stateVersion = "23.11";
-        }
-      ];
       work = mkHomeConfiguration [
         {
           dotfiles = {
