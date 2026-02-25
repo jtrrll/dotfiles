@@ -138,13 +138,6 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 * Example: `true`
 * Type: `boolean`
 
-### `dotfiles.repeat.enable`
-
-* Default: `false`
-* Description: Whether to enable the repeat script.
-* Example: `true`
-* Type: `boolean`
-
 ### `dotfiles.screensavers.enable`
 
 * Default: `false`
