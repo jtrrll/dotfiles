@@ -27,12 +27,16 @@
               launchd.enable = true;
               settings = {
                 gaps = {
-                  inner.horizontal = 8;
-                  inner.vertical = 8;
-                  outer.bottom = 8;
-                  outer.left = 8;
-                  outer.right = 8;
-                  outer.top = 8;
+                  inner = {
+                    horizontal = 8;
+                    vertical = 8;
+                  };
+                  outer = {
+                    bottom = 8;
+                    left = 8;
+                    right = 8;
+                    top = 8;
+                  };
                 };
               };
             };

@@ -12,7 +12,7 @@ nixosSystem {
         users.jtrrll = {
           home.sessionVariables = {
             EDITOR = "nvim";
-            VISUAL = "zeditor";
+            VISUAL = "nvim";
           };
           dotfiles = {
             ai.enable = false;
@@ -20,6 +20,7 @@ nixosSystem {
             editors.zed.enable = false;
             gaming.enable = false;
             music.enable = false;
+            notes.enable = false;
             screensavers.enable = false;
             theme.enable = false;
             windowManager.enable = false;

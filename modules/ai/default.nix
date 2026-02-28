@@ -14,6 +14,17 @@
         ./mcp.nix
       ];
 
+      options.dotfiles.ai = {
+        enable = lib.mkEnableOption "jtrrll's AI configuration" // {
+          default = true;
+        };
+        packages = lib.mkOption {
+          type = lib.types.listOf lib.types.package;
+          default = [ ];
+          description = "The set of packages to appear in the AI environment.";
+        };
+      };
+
       config = lib.mkIf config.dotfiles.ai.enable (
         let
           ai = lib.evalModules {
@@ -105,16 +116,5 @@
           };
         }
       );
-
-      options.dotfiles.ai = {
-        enable = lib.mkEnableOption "jtrrll's AI configuration" // {
-          default = true;
-        };
-        packages = lib.mkOption {
-          type = lib.types.listOf lib.types.package;
-          default = [ ];
-          description = "The set of packages to appear in the AI environment.";
-        };
-      };
     };
 }
