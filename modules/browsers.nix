@@ -2,7 +2,7 @@
 {
   imports = [ inputs.flake-parts.flakeModules.modules ];
 
-  flake.modules.homeManager.browsers =
+  config.flake.modules.homeManager.browsers =
     {
       config,
       lib,

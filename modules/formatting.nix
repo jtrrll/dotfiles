@@ -5,7 +5,7 @@
     inputs.treefmt-nix.flakeModule
   ];
 
-  perSystem =
+  config.perSystem =
     { inputs', pkgs, ... }:
     {
       checks.snekcheck =

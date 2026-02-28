@@ -2,7 +2,7 @@
 {
   imports = [ inputs.flake-parts.flakeModules.modules ];
 
-  flake.modules.homeManager.codeDirectory =
+  config.flake.modules.homeManager.codeDirectory =
     {
       config,
       lib,

@@ -2,7 +2,7 @@
 {
   imports = [ inputs.flake-parts.flakeModules.modules ];
 
-  flake.modules.homeManager.terminal =
+  config.flake.modules.homeManager.terminal =
     { lib, pkgs, ... }:
     {
       imports =

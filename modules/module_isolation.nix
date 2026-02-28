@@ -2,7 +2,7 @@
 {
   imports = [ inputs.flake-parts.flakeModules.modules ];
 
-  perSystem =
+  config.perSystem =
     {
       lib,
       pkgs,

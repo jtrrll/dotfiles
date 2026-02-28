@@ -2,7 +2,7 @@
 {
   imports = [ inputs.devenv.flakeModule ];
 
-  perSystem =
+  config.perSystem =
     {
       lib,
       pkgs,

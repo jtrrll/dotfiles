@@ -61,7 +61,7 @@
           (it: it.match "^/[^/]+\.nix$|^/[^/]+/default\.nix$")
         ];
       in
-      { self, ... }:
+      { lib, self, ... }:
       {
         imports = [
           ./dev_shells
@@ -69,6 +69,14 @@
           ./nixos_configurations
           modules-tree.result
         ];
+
+        options = {
+          flake.lib = lib.mkOption {
+            type = lib.types.attrsOf lib.types.anything;
+            default = { };
+            description = "A top-level library";
+          };
+        };
 
         config = {
           flake = {

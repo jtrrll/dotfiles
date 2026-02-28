@@ -2,7 +2,7 @@
 {
   imports = [ inputs.flake-parts.flakeModules.modules ];
 
-  flake.modules.ai = {
+  config.flake.modules.ai = {
     environment =
       {
         config,

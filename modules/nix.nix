@@ -2,7 +2,7 @@
 {
   imports = [ inputs.flake-parts.flakeModules.modules ];
 
-  flake.modules = {
+  config.flake.modules = {
     homeManager.nix =
       {
         config,

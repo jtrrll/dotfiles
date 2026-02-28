@@ -7,7 +7,7 @@
 {
   imports = [ inputs.home-manager.flakeModules.home-manager ];
 
-  flake.homeConfigurations =
+  config.flake.homeConfigurations =
     let
       ### start "impure" ###
       HOME = builtins.getEnv "HOME";

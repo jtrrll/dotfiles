@@ -2,7 +2,7 @@
 {
   imports = [ inputs.flake-parts.flakeModules.modules ];
 
-  flake.modules.homeManager.music =
+  config.flake.modules.homeManager.music =
     {
       config,
       lib,

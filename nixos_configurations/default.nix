@@ -5,7 +5,7 @@
   ...
 }:
 {
-  flake.nixosConfigurations =
+  config.flake.nixosConfigurations =
     let
       inherit (inputs.nixpkgs-nixos.lib) nixosSystem;
     in

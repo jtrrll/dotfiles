@@ -5,7 +5,7 @@
     ./scripts.nix
   ];
 
-  flake.modules.homeManager.git =
+  config.flake.modules.homeManager.git =
     {
       config,
       lib,
