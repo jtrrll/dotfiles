@@ -8,7 +8,7 @@
       ...
     }:
     {
-      packages.splash = pkgs.callPackage (
+      config.packages.splash = pkgs.callPackage (
         {
           lolcat,
           uutils-coreutils-noprefix,

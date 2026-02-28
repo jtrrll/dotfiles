@@ -17,7 +17,7 @@
           }
         ];
         home.homeDirectory = lib.mkDefault "/home/${config.home.username}";
-        xdg.enable = true;
+        xdg.enable = lib.mkDefault true;
       };
     };
 }

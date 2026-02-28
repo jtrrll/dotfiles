@@ -7,7 +7,7 @@
   ...
 }:
 {
-  config = lib.mkIf config.dotfiles.fileSystem.enable {
+  config = lib.mkIf config.dotfiles.terminal.enable {
     home.packages = [ snekcheck ];
     programs = {
       eza = {
@@ -24,9 +24,5 @@
         options = [ "--cmd cd" ];
       };
     };
-  };
-
-  options.dotfiles.fileSystem = {
-    enable = lib.mkEnableOption "jtrrll's file-system configuration";
   };
 }

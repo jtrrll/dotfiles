@@ -4,7 +4,7 @@
   ...
 }:
 {
-  config = lib.mkIf config.dotfiles.systemInfo.enable {
+  config = lib.mkIf config.dotfiles.terminal.enable {
     programs = {
       btop = {
         enable = true;
@@ -12,9 +12,5 @@
       };
       fastfetch.enable = true;
     };
-  };
-
-  options.dotfiles.systemInfo = {
-    enable = lib.mkEnableOption "jtrrll's system information configuration";
   };
 }

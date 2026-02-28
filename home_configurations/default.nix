@@ -32,32 +32,6 @@
                   };
                 };
               }
-              {
-                dotfiles = {
-                  ai.enable = lib.mkDefault true;
-                  bat.enable = lib.mkDefault true;
-                  browsers.brave.enable = lib.mkDefault true;
-                  codeDirectory.enable = lib.mkDefault true;
-                  editors = {
-                    neovim.enable = lib.mkDefault true;
-                    zed.enable = lib.mkDefault true;
-                  };
-                  fileSystem.enable = lib.mkDefault true;
-                  gaming.enable = lib.mkDefault true;
-                  git.enable = lib.mkDefault true;
-                  homeManager.enable = lib.mkDefault true;
-                  musicLibrary.enable = lib.mkDefault true;
-                  nix.enable = lib.mkDefault true;
-                  screensavers.enable = lib.mkDefault true;
-                  ssh.enable = lib.mkDefault true;
-                  systemInfo.enable = lib.mkDefault true;
-                  terminal.enable = lib.mkDefault true;
-                  theme = {
-                    enable = lib.mkDefault true;
-                    base16Scheme = "${pkgs.base16-schemes}/share/themes/gruvbox-material-dark-medium.yaml";
-                  };
-                };
-              }
             ]
             ++ modules;
         };
@@ -71,6 +45,7 @@
           dotfiles = {
             gaming.enable = false;
             musicLibrary.enable = false;
+            theme.base16Scheme = "${pkgs.base16-schemes}/share/themes/gruvbox-material-dark-medium.yaml";
           };
           home.stateVersion = "23.11";
         }

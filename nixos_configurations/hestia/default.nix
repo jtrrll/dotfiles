@@ -15,14 +15,14 @@ nixosSystem {
             VISUAL = "zeditor";
           };
           dotfiles = {
-            bat.enable = true;
-            editors.neovim.enable = true;
-            fileSystem.enable = true;
-            git.enable = true;
-            homeManager.enable = true;
-            nix.enable = true;
-            systemInfo.enable = true;
-            terminal.enable = true;
+            ai.enable = false;
+            browsers.brave.enable = false;
+            editors.zed.enable = false;
+            gaming.enable = false;
+            music.enable = false;
+            screensavers.enable = false;
+            theme.enable = false;
+            windowManager.enable = false;
           };
         };
       };

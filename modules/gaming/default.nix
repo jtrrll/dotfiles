@@ -19,7 +19,9 @@
         in
         {
           options.dotfiles.gaming = {
-            enable = lib.mkEnableOption "jtrrll's gaming configuration";
+            enable = lib.mkEnableOption "jtrrll's gaming configuration" // {
+              default = true;
+            };
           };
 
           config = lib.mkIf cfg.enable {

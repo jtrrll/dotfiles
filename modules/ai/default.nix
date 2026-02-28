@@ -107,7 +107,9 @@
       );
 
       options.dotfiles.ai = {
-        enable = lib.mkEnableOption "jtrrll's AI configuration";
+        enable = lib.mkEnableOption "jtrrll's AI configuration" // {
+          default = true;
+        };
         packages = lib.mkOption {
           type = lib.types.listOf lib.types.package;
           default = [ ];

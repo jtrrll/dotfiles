@@ -9,6 +9,12 @@
       ...
     }:
     {
+      options.dotfiles.browsers = {
+        brave.enable = lib.mkEnableOption "jtrrll's Brave browser configuration" // {
+          default = true;
+        };
+      };
+
       config = {
         programs.brave = lib.mkIf config.dotfiles.browsers.brave.enable {
           enable = true;
@@ -19,10 +25,6 @@
             { id = "dbepggeogbaibhgnhhndojpepiihcmeb"; } # vimium
           ];
         };
-      };
-
-      options.dotfiles.browsers = {
-        brave.enable = lib.mkEnableOption "jtrrll's Brave browser configuration";
       };
     };
 }

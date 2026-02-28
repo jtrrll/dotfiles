@@ -10,7 +10,7 @@
       ...
     }:
     {
-      checks.moduleIsolation =
+      config.checks.moduleIsolation =
         let
           moduleEvaluators = {
             ai =

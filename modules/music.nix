@@ -10,6 +10,12 @@
       ...
     }:
     {
+      options.dotfiles.musicLibrary = {
+        enable = lib.mkEnableOption "jtrrll's music library configuration" // {
+          default = true;
+        };
+      };
+
       config = lib.mkIf config.dotfiles.musicLibrary.enable {
         home = {
           file.musicLibrary = {
@@ -45,10 +51,6 @@
             lyrics.synced = true;
           };
         };
-      };
-
-      options.dotfiles.musicLibrary = {
-        enable = lib.mkEnableOption "jtrrll's music library configuration";
       };
     };
 }

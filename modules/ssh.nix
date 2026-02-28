@@ -13,6 +13,12 @@
       cfg = config.dotfiles.ssh;
     in
     {
+      options.dotfiles.ssh = {
+        enable = lib.mkEnableOption "jtrrll's SSH configuration" // {
+          default = true;
+        };
+      };
+
       config = lib.mkIf cfg.enable {
         programs.ssh = {
           enable = true;
@@ -26,10 +32,6 @@
           };
           includes = [ "${config.home.homeDirectory}/.ssh/hosts/*" ];
         };
-      };
-
-      options.dotfiles.ssh = {
-        enable = lib.mkEnableOption "jtrrll's SSH configuration";
       };
     };
 }

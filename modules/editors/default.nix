@@ -37,8 +37,12 @@
             example = 2;
             type = lib.types.ints.unsigned;
           };
-          neovim.enable = lib.mkEnableOption "jtrrll's Neovim configuration";
-          zed.enable = lib.mkEnableOption "jtrrll's Zed configuration";
+          neovim.enable = lib.mkEnableOption "jtrrll's Neovim configuration" // {
+            default = true;
+          };
+          zed.enable = lib.mkEnableOption "jtrrll's Zed configuration" // {
+            default = true;
+          };
         };
 
         config.home.packages = [

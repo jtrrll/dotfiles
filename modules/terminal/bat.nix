@@ -6,7 +6,7 @@
   ...
 }:
 {
-  config = lib.mkIf config.dotfiles.bat.enable (
+  config = lib.mkIf config.dotfiles.terminal.enable (
     lib.mkMerge [
       {
         programs.bat = {
@@ -22,8 +22,4 @@
       (lib.optionalAttrs (options ? stylix) { stylix.targets.bat.enable = false; })
     ]
   );
-
-  options.dotfiles.bat = {
-    enable = lib.mkEnableOption "jtrrll's bat configuration";
-  };
 }

@@ -22,7 +22,9 @@
         ];
 
       options.dotfiles.terminal = {
-        enable = lib.mkEnableOption "jtrrll's terminal configuration";
+        enable = lib.mkEnableOption "jtrrll's terminal configuration" // {
+          default = true;
+        };
       };
     };
 }

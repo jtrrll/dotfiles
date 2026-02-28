@@ -13,6 +13,12 @@
       cfg = config.dotfiles.windowManager;
     in
     {
+      options.dotfiles.windowManager = {
+        enable = lib.mkEnableOption "jtrrll's window manager configuration" // {
+          default = true;
+        };
+      };
+
       config = lib.mkIf cfg.enable (
         lib.mkMerge [
           (lib.mkIf pkgs.stdenv.isDarwin {
@@ -33,9 +39,5 @@
           })
         ]
       );
-
-      options.dotfiles.windowManager = {
-        enable = lib.mkEnableOption "jtrrll's window manager configuration";
-      };
     };
 }
