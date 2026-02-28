@@ -66,6 +66,7 @@
         options = {
           harness = lib.mkOption {
             type = lib.types.package;
+            default = pkgs.opencode;
             description = "Base AI harness package";
           };
           finalHarness = lib.mkOption {
