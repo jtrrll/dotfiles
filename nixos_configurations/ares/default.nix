@@ -6,7 +6,7 @@ nixosSystem {
   system = "x86_64-linux";
   modules = nixosModules ++ [
     {
-      dotfiles.theme.enable = true;
+      dotfiles.gaming.enable = true;
       home-manager = {
         sharedModules = [ { home.stateVersion = "25.05"; } ];
         users.jtrrll =
@@ -16,7 +16,10 @@ nixosSystem {
               EDITOR = "nvim";
               VISUAL = "zeditor";
             };
-            dotfiles.theme.base16Scheme = "${pkgs.base16-schemes}/share/themes/gruvbox-material-dark-medium.yaml";
+            dotfiles.theme = {
+              base16Scheme = "${pkgs.base16-schemes}/share/themes/gruvbox-material-dark-medium.yaml";
+              enable = true;
+            };
           };
       };
     }
