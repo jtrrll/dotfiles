@@ -16,9 +16,7 @@
       ];
 
       options.dotfiles.theme = {
-        enable = lib.mkEnableOption "jtrrll's system-wide theme" // {
-          default = true;
-        };
+        enable = lib.mkEnableOption "jtrrll's system-wide theme";
         backgroundImage = lib.mkOption {
           default = "${config.home.homeDirectory}/.config/background";
           description = "The file path of the background image to use.";

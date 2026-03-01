@@ -54,14 +54,15 @@
       ...
     }@inputs:
     flake-parts.lib.mkFlake { inherit inputs; } (
+      { lib, self, ... }:
       let
         modules-tree = nixpkgs.lib.pipe import-tree [
+          (it: it.withLib lib)
           (it: it.addPath ./modules)
           # Matches top-level `*.nix` files and `default.nix` files that are one level deep.
           (it: it.match "^/[^/]+\.nix$|^/[^/]+/default\.nix$")
         ];
       in
-      { lib, self, ... }:
       {
         imports = [
           ./dev_shells

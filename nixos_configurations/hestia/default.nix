@@ -22,7 +22,6 @@ nixosSystem {
             musicLibrary.enable = false;
             notes.enable = false;
             screensavers.enable = false;
-            theme.enable = false;
             windowManager.enable = false;
           };
         };

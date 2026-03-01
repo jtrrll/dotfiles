@@ -6,9 +6,7 @@ nixosSystem {
   system = "x86_64-linux";
   modules = nixosModules ++ [
     {
-      dotfiles = {
-        gaming.enable = true;
-      };
+      dotfiles.theme.enable = true;
       home-manager = {
         sharedModules = [ { home.stateVersion = "25.05"; } ];
         users.jtrrll =
