@@ -2,7 +2,7 @@
 {
   imports = [ inputs.flake-parts.flakeModules.modules ];
 
-  flake.modules.homeManager.terminal =
+  config.flake.modules.homeManager.terminal =
     { lib, pkgs, ... }:
     {
       imports =
@@ -22,7 +22,9 @@
         ];
 
       options.dotfiles.terminal = {
-        enable = lib.mkEnableOption "jtrrll's terminal configuration";
+        enable = lib.mkEnableOption "jtrrll's terminal configuration" // {
+          default = true;
+        };
       };
     };
 }

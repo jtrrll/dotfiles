@@ -2,7 +2,7 @@
 {
   imports = [ inputs.flake-parts.flakeModules.modules ];
 
-  flake.modules.homeManager.theme =
+  config.flake.modules.homeManager.theme =
     {
       config,
       lib,

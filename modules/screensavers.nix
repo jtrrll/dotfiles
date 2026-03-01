@@ -15,7 +15,9 @@
       in
       {
         options.dotfiles.screensavers = {
-          enable = lib.mkEnableOption "jtrrll's screensavers";
+          enable = lib.mkEnableOption "jtrrll's screensavers" // {
+            default = true;
+          };
         };
 
         config = lib.mkIf cfg.enable {

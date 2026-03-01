@@ -12,17 +12,17 @@ nixosSystem {
         users.jtrrll = {
           home.sessionVariables = {
             EDITOR = "nvim";
-            VISUAL = "zeditor";
+            VISUAL = "nvim";
           };
           dotfiles = {
-            bat.enable = true;
-            editors.neovim.enable = true;
-            fileSystem.enable = true;
-            git.enable = true;
-            homeManager.enable = true;
-            nix.enable = true;
-            systemInfo.enable = true;
-            terminal.enable = true;
+            ai.enable = false;
+            browsers.brave.enable = false;
+            editors.zed.enable = false;
+            gaming.enable = false;
+            musicLibrary.enable = false;
+            notes.enable = false;
+            screensavers.enable = false;
+            windowManager.enable = false;
           };
         };
       };

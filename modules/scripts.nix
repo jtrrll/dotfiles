@@ -2,7 +2,7 @@
 {
   imports = [ inputs.flake-parts.flakeModules.modules ];
 
-  flake.modules.devenv.scripts =
+  config.flake.modules.devenv.scripts =
     {
       config,
       lib,
