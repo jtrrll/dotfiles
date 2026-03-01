@@ -19,7 +19,7 @@ nixosSystem {
             browsers.brave.enable = false;
             editors.zed.enable = false;
             gaming.enable = false;
-            music.enable = false;
+            musicLibrary.enable = false;
             notes.enable = false;
             screensavers.enable = false;
             theme.enable = false;
