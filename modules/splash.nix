@@ -2,13 +2,13 @@
 {
   imports = [ inputs.flake-parts.flakeModules.modules ];
 
-  perSystem =
+  config.perSystem =
     {
       pkgs,
       ...
     }:
     {
-      packages.splash = pkgs.callPackage (
+      config.packages.splash = pkgs.callPackage (
         {
           lolcat,
           uutils-coreutils-noprefix,

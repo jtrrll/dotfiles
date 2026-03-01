@@ -2,7 +2,7 @@
 {
   imports = [ inputs.flake-parts.flakeModules.modules ];
 
-  flake.modules.homeManager.codeDirectory =
+  config.flake.modules.homeManager.codeDirectory =
     {
       config,
       lib,
@@ -10,6 +10,12 @@
       ...
     }:
     {
+      options.dotfiles.codeDirectory = {
+        enable = lib.mkEnableOption "jtrrll's code directory configuration" // {
+          default = true;
+        };
+      };
+
       config = lib.mkIf config.dotfiles.codeDirectory.enable (
         let
           codeDirGitFetch = pkgs.writeShellApplication rec {
@@ -85,9 +91,5 @@
           };
         }
       );
-
-      options.dotfiles.codeDirectory = {
-        enable = lib.mkEnableOption "jtrrll's code directory configuration";
-      };
     };
 }

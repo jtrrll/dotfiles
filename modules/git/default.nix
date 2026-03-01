@@ -5,7 +5,7 @@
     ./scripts.nix
   ];
 
-  flake.modules.homeManager.git =
+  config.flake.modules.homeManager.git =
     {
       config,
       lib,
@@ -13,6 +13,12 @@
       ...
     }:
     {
+      options.dotfiles.git = {
+        enable = lib.mkEnableOption "jtrrll's Git configuration" // {
+          default = true;
+        };
+      };
+
       config = lib.mkIf config.dotfiles.git.enable {
         programs.git = {
           enable = true;
@@ -53,10 +59,6 @@
             "*.log"
           ];
         };
-      };
-
-      options.dotfiles.git = {
-        enable = lib.mkEnableOption "jtrrll's Git configuration";
       };
     };
 }

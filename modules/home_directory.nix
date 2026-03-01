@@ -2,7 +2,7 @@
 {
   imports = [ inputs.flake-parts.flakeModules.modules ];
 
-  flake.modules.homeManager.homeDirectory =
+  config.flake.modules.homeManager.homeDirectory =
     {
       config,
       lib,
@@ -17,7 +17,7 @@
           }
         ];
         home.homeDirectory = lib.mkDefault "/home/${config.home.username}";
-        xdg.enable = true;
+        xdg.enable = lib.mkDefault true;
       };
     };
 }

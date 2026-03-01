@@ -2,7 +2,7 @@
 {
   imports = [ inputs.flake-parts.flakeModules.modules ];
 
-  flake.modules.nixos.homeAssistant = {
+  config.flake.modules.nixos.homeAssistant = {
     services.home-assistant = {
       enable = true;
       config = { };

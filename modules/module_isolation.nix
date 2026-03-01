@@ -2,7 +2,7 @@
 {
   imports = [ inputs.flake-parts.flakeModules.modules ];
 
-  perSystem =
+  config.perSystem =
     {
       lib,
       pkgs,
@@ -10,7 +10,7 @@
       ...
     }:
     {
-      checks.moduleIsolation =
+      config.checks.moduleIsolation =
         let
           moduleEvaluators = {
             ai =
@@ -87,7 +87,6 @@
             in
             result.success;
 
-          flakeModulePaths = (self.lib.modules-tree.withLib lib).files;
           results = lib.concatMap (
             flakeModulePath:
             lib.pipe flakeModulePath [
@@ -99,7 +98,7 @@
                 isolated = testSubModule subModule;
               }))
             ]
-          ) flakeModulePaths;
+          ) self.lib.modules-tree.files;
         in
         pkgs.runCommand "module-isolation-test"
           {
