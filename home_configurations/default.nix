@@ -50,6 +50,10 @@
             };
           };
           home.stateVersion = "23.11";
+          programs = {
+            prismlauncher.enable = false;
+            vesktop.enable = false;
+          };
           services.musicLibrary.enable = false;
         }
       ];
