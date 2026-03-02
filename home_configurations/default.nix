@@ -44,14 +44,13 @@
         {
           dotfiles = {
             ai.enable = false;
-            gaming.enable = false;
-            musicLibrary.enable = false;
             theme = {
               base16Scheme = "${pkgs.base16-schemes}/share/themes/gruvbox-material-dark-medium.yaml";
               enable = true;
             };
           };
           home.stateVersion = "23.11";
+          services.musicLibrary.enable = false;
         }
       ];
     };

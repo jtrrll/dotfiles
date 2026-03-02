@@ -5,7 +5,7 @@
     ./scripts.nix
   ];
 
-  config.flake.modules.homeManager.git =
+  config.flake.modules.homeManager.dotfiles =
     {
       config,
       lib,
@@ -13,16 +13,10 @@
       ...
     }:
     {
-      options.dotfiles.git = {
-        enable = lib.mkEnableOption "jtrrll's Git configuration" // {
-          default = true;
-        };
-      };
-
-      config = lib.mkIf config.dotfiles.git.enable {
-        programs.git = {
-          enable = true;
-          settings = {
+      config = lib.mkMerge [
+        { programs.git.enable = lib.mkDefault true; }
+        (lib.mkIf config.programs.git.enable {
+          programs.git.settings = {
             alias = {
               ezswitch = "!${
                 lib.getExe (
@@ -54,11 +48,7 @@
               useConfigOnly = true; # require an email to be defined in local .gitconfig
             };
           };
-          ignores = [
-            ".claude"
-            "*.log"
-          ];
-        };
-      };
+        })
+      ];
     };
 }

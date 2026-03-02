@@ -3,25 +3,19 @@
   imports = [ inputs.flake-parts.flakeModules.modules ];
 
   config.flake.modules = {
-    homeManager.nix =
+    homeManager.dotfiles =
       {
         config,
         lib,
         ...
       }:
       {
-        options.dotfiles.nix = {
-          enable = lib.mkEnableOption "jtrrll's Nix configuration" // {
-            default = true;
-          };
-        };
-
-        config = lib.mkIf config.dotfiles.nix.enable {
-          programs.nh = {
-            enable = true;
-            clean.enable = true;
-          };
-        };
+        config = lib.mkMerge [
+          { programs.nh.enable = lib.mkDefault true; }
+          (lib.mkIf config.programs.nh.enable {
+            programs.nh.clean.enable = true;
+          })
+        ];
       };
     nixos.nix = {
       nix.settings = {

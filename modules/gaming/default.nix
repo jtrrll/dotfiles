@@ -4,29 +4,24 @@
 
   config = {
     flake.modules = {
-      homeManager.gaming =
+      homeManager.dotfiles =
         {
           config,
           lib,
           pkgs,
           ...
         }:
-        let
-          cfg = config.dotfiles.gaming;
-          filterAvailable =
-            system: pkgsList:
-            lib.filter (pkg: (builtins.tryEval (lib.meta.availableOn system pkg)).value) pkgsList;
-        in
         {
-          options.dotfiles.gaming = {
-            enable = lib.mkEnableOption "jtrrll's gaming configuration" // {
-              default = true;
-            };
-          };
-
-          config = lib.mkIf cfg.enable {
-            home = {
-              file = {
+          config = lib.mkMerge [
+            {
+              programs = {
+                prismlauncher.enable = lib.mkDefault true;
+                retroarch.enable = lib.mkDefault (!pkgs.stdenv.isDarwin);
+                vesktop.enable = lib.mkDefault true;
+              };
+            }
+            (lib.mkIf config.programs.retroarch.enable {
+              home.file = {
                 gameLibrary = {
                   target = "game_library/README.md";
                   text = ''
@@ -57,43 +52,37 @@
                   source = self.packages.${pkgs.stdenv.hostPlatform.system}.pspShader;
                 };
               };
-              packages = filterAvailable pkgs.stdenv.hostPlatform.system [
-                pkgs.steam-rom-manager
-              ];
-            };
-            programs = {
-              prismlauncher.enable = true;
-              retroarch = {
-                enable = !pkgs.stdenv.isDarwin;
-                cores = {
-                  fbneo.enable = true;
-                  gambatte.enable = true;
-                  genesis-plus-gx.enable = true;
-                  melonds.enable = true;
-                  mesen.enable = true;
-                  mgba.enable = true;
-                  mupen64plus.enable = true;
-                  ppsspp.enable = true;
-                  snes9x.enable = true;
-                  swanstation.enable = true;
-                };
-                settings = {
-                  all_users_control_menu = "true";
-                  content_show_images = "false";
-                  content_show_music = "false";
-                  content_show_netplay = "false";
-                  content_show_video = "false";
-                  input_max_users = "4";
-                  menu_driver = "ozone";
-                  netplay_nickname = "jtrrll";
-                  rgui_browser_directory = "${config.home.homeDirectory}/game_library";
-                  video_driver = "vulkan";
-                  video_shader_enable = "true";
+              programs = {
+                retroarch = {
+                  cores = {
+                    fbneo.enable = true;
+                    gambatte.enable = true;
+                    genesis-plus-gx.enable = true;
+                    melonds.enable = true;
+                    mesen.enable = true;
+                    mgba.enable = true;
+                    mupen64plus.enable = true;
+                    ppsspp.enable = true;
+                    snes9x.enable = true;
+                    swanstation.enable = true;
+                  };
+                  settings = {
+                    all_users_control_menu = "true";
+                    content_show_images = "false";
+                    content_show_music = "false";
+                    content_show_netplay = "false";
+                    content_show_video = "false";
+                    input_max_users = "4";
+                    menu_driver = "ozone";
+                    netplay_nickname = "jtrrll";
+                    rgui_browser_directory = "${config.home.homeDirectory}/game_library";
+                    video_driver = "vulkan";
+                    video_shader_enable = "true";
+                  };
                 };
               };
-              vesktop.enable = true;
-            };
-          };
+            })
+          ];
         };
       nixos.gaming =
         { config, lib, ... }:

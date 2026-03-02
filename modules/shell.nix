@@ -1,16 +1,24 @@
+{ inputs, ... }:
 {
-  config,
-  lib,
-  options,
-  ...
-}:
-{
-  config = lib.mkIf config.dotfiles.terminal.enable (
-    lib.mkMerge [
-      {
-        programs = {
-          bash = {
-            enable = true;
+  imports = [ inputs.flake-parts.flakeModules.modules ];
+
+  config.flake.modules.homeManager.dotfiles =
+    {
+      config,
+      lib,
+      options,
+      ...
+    }:
+    {
+      config = lib.mkMerge [
+        {
+          programs = {
+            bash.enable = lib.mkDefault true;
+            fish.enable = lib.mkDefault true;
+          };
+        }
+        (lib.mkIf config.programs.bash.enable {
+          programs.bash = {
             historyControl = [
               "ignoredups"
               "ignorespace"
@@ -51,8 +59,9 @@
               bind 'set skip-completed-text on'
             '';
           };
-          fish = {
-            enable = true;
+        })
+        (lib.mkIf config.programs.fish.enable {
+          programs.fish = {
             functions = {
               fish_greeting.body = "";
               fish_prompt.body = ''
@@ -88,9 +97,8 @@
               '';
             };
           };
-        };
-      }
-      (lib.optionalAttrs (options ? stylix) { stylix.targets.fish.enable = false; })
-    ]
-  );
+        })
+        (lib.mkIf (options ? stylix) { stylix.targets.fish.enable = false; })
+      ];
+    };
 }

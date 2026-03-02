@@ -1,10 +1,6 @@
+_:
 {
-  config,
-  lib,
-  ...
-}:
-{
-  config = lib.mkIf config.dotfiles.editors.neovim.enable {
+  config = {
     programs.nixvim.plugins = {
       dropbar.enable = true;
       rainbow-delimiters = {

@@ -17,8 +17,6 @@
             snekcheck = inputs.snekcheck.packages.${pkgs.stdenv.hostPlatform.system}.default;
           })
           (import ./multiplexer.nix { inherit constants; })
-          ./shell.nix
-          ./system_info.nix
         ];
 
       options.dotfiles.terminal = {

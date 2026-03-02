@@ -33,7 +33,7 @@
           };
         };
       }
-      (lib.optionalAttrs (options ? stylix) { stylix.targets.zellij.enable = false; })
+      (lib.mkIf (options ? stylix) { stylix.targets.zellij.enable = false; })
     ]
   );
 }

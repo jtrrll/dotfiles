@@ -52,7 +52,7 @@
           };
         };
       }
-      (lib.optionalAttrs (options ? stylix) { stylix.targets.ghostty.enable = false; })
+      (lib.mkIf (options ? stylix) { stylix.targets.ghostty.enable = false; })
     ]
   );
 }
