@@ -44,7 +44,7 @@ jobs:
           NIX_SHOW_STATS_PATH: nix_eval_stats.json
         run: nix build --impure .#homeConfigurations.${{ matrix.configuration }}.activationPackage
       - name: Upload Nix evaluation statistics
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: nix-eval-stats-home-${{ matrix.configuration }}-${{ matrix.os }}
           path: nix_eval_stats.json
@@ -77,7 +77,7 @@ jobs:
           NIX_SHOW_STATS_PATH: nix_eval_stats.json
         run: nix build --impure .#nixosConfigurations.${{ matrix.configuration }}.config.system.build.toplevel
       - name: Upload Nix evaluation statistics
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: nix-eval-stats-nixos-${{ matrix.configuration }}
           path: nix_eval_stats.json
@@ -94,7 +94,7 @@ jobs:
           NIX_SHOW_STATS_PATH: nix_eval_stats.json
         run: nix flake check --impure
       - name: Upload Nix evaluation statistics
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: nix-eval-stats-check
           path: nix_eval_stats.json
