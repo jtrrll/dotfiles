@@ -10,10 +10,6 @@ nixosSystem {
       home-manager = {
         sharedModules = [ { home.stateVersion = "25.05"; } ];
         users.jtrrll = {
-          home.sessionVariables = {
-            EDITOR = "nvim";
-            VISUAL = "nvim";
-          };
           dotfiles = {
             ai.enable = false;
             browsers.brave.enable = false;

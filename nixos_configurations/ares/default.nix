@@ -12,10 +12,6 @@ nixosSystem {
         users.jtrrll =
           { pkgs, ... }:
           {
-            home.sessionVariables = {
-              EDITOR = "nvim";
-              VISUAL = "zeditor";
-            };
             dotfiles.theme = {
               base16Scheme = "${pkgs.base16-schemes}/share/themes/gruvbox-material-dark-medium.yaml";
               enable = true;

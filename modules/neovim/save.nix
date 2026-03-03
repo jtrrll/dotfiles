@@ -1,4 +1,3 @@
-_:
 {
   config = {
     programs.nixvim.plugins = {
