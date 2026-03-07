@@ -55,7 +55,6 @@
               programs = {
                 retroarch = {
                   cores = {
-                    fbneo.enable = true;
                     gambatte.enable = true;
                     genesis-plus-gx.enable = true;
                     melonds.enable = true;

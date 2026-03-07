@@ -3,6 +3,7 @@
 
   inputs = {
     ### Development dependencies ###
+    # keep-sorted start
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     devenv = {
       inputs.nixpkgs.follows = "nixpkgs";
@@ -21,13 +22,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
       url = "github:numtide/treefmt-nix";
     };
+    # keep-sorted end
 
     ### Home Manager dependencies ###
-    nixpkgs-home-manager.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    home-manager = {
-      inputs.nixpkgs.follows = "nixpkgs-home-manager";
-      url = "github:nix-community/home-manager";
-    };
+    # keep-sorted start
+    home-manager.url = "github:nix-community/home-manager";
+    nixpkgs-home-manager.follows = "home-manager/nixpkgs";
     nixvim = {
       inputs.nixpkgs.follows = "nixpkgs-home-manager";
       url = "github:nix-community/nixvim";
@@ -40,10 +40,13 @@
       inputs.nixpkgs.follows = "nixpkgs-home-manager";
       url = "github:danth/stylix";
     };
+    # keep-sorted end
 
     ### NixOS dependencies ###
+    # keep-sorted start
     nixpkgs-nixos.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+    # keep-sorted end
   };
 
   outputs =
