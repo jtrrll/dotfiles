@@ -22,13 +22,6 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 ## Options
 
 <!-- BEGIN OPTIONS -->
-### `dotfiles.homeManager.enable`
-
-* Default: `true`
-* Description: Whether to enable jtrrll's home-manager configuration.
-* Example: `true`
-* Type: `boolean`
-
 ### `dotfiles.theme.backgroundImage`
 
 * Default: `"/home/${config.home.username}/.config/background"`
