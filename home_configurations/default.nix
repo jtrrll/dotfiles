@@ -31,7 +31,7 @@
             ]
             ++ modules;
         };
-      pkgs = inputs.nixpkgs-home-manager.legacyPackages.${SYSTEM};
+      pkgs = inputs.home-manager.inputs.nixpkgs.legacyPackages.${SYSTEM};
     in
     {
       default = mkHomeConfiguration [ ];

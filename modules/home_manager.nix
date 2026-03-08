@@ -30,9 +30,7 @@
           sharedModules = lib.attrValues self.homeModules;
           useUserPackages = true;
           extraSpecialArgs = {
-            pkgs = import inputs.nixpkgs-home-manager {
-              inherit (pkgs) system;
-            };
+            pkgs = inputs.home-manager.inputs.nixpkgs.legacyPackages.${pkgs.stdenv.hostPlatform};
           };
         };
         imports = [ inputs.home-manager.nixosModules.home-manager ];

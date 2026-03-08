@@ -2,50 +2,47 @@
   description = "jtrrll's declarative dotfiles";
 
   inputs = {
-    ### Development dependencies ###
-    # keep-sorted start
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    devenv = {
-      inputs.nixpkgs.follows = "nixpkgs";
-      url = "github:cachix/devenv";
-    };
-    flake-parts = {
-      inputs.nixpkgs-lib.follows = "nixpkgs";
-      url = "github:hercules-ci/flake-parts";
-    };
+    ### Flake dependencies ###
+    # keep-sorted start block=yes
+    flake-parts.url = "github:hercules-ci/flake-parts";
     import-tree.url = "github:vic/import-tree";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    # keep-sorted end
+
+    ### Development dependencies ###
+    # keep-sorted start block=yes
+    devenv.url = "github:cachix/devenv";
     justix = {
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "devenv/nixpkgs";
       url = "github:jtrrll/justix";
     };
     treefmt-nix = {
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "devenv/nixpkgs";
       url = "github:numtide/treefmt-nix";
     };
     # keep-sorted end
 
     ### Home Manager dependencies ###
-    # keep-sorted start
+    # keep-sorted start block=yes
     home-manager.url = "github:nix-community/home-manager";
-    nixpkgs-home-manager.follows = "home-manager/nixpkgs";
     nixvim = {
-      inputs.nixpkgs.follows = "nixpkgs-home-manager";
+      inputs.nixpkgs.follows = "home-manager/nixpkgs";
       url = "github:nix-community/nixvim";
     };
     snekcheck = {
-      inputs.nixpkgs.follows = "nixpkgs-home-manager";
+      inputs.nixpkgs.follows = "home-manager/nixpkgs";
       url = "github:jtrrll/snekcheck";
     };
     stylix = {
-      inputs.nixpkgs.follows = "nixpkgs-home-manager";
+      inputs.nixpkgs.follows = "home-manager/nixpkgs";
       url = "github:danth/stylix";
     };
     # keep-sorted end
 
     ### NixOS dependencies ###
-    # keep-sorted start
-    nixpkgs-nixos.url = "github:NixOS/nixpkgs/nixos-unstable";
+    # keep-sorted start block=yes
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+    nixpkgs-nixos.url = "github:NixOS/nixpkgs/nixos-unstable";
     # keep-sorted end
   };
 
@@ -59,7 +56,7 @@
     flake-parts.lib.mkFlake { inherit inputs; } (
       { lib, self, ... }:
       let
-        modules-tree = nixpkgs.lib.pipe import-tree [
+        modules-tree = lib.pipe import-tree [
           (it: it.withLib lib)
           (it: it.addPath ./modules)
           # Matches top-level `*.nix` files and `default.nix` files that are one level deep.

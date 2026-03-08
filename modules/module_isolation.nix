@@ -41,9 +41,7 @@
                   }
                   module
                 ];
-                pkgs = import inputs.nixpkgs-home-manager {
-                  inherit system;
-                };
+                pkgs = inputs.home-manager.inputs.nixpkgs.legacyPackages.${system};
               };
             nixos =
               module:
