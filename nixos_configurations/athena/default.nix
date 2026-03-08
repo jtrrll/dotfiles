@@ -19,10 +19,6 @@ nixosSystem {
               base16Scheme = "${pkgs.base16-schemes}/share/themes/gruvbox-material-dark-medium.yaml";
               enable = true;
             };
-            home.sessionVariables = {
-              EDITOR = "nvim";
-              VISUAL = "zeditor";
-            };
           };
       };
     }

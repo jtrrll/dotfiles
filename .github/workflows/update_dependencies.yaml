@@ -11,6 +11,28 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  flake:
+    name: Update flake dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: DeterminateSystems/nix-installer-action@v21
+      - name: Update flake.lock
+        id: update
+        uses: DeterminateSystems/update-flake-lock@v28
+        with:
+          branch: "update_flake_lock_flake"
+          inputs: flake-parts import-tree nixpkgs
+          pr-title: "deps: update flake dependencies"
+          pr-labels: |
+            automated
+            dependencies
+          token: ${{ secrets.PR_BOT_PERSONAL_ACCESS_TOKEN }}
+      - name: Enable auto-merge
+        if: steps.update.outputs.pull-request-number != ''
+        env:
+          GH_TOKEN: ${{ secrets.PR_BOT_PERSONAL_ACCESS_TOKEN }}
+        run: gh pr merge ${{ steps.update.outputs.pull-request-number }} --auto --squash
   development:
     name: Update development dependencies
     runs-on: ubuntu-latest
@@ -22,7 +44,7 @@ jobs:
         uses: DeterminateSystems/update-flake-lock@v28
         with:
           branch: "update_flake_lock_development"
-          inputs: devenv flake-parts import-tree justix nixpkgs treefmt-nix
+          inputs: devenv justix treefmt-nix
           pr-title: "deps: update development dependencies"
           pr-labels: |
             automated
@@ -44,7 +66,7 @@ jobs:
         uses: DeterminateSystems/update-flake-lock@v28
         with:
           branch: "update_flake_lock_home_manager"
-          inputs: home-manager nixpkgs-home-manager nixvim snekcheck stylix
+          inputs: home-manager nixvim snekcheck stylix
           pr-title: "deps: update Home Manager dependencies"
           pr-labels: |
             automated

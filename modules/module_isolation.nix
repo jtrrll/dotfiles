@@ -13,16 +13,6 @@
       config.checks.moduleIsolation =
         let
           moduleEvaluators = {
-            ai =
-              module:
-              lib.evalModules {
-                modules = [
-                  {
-                    _module.args = { inherit pkgs; };
-                  }
-                  module
-                ];
-              };
             devenv =
               module:
               inputs.devenv.lib.mkEval {
@@ -44,17 +34,14 @@
               inputs.home-manager.lib.homeManagerConfiguration {
                 modules = [
                   {
-                    home = rec {
-                      homeDirectory = "/home/${username}";
+                    home = {
                       stateVersion = "23.11";
                       username = "test";
                     };
                   }
                   module
                 ];
-                pkgs = import inputs.nixpkgs-home-manager {
-                  inherit system;
-                };
+                pkgs = inputs.home-manager.inputs.nixpkgs.legacyPackages.${system};
               };
             nixos =
               module:

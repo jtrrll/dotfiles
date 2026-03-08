@@ -16,7 +16,6 @@
       ### end "impure" ###
       mkHomeConfiguration =
         modules:
-        assert lib.isList modules && lib.all lib.isAttrs modules;
         inputs.home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
           modules =
@@ -25,34 +24,16 @@
               {
                 home = {
                   homeDirectory = HOME;
+                  stateVersion = "23.11";
                   username = USER;
-                  sessionVariables = {
-                    EDITOR = "nvim";
-                    VISUAL = "zeditor";
-                  };
                 };
               }
             ]
             ++ modules;
         };
-      pkgs = import inputs.nixpkgs-home-manager {
-        inherit SYSTEM;
-      };
+      pkgs = inputs.nixpkgs-home-manager.legacyPackages.${SYSTEM};
     in
     {
-      work = mkHomeConfiguration [
-        {
-          dotfiles = {
-            ai.enable = false;
-            gaming.enable = false;
-            musicLibrary.enable = false;
-            theme = {
-              base16Scheme = "${pkgs.base16-schemes}/share/themes/gruvbox-material-dark-medium.yaml";
-              enable = true;
-            };
-          };
-          home.stateVersion = "23.11";
-        }
-      ];
+      default = mkHomeConfiguration [ ];
     };
 }
