@@ -17,12 +17,19 @@
             pkgs.curlMinimal
             pkgs.gh
             pkgs.jq
-            (pkgs.mermaid-cli.override { chromium = config.programs.brave.finalPackage; })
             pkgs.ripgrep
             pkgs.uutils-coreutils-noprefix
             pkgs.uutils-findutils
             pkgs.which
-          ];
+          ]
+          ++ (
+            if config.programs.brave.enable then
+              [
+                (pkgs.mermaid-cli.override { chromium = config.programs.brave.finalPackage; })
+              ]
+            else
+              [ ]
+          );
           programs = {
             claude-code = {
               enableMcpIntegration = true;

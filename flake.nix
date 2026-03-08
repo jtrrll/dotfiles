@@ -50,7 +50,6 @@
     {
       flake-parts,
       import-tree,
-      nixpkgs,
       ...
     }@inputs:
     flake-parts.lib.mkFlake { inherit inputs; } (
@@ -86,7 +85,7 @@
             nixosModules = self.modules.nixos;
           };
 
-          systems = nixpkgs.lib.systems.flakeExposed;
+          systems = lib.systems.flakeExposed;
         };
       }
     );

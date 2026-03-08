@@ -13,7 +13,6 @@
         config = lib.mkMerge [
           {
             programs = {
-              brave.enable = lib.mkDefault true;
               eza.enable = lib.mkDefault true;
               fd.enable = lib.mkDefault true;
               fzf.enable = lib.mkDefault true;

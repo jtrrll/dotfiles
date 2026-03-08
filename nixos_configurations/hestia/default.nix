@@ -10,16 +10,15 @@ nixosSystem {
       home-manager = {
         sharedModules = [ { home.stateVersion = "25.05"; } ];
         users.jtrrll = {
-          dotfiles = {
-            ai.enable = false;
-            browsers.brave.enable = false;
-            editors.zed.enable = false;
-            gaming.enable = false;
-            musicLibrary.enable = false;
-            notes.enable = false;
-            screensavers.enable = false;
-            windowManager.enable = false;
+          programs = {
+            beets.enable = false;
+            brave.enable = false;
+            prismlauncher.enable = false;
+            retroarch.enable = false;
+            vesktop.enable = false;
+            zed-editor.enable = false;
           };
+          services.musicLibrary.enable = false;
         };
       };
     }
