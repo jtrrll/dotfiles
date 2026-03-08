@@ -22,128 +22,10 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 ## Options
 
 <!-- BEGIN OPTIONS -->
-### `dotfiles.ai.enable`
-
-* Default: `true`
-* Description: Whether to enable jtrrll's AI configuration.
-* Example: `true`
-* Type: `boolean`
-
-### `dotfiles.ai.packages`
-
-* Default: `[]`
-* Description: The set of packages to appear in the AI environment.
-* Type: `list of package`
-
-### `dotfiles.browsers.brave.enable`
-
-* Default: `true`
-* Description: Whether to enable jtrrll's Brave browser configuration.
-* Example: `true`
-* Type: `boolean`
-
-### `dotfiles.codeDirectory.enable`
-
-* Default: `true`
-* Description: Whether to enable jtrrll's code directory configuration.
-* Example: `true`
-* Type: `boolean`
-
-### `dotfiles.editors.indentWidth`
-
-* Default: `2`
-* Description: The number of spaces per indent.
-* Example: `4`
-* Type: `unsigned integer, meaning >=0`
-
-### `dotfiles.editors.lineLengthRulers`
-
-* Default: `[100,120]`
-* Description: The columns to place vertical lines on.
-* Example: `[80]`
-* Type: `list of (unsigned integer, meaning >=0)`
-
-### `dotfiles.editors.linesAroundCursor`
-
-* Default: `8`
-* Description: The number of lines to show above and below the cursor.
-* Example: `2`
-* Type: `unsigned integer, meaning >=0`
-
-### `dotfiles.editors.neovim.enable`
-
-* Default: `true`
-* Description: Whether to enable jtrrll's Neovim configuration.
-* Example: `true`
-* Type: `boolean`
-
-### `dotfiles.editors.zed.enable`
-
-* Default: `true`
-* Description: Whether to enable jtrrll's Zed configuration.
-* Example: `true`
-* Type: `boolean`
-
-### `dotfiles.gaming.enable`
-
-* Default: `true`
-* Description: Whether to enable jtrrll's gaming configuration.
-* Example: `true`
-* Type: `boolean`
-
-### `dotfiles.git.enable`
-
-* Default: `true`
-* Description: Whether to enable jtrrll's Git configuration.
-* Example: `true`
-* Type: `boolean`
-
 ### `dotfiles.homeManager.enable`
 
 * Default: `true`
 * Description: Whether to enable jtrrll's home-manager configuration.
-* Example: `true`
-* Type: `boolean`
-
-### `dotfiles.musicLibrary.enable`
-
-* Default: `true`
-* Description: Whether to enable jtrrll's music library configuration.
-* Example: `true`
-* Type: `boolean`
-
-### `dotfiles.nix.enable`
-
-* Default: `true`
-* Description: Whether to enable jtrrll's Nix configuration.
-* Example: `true`
-* Type: `boolean`
-
-### `dotfiles.notes.enable`
-
-* Default: `true`
-* Description: Whether to enable jtrrll's note taking configuration.
-* Example: `true`
-* Type: `boolean`
-
-### `dotfiles.screensavers.enable`
-
-* Default: `true`
-* Description: Whether to enable jtrrll's screensavers.
-* Example: `true`
-* Type: `boolean`
-
-### `dotfiles.ssh.enable`
-
-* Default: `true`
-* Description: Whether to enable jtrrll's SSH configuration.
-* Example: `true`
-* Type: `boolean`
-
-### `dotfiles.terminal.enable`
-
-* Default: `true`
-* Description: Whether to enable jtrrll's terminal configuration.
 * Example: `true`
 * Type: `boolean`
 
@@ -166,15 +48,8 @@ If unset, defaults to a scheme generated from the background image.
 
 ### `dotfiles.theme.enable`
 
-* Default: `true`
+* Default: `false`
 * Description: Whether to enable jtrrll's system-wide theme.
-* Example: `true`
-* Type: `boolean`
-
-### `dotfiles.windowManager.enable`
-
-* Default: `true`
-* Description: Whether to enable jtrrll's window manager configuration.
 * Example: `true`
 * Type: `boolean`
 <!-- END OPTIONS -->
