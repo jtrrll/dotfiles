@@ -3,23 +3,16 @@
   imports = [ inputs.flake-parts.flakeModules.modules ];
 
   config.flake.modules = {
-    homeManager.homeManager =
+    homeManager.dotfiles =
       {
-        config,
         lib,
         ...
       }:
       {
-        options.dotfiles.homeManager = {
-          enable = lib.mkEnableOption "jtrrll's home-manager configuration" // {
-            default = true;
-          };
-        };
-
-        config = lib.mkIf config.dotfiles.homeManager.enable {
+        config = {
           news.display = "silent";
-          programs.home-manager.enable = true;
-          services.home-manager.autoExpire.enable = true;
+          programs.home-manager.enable = lib.mkDefault true;
+          services.home-manager.autoExpire.enable = lib.mkDefault true;
         };
       };
     nixos.homeManager =
@@ -30,9 +23,7 @@
           sharedModules = lib.attrValues self.homeModules;
           useUserPackages = true;
           extraSpecialArgs = {
-            pkgs = import inputs.nixpkgs-home-manager {
-              inherit (pkgs) system;
-            };
+            pkgs = inputs.home-manager.inputs.nixpkgs.legacyPackages.${pkgs.stdenv.hostPlatform.system};
           };
         };
         imports = [ inputs.home-manager.nixosModules.home-manager ];
