@@ -33,7 +33,7 @@ layout {
     pane {
       name "assistant"
       size "25%"
-      command "ai"
+      command "opencode"
     }
     pane size="25%" {
       pane {
@@ -55,8 +55,7 @@ layout {
     pane {
       name "agent"
       size "80%"
-      command "ai"
-      args "--permission-mode" "acceptEdits"
+      command "opencode"
       start_suspended true
     }
     pane {

@@ -2,36 +2,29 @@
 {
   imports = [ inputs.flake-parts.flakeModules.modules ];
 
-  config.flake.modules.homeManager.ssh =
+  config.flake.modules.homeManager.dotfiles =
     {
       config,
       lib,
       pkgs,
       ...
     }:
-    let
-      cfg = config.dotfiles.ssh;
-    in
     {
-      options.dotfiles.ssh = {
-        enable = lib.mkEnableOption "jtrrll's SSH configuration" // {
-          default = true;
-        };
-      };
+      config = lib.mkMerge [
+        { programs.ssh.enable = lib.mkDefault true; }
+        (lib.mkIf config.programs.ssh.enable {
+          programs.ssh = {
+            enableDefaultConfig = false;
+            extraConfig = lib.mkIf pkgs.stdenv.isDarwin ''
+              UseKeychain yes
+            '';
 
-      config = lib.mkIf cfg.enable {
-        programs.ssh = {
-          enable = true;
-          enableDefaultConfig = false;
-          extraConfig = lib.mkIf pkgs.stdenv.isDarwin ''
-            UseKeychain yes
-          '';
-
-          matchBlocks."*" = {
-            addKeysToAgent = "yes";
+            matchBlocks."*" = {
+              addKeysToAgent = "yes";
+            };
+            includes = [ "${config.home.homeDirectory}/.ssh/hosts/*" ];
           };
-          includes = [ "${config.home.homeDirectory}/.ssh/hosts/*" ];
-        };
-      };
+        })
+      ];
     };
 }

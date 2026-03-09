@@ -3,34 +3,58 @@
   imports = [ inputs.flake-parts.flakeModules.modules ];
 
   config = {
-    flake.modules.homeManager.terminal =
-      {
-        config,
-        lib,
-        pkgs,
-        ...
-      }:
-      let
-        cfg = config.dotfiles.screensavers;
-      in
-      {
-        options.dotfiles.screensavers = {
-          enable = lib.mkEnableOption "jtrrll's screensavers" // {
-            default = true;
+    flake.modules.homeManager = {
+      bonsai =
+        {
+          config,
+          lib,
+          pkgs,
+          ...
+        }:
+        let
+          cfg = config.programs.bonsai;
+        in
+        {
+          options.programs.bonsai = {
+            enable = lib.mkEnableOption "a bonsai tree screensaver";
+          };
+
+          config = lib.mkIf cfg.enable {
+            home.packages = [ self.packages.${pkgs.stdenv.hostPlatform.system}.bonsai ];
           };
         };
+      matrix =
+        {
+          config,
+          lib,
+          pkgs,
+          ...
+        }:
+        let
+          cfg = config.programs.matrix;
+        in
+        {
+          options.programs.matrix = {
+            enable = lib.mkEnableOption "a matrix rain screensaver";
+          };
 
-        config = lib.mkIf cfg.enable {
-          home.packages = [
-            self.packages.${pkgs.stdenv.hostPlatform.system}.bonsai
-            self.packages.${pkgs.stdenv.hostPlatform.system}.matrix
-          ];
+          config = lib.mkIf cfg.enable {
+            home.packages = [ self.packages.${pkgs.stdenv.hostPlatform.system}.matrix ];
+          };
         };
-      };
+      dotfiles =
+        { lib, ... }:
+        {
+          config.programs = {
+            bonsai.enable = lib.mkDefault true;
+            matrix.enable = lib.mkDefault true;
+          };
+        };
+    };
     perSystem =
       { pkgs, ... }:
       {
-        packages = {
+        config.packages = {
           bonsai = pkgs.callPackage (
             {
               cbonsai,

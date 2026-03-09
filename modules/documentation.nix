@@ -3,7 +3,12 @@
   imports = [ inputs.flake-parts.flakeModules.modules ];
 
   config.perSystem =
-    { config, pkgs, ... }:
+    {
+      config,
+      pkgs,
+      system,
+      ...
+    }:
     {
       config = {
         apps.update-docs =
@@ -99,6 +104,7 @@
                     { options.programs.__stub = lib.mkSinkUndeclaredOptions { }; }
                     {
                       config._module = {
+                        args.pkgs = inputs.home-manager.inputs.nixpkgs.legacyPackages.${system};
                         check = false;
                         lib.stylix = { };
                         stylix.targets = { };
