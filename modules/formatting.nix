@@ -1,9 +1,6 @@
 { inputs, self, ... }:
 {
-  imports = [
-    inputs.flake-parts.flakeModules.modules
-    inputs.treefmt-nix.flakeModule
-  ];
+  imports = [ inputs.treefmt-nix.flakeModule ];
 
   config.perSystem =
     { inputs', pkgs, ... }:

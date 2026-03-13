@@ -10,13 +10,15 @@
     {
       config.packages.splash = pkgs.callPackage (
         {
+          lib,
           lolcat,
           uutils-coreutils-noprefix,
           writeShellApplication,
         }:
         writeShellApplication rec {
           meta = {
-            description = "Prints a splash screen.";
+            description = "Prints a splash screen";
+            license = lib.licenses.mit;
             mainProgram = name;
           };
           name = "splash";
