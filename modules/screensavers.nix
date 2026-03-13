@@ -58,11 +58,16 @@
           bonsai = pkgs.callPackage (
             {
               cbonsai,
+              lib,
               uutils-coreutils-noprefix,
               writeShellApplication,
             }:
             writeShellApplication rec {
-              meta.mainProgram = name;
+              meta = {
+                description = "A botanical terminal screensaver";
+                license = lib.last cbonsai.meta.license;
+                mainProgram = name;
+              };
               name = "bonsai";
               runtimeInputs = [
                 cbonsai
@@ -91,7 +96,11 @@
               writeShellApplication,
             }:
             writeShellApplication rec {
-              meta.mainProgram = name;
+              meta = {
+                inherit (neo.meta) license;
+                description = "A cyberpunk terminal screensaver";
+                mainProgram = name;
+              };
               name = "matrix";
               runtimeInputs = [
                 neo

@@ -7,10 +7,15 @@
           {
             git,
             gum,
+            lib,
             writeShellApplication,
           }:
           writeShellApplication rec {
-            meta.mainProgram = name;
+            meta = {
+              description = "Interactively switches git branches";
+              license = lib.licenses.mit;
+              mainProgram = name;
+            };
             name = "git-ezswitch";
             runtimeInputs = [
               git
@@ -35,7 +40,11 @@
             xdg-utils,
           }:
           writeShellApplication rec {
-            meta.mainProgram = name;
+            meta = {
+              description = "Opens the upstream git repository in a browser";
+              license = lib.licenses.mit;
+              mainProgram = name;
+            };
             name = "git-open";
             runtimeInputs = [
               git
@@ -74,7 +83,11 @@
             writeShellApplication,
           }:
           writeShellApplication rec {
-            meta.mainProgram = name;
+            meta = {
+              description = "Deletes all working git branches and updates main branch";
+              license = lib.licenses.mit;
+              mainProgram = name;
+            };
             name = "git-trim";
             runtimeInputs = [
               git
