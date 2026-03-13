@@ -2,7 +2,7 @@
   libretro-shaders-slang,
   writeText,
 }:
-writeText "gba.slangp" ''
+(writeText "gba.slangp" ''
   shaders = "4"
   feedback_pass = "0"
 
@@ -64,4 +64,10 @@ writeText "gba.slangp" ''
   SamplerLUT2 = "${libretro-shaders-slang}/share/libretro/shaders/shaders_slang/handheld/shaders/color/lut/gba-grey2.png"
   SamplerLUT2_mipmap = "false"
   SamplerLUT2_wrap_mode = "clamp_to_border"
-''
+'').overrideAttrs
+  (oldAttrs: {
+    meta = (oldAttrs.meta or { }) // {
+      inherit (libretro-shaders-slang.meta) license;
+      description = "A GBA shader that replicates original hardware";
+    };
+  })

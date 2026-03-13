@@ -41,7 +41,8 @@
           { lib, writers }:
           (writers.writeNuBin "edit" { } (lib.readFile ./edit.nu)).overrideAttrs (oldAttrs: {
             meta = (oldAttrs.meta or { }) // {
-              description = "Launches a text editor.";
+              description = "Launches a text editor";
+              license = lib.licenses.mit;
             };
           })
         ) { };

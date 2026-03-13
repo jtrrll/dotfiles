@@ -64,7 +64,8 @@
           } (lib.readFile script)).overrideAttrs
             (oldAttrs: {
               meta = (oldAttrs.meta or { }) // {
-                description = "Activates a home or NixOS configuration.";
+                description = "Activates a home or NixOS configuration";
+                license = lib.licenses.mit;
               };
             })
         ) { rootPath = self; };
