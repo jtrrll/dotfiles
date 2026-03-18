@@ -7,7 +7,6 @@
 writeShellApplication rec {
   meta = {
     description = "Prints a splash screen";
-    license = lib.licenses.agpl3Plus;
     mainProgram = name;
     platforms = lib.platforms.all;
     sourceProvenance = [ lib.sourceTypes.fromSource ];

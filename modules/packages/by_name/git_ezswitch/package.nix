@@ -8,7 +8,6 @@ writeShellApplication rec {
   meta = {
     inherit (git.meta) platforms;
     description = "Interactively switches git branches";
-    license = lib.licenses.agpl3Plus;
     mainProgram = name;
     sourceProvenance = [ lib.sourceTypes.fromSource ];
   };

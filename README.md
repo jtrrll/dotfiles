@@ -21,10 +21,9 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 
 ## Options
 
-<!-- BEGIN OPTIONS -->
 ### `dotfiles.theme.backgroundImage`
 
-* Default: `"/home/${config.home.username}/.config/background"`
+* Default: `~/.config/background`
 * Description: The file path of the background image to use.
 * Example: `"path/to/background.png"`
 * Type: `absolute path`
@@ -45,4 +44,3 @@ If unset, defaults to a scheme generated from the background image.
 * Description: Whether to enable jtrrll's system-wide theme.
 * Example: `true`
 * Type: `boolean`
-<!-- END OPTIONS -->

@@ -6,7 +6,7 @@
 }:
 writeShellApplication rec {
   meta = {
-    inherit (neo.meta) license platforms;
+    inherit (neo.meta) platforms;
     description = "A cyberpunk terminal screensaver";
     mainProgram = name;
     sourceProvenance = [ lib.sourceTypes.fromSource ];

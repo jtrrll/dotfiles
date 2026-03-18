@@ -9,6 +9,7 @@
     let
       addCommonMetadata = lib.addMetaAttrs {
         inherit (config.flake) homepage;
+        license = lib.licenses.agpl3Plus;
         maintainers = [ config.flake.maintainer ];
       };
       importPackagesFromDirectory =

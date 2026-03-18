@@ -4,6 +4,7 @@
   inputs = {
     ### Flake dependencies ###
     # keep-sorted start block=yes
+    files.url = "github:mightyiam/files";
     flake-parts.url = "github:hercules-ci/flake-parts";
     import-tree.url = "github:vic/import-tree";
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";

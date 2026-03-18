@@ -23,6 +23,7 @@
         enable = lib.mkEnableOption "jtrrll's system-wide theme";
         backgroundImage = lib.mkOption {
           default = "${config.home.homeDirectory}/.config/background";
+          defaultText = lib.literalExpression "~/.config/background";
           description = "The file path of the background image to use.";
           example = "path/to/background.png";
           type = lib.types.path;

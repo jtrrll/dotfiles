@@ -44,9 +44,14 @@ let
     lib.mapAttrsToList (
       name: opt:
       let
-        defaultLine =
-          lib.optionalString (opt ? default)
-            "* Default: `${lib.generators.toJSON { } opt.default}`\n";
+        default =
+          if opt ? defaultText then
+            opt.defaultText.text
+          else if opt ? default then
+            lib.generators.toJSON { } opt.default
+          else
+            null;
+        defaultLine = lib.optionalString (default != null) "* Default: `${default}`\n";
         descriptionLine = lib.optionalString (opt ? description) "* Description: ${opt.description}\n";
         exampleLine =
           lib.optionalString (opt ? example)
@@ -66,7 +71,6 @@ in
 writeTextFile {
   meta = {
     description = "Options documentation for the dotfiles module";
-    license = lib.licenses.agpl3Plus;
     platforms = lib.platforms.all;
     sourceProvenance = [ lib.sourceTypes.fromSource ];
   };

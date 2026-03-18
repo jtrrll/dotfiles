@@ -5,7 +5,6 @@
 }:
 lib.addMetaAttrs
   {
-    inherit (libretro-shaders-slang.meta) license;
     description = "A GB and GBC shader that replicates original hardware";
     platforms = lib.platforms.all;
     sourceProvenance = [ lib.sourceTypes.fromSource ];

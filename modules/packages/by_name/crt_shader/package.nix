@@ -5,7 +5,6 @@
 }:
 lib.addMetaAttrs
   {
-    inherit (libretro-shaders-slang.meta) license;
     description = "A CRT shader that blends pixels";
     platforms = lib.platforms.all;
     sourceProvenance = [ lib.sourceTypes.fromSource ];

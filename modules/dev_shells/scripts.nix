@@ -58,8 +58,11 @@
                     }
                   );
                   update-docs = {
-                    attributes.doc = self.apps.${system}.update-docs.meta.description;
-                    commands = "@nix run .#update-docs";
+                    attributes.doc = "Updates documentation for the flake";
+                    commands = ''
+                      write-files
+                      @nix run .#update-demo
+                    '';
                   };
                 };
             };

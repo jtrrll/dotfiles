@@ -25,7 +25,6 @@ in
 lib.addMetaAttrs
   {
     description = "Activates a home or NixOS configuration";
-    license = lib.licenses.agpl3Plus;
     platforms = lib.platforms.all;
     sourceProvenance = [ lib.sourceTypes.fromSource ];
   }

@@ -10,7 +10,6 @@ writeShellApplication rec {
   meta = {
     inherit (git.meta) platforms;
     description = "Opens the upstream git repository in a browser";
-    license = lib.licenses.agpl3Plus;
     mainProgram = name;
     sourceProvenance = [ lib.sourceTypes.fromSource ];
   };

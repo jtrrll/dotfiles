@@ -10,7 +10,6 @@ writeShellApplication rec {
   meta = {
     inherit (git.meta) platforms;
     description = "Deletes all working git branches and updates main branch";
-    license = lib.licenses.agpl3Plus;
     mainProgram = name;
     sourceProvenance = [ lib.sourceTypes.fromSource ];
   };

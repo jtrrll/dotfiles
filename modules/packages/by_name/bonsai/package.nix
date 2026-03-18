@@ -8,7 +8,6 @@ writeShellApplication rec {
   meta = {
     inherit (cbonsai.meta) platforms;
     description = "A botanical terminal screensaver";
-    license = lib.last cbonsai.meta.license;
     mainProgram = name;
     sourceProvenance = [ lib.sourceTypes.fromSource ];
   };
