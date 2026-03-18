@@ -58,17 +58,11 @@
         modules-tree = lib.pipe import-tree [
           (it: it.withLib lib)
           (it: it.addPath ./modules)
-          # Matches top-level `*.nix` files and `default.nix` files that are one level deep.
-          (it: it.match "^/[^/]+\.nix$|^/[^/]+/default\.nix$")
+          (it: it.filterNot (lib.hasInfix "/by_name/"))
         ];
       in
       {
-        imports = [
-          ./dev_shells
-          ./home_configurations
-          ./nixos_configurations
-          modules-tree.result
-        ];
+        imports = [ modules-tree.result ];
 
         options = {
           flake.lib = lib.mkOption {
