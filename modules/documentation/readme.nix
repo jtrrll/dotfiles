@@ -10,9 +10,73 @@
       ...
     }:
     let
-      options = config.packages.options.override {
-        homeModules = lib.attrValues self.homeModules;
+      eval = lib.evalModules {
+        modules =
+          lib.attrValues (
+            removeAttrs self.homeModules [
+              "nixvim"
+              "stylix"
+            ]
+          )
+          ++ [
+            {
+              options.home = {
+                username = lib.mkOption {
+                  default = "\${config.home.username}";
+                  type = lib.types.str;
+                };
+                homeDirectory = lib.mkOption {
+                  type = lib.types.path;
+                };
+              };
+            }
+            { options.programs.__stub = lib.mkSinkUndeclaredOptions { }; }
+            {
+              config._module = {
+                args.pkgs = pkgs;
+                check = false;
+              };
+            }
+          ];
       };
+      optionsMarkdown = lib.concatStringsSep "\n" (
+        map
+          (
+            opt:
+            let
+              inherit (opt) name;
+              renderValue =
+                v:
+                if v ? _type && v._type == "literalExpression" then
+                  v.text
+                else if v ? _type && v._type == "literalMD" then
+                  v.text
+                else
+                  lib.generators.toJSON { } v;
+              default = if opt ? default then renderValue opt.default else null;
+              defaultLine = lib.optionalString (default != null) "* Default: `${default}`\n";
+              descriptionLine = lib.optionalString (
+                opt ? description && opt.description != null
+              ) "* Description: ${opt.description}\n";
+              exampleLine = lib.optionalString (opt ? example) "* Example: `${renderValue opt.example}`\n";
+              typeLine = lib.optionalString (
+                opt ? type && opt.type ? description
+              ) "* Type: `${opt.type.description}`";
+            in
+            "### `${name}`\n\n${defaultLine}${descriptionLine}${exampleLine}${typeLine}"
+          )
+          (
+            lib.filter (
+              opt:
+              !(
+                lib.hasPrefix "_module" opt.name
+                || lib.hasPrefix "programs.__stub" opt.name
+                || lib.hasPrefix "home." opt.name
+              )
+            ) (lib.optionAttrSetToDocList eval.options)
+          )
+      );
+      options = pkgs.writeText "options.md" optionsMarkdown;
     in
     {
       config = {
