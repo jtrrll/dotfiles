@@ -5,7 +5,6 @@
 {
   imports = [
     nixosHardwareModules.raspberry-pi-3
-    ./hardware_configuration.nix
   ];
 
   home-manager = {

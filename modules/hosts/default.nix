@@ -7,33 +7,29 @@
 {
   config.flake.nixosConfigurations =
     let
-      nameFn = lib.replaceStrings [ "_" ] [ "-" ];
       hostsFromDirectory =
-        directory:
+        dir:
         lib.concatMapAttrs (
           name: type:
-          let
-            path = directory + "/${name}";
-          in
           if type == "directory" then
-            { "${nameFn name}" = "${path}/configuration.nix"; }
-          else if type == "regular" && lib.hasSuffix ".nix" name then
-            { "${nameFn (lib.removeSuffix ".nix" name)}" = path; }
+            {
+              "${lib.replaceStrings [ "_" ] [ "-" ] name}" = {
+                imports = [ (inputs.import-tree dir) ];
+              };
+            }
           else
             { }
-        ) (builtins.readDir directory);
+        ) (builtins.readDir dir);
       hosts = hostsFromDirectory ./by_name;
     in
     lib.mapAttrs (
-      _: path:
+      _: hostConfig:
       inputs.nixpkgs-nixos.lib.nixosSystem {
+        specialArgs = {
+          nixosHardwareModules = inputs.nixos-hardware.nixosModules;
+        };
         modules = lib.attrValues self.nixosModules ++ [
-          path
-          {
-            _module.args = {
-              nixosHardwareModules = inputs.nixos-hardware.nixosModules;
-            };
-          }
+          hostConfig
         ];
       }
     ) hosts;

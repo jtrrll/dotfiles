@@ -1,8 +1,4 @@
 {
-  imports = [
-    ./hardware_configuration.nix
-  ];
-
   dotfiles.gaming.enable = true;
   home-manager = {
     users.jtrrll =

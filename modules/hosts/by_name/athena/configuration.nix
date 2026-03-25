@@ -5,7 +5,6 @@
 {
   imports = [
     nixosHardwareModules.lenovo-thinkpad-x1
-    ./hardware_configuration.nix
   ];
 
   dotfiles.gaming.enable = true;
