@@ -14,7 +14,7 @@
           if type == "directory" then
             {
               "${lib.replaceStrings [ "_" ] [ "-" ] name}" = {
-                imports = [ (inputs.import-tree dir) ];
+                imports = [ (inputs.import-tree "${dir}/${name}") ];
               };
             }
           else
@@ -25,11 +25,13 @@
     lib.mapAttrs (
       _: hostConfig:
       inputs.nixpkgs-nixos.lib.nixosSystem {
-        specialArgs = {
-          nixosHardwareModules = inputs.nixos-hardware.nixosModules;
-        };
         modules = lib.attrValues self.nixosModules ++ [
           hostConfig
+          {
+            _module.args = {
+              nixosHardwareModules = inputs.nixos-hardware.nixosModules;
+            };
+          }
         ];
       }
     ) hosts;

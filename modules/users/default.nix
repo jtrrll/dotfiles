@@ -19,7 +19,7 @@
           if type == "directory" then
             {
               "${lib.replaceStrings [ "_" ] [ "-" ] name}" = {
-                imports = [ (inputs.import-tree dir) ];
+                imports = [ (inputs.import-tree "${dir}/${name}") ];
               };
             }
           else
