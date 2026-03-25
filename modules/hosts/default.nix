@@ -27,12 +27,10 @@
       inputs.nixpkgs-nixos.lib.nixosSystem {
         modules = lib.attrValues self.nixosModules ++ [
           hostConfig
-          {
-            _module.args = {
-              nixosHardwareModules = inputs.nixos-hardware.nixosModules;
-            };
-          }
         ];
+        specialArgs = {
+          nixosHardwareModules = inputs.nixos-hardware.nixosModules;
+        };
       }
     ) hosts;
 }
