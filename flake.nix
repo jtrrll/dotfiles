@@ -51,6 +51,8 @@
     {
       flake-parts,
       import-tree,
+      nixvim,
+      stylix,
       ...
     }@inputs:
     flake-parts.lib.mkFlake { inherit inputs; } (
@@ -76,7 +78,11 @@
         config = {
           flake = {
             lib.modules-tree = modules-tree;
-            homeModules = self.modules.homeManager;
+            homeModules = {
+              inherit (nixvim.homeModules) nixvim;
+              inherit (stylix.homeModules) stylix;
+            }
+            // self.modules.homeManager;
             nixosModules = self.modules.nixos;
           };
 
