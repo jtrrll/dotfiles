@@ -194,7 +194,7 @@
               )
               (
                 meta:
-                if !(meta ? maintainers) || lib.isList meta.maintainers then
+                if lib.isList (meta.maintainers or [ ]) then
                   {
                     success = true;
                     error = null;
@@ -207,7 +207,7 @@
               )
               (
                 meta:
-                if !(meta ? maintainers) || (lib.length meta.maintainers) > 0 then
+                if (lib.length (meta.maintainers or [ ])) > 0 then
                   {
                     success = true;
                     error = null;
@@ -233,7 +233,7 @@
               )
               (
                 meta:
-                if !(meta ? platforms) || lib.isList meta.platforms then
+                if lib.isList (meta.platforms or [ ]) then
                   {
                     success = true;
                     error = null;

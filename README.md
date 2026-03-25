@@ -21,26 +21,48 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 
 ## Options
 
-### `dotfiles.theme.backgroundImage`
-
-* Default: `~/.config/background`
-* Description: The file path of the background image to use.
-* Example: `"path/to/background.png"`
-* Type: `absolute path`
-
-### `dotfiles.theme.base16Scheme`
-
-* Default: `null`
-* Description: A scheme following the base16 standard.
-If set, this can be a path to a file, a string of YAML, or an attribute set.
-If unset, defaults to a scheme generated from the background image.
-
-* Example: `"path/to/gruvbox-material-dark-medium.yaml"`
-* Type: `null or absolute path or strings concatenated with "\n" or (attribute set)`
-
-### `dotfiles.theme.enable`
+### `programs.bonsai.enable`
 
 * Default: `false`
-* Description: Whether to enable jtrrll's system-wide theme.
+* Description: Whether to enable a bonsai tree screensaver.
 * Example: `true`
-* Type: `boolean`
+
+### `programs.edit.enable`
+
+* Default: `false`
+* Description: Whether to enable edit.
+* Example: `true`
+
+### `programs.edit.package`
+
+* Default: `<derivation edit>`
+* Description: The edit package to use
+
+### `programs.matrix.enable`
+
+* Default: `false`
+* Description: Whether to enable a matrix rain screensaver.
+* Example: `true`
+
+### `programs.snekcheck.enable`
+
+* Default: `false`
+* Description: Whether to enable snekcheck.
+* Example: `true`
+
+### `programs.snekcheck.package`
+
+* Default: `<derivation snekcheck-0.1.0>`
+* Description: The snekcheck package to use
+
+### `services.codeDirectory.enable`
+
+* Default: `false`
+* Description: Whether to enable a self-updating and self-cleaning directory for source code.
+* Example: `true`
+
+### `services.musicLibrary.enable`
+
+* Default: `false`
+* Description: Whether to enable a curated music library.
+* Example: `true`
