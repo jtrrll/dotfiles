@@ -8,9 +8,8 @@
     }:
     let
       addCommonMetadata = lib.addMetaAttrs {
-        inherit (config.flake) homepage;
+        inherit (config.flake) homepage maintainers;
         license = lib.licenses.agpl3Plus;
-        maintainers = [ config.flake.maintainer ];
       };
       importPackagesFromDirectory =
         let

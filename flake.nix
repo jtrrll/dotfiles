@@ -58,7 +58,12 @@
       ...
     }@inputs:
     flake-parts.lib.mkFlake { inherit inputs; } (
-      { lib, self, ... }:
+      {
+        config,
+        lib,
+        self,
+        ...
+      }:
       let
         modules-tree = lib.pipe import-tree [
           (it: it.withLib lib)
@@ -84,11 +89,21 @@
               inherit (nixvim.homeModules) nixvim;
               inherit (stylix.homeModules) stylix;
             }
-            // self.modules.homeManager;
+            // lib.mapAttrs (_: module: {
+              imports = [ module ];
+              meta = {
+                inherit (config.flake) maintainers;
+              };
+            }) self.modules.homeManager;
             nixosModules = {
               determinateNix = determinate.nixosModules.default;
             }
-            // self.modules.nixos;
+            // lib.mapAttrs (_: module: {
+              imports = [ module ];
+              meta = {
+                inherit (config.flake) maintainers;
+              };
+            }) self.modules.nixos;
           };
 
           systems = lib.systems.flakeExposed;

@@ -1,99 +1,116 @@
 {
   config,
-  flake-parts-lib,
-  lib,
+  inputs,
   ...
 }:
-{
-  options = {
-    flake = {
-      homepage = lib.mkOption {
-        description = "The homepage of this flake";
-        type = lib.types.str;
-      };
-      maintainer = lib.mkOption {
-        description = "The maintainer of this flake";
-        type = lib.types.attrsOf lib.types.anything;
-      };
-    };
-    perSystem = flake-parts-lib.mkPerSystemOption (
-      {
-        config,
-        lib,
-        pkgs,
-        ...
-      }:
-      let
-        cfg = config.packageMetadataChecks;
-      in
-      {
-        options.packageMetadataChecks = {
-          enable = lib.mkEnableOption "package metadata checks";
-          checks = lib.mkOption {
-            type = lib.types.listOf lib.types.raw;
-            default = [ ];
-            description = "List of functions (meta -> { success: bool; error: nullable string; }) to validate package metadata";
+let
+  flakeModule =
+    {
+      lib,
+      flake-parts-lib,
+      ...
+    }:
+    {
+      options = {
+        flake = {
+          homepage = lib.mkOption {
+            description = "The homepage of this flake";
+            type = lib.types.str;
           };
-          packages = lib.mkOption {
-            type = lib.types.attrsOf lib.types.package;
-            default = config.packages;
-            description = "The set of packages to check";
+          maintainers = lib.mkOption {
+            description = "The maintainers of this flake";
+            type = lib.types.listOf (lib.types.attrsOf lib.types.anything);
           };
         };
-
-        config.checks.packageMetadata = lib.mkIf cfg.enable (
+        perSystem = flake-parts-lib.mkPerSystemOption (
+          {
+            config,
+            lib,
+            pkgs,
+            ...
+          }:
           let
-            checkPackageMetadata =
-              { meta, name, ... }:
-              let
-                result = lib.pipe cfg.checks [
-                  (lib.map (check: {
-                    inherit (check meta) success error;
-                  }))
-                  (lib.filter ({ success, ... }: !success))
-                ];
-              in
-              if lib.length result == 0 then
-                {
-                  success = true;
-                  error = null;
-                }
-              else
-                {
-                  success = false;
-                  error = ''
-                    Package `${name}` failed the following metadata checks:
-                    ${lib.concatMapStringsSep "\n" ({ error, ... }: "- ${error}") result}
-                  '';
-                };
-            checkFlake = lib.mapAttrsToList (_: checkPackageMetadata) cfg.packages;
-            failedPackages = lib.filter (result: !result.success) checkFlake;
+            cfg = config.packageMetadataChecks;
           in
-          pkgs.runCommand "check-metadata" { } (
-            let
-              failedCount = lib.length failedPackages;
-            in
-            if failedCount > 0 then
-              throw "\n${toString failedCount} package(s) failed metadata validation:\n${
-                lib.concatMapStringsSep "\n" (result: result.error) failedPackages
-              }"
-            else
-              "echo 'All packages passed metadata validation' > $out"
-          )
+          {
+            options.packageMetadataChecks = {
+              enable = lib.mkEnableOption "package metadata checks";
+              checks = lib.mkOption {
+                type = lib.types.listOf lib.types.raw;
+                default = [ ];
+                description = "List of functions (meta -> { success: bool; error: nullable string; }) to validate package metadata";
+              };
+              packages = lib.mkOption {
+                type = lib.types.attrsOf lib.types.package;
+                default = config.packages;
+                description = "The set of packages to check";
+              };
+            };
+
+            config.checks.packageMetadata = lib.mkIf cfg.enable (
+              let
+                checkPackageMetadata =
+                  { meta, name, ... }:
+                  let
+                    result = lib.pipe cfg.checks [
+                      (lib.map (check: {
+                        inherit (check meta) success error;
+                      }))
+                      (lib.filter ({ success, ... }: !success))
+                    ];
+                  in
+                  if lib.length result == 0 then
+                    {
+                      success = true;
+                      error = null;
+                    }
+                  else
+                    {
+                      success = false;
+                      error = ''
+                        Package `${name}` failed the following metadata checks:
+                        ${lib.concatMapStringsSep "\n" ({ error, ... }: "- ${error}") result}
+                      '';
+                    };
+                checkFlake = lib.mapAttrsToList (_: checkPackageMetadata) cfg.packages;
+                failedPackages = lib.filter (result: !result.success) checkFlake;
+              in
+              pkgs.runCommand "check-metadata" { } (
+                let
+                  failedCount = lib.length failedPackages;
+                in
+                if failedCount > 0 then
+                  throw "\n${toString failedCount} package(s) failed metadata validation:\n${
+                    lib.concatMapStringsSep "\n" (result: result.error) failedPackages
+                  }"
+                else
+                  "echo 'All packages passed metadata validation' > $out"
+              )
+            );
+          }
         );
-      }
-    );
-  };
+      };
+    };
+in
+{
+  imports = [
+    inputs.flake-parts.flakeModules.flakeModules
+    { config.flake.flakeModules.packageMetadataChecks = flakeModule; }
+    flakeModule
+  ];
 
   config = {
     flake = {
       homepage = "https://github.com/jtrrll/dotfiles";
-      maintainer = {
-        github = "jtrrll";
-        githubId = 77407057;
-        name = "Jackson Terrill";
-      };
+      maintainers = [
+        {
+          github = "jtrrll";
+          githubId = 77407057;
+          name = "Jackson Terrill";
+        }
+      ];
     };
+
     perSystem =
       let
         inherit (config.flake) homepage;
