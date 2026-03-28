@@ -64,8 +64,6 @@ jobs:
             os: ubuntu-latest
           - configuration: athena
             os: ubuntu-latest
-          - configuration: hestia
-            os: ubuntu-24.04-arm
     runs-on: ${{ matrix.os }}
     steps:
       - name: Free disk space
