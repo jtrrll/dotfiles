@@ -22,7 +22,7 @@ jobs:
         uses: DeterminateSystems/update-flake-lock@v28
         with:
           branch: "update_flake_lock_flake"
-          inputs: flake-parts import-tree nixpkgs
+          inputs: files flake-parts import-tree nixpkgs
           pr-title: "deps: update flake dependencies"
           pr-labels: |
             automated
