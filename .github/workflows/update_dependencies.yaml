@@ -88,7 +88,7 @@ jobs:
         uses: DeterminateSystems/update-flake-lock@v28
         with:
           branch: "update_flake_lock_nixos"
-          inputs: nixos-hardware nixpkgs-nixos
+          inputs: determinate nixos-hardware nixpkgs-nixos
           pr-title: "deps: update NixOS dependencies"
           pr-labels: |
             automated
