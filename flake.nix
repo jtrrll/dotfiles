@@ -50,18 +50,13 @@
 
   outputs =
     {
-      determinate,
       flake-parts,
       import-tree,
-      nixvim,
-      stylix,
       ...
     }@inputs:
     flake-parts.lib.mkFlake { inherit inputs; } (
       {
-        config,
         lib,
-        self,
         ...
       }:
       let
@@ -83,29 +78,7 @@
         };
 
         config = {
-          flake = {
-            lib.modules-tree = modules-tree;
-            homeModules = {
-              inherit (nixvim.homeModules) nixvim;
-              inherit (stylix.homeModules) stylix;
-            }
-            // lib.mapAttrs (_: module: {
-              imports = [ module ];
-              meta = {
-                inherit (config.flake) maintainers;
-              };
-            }) self.modules.homeManager;
-            nixosModules = {
-              determinateNix = determinate.nixosModules.default;
-            }
-            // lib.mapAttrs (_: module: {
-              imports = [ module ];
-              meta = {
-                inherit (config.flake) maintainers;
-              };
-            }) self.modules.nixos;
-          };
-
+          flake.lib.modules-tree = modules-tree;
           systems = lib.systems.flakeExposed;
         };
       }

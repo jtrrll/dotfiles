@@ -1,8 +1,11 @@
-{ inputs, self, ... }:
+{ config, inputs, ... }:
 {
   imports = [ inputs.files.flakeModules.default ];
 
   config.perSystem =
+    let
+      inherit (config.flake) homeModules;
+    in
     {
       config,
       lib,
@@ -13,10 +16,8 @@
       eval = lib.evalModules {
         modules =
           lib.attrValues (
-            removeAttrs self.homeModules [
+            removeAttrs homeModules [
               "glance"
-              "nixvim"
-              "stylix"
             ]
           )
           ++ [

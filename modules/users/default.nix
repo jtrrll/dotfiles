@@ -13,14 +13,16 @@
   config.flake =
     let
       usersFromDirectory =
+        let
+          nameFn = lib.replaceStrings [ "_" ] [ "-" ];
+          importFn = dir: { imports = [ (inputs.import-tree dir) ]; };
+        in
         dir:
         lib.concatMapAttrs (
           name: type:
           if type == "directory" then
             {
-              "${lib.replaceStrings [ "_" ] [ "-" ] name}" = {
-                imports = [ (inputs.import-tree "${dir}/${name}") ];
-              };
+              "${nameFn name}" = importFn "${dir}/${name}";
             }
           else
             { }
@@ -47,6 +49,8 @@
                   username = USER;
                 };
               }
+              inputs.nixvim.homeModules.nixvim
+              inputs.stylix.homeModules.stylix
             ];
             pkgs = inputs.home-manager.inputs.nixpkgs.legacyPackages.${SYSTEM}.extend (
               _: _: self.packages.${SYSTEM}

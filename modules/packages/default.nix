@@ -8,13 +8,13 @@
     }:
     let
       addCommonMetadata = lib.addMetaAttrs {
-        inherit (config.flake) homepage maintainers;
+        inherit (config.flake.meta) homepage maintainers;
         license = lib.licenses.agpl3Plus;
       };
-      importPackagesFromDirectory =
+      packagesFromDirectory =
         let
-          importFn = filePath: addCommonMetadata (pkgs.callPackage filePath { });
           nameFn = lib.replaceStrings [ "_" ] [ "-" ];
+          importFn = lib.flip pkgs.callPackage { };
         in
         directory:
         lib.concatMapAttrs (
@@ -29,7 +29,7 @@
           else
             { }
         ) (builtins.readDir directory);
-      packages = importPackagesFromDirectory ./by_name;
+      packages = lib.mapAttrs (_: addCommonMetadata) (packagesFromDirectory ./by_name);
     in
     {
       config = {
