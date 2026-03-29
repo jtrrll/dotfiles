@@ -1,8 +1,11 @@
-{ inputs, self, ... }:
+{ config, inputs, ... }:
 {
   imports = [ inputs.flake-parts.flakeModules.modules ];
 
   config.flake.modules.homeManager.edit =
+    let
+      inherit (config.flake) packages;
+    in
     {
       config,
       lib,
@@ -18,7 +21,7 @@
         package = lib.mkOption {
           type = lib.types.package;
           description = "The edit package to use";
-          default = self.packages.${pkgs.stdenv.hostPlatform.system}.edit;
+          default = packages.${pkgs.stdenv.hostPlatform.system}.edit;
         };
       };
 

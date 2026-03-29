@@ -27,7 +27,7 @@
     lib.mapAttrs (
       _: hostConfig:
       inputs.nixpkgs-nixos.lib.nixosSystem {
-        modules = lib.attrValues config.nixosModules ++ [
+        modules = lib.attrValues config.flake.nixosModules ++ [
           hostConfig
           inputs.determinate.nixosModules.default
         ];

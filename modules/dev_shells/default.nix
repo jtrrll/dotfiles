@@ -8,7 +8,7 @@
 
   config.perSystem =
     let
-      importShellsFromDirectory =
+      shellsFromDirectory =
         let
           nameFn = lib.replaceStrings [ "_" ] [ "-" ];
           importFn = import;
@@ -34,7 +34,7 @@
             containers = lib.mkForce { }; # Workaround to remove containers from flake checks.
           }
         ];
-        shells = importShellsFromDirectory ./by_name;
+        shells = shellsFromDirectory ./by_name;
       };
     };
 }

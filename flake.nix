@@ -67,7 +67,10 @@
         ];
       in
       {
-        imports = [ modules-tree.result ];
+        imports = [
+          inputs.flake-parts.flakeModules.flakeModules
+          modules-tree.result
+        ];
 
         options = {
           flake.lib = lib.mkOption {

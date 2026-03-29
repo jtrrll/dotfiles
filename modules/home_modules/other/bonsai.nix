@@ -4,7 +4,7 @@
 
   config.flake.modules.homeManager.bonsai =
     let
-      inherit (config) packages;
+      inherit (config.flake) packages;
     in
     {
       config,

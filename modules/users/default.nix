@@ -1,7 +1,7 @@
 {
+  config,
   inputs,
   lib,
-  self,
   ...
 }:
 {
@@ -12,6 +12,10 @@
 
   config.flake =
     let
+      sharedModules = [
+        inputs.nixvim.homeModules.nixvim
+        inputs.stylix.homeModules.stylix
+      ];
       usersFromDirectory =
         let
           nameFn = lib.replaceStrings [ "_" ] [ "-" ];
@@ -41,19 +45,20 @@
         lib.mapAttrs (
           _: userConfig:
           inputs.home-manager.lib.homeManagerConfiguration {
-            modules = lib.attrValues self.homeModules ++ [
-              userConfig
-              {
-                home = {
-                  homeDirectory = HOME;
-                  username = USER;
-                };
-              }
-              inputs.nixvim.homeModules.nixvim
-              inputs.stylix.homeModules.stylix
-            ];
+            modules =
+              lib.attrValues config.flake.homeModules
+              ++ sharedModules
+              ++ [
+                userConfig
+                {
+                  home = {
+                    homeDirectory = HOME;
+                    username = USER;
+                  };
+                }
+              ];
             pkgs = inputs.home-manager.inputs.nixpkgs.legacyPackages.${SYSTEM}.extend (
-              _: _: self.packages.${SYSTEM}
+              _: _: config.packages.${SYSTEM}
             );
           }
         ) users;
@@ -62,7 +67,9 @@
         { lib, ... }:
         {
           imports = [ inputs.home-manager.nixosModules.home-manager ];
-          home-manager.users = users;
+          home-manager = {
+            inherit sharedModules users;
+          };
           users.users = lib.mapAttrs (_: _: {
             enable = lib.mkDefault false;
             isNormalUser = true;

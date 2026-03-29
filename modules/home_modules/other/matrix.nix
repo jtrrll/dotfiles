@@ -4,7 +4,7 @@
 
   config.flake.modules.homeManager.matrix =
     let
-      inherit (config) packages;
+      inherit (config.flake) packages;
     in
     {
       config,
