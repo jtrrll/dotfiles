@@ -34,7 +34,12 @@
 
       config = lib.mkIf cfg.enable {
         home.packages = lib.mkIf (cfg.package != null) [ cfg.package ];
-        xdg.configFile."glance/glance.yml".source = settingsFile;
+        xdg.configFile."glance/glance.yml" = {
+          source = settingsFile;
+          onChange = lib.mkIf pkgs.stdenv.isDarwin ''
+            /bin/launchctl kickstart -k "gui/$(id -u)/glance" 2>/dev/null || true
+          '';
+        };
 
         launchd.agents.glance = lib.mkIf (cfg.package != null && pkgs.stdenv.isDarwin) {
           enable = true;
