@@ -1,6 +1,5 @@
 {
   config,
-  inputs,
   ...
 }:
 let
@@ -94,7 +93,6 @@ let
 in
 {
   imports = [
-    inputs.flake-parts.flakeModules.flakeModules
     { config.flake.flakeModules.packageMetadataChecks = flakeModule; }
     flakeModule
   ];

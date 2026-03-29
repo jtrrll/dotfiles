@@ -14,6 +14,7 @@
         modules =
           lib.attrValues (
             removeAttrs self.homeModules [
+              "glance"
               "nixvim"
               "stylix"
             ]
