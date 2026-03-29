@@ -8,16 +8,6 @@
   ];
 
   dotfiles.gaming.enable = true;
-  home-manager = {
-    users.jtrrll =
-      { pkgs, ... }:
-      {
-        dotfiles.theme = {
-          base16Scheme = "${pkgs.base16-schemes}/share/themes/gruvbox-material-dark-medium.yaml";
-          enable = true;
-        };
-      };
-  };
 
   users.users.jtrrll = {
     enable = true;
