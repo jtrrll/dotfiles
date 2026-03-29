@@ -10,13 +10,47 @@
             name = "Home";
             columns = [
               {
-                size = "full";
+                size = "small";
                 widgets = [
-                  { type = "calendar"; }
                   {
                     type = "weather";
                     location = "Boston, Massachusetts, United States";
+                    show-area-name = true;
+                    units = "imperial";
                   }
+                  {
+                    type = "server-stats";
+                    servers = [
+                      { type = "local"; }
+                    ];
+                  }
+                ];
+              }
+              {
+                size = "full";
+                widgets = [
+                  {
+                    type = "group";
+                    widgets = [
+                      {
+                        type = "hacker-news";
+                        collapse-after = -1;
+                        limit = 10;
+                      }
+                      {
+                        type = "reddit";
+                        subreddit = "NixOS";
+                        collapse-after = -1;
+                        limit = 10;
+                      }
+                    ];
+                  }
+                ];
+              }
+              {
+                size = "small";
+                widgets = [
+                  { type = "to-do"; }
                 ];
               }
             ];
