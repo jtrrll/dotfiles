@@ -5,9 +5,11 @@
   ...
 }:
 {
-  config.flake.nixosConfigurations =
+  imports = [ inputs.flake-parts.flakeModules.modules ];
+
+  config.flake =
     let
-      hostsFromDirectory =
+      modulesFromDirectory =
         let
           nameFn = lib.replaceStrings [ "_" ] [ "-" ];
           importFn = dir: { imports = [ (inputs.import-tree dir) ]; };
@@ -22,18 +24,13 @@
           else
             { }
         ) (builtins.readDir dir);
-      hosts = hostsFromDirectory ./by_name;
     in
-    lib.mapAttrs (
-      _: hostConfig:
-      inputs.nixpkgs-nixos.lib.nixosSystem {
-        modules = lib.attrValues config.flake.nixosModules ++ [
-          hostConfig
-          inputs.determinate.nixosModules.default
-        ];
-        specialArgs = {
-          nixosHardwareModules = inputs.nixos-hardware.nixosModules;
+    {
+      nixosModules = lib.mapAttrs (_: module: {
+        imports = [ module ];
+        meta = {
+          inherit (config.flake.meta) maintainers;
         };
-      }
-    ) hosts;
+      }) (config.flake.modules.nixos // (modulesFromDirectory ./by_name));
+    };
 }

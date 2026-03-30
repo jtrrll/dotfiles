@@ -11,6 +11,7 @@
     }:
     let
       cfg = config.programs.snekcheck;
+      snekcheck = inputs.snekcheck.packages.${pkgs.stdenv.hostPlatform.system}.default;
     in
     {
       options.programs.snekcheck = {
@@ -18,7 +19,7 @@
         package = lib.mkOption {
           type = lib.types.package;
           description = "The snekcheck package to use";
-          inherit (inputs.snekcheck.packages.${pkgs.stdenv.hostPlatform.system}) default;
+          default = snekcheck;
         };
       };
 

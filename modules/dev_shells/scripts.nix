@@ -1,10 +1,13 @@
 {
+  config,
   inputs,
-  self,
   ...
 }:
 {
   config.perSystem =
+    let
+      inherit (config.flake) homeConfigurations nixosConfigurations;
+    in
     {
       lib,
       system,
@@ -53,8 +56,8 @@
                   activate = pkgToRecipe (
                     pkgs.activate.override {
                       inherit rootPath;
-                      homeConfigurations = lib.attrNames self.homeConfigurations;
-                      nixosConfigurations = lib.attrNames self.nixosConfigurations;
+                      homeConfigurations = lib.attrNames homeConfigurations;
+                      nixosConfigurations = lib.attrNames nixosConfigurations;
                     }
                   );
                   update-docs = {
