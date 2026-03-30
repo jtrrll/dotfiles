@@ -58,7 +58,7 @@
                 }
               ];
             pkgs = inputs.home-manager.inputs.nixpkgs.legacyPackages.${SYSTEM}.extend (
-              _: _: config.packages.${SYSTEM}
+              _: _: config.flake.packages.${SYSTEM}
             );
           }
         ) users;

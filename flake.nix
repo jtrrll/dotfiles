@@ -56,6 +56,7 @@
     }@inputs:
     flake-parts.lib.mkFlake { inherit inputs; } (
       {
+        config,
         lib,
         ...
       }:
@@ -81,7 +82,14 @@
         };
 
         config = {
-          flake.lib.modules-tree = modules-tree;
+          flake = {
+            lib.modules-tree = modules-tree;
+            flakeModules = config.flake.modules.flake // {
+              default = {
+                imports = lib.attrValues config.flake.modules.flake;
+              };
+            };
+          };
           systems = lib.systems.flakeExposed;
         };
       }

@@ -29,7 +29,7 @@ let
             };
             packages = lib.mkOption {
               type = lib.types.attrsOf lib.types.package;
-              default = config.packages;
+              default = config.flake.packages;
               description = "The set of packages to check";
             };
           };
@@ -80,7 +80,7 @@ let
 in
 {
   imports = [
-    { config.flake.flakeModules.packageMetadataChecks = flakeModule; }
+    { config.flake.modules.flake.packageMetadataChecks = flakeModule; }
     flakeModule
   ];
 

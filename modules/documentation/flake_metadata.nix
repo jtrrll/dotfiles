@@ -26,7 +26,7 @@ let
 in
 {
   imports = [
-    { config.flake.flakeModules.flakeMetadata = flakeModule; }
+    { config.flake.modules.flake.flakeMetadata = flakeModule; }
     flakeModule
   ];
 
