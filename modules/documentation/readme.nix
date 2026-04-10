@@ -14,32 +14,26 @@
     }:
     let
       eval = lib.evalModules {
-        modules =
-          lib.attrValues (
-            removeAttrs homeModules [
-              "glance"
-            ]
-          )
-          ++ [
-            {
-              options.home = {
-                username = lib.mkOption {
-                  default = "\${config.home.username}";
-                  type = lib.types.str;
-                };
-                homeDirectory = lib.mkOption {
-                  type = lib.types.path;
-                };
+        modules = lib.attrValues homeModules ++ [
+          {
+            options.home = {
+              username = lib.mkOption {
+                default = "\${config.home.username}";
+                type = lib.types.str;
               };
-            }
-            { options.programs.__stub = lib.mkSinkUndeclaredOptions { }; }
-            {
-              config._module = {
-                args.pkgs = pkgs;
-                check = false;
+              homeDirectory = lib.mkOption {
+                type = lib.types.path;
               };
-            }
-          ];
+            };
+          }
+          { options.programs.__stub = lib.mkSinkUndeclaredOptions { }; }
+          {
+            config._module = {
+              args.pkgs = pkgs;
+              check = false;
+            };
+          }
+        ];
       };
       optionsMarkdown = lib.concatStringsSep "\n" (
         map
