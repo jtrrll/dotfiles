@@ -10,7 +10,7 @@
     (lib.mkIf config.programs.opencode.enable {
       programs.opencode = {
         enableMcpIntegration = true;
-        settings.theme = "system";
+        tui.theme = "system";
       };
     })
     (lib.mkIf (options ? stylix) { stylix.targets.opencode.enable = false; })
