@@ -55,10 +55,10 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 * Default: `<derivation snekcheck-0.1.0>`
 * Description: The snekcheck package to use
 
-### `services.codeDirectory.enable`
+### `services.codeStorage.enable`
 
 * Default: `false`
-* Description: Whether to enable a self-updating and self-cleaning directory for source code.
+* Description: Whether to enable self-maintaining directories for source code and worktrees.
 * Example: `true`
 
 ### `services.musicLibrary.enable`
