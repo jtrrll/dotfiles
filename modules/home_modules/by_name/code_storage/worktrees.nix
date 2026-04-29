@@ -23,15 +23,9 @@ in
           printf "[maintain-worktree-dir] cleaning %s...\n" "${worktreeDir}"
           if [ -d "${worktreeDir}" ]; then
             find "${worktreeDir}" -mindepth 1 -maxdepth 1 | while read -r entry; do
-              for _a in ${
-                lib.escapeShellArgs (
-                  map (t: "${worktreeDir}/${baseNameOf t}") [ config.home.file.worktrees.target ]
-                )
-              }; do
-                if [ "$entry" = "$_a" ]; then
-                  continue 2
-                fi
-              done
+              if [ "$entry" = "${worktreeDir}/${baseNameOf config.home.file.worktrees.target}" ]; then
+                continue
+              fi
               if [ ! -d "$entry" ] || [ ! -f "$entry/.git" ]; then
                 printf "[maintain-worktree-dir] removing non-worktree: %s\n" "$entry"
                 rm -rf "$entry"

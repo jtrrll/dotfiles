@@ -25,13 +25,9 @@ in
             if [ -d "$entry" ] && git -C "$entry" rev-parse --git-dir >/dev/null 2>&1; then
               continue
             fi
-            for _a in ${
-              lib.escapeShellArgs (map (t: "${codeDir}/${baseNameOf t}") [ config.home.file.code.target ])
-            }; do
-              if [ "$entry" = "$_a" ]; then
-                continue 2
-              fi
-            done
+            if [ "$entry" = "${codeDir}/${baseNameOf config.home.file.code.target}" ]; then
+              continue
+            fi
             printf "[maintain-code-dir] removing non-repo: %s\n" "$entry"
             rm -rf "$entry"
           done
