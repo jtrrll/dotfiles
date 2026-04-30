@@ -1,4 +1,4 @@
-# Reading Documentation Rules
+## Reading Documentation Rules
 
 Try to use Context7 MCP when I need:
 

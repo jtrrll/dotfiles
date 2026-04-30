@@ -1,15 +1,9 @@
 ---
-name: Whiteboard Warrior
-color: green
 description: Use for explaining and designing software architecture.
-model: inherit
-tools:
-  - Bash
-  - Read
-  - Glob
-  - Grep
-  - WebFetch
-  - WebSearch
+mode: subagent
+color: green
+permission:
+  edit: deny
 ---
 
 # Prompt

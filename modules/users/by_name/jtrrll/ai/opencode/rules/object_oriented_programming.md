@@ -1,4 +1,4 @@
-# Object-Oriented Programming Rules
+## Object-Oriented Programming Rules
 
 Generally prefer composition over inheritance as it is more malleable.
 

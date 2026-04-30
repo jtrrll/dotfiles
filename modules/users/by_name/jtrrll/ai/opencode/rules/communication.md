@@ -1,4 +1,4 @@
-# Communication Rules
+## Communication Rules
 
 Be concise.
 

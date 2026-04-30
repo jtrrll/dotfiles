@@ -64,6 +64,11 @@
         ];
 
         userSettings = {
+          agent_servers.OpenCode = {
+            command = "opencode";
+            args = [ "acp" ];
+          };
+
           file_scan_exclusions = [
             # keep-sorted start
             "**/*_templ.go"

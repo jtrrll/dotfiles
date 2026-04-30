@@ -1,4 +1,4 @@
-# Writing Documentation Rules
+## Writing Documentation Rules
 
 Write legible, descriptive code instead of inline comments.
 
