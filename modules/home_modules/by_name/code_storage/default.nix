@@ -16,15 +16,15 @@ in
     let
       codeDir = "${config.home.homeDirectory}/code";
       worktreeDir = "${config.home.homeDirectory}/worktrees";
-      cloneWithWorktree = lib.getExe (
-        pkgs.git-clone-with-worktree.override {
+      cloneWithWorktrees = lib.getExe (
+        pkgs.git-clone-with-worktrees.override {
           git = config.programs.git.package;
         }
       );
     in
     {
-      programs.git.settings.alias.clone-with-worktree = ''
-        !name="''${2:-$(basename "$1" .git)}" && ${cloneWithWorktree} "$1" "${codeDir}/$name" "${worktreeDir}/$name"
+      programs.git.settings.alias.clone-with-worktrees = lib.removeSuffix "\n" ''
+        !${cloneWithWorktrees} --bare-dest "${codeDir}" --worktree-dest "${worktreeDir}"
       '';
     }
   );
