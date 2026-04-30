@@ -1,4 +1,4 @@
-# Functional Programming Rules
+## Functional Programming Rules
 
 Attempt to write pure functions whenever possible.
 

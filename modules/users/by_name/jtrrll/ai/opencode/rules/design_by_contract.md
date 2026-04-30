@@ -1,4 +1,4 @@
-# Design by Contract Rules
+## Design by Contract Rules
 
 Prefer strongly-typed solutions with input validation at boundaries.
 

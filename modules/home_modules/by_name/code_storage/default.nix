@@ -23,9 +23,20 @@ in
       );
     in
     {
-      programs.git.settings.alias.clone-with-worktrees = lib.removeSuffix "\n" ''
-        !${cloneWithWorktrees} --bare-dest "${codeDir}" --worktree-dest "${worktreeDir}"
-      '';
+      programs = {
+        git.settings.alias.clone-with-worktrees = lib.removeSuffix "\n" ''
+          !${cloneWithWorktrees} --bare-dest "${codeDir}" --worktree-dest "${worktreeDir}"
+        '';
+        opencode.context = ''
+          # Code Storage
+
+          Repositories are stored as bare clones in `${codeDir}`.
+          Worktrees are checked out into `${worktreeDir}`.
+
+          Use `git clone-with-worktrees <url>` to clone a repo with this layout.
+          Never work directly in `${codeDir}`; always use a worktree in `${worktreeDir}`.
+        '';
+      };
     }
   );
 }
