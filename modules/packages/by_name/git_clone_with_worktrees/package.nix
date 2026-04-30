@@ -67,7 +67,7 @@ writeShellApplication rec {
     git clone --bare "$url" "$bare_dest"
 
     for suffix in "''${suffixes[@]}"; do
-      git -C "$bare_dest" worktree add "$worktree_prefix-$suffix"
+      git -C "$bare_dest" worktree add --detach "$worktree_prefix-$suffix"
     done
   '';
 }
