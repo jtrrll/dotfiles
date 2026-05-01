@@ -65,9 +65,14 @@ writeShellApplication rec {
     worktree_prefix="''${worktree_dest:+$worktree_dest/}$name"
 
     git clone --bare "$url" "$bare_dest"
+    git -C "$bare_dest" config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
+
+    default_branch="$(git -C "$bare_dest" symbolic-ref --short HEAD)"
+
+    git -C "$bare_dest" worktree add "$worktree_prefix" "$default_branch"
 
     for suffix in "''${suffixes[@]}"; do
-      git -C "$bare_dest" worktree add --detach "$worktree_prefix-$suffix"
+      git -C "$bare_dest" worktree add --detach "$worktree_prefix~$suffix"
     done
   '';
 }
