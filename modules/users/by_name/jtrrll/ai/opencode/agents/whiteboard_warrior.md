@@ -1,7 +1,7 @@
 ---
 description: Use for explaining and designing software architecture.
 mode: subagent
-color: green
+color: "#6a9955"
 permission:
   edit: deny
 ---
