@@ -1,7 +1,7 @@
 ---
 description: Use for configuring dotfiles and managing systems.
 mode: subagent
-color: cyan
+color: "#9cdcfe"
 ---
 
 # Prompt
