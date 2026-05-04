@@ -67,7 +67,7 @@ writeShellApplication rec {
     git clone --bare "$url" "$bare_dest"
     git -C "$bare_dest" config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
 
-    default_branch="$(git -C "$bare_dest" symbolic-ref --short HEAD)"
+    default_branch="$(git --git-dir="$bare_dest" ls-remote --symref origin HEAD | awk '/^ref:/ { sub(/.*\//, "", $2); print $2 }')"
 
     git -C "$bare_dest" worktree add "$worktree_prefix" "$default_branch"
 
