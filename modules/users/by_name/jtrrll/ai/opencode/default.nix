@@ -15,7 +15,25 @@
         ];
         opencode = {
           enableMcpIntegration = true;
-          agents = ./agents;
+          agents =
+            let
+              agentsDir = ./agents;
+              agentFiles = lib.pipe (builtins.readDir agentsDir) [
+                (lib.filterAttrs (_: type: type == "regular"))
+                (lib.filterAttrs (name: _: lib.hasSuffix ".md" name))
+                builtins.attrNames
+              ];
+            in
+            lib.listToAttrs (
+              map (
+                name:
+                let
+                  baseName = lib.removeSuffix ".md" name;
+                  hyphenated = builtins.replaceStrings [ "_" ] [ "-" ] baseName;
+                in
+                lib.nameValuePair hyphenated (agentsDir + "/${name}")
+              ) agentFiles
+            );
           context =
             let
               rulesDir = ./rules;
@@ -32,6 +50,7 @@
             pkgs.curlMinimal
             pkgs.gh
             pkgs.jq
+            pkgs.keep-awake
             pkgs.ripgrep
             pkgs.uutils-coreutils-noprefix
             pkgs.uutils-findutils
@@ -48,6 +67,14 @@
           );
           settings = {
             autoupdate = false;
+            permission = {
+              external_directory = {
+                "/nix/store/**" = "allow";
+              };
+              edit = {
+                "/nix/store/**" = "deny";
+              };
+            };
             share = "disabled";
           };
           tui.theme = "system";
