@@ -1,9 +1,24 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  options,
+  ...
+}:
 {
   config = lib.mkMerge [
     { services.glance.enable = lib.mkDefault true; }
     (lib.mkIf config.services.glance.enable {
       services.serviceStatus.enable = lib.mkDefault true;
+      stylix.targets.glance.colors.override = lib.mkIf (options ? stylix) {
+        base01 = config.lib.stylix.colors.base0B;
+        base01-rgb-r = config.lib.stylix.colors.base0B-rgb-r;
+        base01-rgb-g = config.lib.stylix.colors.base0B-rgb-g;
+        base01-rgb-b = config.lib.stylix.colors.base0B-rgb-b;
+        base04 = config.lib.stylix.colors.base08;
+        base04-rgb-r = config.lib.stylix.colors.base08-rgb-r;
+        base04-rgb-g = config.lib.stylix.colors.base08-rgb-g;
+        base04-rgb-b = config.lib.stylix.colors.base08-rgb-b;
+      };
       services.glance.settings =
         let
           serviceStatusUrl = "http://127.0.0.1:${builtins.toString config.services.serviceStatus.port}";
