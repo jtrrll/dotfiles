@@ -76,7 +76,7 @@
                       <ul class="list list-gap-14 list-with-separator">
                         {{ range .JSON.Array "" }}
                           <li>
-                            <a class="size-h3 color-primary-if-not-visited" href="#">{{ .String "name" }}</a>
+                            <span class="size-h3 color-highlight">{{ .String "name" }}</span>
                             <ul class="list-horizontal-text">
                               {{ if eq (.String "state") "running" }}
                                 <li class="color-positive">● running</li>
@@ -108,7 +108,7 @@
                     url = "${serviceStatusUrl}/ports";
                     template = ''
                       <ul class="list list-gap-10 list-with-separator">
-                        {{ range sortByInt "port" "asc" (.JSON.Array "") }}
+                        {{ range .JSON.Array "" }}
                           <li>
                             <span class="size-h3 color-highlight">:{{ .Int "port" }}</span>
                             <ul class="list-horizontal-text">

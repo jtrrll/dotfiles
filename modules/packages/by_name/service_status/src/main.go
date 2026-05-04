@@ -7,6 +7,8 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"slices"
+	"strings"
 
 	"github.com/urfave/cli/v3"
 )
@@ -73,6 +75,10 @@ func statusHandler(querier Querier) http.HandlerFunc {
 			return
 		}
 
+		slices.SortFunc(statuses, func(a, b ServiceStatus) int {
+			return strings.Compare(a.Name, b.Name)
+		})
+
 		w.Header().Set("Content-Type", "application/json")
 		if err := json.NewEncoder(w).Encode(statuses); err != nil {
 			log.Printf("failed to encode response: %v", err)
@@ -87,6 +93,10 @@ func portsHandler() http.HandlerFunc {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
+
+		slices.SortFunc(ports, func(a, b PortInfo) int {
+			return a.Port - b.Port
+		})
 
 		w.Header().Set("Content-Type", "application/json")
 		if err := json.NewEncoder(w).Encode(ports); err != nil {
