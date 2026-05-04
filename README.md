@@ -66,3 +66,14 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 * Default: `false`
 * Description: Whether to enable a curated music library.
 * Example: `true`
+
+### `services.serviceStatus.enable`
+
+* Default: `false`
+* Description: Whether to enable HTTP server that reports managed background service status.
+* Example: `true`
+
+### `services.serviceStatus.port`
+
+* Default: `5679`
+* Description: Port to listen on.
