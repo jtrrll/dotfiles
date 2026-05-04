@@ -73,32 +73,24 @@
                     cache = "30s";
                     url = "${serviceStatusUrl}/status";
                     template = ''
-                      <ul class="list list-gap-14">
+                      <ul class="list list-gap-14 list-with-separator">
                         {{ range .JSON.Array "" }}
                           <li>
-                            <div class="flex justify-between">
-                              <strong>{{ .String "name" }}</strong>
+                            <a class="size-h3 color-primary-if-not-visited" href="#">{{ .String "name" }}</a>
+                            <ul class="list-horizontal-text">
                               {{ if eq (.String "state") "running" }}
-                                <span class="color-positive">● running</span>
+                                <li class="color-positive">● running</li>
                               {{ else if eq (.String "state") "idle" }}
-                                <span class="color-subtext">○ idle</span>
+                                <li>○ idle</li>
                               {{ else if eq (.String "state") "error" }}
-                                <span class="color-negative">✕ error</span>
+                                <li class="color-negative">✕ error</li>
                               {{ else }}
-                                <span class="color-subtext">? {{ .String "state" }}</span>
+                                <li>? {{ .String "state" }}</li>
                               {{ end }}
-                            </div>
-                            <div class="flex justify-between margin-top-3">
-                              {{ if .String "detail" }}
-                                <span class="size-h6 color-subtext">{{ .String "detail" }}</span>
-                              {{ end }}
-                              {{ if .String "kind" }}
-                                <span class="size-h6 color-subtext">{{ .String "kind" }}</span>
-                              {{ end }}
-                              {{ if .String "schedule" }}
-                                <span class="size-h6 color-subtext">⏱ {{ .String "schedule" }}</span>
-                              {{ end }}
-                            </div>
+                              {{ if .String "detail" }}<li>{{ .String "detail" }}</li>{{ end }}
+                              {{ if .String "kind" }}<li>{{ .String "kind" }}</li>{{ end }}
+                              {{ if .String "schedule" }}<li>{{ .String "schedule" }}</li>{{ end }}
+                            </ul>
                           </li>
                         {{ end }}
                       </ul>
@@ -115,13 +107,14 @@
                     cache = "10s";
                     url = "${serviceStatusUrl}/ports";
                     template = ''
-                      <ul class="list list-gap-4">
+                      <ul class="list list-gap-10 list-with-separator">
                         {{ range sortByInt "port" "asc" (.JSON.Array "") }}
-                          <li class="flex justify-between">
-                            <span class="color-highlight size-h4">:{{ .Int "port" }}</span>
-                            <span>{{ .String "process" }}</span>
-                            <span class="color-subtext">pid {{ .String "pid" }}</span>
-                            <span class="color-subtext">{{ .String "address" }}</span>
+                          <li>
+                            <span class="size-h3 color-highlight">:{{ .Int "port" }}</span>
+                            <ul class="list-horizontal-text">
+                              <li>{{ .String "process" }}</li>
+                              <li>pid {{ .String "pid" }}</li>
+                            </ul>
                           </li>
                         {{ end }}
                       </ul>
