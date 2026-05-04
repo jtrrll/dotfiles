@@ -2,6 +2,11 @@
 description: Use for configuring dotfiles and managing systems.
 mode: subagent
 color: "#9cdcfe"
+permission:
+  external_directory:
+    ~/.config/**: allow
+  edit:
+    ~/.config/**: deny
 ---
 
 # Prompt

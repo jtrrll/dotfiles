@@ -14,6 +14,10 @@
           command = "${pkgs.bun}/bin/bunx";
           args = [ "@upstash/context7-mcp" ];
         };
+        nix = {
+          type = "stdio";
+          command = lib.getExe pkgs.mcp-nixos;
+        };
       };
     })
   ];
