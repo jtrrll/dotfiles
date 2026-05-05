@@ -61,6 +61,21 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 * Description: Whether to enable self-maintaining directories for source code and worktrees.
 * Example: `true`
 
+### `services.codeStorage.frequency`
+
+* Default: `"daily"`
+* Description: The interval at which code storage maintenance runs.
+
+This value is passed to the systemd timer configuration
+as the `OnCalendar` option.
+
+The format is described in {manpage}`systemd.time(7)`.
+
+On Darwin, it must be one of: hourly, daily, weekly, monthly, semiannually, annually, which are implemented as defined in {manpage}`systemd.time(7)`.
+
+
+* Example: `"weekly"`
+
 ### `services.musicLibrary.enable`
 
 * Default: `false`

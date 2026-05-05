@@ -78,33 +78,37 @@ in
 
         '';
       };
-      launchd.agents = lib.mkIf pkgs.stdenv.isDarwin {
-        maintain-code-dir = {
-          config = {
-            ProgramArguments = [ (lib.getExe maintainCodeDir) ];
-            RunAtLoad = true;
-            StandardErrorPath = "${config.home.homeDirectory}/Library/Logs/maintain_code_dir.err";
-            StandardOutPath = "${config.home.homeDirectory}/Library/Logs/maintain_code_dir.log";
-            StartCalendarInterval = lib.hm.darwin.mkCalendarInterval "08:00";
-          };
-          enable = true;
+      assertions = [
+        (lib.hm.darwin.assertInterval "services.codeStorage.frequency" cfg.frequency pkgs)
+      ];
+
+      launchd.agents.maintain-code-dir = {
+        enable = true;
+        config = {
+          ProgramArguments = [ (lib.getExe maintainCodeDir) ];
+          ProcessType = "Background";
+          RunAtLoad = true;
+          StartCalendarInterval = lib.hm.darwin.mkCalendarInterval cfg.frequency;
+          StandardOutPath = "${config.home.homeDirectory}/Library/Logs/maintain-code-dir/launchd-stdout.log";
+          StandardErrorPath = "${config.home.homeDirectory}/Library/Logs/maintain-code-dir/launchd-stderr.log";
         };
       };
-      systemd.user = lib.mkIf (!pkgs.stdenv.isDarwin) {
+
+      systemd.user = {
         services.maintain-code-dir = {
+          Unit.Description = "Git fetch and maintenance for all repos in ~/code";
           Service = {
             Type = "oneshot";
             ExecStart = lib.getExe maintainCodeDir;
           };
-          Unit.Description = "Daily Git fetch and maintenance for all repos in ~/code";
         };
         timers.maintain-code-dir = {
+          Unit.Description = "Git fetch and maintenance for all repos in ~/code";
           Install.WantedBy = [ "timers.target" ];
           Timer = {
-            OnCalendar = "08:00";
+            OnCalendar = cfg.frequency;
             Persistent = true;
           };
-          Unit.Description = "Daily Git fetch and maintenance for all repos in ~/code";
         };
       };
     }
