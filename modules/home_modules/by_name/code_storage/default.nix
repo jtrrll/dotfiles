@@ -10,6 +10,22 @@ in
 {
   options.services.codeStorage = {
     enable = lib.mkEnableOption "self-maintaining directories for source code and worktrees";
+
+    frequency = lib.mkOption {
+      type = lib.types.str;
+      default = "daily";
+      example = "weekly";
+      description = ''
+        The interval at which code storage maintenance runs.
+
+        This value is passed to the systemd timer configuration
+        as the `OnCalendar` option.
+
+        The format is described in {manpage}`systemd.time(7)`.
+
+        ${lib.hm.darwin.intervalDocumentation}
+      '';
+    };
   };
 
   config = lib.mkIf cfg.enable (

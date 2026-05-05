@@ -57,33 +57,33 @@ in
 
         '';
       };
-      launchd.agents = lib.mkIf pkgs.stdenv.isDarwin {
-        maintain-worktree-dir = {
-          config = {
-            ProgramArguments = [ (lib.getExe maintainWorktreeDir) ];
-            RunAtLoad = true;
-            StandardErrorPath = "${config.home.homeDirectory}/Library/Logs/maintain_worktree_dir.err";
-            StandardOutPath = "${config.home.homeDirectory}/Library/Logs/maintain_worktree_dir.log";
-            StartCalendarInterval = lib.hm.darwin.mkCalendarInterval "08:00";
-          };
-          enable = true;
+      launchd.agents.maintain-worktree-dir = {
+        enable = true;
+        config = {
+          ProgramArguments = [ (lib.getExe maintainWorktreeDir) ];
+          ProcessType = "Background";
+          RunAtLoad = true;
+          StartCalendarInterval = lib.hm.darwin.mkCalendarInterval cfg.frequency;
+          StandardOutPath = "${config.home.homeDirectory}/Library/Logs/maintain-worktree-dir/launchd-stdout.log";
+          StandardErrorPath = "${config.home.homeDirectory}/Library/Logs/maintain-worktree-dir/launchd-stderr.log";
         };
       };
-      systemd.user = lib.mkIf (!pkgs.stdenv.isDarwin) {
+
+      systemd.user = {
         services.maintain-worktree-dir = {
+          Unit.Description = "Worktree cleanup for ~/worktrees";
           Service = {
             Type = "oneshot";
             ExecStart = lib.getExe maintainWorktreeDir;
           };
-          Unit.Description = "Daily worktree cleanup for ~/worktrees";
         };
         timers.maintain-worktree-dir = {
+          Unit.Description = "Worktree cleanup for ~/worktrees";
           Install.WantedBy = [ "timers.target" ];
           Timer = {
-            OnCalendar = "08:00";
+            OnCalendar = cfg.frequency;
             Persistent = true;
           };
-          Unit.Description = "Daily worktree cleanup for ~/worktrees";
         };
       };
     }
