@@ -13,7 +13,8 @@
       ...
     }:
     let
-      eval = lib.evalModules {
+      hmLib = import "${inputs.home-manager}/modules/lib/stdlib-extended.nix" lib;
+      eval = hmLib.evalModules {
         modules = lib.attrValues homeModules ++ [
           {
             options.home = {
