@@ -89,6 +89,7 @@ in
     # Torrent client
     transmission = {
       enable = true;
+      package = pkgs.transmission_4;
       openFirewall = true;
       settings.rpc-url = "/transmission/";
     };
