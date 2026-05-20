@@ -127,7 +127,7 @@ in
     virtualisation.oci-containers.containers = {
       romm = {
         imageFile = cfg.image;
-        image = "${cfg.image.finalImageName}:${cfg.image.finalImageTag}";
+        image = "${cfg.image.imageName}:${cfg.image.imageTag}";
         environmentFiles = [ cfg.environmentFile ];
         environment = {
           DB_HOST = "romm-db";
@@ -153,7 +153,7 @@ in
 
       romm-db = {
         imageFile = cfg.mariadbImage;
-        image = "${cfg.mariadbImage.finalImageName}:${cfg.mariadbImage.finalImageTag}";
+        image = "${cfg.mariadbImage.imageName}:${cfg.mariadbImage.imageTag}";
         environmentFiles = [ cfg.environmentFile ];
         environment = {
           MARIADB_DATABASE = "romm";
@@ -167,7 +167,7 @@ in
 
       romm-redis = {
         imageFile = cfg.valkeyImage;
-        image = "${cfg.valkeyImage.finalImageName}:${cfg.valkeyImage.finalImageTag}";
+        image = "${cfg.valkeyImage.imageName}:${cfg.valkeyImage.imageTag}";
         volumes = [
           "${cfg.dataDir}/redis:/data"
         ];
