@@ -283,7 +283,13 @@ in
               }
           )
         ];
-        packages = lib.filterAttrs (name: _: !lib.hasPrefix "devenv" name) config.packages;
+        packages = lib.filterAttrs (
+          name: _:
+          !lib.hasPrefix "devenv" name
+          && !lib.elem name [
+            "github-tf"
+          ]
+        ) config.packages;
       };
     };
 }
