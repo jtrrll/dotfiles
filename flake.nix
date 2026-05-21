@@ -46,6 +46,11 @@
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     nixpkgs-nixos.url = "github:NixOS/nixpkgs/nixos-unstable";
     # keep-sorted end
+
+    ### Infrastructure dependencies ###
+    # keep-sorted start block=yes
+    terranix.url = "github:terranix/terranix/main";
+    # keep-sorted end
   };
 
   outputs =
@@ -70,6 +75,7 @@
       {
         imports = [
           inputs.flake-parts.flakeModules.flakeModules
+          inputs.terranix.flakeModule
           modules-tree.result
         ];
 
