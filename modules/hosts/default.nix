@@ -30,6 +30,7 @@
         modules = lib.attrValues config.flake.nixosModules ++ [
           hostConfig
           inputs.determinate.nixosModules.default
+          inputs.disko.nixosModules.disko
         ];
         specialArgs = {
           nixosHardwareModules = inputs.nixos-hardware.nixosModules;
