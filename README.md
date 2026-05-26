@@ -15,9 +15,9 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 1. [Install Nix](https://zero-to-nix.com/start/install)
 2. Activate a configuration interactively by running the following:
 
-   ```sh
-   nix run github:jtrrll/dotfiles home
-   ```
+    ```sh
+    nix run github:jtrrll/dotfiles home
+    ```
 
 ## Options
 
