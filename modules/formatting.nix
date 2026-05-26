@@ -23,7 +23,6 @@
             nixfmt.enable = true;
             statix.enable = true;
           };
-          settings.excludes = [ "*/hardware_configuration.nix" ];
         };
       };
     };

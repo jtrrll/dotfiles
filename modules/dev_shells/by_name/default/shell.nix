@@ -58,10 +58,7 @@
         excludes = [ ".envrc" ];
       };
       shfmt.enable = true;
-      statix = {
-        enable = true;
-        settings.ignore = [ "hardware_configuration.nix" ];
-      };
+      statix.enable = true;
     };
   };
 
