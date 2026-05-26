@@ -4,10 +4,13 @@
   inputs = {
     ### Flake dependencies ###
     # keep-sorted start block=yes
-    files.url = "github:mightyiam/files/main";
+    files = {
+      flake = false;
+      url = "github:mightyiam/files/master";
+    };
     flake-parts.url = "github:hercules-ci/flake-parts/main";
-    import-tree.url = "github:vic/import-tree/main";
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    import-tree.url = "github:denful/import-tree/main";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     # keep-sorted end
 
     ### Development dependencies ###
@@ -44,11 +47,10 @@
     # keep-sorted start block=yes
     determinate.url = "github:DeterminateSystems/determinate/main";
     disko = {
-      inputs.nixpkgs.follows = "nixpkgs-nixos";
+      inputs.nixpkgs.follows = "determinate/nixpkgs";
       url = "github:nix-community/disko/master";
     };
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
-    nixpkgs-nixos.url = "github:NixOS/nixpkgs/nixos-unstable";
     # keep-sorted end
 
     ### Infrastructure dependencies ###

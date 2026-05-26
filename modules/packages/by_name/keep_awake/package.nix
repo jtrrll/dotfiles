@@ -1,5 +1,4 @@
 {
-  darwin,
   lib,
   stdenv,
   systemd,
@@ -13,8 +12,7 @@ writeShellApplication rec {
     sourceProvenance = [ lib.sourceTypes.fromSource ];
   };
   name = "keep-awake";
-  runtimeInputs =
-    lib.optional stdenv.isLinux systemd ++ lib.optional stdenv.isDarwin darwin.PowerManagement;
+  runtimeInputs = lib.optional stdenv.isLinux systemd;
   text =
     if stdenv.isDarwin then
       ''

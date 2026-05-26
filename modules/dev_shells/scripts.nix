@@ -63,7 +63,7 @@
                   update-docs = {
                     attributes.doc = "Updates documentation for the flake";
                     commands = ''
-                      write-files
+                      @nix run .#write-files
                       @nix run .#update-demo
                     '';
                   };

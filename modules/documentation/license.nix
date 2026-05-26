@@ -1,20 +1,15 @@
 { inputs, ... }:
 {
-  imports = [ inputs.files.flakeModules.default ];
+  imports = [ (inputs.files + "/flake-module.nix") ];
 
   config.perSystem =
-    { config, pkgs, ... }:
+    { pkgs, ... }:
     {
-      config = {
-        devenv.modules = [ { packages = [ config.files.writer.drv ]; } ];
-        files.files = [
-          {
-            path_ = "LICENSE";
-            drv = pkgs.runCommand "LICENSE" { } ''
-              cp ${./agpl_3.0.txt} $out
-            '';
-          }
-        ];
+      config.files = {
+        file."LICENSE".source = pkgs.runCommand "LICENSE" { } ''
+          cp ${./agpl_3.0.txt} $out
+        '';
+        writer.app = true;
       };
     };
 }
