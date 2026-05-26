@@ -4,7 +4,6 @@
   lib,
   nh,
   nixosConfigurations ? [ ],
-  replaceVars,
   rootPath ? ".",
   writers,
 }:
@@ -17,10 +16,11 @@ let
     assert lib.isList nixosConfigurations && lib.all lib.isString nixosConfigurations;
     lib.concatStringsSep "\n" nixosConfigurations;
 
-  script = replaceVars ./activate.nu {
-    HOME_CONFIGURATIONS = homeConfigurationsString;
-    NIXOS_CONFIGURATIONS = nixosConfigurationsString;
-  };
+  scriptText =
+    builtins.replaceStrings
+      [ "@HOME_CONFIGURATIONS@" "@NIXOS_CONFIGURATIONS@" ]
+      [ homeConfigurationsString nixosConfigurationsString ]
+      (lib.readFile ./activate.nu);
 in
 lib.addMetaAttrs
   {
@@ -42,5 +42,5 @@ lib.addMetaAttrs
         "NH_FLAKE"
         "${rootPath}"
       ];
-    } (lib.readFile script)
+    } scriptText
   )

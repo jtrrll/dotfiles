@@ -1,13 +1,12 @@
 { config, inputs, ... }:
 {
-  imports = [ inputs.files.flakeModules.default ];
+  imports = [ (inputs.files + "/flake-module.nix") ];
 
   config.perSystem =
     let
       inherit (config.flake) homeModules;
     in
     {
-      config,
       lib,
       pkgs,
       ...
@@ -139,43 +138,40 @@
             program = pkg;
             type = "app";
           };
-        devenv.modules = [ { packages = [ config.files.writer.drv ]; } ];
-        files.files = [
-          {
-            path_ = "README.md";
-            drv =
-              let
-                header = pkgs.writeText "README-header.md" ''
-                  # ~/.dotfiles
+        files = {
+          file."README.md".source =
+            let
+              header = pkgs.writeText "README-header.md" ''
+                # ~/.dotfiles
 
-                  <!-- markdownlint-disable MD013 -->
-                  ![CI Status](https://img.shields.io/github/actions/workflow/status/jtrrll/dotfiles/ci.yaml?branch=main&label=ci&logo=github)
-                  ![License](https://img.shields.io/github/license/jtrrll/dotfiles?label=license&logo=googledocs&logoColor=white)
-                  <!-- markdownlint-enable MD013 -->
+                <!-- markdownlint-disable MD013 -->
+                ![CI Status](https://img.shields.io/github/actions/workflow/status/jtrrll/dotfiles/ci.yaml?branch=main&label=ci&logo=github)
+                ![License](https://img.shields.io/github/license/jtrrll/dotfiles?label=license&logo=googledocs&logoColor=white)
+                <!-- markdownlint-enable MD013 -->
 
-                  My dotfiles collection for configuring frequently used programs.
-                  Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-community/home-manager)
+                My dotfiles collection for configuring frequently used programs.
+                Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-community/home-manager)
 
-                  ![Demo](./demo.gif)
+                ![Demo](./demo.gif)
 
-                  ## Usage
+                ## Usage
 
-                  1. [Install Nix](https://zero-to-nix.com/start/install)
-                  2. Activate a configuration interactively by running the following:
+                1. [Install Nix](https://zero-to-nix.com/start/install)
+                2. Activate a configuration interactively by running the following:
 
-                     ```sh
-                     nix run github:jtrrll/dotfiles home
-                     ```
+                    ```sh
+                    nix run github:jtrrll/dotfiles home
+                    ```
 
-                  ## Options
+                ## Options
 
-                '';
-              in
-              pkgs.runCommand "README.md" { } ''
-                cat ${header} ${options} > $out
               '';
-          }
-        ];
+            in
+            pkgs.runCommand "README.md" { } ''
+              cat ${header} ${options} > $out
+            '';
+          writer.app = true;
+        };
       };
     };
 }

@@ -88,8 +88,30 @@ jobs:
         uses: DeterminateSystems/update-flake-lock@v28
         with:
           branch: "update_flake_lock_nixos"
-          inputs: determinate nixos-hardware nixpkgs-nixos
+          inputs: determinate disko nixos-hardware
           pr-title: "deps: update NixOS dependencies"
+          pr-labels: |
+            automated
+            dependencies
+          token: ${{ secrets.PR_BOT_PERSONAL_ACCESS_TOKEN }}
+      - name: Enable auto-merge
+        if: steps.update.outputs.pull-request-number != ''
+        env:
+          GH_TOKEN: ${{ secrets.PR_BOT_PERSONAL_ACCESS_TOKEN }}
+        run: gh pr merge ${{ steps.update.outputs.pull-request-number }} --auto --squash
+  infrastructure:
+    name: Update infrastructure dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: DeterminateSystems/nix-installer-action@v22
+      - name: Update flake.lock
+        id: update
+        uses: DeterminateSystems/update-flake-lock@v28
+        with:
+          branch: "update_flake_lock_infrastructure"
+          inputs: terranix
+          pr-title: "deps: update infrastructure dependencies"
           pr-labels: |
             automated
             dependencies

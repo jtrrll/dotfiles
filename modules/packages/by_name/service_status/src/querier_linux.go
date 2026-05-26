@@ -59,7 +59,8 @@ func (q *SystemdQuerier) QueryAll() ([]ServiceStatus, error) {
 }
 
 func (q *SystemdQuerier) queryUnit(unit string) ServiceStatus {
-	props := q.getProperties(unit,
+	props := q.getProperties(
+		unit,
 		"ActiveState", "SubState", "ExecMainStatus",
 	)
 
