@@ -23,11 +23,6 @@ _: {
                 sensitive = true;
                 description = "GitHub personal access token with repo admin permissions";
               };
-              pr_bot_token = {
-                type = "string";
-                sensitive = true;
-                description = "GitHub PAT for the PR bot to create/merge PRs";
-              };
             };
 
             resource = {
@@ -125,11 +120,6 @@ _: {
                 };
               };
 
-              github_actions_secret.pr_bot_token = {
-                repository = "\${github_repository.dotfiles.name}";
-                secret_name = "PR_BOT_PERSONAL_ACCESS_TOKEN";
-                plaintext_value = "\${var.pr_bot_token}";
-              };
             };
 
             output.url = {

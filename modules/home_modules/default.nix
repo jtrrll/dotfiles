@@ -5,8 +5,6 @@
   ...
 }:
 {
-  imports = [ inputs.flake-parts.flakeModules.modules ];
-
   config.flake =
     let
       modulesFromDirectory =

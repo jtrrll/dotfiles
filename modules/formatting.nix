@@ -1,7 +1,5 @@
-{ inputs, self, ... }:
+{ self, ... }:
 {
-  imports = [ inputs.treefmt-nix.flakeModule ];
-
   config.perSystem =
     { inputs', pkgs, ... }:
     {

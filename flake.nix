@@ -80,8 +80,13 @@
       in
       {
         imports = [
+          inputs.devenv.flakeModule
+          (inputs.files + "/flake-module.nix")
           inputs.flake-parts.flakeModules.flakeModules
+          inputs.flake-parts.flakeModules.modules
+          inputs.home-manager.flakeModules.home-manager
           inputs.terranix.flakeModule
+          inputs.treefmt-nix.flakeModule
           modules-tree.result
         ];
 

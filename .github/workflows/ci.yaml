@@ -1,22 +1,19 @@
----
 name: CI
-
-on:
+'on':
   pull_request:
-    branches: ["*"]
+    branches:
+      - '*'
   push:
-    branches: ["main"]
+    branches:
+      - main
   schedule:
-    - cron: "0 06 * * MON"
-  workflow_dispatch:
-
+    - cron: 0 06 * * MON
+  workflow_dispatch: {}
 concurrency:
   cancel-in-progress: true
   group: ${{ github.workflow }}-${{ github.ref }}
-
 env:
   NIXPKGS_ALLOW_UNFREE: 1
-
 jobs:
   build-home-configuration:
     name: Build Home Manager configuration
@@ -36,14 +33,16 @@ jobs:
         with:
           remove_dotnet: true
           remove_haskell: true
-          remove_packages: "azure-cli microsoft-edge-stable google-chrome-stable firefox postgresql* *llvm* mysql*"
+          remove_packages: azure-cli microsoft-edge-stable google-chrome-stable firefox postgresql* *llvm* mysql*
           testing: false
       - uses: actions/checkout@v6
       - uses: DeterminateSystems/nix-installer-action@v22
         with:
-          extra-conf: |
-            extra-substituters = https://devenv.cachix.org https://install.determinate.systems https://nix-community.cachix.org
+          extra-conf: 'extra-substituters = https://devenv.cachix.org https://install.determinate.systems https://nix-community.cachix.org
+
             extra-trusted-public-keys = devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw= cache.flakehub.com-3:hJuILl5sVK4iKm86JzgdXW12Y2Hwd5G07qKtHTOcDCM= nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=
+
+'
       - name: Build ${{ matrix.configuration }} configuration
         env:
           NIX_SHOW_STATS: 1
@@ -71,14 +70,16 @@ jobs:
         with:
           remove_dotnet: true
           remove_haskell: true
-          remove_packages: "azure-cli microsoft-edge-stable google-chrome-stable firefox postgresql* *llvm* mysql*"
+          remove_packages: azure-cli microsoft-edge-stable google-chrome-stable firefox postgresql* *llvm* mysql*
           testing: false
       - uses: actions/checkout@v6
       - uses: DeterminateSystems/nix-installer-action@v22
         with:
-          extra-conf: |
-            extra-substituters = https://devenv.cachix.org https://install.determinate.systems https://nix-community.cachix.org
+          extra-conf: 'extra-substituters = https://devenv.cachix.org https://install.determinate.systems https://nix-community.cachix.org
+
             extra-trusted-public-keys = devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw= cache.flakehub.com-3:hJuILl5sVK4iKm86JzgdXW12Y2Hwd5G07qKtHTOcDCM= nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=
+
+'
       - name: Build ${{ matrix.configuration }} configuration
         env:
           NIX_SHOW_STATS: 1
@@ -96,9 +97,11 @@ jobs:
       - uses: actions/checkout@v6
       - uses: DeterminateSystems/nix-installer-action@v22
         with:
-          extra-conf: |
-            extra-substituters = https://devenv.cachix.org https://install.determinate.systems https://nix-community.cachix.org
+          extra-conf: 'extra-substituters = https://devenv.cachix.org https://install.determinate.systems https://nix-community.cachix.org
+
             extra-trusted-public-keys = devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw= cache.flakehub.com-3:hJuILl5sVK4iKm86JzgdXW12Y2Hwd5G07qKtHTOcDCM= nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=
+
+'
       - uses: DeterminateSystems/flake-checker-action@v12
       - name: Check flake
         env:
@@ -110,4 +113,3 @@ jobs:
         with:
           name: nix-eval-stats-check
           path: nix_eval_stats.json
-...

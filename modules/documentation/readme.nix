@@ -1,7 +1,5 @@
 { config, inputs, ... }:
 {
-  imports = [ (inputs.files + "/flake-module.nix") ];
-
   config.perSystem =
     let
       inherit (config.flake) homeModules;
