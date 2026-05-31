@@ -1,7 +1,5 @@
-{ config, inputs, ... }:
+{ config, ... }:
 {
-  imports = [ inputs.flake-parts.flakeModules.modules ];
-
   config.flake.modules.homeManager.matrix =
     let
       inherit (config.flake) packages;

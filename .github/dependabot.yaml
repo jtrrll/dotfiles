@@ -1,9 +1,8 @@
----
 version: 2
 updates:
   - package-ecosystem: github-actions
     commit-message:
-      prefix: "deps"
+      prefix: deps
     directory: /
     labels:
       - automated
@@ -11,4 +10,39 @@ updates:
       - github-actions
     schedule:
       interval: weekly
-...
+  - package-ecosystem: nix
+    commit-message:
+      prefix: deps
+    directory: /
+    labels:
+      - automated
+      - dependencies
+    schedule:
+      day: friday
+      interval: weekly
+    groups:
+      development:
+        patterns:
+          - devenv
+          - justix
+          - treefmt-nix
+      flake:
+        patterns:
+          - files
+          - flake-parts
+          - import-tree
+          - nixpkgs
+      home-manager:
+        patterns:
+          - home-manager
+          - nixvim
+          - snekcheck
+          - stylix
+      infrastructure:
+        patterns:
+          - terranix
+      nixos:
+        patterns:
+          - determinate
+          - disko
+          - nixos-hardware

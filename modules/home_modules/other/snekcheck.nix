@@ -1,7 +1,5 @@
 { inputs, ... }:
 {
-  imports = [ inputs.flake-parts.flakeModules.modules ];
-
   config.flake.modules.homeManager.snekcheck =
     {
       config,

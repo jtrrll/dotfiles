@@ -1,7 +1,5 @@
 { inputs, self, ... }:
 {
-  imports = [ inputs.flake-parts.flakeModules.modules ];
-
   config.flake.modules.nixos.homeManager =
     { lib, pkgs, ... }:
     let

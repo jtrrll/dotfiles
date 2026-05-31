@@ -7,7 +7,7 @@ body:
     attributes:
       value: |
         Thank you for submitting a documentation issue! It helps make these dotfiles better.
-  
+
   - type: dropdown
     attributes:
       label: What is the type of issue?

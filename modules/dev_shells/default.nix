@@ -1,12 +1,6 @@
 {
-  inputs,
-  lib,
-  ...
-}:
-{
-  imports = [ inputs.devenv.flakeModule ];
-
   config.perSystem =
+    { lib, ... }:
     let
       shellsFromDirectory =
         let
