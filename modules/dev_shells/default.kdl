@@ -19,9 +19,11 @@ layout {
   tab name="workspace" focus=true split_direction="vertical" {
     pane size="50%" {
       pane {
-        name ""
+        name "shell"
         size "75%"
         focus true
+        command "bash"
+        args "-c" "nix develop . --impure -c $SHELL"
       }
       pane {
         name "nix repl"
@@ -33,20 +35,28 @@ layout {
     pane {
       name "assistant"
       size "25%"
-      command "opencode"
+      command "nix"
+      args "develop" "." "--impure" "-c" "opencode"
     }
     pane size="25%" {
       pane {
         name "git status"
-        size "50%"
+        size "40%"
         command "watch"
         args "--interval" "10" "--no-title" "--color" "git" "-c" "color.ui=always" "status" "--short"
       }
       pane {
         name "just fmt"
-        size "50%"
-        command "just"
-        args "fmt"
+        size "20%"
+        command "nix"
+        args "develop" "." "--impure" "-c" "just" "fmt"
+        start_suspended true
+      }
+      pane {
+        name "nix flake check"
+        size "40%"
+        command "nix"
+        args "flake" "check" "--impure"
         start_suspended true
       }
     }
@@ -54,13 +64,9 @@ layout {
   tab name="agent" {
     pane {
       name "agent"
-      size "80%"
-      command "opencode"
+      command "nix"
+      args "develop" "." "--impure" "-c" "opencode"
       start_suspended true
-    }
-    pane {
-      name ""
-      size "20%"
     }
   }
 }

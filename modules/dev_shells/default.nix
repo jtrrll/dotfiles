@@ -1,34 +1,24 @@
 {
-  config.perSystem =
-    { lib, ... }:
-    let
-      shellsFromDirectory =
-        let
-          nameFn = lib.replaceStrings [ "_" ] [ "-" ];
-          importFn = import;
-        in
-        directory:
-        lib.concatMapAttrs (
-          name: type:
-          let
-            path = directory + "/${name}";
-          in
-          if type == "directory" then
-            { "${nameFn name}" = importFn "${path}/shell.nix"; }
-          else if type == "regular" && lib.hasSuffix ".nix" name then
-            { "${nameFn (lib.removeSuffix ".nix" name)}" = importFn path; }
-          else
-            { }
-        ) (builtins.readDir directory);
-    in
-    {
-      config.devenv = {
-        modules = [
+  config = {
+    perSystem =
+      { config, ... }:
+      {
+        config.devenv.shells.default =
+          { lib, pkgs, ... }:
           {
-            containers = lib.mkForce { }; # Workaround to remove containers from flake checks.
-          }
-        ];
-        shells = shellsFromDirectory ./by_name;
+            enterShell = lib.concatStringsSep "\n" [
+              (lib.getExe pkgs.splash)
+              config.pre-commit.installationScript
+              ''printf "\033[0;1;36mDEVSHELL ACTIVATED\033[0m\n"''
+            ];
+
+            languages.nix.enable = true;
+          };
       };
+    touchup.attr.packages.any.attr = {
+      # Remove deprecated packages that devenv includes.
+      devenv-test.enable = false;
+      devenv-up.enable = false;
     };
+  };
 }

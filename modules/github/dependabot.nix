@@ -35,13 +35,14 @@
                   flake.patterns = [
                     "files"
                     "flake-parts"
+                    "git-hooks-nix"
                     "import-tree"
+                    "justix"
                     "nixpkgs"
+                    "treefmt-nix"
                   ];
                   development.patterns = [
                     "devenv"
-                    "justix"
-                    "treefmt-nix"
                   ];
                   home-manager.patterns = [
                     "home-manager"

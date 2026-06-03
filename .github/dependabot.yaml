@@ -24,14 +24,15 @@ updates:
       development:
         patterns:
           - devenv
-          - justix
-          - treefmt-nix
       flake:
         patterns:
           - files
           - flake-parts
+          - git-hooks-nix
           - import-tree
+          - justix
           - nixpkgs
+          - treefmt-nix
       home-manager:
         patterns:
           - home-manager

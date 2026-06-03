@@ -9,21 +9,25 @@
       url = "github:mightyiam/files/master";
     };
     flake-parts.url = "github:hercules-ci/flake-parts/main";
+    git-hooks-nix = {
+      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:cachix/git-hooks.nix";
+    };
     import-tree.url = "github:denful/import-tree/main";
+    justix = {
+      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:jtrrll/justix/main";
+    };
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    treefmt-nix = {
+      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:numtide/treefmt-nix/main";
+    };
     # keep-sorted end
 
     ### Development dependencies ###
     # keep-sorted start block=yes
     devenv.url = "github:cachix/devenv/main";
-    justix = {
-      inputs.nixpkgs.follows = "devenv/nixpkgs";
-      url = "github:jtrrll/justix/main";
-    };
-    treefmt-nix = {
-      inputs.nixpkgs.follows = "devenv/nixpkgs";
-      url = "github:numtide/treefmt-nix/main";
-    };
     # keep-sorted end
 
     ### Home Manager dependencies ###
@@ -84,6 +88,8 @@
           (inputs.files + "/flake-module.nix")
           inputs.flake-parts.flakeModules.flakeModules
           inputs.flake-parts.flakeModules.modules
+          inputs.flake-parts.flakeModules.touchup
+          inputs.git-hooks-nix.flakeModule
           inputs.home-manager.flakeModules.home-manager
           inputs.terranix.flakeModule
           inputs.treefmt-nix.flakeModule
@@ -107,7 +113,28 @@
               };
             };
           };
+          perSystem = _: {
+            terranix.exportDevShells = false;
+          };
           systems = lib.systems.flakeExposed;
+          touchup = {
+            any.enable = lib.mkDefault false;
+            attr = {
+              # keep-sorted start block=yes
+              apps.enable = true;
+              checks.enable = true;
+              devShells.enable = true;
+              flakeModules.enable = true;
+              formatter.enable = true;
+              homeConfigurations.enable = true;
+              homeModules.enable = true;
+              lib.enable = true;
+              nixosConfigurations.enable = true;
+              nixosModules.enable = true;
+              packages.enable = true;
+              # keep-sorted end
+            };
+          };
         };
       }
     );
