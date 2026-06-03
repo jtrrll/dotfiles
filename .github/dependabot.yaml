@@ -25,13 +25,13 @@ updates:
         patterns:
           - devenv
           - justix
-          - treefmt-nix
       flake:
         patterns:
           - files
           - flake-parts
           - import-tree
           - nixpkgs
+          - treefmt-nix
       home-manager:
         patterns:
           - home-manager

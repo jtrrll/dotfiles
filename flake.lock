@@ -2117,7 +2117,6 @@
     "treefmt-nix_6": {
       "inputs": {
         "nixpkgs": [
-          "devenv",
           "nixpkgs"
         ]
       },
