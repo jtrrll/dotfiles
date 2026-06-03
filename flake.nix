@@ -9,10 +9,6 @@
       url = "github:mightyiam/files/master";
     };
     flake-parts.url = "github:hercules-ci/flake-parts/main";
-    git-hooks-nix = {
-      inputs.nixpkgs.follows = "nixpkgs";
-      url = "github:cachix/git-hooks.nix";
-    };
     import-tree.url = "github:denful/import-tree/main";
     justix = {
       inputs.nixpkgs.follows = "nixpkgs";
@@ -89,7 +85,6 @@
           inputs.flake-parts.flakeModules.flakeModules
           inputs.flake-parts.flakeModules.modules
           inputs.flake-parts.flakeModules.touchup
-          inputs.git-hooks-nix.flakeModule
           inputs.home-manager.flakeModules.home-manager
           inputs.terranix.flakeModule
           inputs.treefmt-nix.flakeModule

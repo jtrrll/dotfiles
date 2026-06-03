@@ -1,20 +1,63 @@
 {
   config = {
-    perSystem =
-      { config, ... }:
-      {
-        config.devenv.shells.default =
-          { lib, pkgs, ... }:
-          {
-            enterShell = lib.concatStringsSep "\n" [
-              (lib.getExe pkgs.splash)
-              config.pre-commit.installationScript
-              ''printf "\033[0;1;36mDEVSHELL ACTIVATED\033[0m\n"''
-            ];
+    perSystem = _: {
+      config.devenv.shells.default =
+        { lib, pkgs, ... }:
+        {
+          enterShell = lib.concatStringsSep "\n" [
+            (lib.getExe pkgs.splash)
+            ''printf "\033[0;1;36mDEVSHELL ACTIVATED\033[0m\n"''
+          ];
 
-            languages.nix.enable = true;
+          enterTest = ''
+            nix --version
+          '';
+
+          git-hooks = {
+            default_stages = [ "pre-push" ];
+            hooks = {
+              actionlint.enable = true;
+              check-added-large-files = {
+                enable = true;
+                stages = [ "pre-commit" ];
+              };
+              check-json.enable = true;
+              check-yaml.enable = true;
+              deadnix.enable = true;
+              detect-private-keys = {
+                enable = true;
+                stages = [ "pre-commit" ];
+              };
+              end-of-file-fixer.enable = true;
+              flake-checker.enable = true;
+              fmt = {
+                enable = true;
+                entry = "just fmt";
+                name = "fmt";
+                pass_filenames = false;
+              };
+              mixed-line-endings.enable = true;
+              nil.enable = true;
+              no-commit-to-branch = {
+                enable = true;
+                stages = [ "pre-commit" ];
+              };
+              ripsecrets = {
+                enable = true;
+                stages = [ "pre-commit" ];
+              };
+              shellcheck = {
+                enable = true;
+                excludes = [ ".envrc" ];
+              };
+              shfmt.enable = true;
+              statix.enable = true;
+            };
           };
-      };
+
+          languages.nix.enable = true;
+        };
+    };
     touchup.attr.packages.any.attr = {
       # Remove deprecated packages that devenv includes.
       devenv-test.enable = false;

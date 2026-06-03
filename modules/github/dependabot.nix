@@ -35,7 +35,6 @@
                   flake.patterns = [
                     "files"
                     "flake-parts"
-                    "git-hooks-nix"
                     "import-tree"
                     "justix"
                     "nixpkgs"
