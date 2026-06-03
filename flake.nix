@@ -10,10 +10,6 @@
     };
     flake-parts.url = "github:hercules-ci/flake-parts/main";
     import-tree.url = "github:denful/import-tree/main";
-    justix = {
-      inputs.nixpkgs.follows = "nixpkgs";
-      url = "github:jtrrll/justix/main";
-    };
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     treefmt-nix = {
       inputs.nixpkgs.follows = "nixpkgs";
@@ -24,6 +20,10 @@
     ### Development dependencies ###
     # keep-sorted start block=yes
     devenv.url = "github:cachix/devenv/main";
+    justix = {
+      inputs.nixpkgs.follows = "devenv/nixpkgs";
+      url = "github:jtrrll/justix/main";
+    };
     # keep-sorted end
 
     ### Home Manager dependencies ###

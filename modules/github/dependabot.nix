@@ -36,12 +36,12 @@
                     "files"
                     "flake-parts"
                     "import-tree"
-                    "justix"
                     "nixpkgs"
                     "treefmt-nix"
                   ];
                   development.patterns = [
                     "devenv"
+                    "justix"
                   ];
                   home-manager.patterns = [
                     "home-manager"

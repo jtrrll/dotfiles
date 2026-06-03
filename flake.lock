@@ -1126,6 +1126,7 @@
         "flake-parts": "flake-parts_5",
         "import-tree": "import-tree_2",
         "nixpkgs": [
+          "devenv",
           "nixpkgs"
         ],
         "nixpkgs-just": "nixpkgs-just",
