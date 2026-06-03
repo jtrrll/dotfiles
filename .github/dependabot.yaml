@@ -24,12 +24,12 @@ updates:
       development:
         patterns:
           - devenv
+          - justix
       flake:
         patterns:
           - files
           - flake-parts
           - import-tree
-          - justix
           - nixpkgs
           - treefmt-nix
       home-manager:
