@@ -10,18 +10,27 @@
             updates = [
               {
                 package-ecosystem = "github-actions";
-                commit-message.prefix = "deps";
+                commit-message.prefix = "deps(actions)";
                 directory = "/";
                 labels = [
                   "automated"
                   "dependencies"
-                  "github-actions"
+                ];
+                schedule.interval = "weekly";
+              }
+              {
+                package-ecosystem = "gomod";
+                commit-message.prefix = "deps(service-status)";
+                directory = "/modules/packages/by_name/service_status/src";
+                labels = [
+                  "automated"
+                  "dependencies"
                 ];
                 schedule.interval = "weekly";
               }
               {
                 package-ecosystem = "nix";
-                commit-message.prefix = "deps";
+                commit-message.prefix = "deps(flake)";
                 directory = "/";
                 labels = [
                   "automated"
