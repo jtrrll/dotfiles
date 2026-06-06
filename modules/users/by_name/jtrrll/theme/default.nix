@@ -13,7 +13,7 @@ in
     { stylix.enable = lib.mkDefault true; }
     (lib.mkIf config.stylix.enable {
       stylix = {
-        base16Scheme = ./gruvbox-material-dark-medium.yaml;
+        base16Scheme = ./gruvbox_material_dark_medium.yaml;
         cursor = {
           name = "Adwaita";
           package = pkgs.adwaita-icon-theme;
