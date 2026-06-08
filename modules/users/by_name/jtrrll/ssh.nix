@@ -14,8 +14,8 @@
           UseKeychain yes
         '';
 
-        matchBlocks."*" = {
-          addKeysToAgent = "yes";
+        settings."*" = {
+          AddKeysToAgent = "yes";
         };
         includes = [ "${config.home.homeDirectory}/.ssh/hosts/*" ];
       };

@@ -7,8 +7,6 @@
     nixosHardwareModules.lenovo-thinkpad-x1
   ];
 
-  dotfiles.gaming.enable = true;
-
   users.users.jtrrll = {
     enable = true;
     extraGroups = [
@@ -30,7 +28,10 @@
     networkmanager.enable = true;
   };
 
-  programs.xwayland.enable = true;
+  programs = {
+    steam.enable = true;
+    xwayland.enable = true;
+  };
 
   services = {
     automatic-timezoned.enable = true;

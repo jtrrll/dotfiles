@@ -103,7 +103,9 @@
 
         config = {
           flake = {
-            lib.modules-tree = modules-tree;
+            lib = import ./lib.nix { inherit lib; } // {
+              inherit modules-tree;
+            };
             flakeModules = config.flake.modules.flake // {
               default = {
                 imports = lib.attrValues config.flake.modules.flake;
@@ -128,6 +130,7 @@
               lib.enable = true;
               nixosConfigurations.enable = true;
               nixosModules.enable = true;
+              nixosTests.enable = true;
               packages.enable = true;
               # keep-sorted end
             };
