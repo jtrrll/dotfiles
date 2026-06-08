@@ -7,6 +7,7 @@ runNixOSTest {
 
   nodes.server = {
     virtualisation = {
+      diskSize = 4096;
       podman.enable = true;
       oci-containers.backend = "podman";
     };
