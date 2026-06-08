@@ -110,6 +110,11 @@ in
         "${config.virtualisation.oci-containers.backend}-romm-db.service"
         "${config.virtualisation.oci-containers.backend}-romm-redis.service"
       ];
+      requiredBy = [
+        "${config.virtualisation.oci-containers.backend}-romm.service"
+        "${config.virtualisation.oci-containers.backend}-romm-db.service"
+        "${config.virtualisation.oci-containers.backend}-romm-redis.service"
+      ];
       serviceConfig = {
         Type = "oneshot";
         RemainAfterExit = true;
