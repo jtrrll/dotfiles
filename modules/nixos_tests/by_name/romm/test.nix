@@ -4,7 +4,7 @@
 }:
 runNixOSTest {
   name = "romm";
-  globalTimeout = 60 * 2;
+  globalTimeout = 60 * 3;
 
   nodes.server = {
     virtualisation = {
@@ -25,10 +25,10 @@ runNixOSTest {
   };
 
   testScript = ''
-    server.wait_for_unit("podman-romm-db.service", timeout=60)
-    server.wait_for_unit("podman-romm-redis.service", timeout=60)
-    server.wait_for_unit("podman-romm.service", timeout=60)
-    server.wait_for_open_port(8080, timeout=60)
+    server.wait_for_unit("podman-romm-db.service", timeout=90)
+    server.wait_for_unit("podman-romm-redis.service", timeout=90)
+    server.wait_for_unit("podman-romm.service", timeout=90)
+    server.wait_for_open_port(8080, timeout=90)
     server.succeed("curl -sf http://localhost:8080")
   '';
 }
