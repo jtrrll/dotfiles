@@ -11,22 +11,9 @@
         inputs.nixvim.homeModules.nixvim
         inputs.stylix.homeModules.stylix
       ];
-      usersFromDirectory =
-        let
-          nameFn = lib.replaceStrings [ "_" ] [ "-" ];
-          importFn = dir: { imports = [ (inputs.import-tree dir) ]; };
-        in
-        dir:
-        lib.concatMapAttrs (
-          name: type:
-          if type == "directory" then
-            {
-              "${nameFn name}" = importFn "${dir}/${name}";
-            }
-          else
-            { }
-        ) (builtins.readDir dir);
-      users = usersFromDirectory ./by_name;
+      users = config.flake.lib.importFromDirectory {
+        importFn = dir: { imports = [ (inputs.import-tree dir) ]; };
+      } ./by_name;
     in
     {
       homeConfigurations =
@@ -58,17 +45,25 @@
           }
         ) users;
 
-      modules.nixos.homeManagerUsers =
-        { lib, ... }:
+      modules.nixos.users =
+        { config, lib, ... }:
+        let
+          cfg = config.dotfiles.users;
+        in
         {
-          imports = [ inputs.home-manager.nixosModules.home-manager ];
-          home-manager = {
-            inherit sharedModules users;
+          options.dotfiles.users = {
+            enable = lib.mkEnableOption "user configurations";
           };
-          users.users = lib.mapAttrs (_: _: {
-            enable = lib.mkDefault false;
-            isNormalUser = true;
-          }) users;
+
+          config = lib.mkIf cfg.enable {
+            home-manager = {
+              inherit sharedModules users;
+            };
+            users.users = lib.mapAttrs (_: _: {
+              enable = lib.mkDefault false;
+              isNormalUser = true;
+            }) users;
+          };
         };
     };
 }

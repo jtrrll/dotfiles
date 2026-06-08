@@ -11,25 +11,11 @@
         inherit (config.flake.meta) homepage maintainers;
         license = lib.licenses.agpl3Plus;
       };
-      packagesFromDirectory =
-        let
-          nameFn = lib.replaceStrings [ "_" ] [ "-" ];
-          importFn = lib.flip pkgs.callPackage { };
-        in
-        directory:
-        lib.concatMapAttrs (
-          name: type:
-          let
-            path = directory + "/${name}";
-          in
-          if type == "directory" then
-            { "${nameFn name}" = importFn (path + "/package.nix"); }
-          else if type == "regular" && lib.hasSuffix ".nix" name then
-            { "${nameFn (lib.removeSuffix ".nix" name)}" = importFn path; }
-          else
-            { }
-        ) (builtins.readDir directory);
-      packages = lib.mapAttrs (_: addCommonMetadata) (packagesFromDirectory ./by_name);
+      packages = lib.mapAttrs (_: addCommonMetadata) (
+        config.flake.lib.importFromDirectory {
+          importFn = dir: pkgs.callPackage (dir + "/package.nix") { };
+        } ./by_name
+      );
     in
     {
       config = {

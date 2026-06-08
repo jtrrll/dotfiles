@@ -1,6 +1,4 @@
 {
-  dotfiles.gaming.enable = true;
-
   users.users.jtrrll = {
     enable = true;
     extraGroups = [
@@ -30,7 +28,13 @@
     networkmanager.enable = true;
   };
 
-  programs.xwayland.enable = true;
+  programs = {
+    steam = {
+      enable = true;
+      remotePlay.openFirewall = true;
+    };
+    xwayland.enable = true;
+  };
 
   services = {
     automatic-timezoned.enable = true;
