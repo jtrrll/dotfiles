@@ -127,6 +127,11 @@ in
           ${backend} network inspect romm-network >/dev/null 2>&1 || \
             ${backend} network create romm-network
         '';
+      path =
+        if config.virtualisation.oci-containers.backend == "docker" then
+          [ config.virtualisation.docker.package ]
+        else
+          [ config.virtualisation.podman.package ];
     };
 
     virtualisation.oci-containers.containers = {
