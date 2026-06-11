@@ -2,4 +2,4 @@ module service-status
 
 go 1.24.2
 
-require github.com/urfave/cli/v3 v3.8.0
+require github.com/urfave/cli/v3 v3.9.1
