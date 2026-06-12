@@ -10,3 +10,6 @@ result
 
 # Terraform state
 .terraform/
+
+# macOS
+.DS_Store

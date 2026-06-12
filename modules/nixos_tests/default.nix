@@ -45,11 +45,17 @@ in
           globalTimeout = lib.mkDefault 300;
         };
       testPkgs = pkgs.extend (_: _: { inherit runNixOSTest; });
+      importTestsFromDirectory =
+        dir:
+        lib.mapAttrs' (
+          name: _:
+          lib.nameValuePair (lib.replaceStrings [ "_" ] [ "-" ] name) (
+            testPkgs.callPackage (dir + "/${name}/test.nix") { }
+          )
+        ) (builtins.readDir dir);
     in
     {
-      config.nixosTests = flake.lib.importFromDirectory {
-        importFn = dir: testPkgs.callPackage (dir + "/test.nix") { };
-      } ./by_name;
+      config.nixosTests = importTestsFromDirectory ./by_name;
       config.checks = lib.mkIf pkgs.stdenv.isLinux (
         lib.mapAttrs' (name: lib.nameValuePair "nixosTest-${name}") config.nixosTests
       );

@@ -1,4 +1,8 @@
-{ config, ... }:
+{
+  config,
+  inputs,
+  ...
+}:
 {
   config.perSystem =
     {
@@ -11,11 +15,22 @@
         inherit (config.flake.meta) homepage maintainers;
         license = lib.licenses.agpl3Plus;
       };
-      packages = lib.mapAttrs (_: addCommonMetadata) (
-        config.flake.lib.importFromDirectory {
-          importFn = dir: pkgs.callPackage (dir + "/package.nix") { };
-        } ./by_name
+      pkgs' = pkgs.extend (
+        lib.composeManyExtensions [
+          inputs.nixvim.overlays.default
+          (_: _: packages)
+        ]
       );
+      callPackage = path: args: addCommonMetadata (pkgs'.callPackage path args);
+      importPackagesFromDirectory =
+        dir:
+        lib.mapAttrs' (
+          name: _:
+          lib.nameValuePair (lib.replaceStrings [ "_" ] [ "-" ] name) (
+            callPackage "${dir}/${name}/package.nix" { }
+          )
+        ) (builtins.readDir dir);
+      packages = importPackagesFromDirectory ./by_name;
     in
     {
       config = {

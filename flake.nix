@@ -93,23 +93,10 @@
           modules-tree.result
         ];
 
-        options = {
-          flake.lib = lib.mkOption {
-            type = lib.types.attrsOf lib.types.anything;
-            default = { };
-            description = "A top-level library";
-          };
-        };
-
         config = {
-          flake = {
-            lib = import ./lib.nix { inherit lib; } // {
-              inherit modules-tree;
-            };
-            flakeModules = config.flake.modules.flake // {
-              default = {
-                imports = lib.attrValues config.flake.modules.flake;
-              };
+          flake.flakeModules = config.flake.modules.flake // {
+            default = {
+              imports = lib.attrValues config.flake.modules.flake;
             };
           };
           perSystem = _: {
@@ -127,7 +114,6 @@
               formatter.enable = true;
               homeConfigurations.enable = true;
               homeModules.enable = true;
-              lib.enable = true;
               nixosConfigurations.enable = true;
               nixosModules.enable = true;
               nixosTests.enable = true;

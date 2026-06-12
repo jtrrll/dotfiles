@@ -11,9 +11,15 @@
         inputs.nixvim.homeModules.nixvim
         inputs.stylix.homeModules.stylix
       ];
-      users = config.flake.lib.importFromDirectory {
-        importFn = dir: { imports = [ (inputs.import-tree dir) ]; };
-      } ./by_name;
+      importUsersFromDirectory =
+        dir:
+        lib.mapAttrs' (
+          name: _:
+          lib.nameValuePair (lib.replaceStrings [ "_" ] [ "-" ] name) {
+            imports = [ (inputs.import-tree (dir + "/${name}")) ];
+          }
+        ) (builtins.readDir dir);
+      users = importUsersFromDirectory ./by_name;
     in
     {
       homeConfigurations =

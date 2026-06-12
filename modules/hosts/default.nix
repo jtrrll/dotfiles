@@ -7,9 +7,15 @@
 {
   config.flake.nixosConfigurations =
     let
-      hosts = config.flake.lib.importFromDirectory {
-        importFn = dir: { imports = [ (inputs.import-tree dir) ]; };
-      } ./by_name;
+      importHostsFromDirectory =
+        dir:
+        lib.mapAttrs' (
+          name: _:
+          lib.nameValuePair (lib.replaceStrings [ "_" ] [ "-" ] name) {
+            imports = [ (inputs.import-tree (dir + "/${name}")) ];
+          }
+        ) (builtins.readDir dir);
+      hosts = importHostsFromDirectory ./by_name;
       homeManagerConfig =
         { pkgs, ... }:
         let
