@@ -5,10 +5,7 @@
 }:
 {
   config = {
-    programs.nixvim = {
-      enable = true;
-      package = pkgs.neovim;
-    };
+    programs.neovim.enable = true;
     home.sessionVariables.EDITOR = lib.getExe pkgs.neovim;
   };
 }

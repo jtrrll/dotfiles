@@ -8,7 +8,6 @@
   config.flake =
     let
       sharedModules = [
-        inputs.nixvim.homeModules.nixvim
         inputs.stylix.homeModules.stylix
       ];
       importUsersFromDirectory =
