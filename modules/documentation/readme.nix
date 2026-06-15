@@ -3,74 +3,160 @@
   config.perSystem =
     let
       inherit (config.flake) homeModules;
+      inherit (config) processedFlake;
     in
     {
       lib,
       pkgs,
+      system,
       ...
     }:
     let
       hmLib = import "${inputs.home-manager}/modules/lib/stdlib-extended.nix" lib;
-      eval = hmLib.evalModules {
-        modules = lib.attrValues homeModules ++ [
-          {
-            options.home = {
-              username = lib.mkOption {
-                default = "\${config.home.username}";
-                type = lib.types.str;
-              };
-              homeDirectory = lib.mkOption {
-                type = lib.types.path;
-              };
+      stubModules = [
+        {
+          options.home = {
+            username = lib.mkOption {
+              default = "\${config.home.username}";
+              type = lib.types.str;
             };
-          }
-          { options.programs.__stub = lib.mkSinkUndeclaredOptions { }; }
-          {
-            config._module = {
-              args.pkgs = pkgs;
-              check = false;
+            homeDirectory = lib.mkOption {
+              type = lib.types.path;
             };
-          }
-        ];
-      };
-      optionsMarkdown = lib.concatStringsSep "\n" (
-        map
-          (
-            opt:
-            let
-              inherit (opt) name;
-              renderValue =
-                v:
-                if v ? _type && v._type == "literalExpression" then
-                  v.text
-                else if v ? _type && v._type == "literalMD" then
-                  v.text
-                else
-                  lib.generators.toJSON { } v;
-              default = if opt ? default then renderValue opt.default else null;
-              defaultLine = lib.optionalString (default != null) "* Default: `${default}`\n";
-              descriptionLine = lib.optionalString (
-                opt ? description && opt.description != null
-              ) "* Description: ${opt.description}\n";
-              exampleLine = lib.optionalString (opt ? example) "* Example: `${renderValue opt.example}`\n";
-              typeLine = lib.optionalString (
-                opt ? type && opt.type ? description
-              ) "* Type: `${opt.type.description}`";
-            in
-            "### `${name}`\n\n${defaultLine}${descriptionLine}${exampleLine}${typeLine}"
-          )
-          (
-            lib.filter (
-              opt:
-              !(
-                lib.hasPrefix "_module" opt.name
-                || lib.hasPrefix "programs.__stub" opt.name
-                || lib.hasPrefix "home." opt.name
-              )
-            ) (lib.optionAttrSetToDocList eval.options)
-          )
+          };
+        }
+        { options.programs.__stub = lib.mkSinkUndeclaredOptions { }; }
+        {
+          config._module = {
+            args.pkgs = pkgs;
+            check = false;
+          };
+        }
+      ];
+      renderValue =
+        v:
+        if v ? _type && v._type == "literalExpression" then
+          v.text
+        else if v ? _type && v._type == "literalMD" then
+          v.text
+        else
+          lib.generators.toJSON { } v;
+      renderOption =
+        opt:
+        let
+          inherit (opt) name;
+          default = if opt ? default then renderValue opt.default else null;
+          rawDesc = opt.description or null;
+          firstLine = if rawDesc == null then null else lib.head (lib.splitString "\n" (lib.trim rawDesc));
+          details = lib.concatStrings [
+            (lib.optionalString (firstLine != null) " - ${firstLine}")
+            (lib.optionalString (opt ? type && opt.type ? description) " (`${opt.type.description}`)")
+            (lib.optionalString (default != null) " (default: `${default}`)")
+          ];
+        in
+        "  - `${name}`${details}";
+      filterOpts = lib.filter (
+        opt:
+        !(
+          lib.hasPrefix "_module" opt.name
+          || lib.hasPrefix "programs.__stub" opt.name
+          || lib.hasPrefix "home." opt.name
+        )
       );
-      options = pkgs.writeText "options.md" optionsMarkdown;
+      optionsForModule =
+        moduleName:
+        let
+          mod = homeModules.${moduleName};
+          eval = hmLib.evalModules {
+            modules = [ mod ] ++ stubModules;
+          };
+          opts = filterOpts (lib.optionAttrSetToDocList eval.options);
+        in
+        opts;
+      renderModuleOptions =
+        moduleName:
+        let
+          opts = optionsForModule moduleName;
+        in
+        if opts == [ ] then "" else lib.concatStringsSep "\n" (map renderOption opts);
+      outputsMarkdown =
+        let
+          isPerSystem =
+            name:
+            let
+              val = processedFlake.${name};
+            in
+            lib.isAttrs val && val ? ${system};
+          outputNames = lib.pipe (lib.attrNames processedFlake) [
+            (lib.sort lib.lessThan)
+          ];
+          describedOutputs = [
+            "apps"
+            "packages"
+          ];
+          attrNamesFor =
+            name:
+            let
+              val = processedFlake.${name};
+            in
+            if isPerSystem name then
+              let
+                perSysVal = val.${system};
+                tried = builtins.tryEval (
+                  if lib.isDerivation perSysVal then
+                    [ ]
+                  else if lib.isAttrs perSysVal then
+                    lib.attrNames perSysVal
+                  else
+                    [ ]
+                );
+              in
+              if tried.success then tried.value else [ ]
+            else if lib.isAttrs val then
+              let
+                tried = builtins.tryEval (lib.attrNames val);
+              in
+              if tried.success then tried.value else [ ]
+            else
+              [ ];
+          formatAttr =
+            outputName: attrName:
+            let
+              optionsMd = if outputName == "homeModules" then renderModuleOptions attrName else "";
+              description =
+                if lib.elem outputName describedOutputs then
+                  let
+                    val =
+                      if isPerSystem outputName then
+                        processedFlake.${outputName}.${system}.${attrName}
+                      else
+                        processedFlake.${outputName}.${attrName};
+                  in
+                  if lib.isDerivation val then
+                    val.meta.description or null
+                  else if lib.isAttrs val && val ? meta && lib.isAttrs val.meta then
+                    val.meta.description or null
+                  else
+                    null
+                else
+                  null;
+              descSuffix = lib.optionalString (description != null) " - ${description}";
+            in
+            if optionsMd == "" then
+              "- `${attrName}`${descSuffix}"
+            else
+              "- `${attrName}`${descSuffix}\n${optionsMd}";
+          formatSection =
+            name:
+            let
+              attrs = lib.sort lib.lessThan (attrNamesFor name);
+            in
+            if attrs == [ ] then
+              "### `${name}`"
+            else
+              "### `${name}`\n\n${lib.concatStringsSep "\n\n" (map (formatAttr name) attrs)}";
+        in
+        lib.concatStringsSep "\n\n" (map formatSection outputNames);
     in
     {
       config = {
@@ -137,37 +223,32 @@
             type = "app";
           };
         files = {
-          file."README.md".source =
-            let
-              header = pkgs.writeText "README-header.md" ''
-                # ~/.dotfiles
+          file."README.md".text = ''
+            # ~/.dotfiles
 
-                <!-- markdownlint-disable MD013 -->
-                ![CI Status](https://img.shields.io/github/actions/workflow/status/jtrrll/dotfiles/ci.yaml?branch=main&label=ci&logo=github)
-                ![License](https://img.shields.io/github/license/jtrrll/dotfiles?label=license&logo=googledocs&logoColor=white)
-                <!-- markdownlint-enable MD013 -->
+            <!-- markdownlint-disable MD013 -->
+            ![CI Status](https://img.shields.io/github/actions/workflow/status/jtrrll/dotfiles/ci.yaml?branch=main&label=ci&logo=github)
+            ![License](https://img.shields.io/github/license/jtrrll/dotfiles?label=license&logo=googledocs&logoColor=white)
+            <!-- markdownlint-enable MD013 -->
 
-                My dotfiles collection for configuring frequently used programs.
-                Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-community/home-manager)
+            My dotfiles collection for configuring frequently used programs.
+            Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-community/home-manager)
 
-                ![Demo](./demo.gif)
+            ![Demo](./demo.gif)
 
-                ## Usage
+            ## Usage
 
-                1. [Install Nix](https://zero-to-nix.com/start/install)
-                2. Activate a configuration interactively by running the following:
+            1. [Install Nix](https://zero-to-nix.com/start/install)
+            2. Activate a configuration interactively by running the following:
 
-                    ```sh
-                    nix run github:jtrrll/dotfiles home
-                    ```
+                ```sh
+                nix run github:jtrrll/dotfiles home
+                ```
 
-                ## Options
+            ## Outputs
 
-              '';
-            in
-            pkgs.runCommand "README.md" { } ''
-              cat ${header} ${options} > $out
-            '';
+            ${outputsMarkdown}
+          '';
           writer.app = true;
         };
       };

@@ -5,15 +5,20 @@
 let
   flakeModule =
     {
+      config,
       flake-parts-lib,
       ...
     }:
+    let
+      inherit (config) processedFlake;
+    in
     {
       options.perSystem = flake-parts-lib.mkPerSystemOption (
         {
           config,
           lib,
           pkgs,
+          system,
           ...
         }:
         let
@@ -29,7 +34,7 @@ let
             };
             packages = lib.mkOption {
               type = lib.types.attrsOf lib.types.package;
-              default = config.flake.packages;
+              default = processedFlake.packages.${system};
               description = "The set of packages to check";
             };
           };
@@ -89,7 +94,6 @@ in
       inherit (config.flake.meta) homepage;
     in
     {
-      config,
       lib,
       ...
     }:
@@ -283,13 +287,6 @@ in
               }
           )
         ];
-        packages = lib.filterAttrs (
-          name: _:
-          !lib.hasPrefix "devenv" name
-          && !lib.elem name [
-            "github-tf"
-          ]
-        ) config.packages;
       };
     };
 }

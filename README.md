@@ -19,76 +19,145 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
     nix run github:jtrrll/dotfiles home
     ```
 
-## Options
+## Outputs
 
-### `programs.bonsai.enable`
+### `apps`
 
-* Default: `false`
-* Description: Whether to enable a bonsai tree screensaver.
-* Example: `true`
+- `default` - Activates a home or NixOS configuration
 
-### `programs.edit.enable`
+- `github-tf`
 
-* Default: `false`
-* Description: Whether to enable edit.
-* Example: `true`
+- `update-demo` - Updates the demo gif
 
-### `programs.edit.package`
+- `write-files` - Write all configured files to their paths
 
-* Default: `<derivation edit>`
-* Description: The edit package to use
+### `checks`
 
-### `programs.matrix.enable`
+- `files/.github/CODEOWNERS`
 
-* Default: `false`
-* Description: Whether to enable a matrix rain screensaver.
-* Example: `true`
+- `files/.github/CODE_OF_CONDUCT.md`
 
-### `programs.snekcheck.enable`
+- `files/.github/CONTRIBUTING.md`
 
-* Default: `false`
-* Description: Whether to enable snekcheck.
-* Example: `true`
+- `files/.github/ISSUE_TEMPLATE/bug_report.yaml`
 
-### `programs.snekcheck.package`
+- `files/.github/ISSUE_TEMPLATE/config.yaml`
 
-* Default: `<derivation snekcheck-0.1.0>`
-* Description: The snekcheck package to use
+- `files/.github/ISSUE_TEMPLATE/documentation_issue.yaml`
 
-### `services.codeStorage.enable`
+- `files/.github/ISSUE_TEMPLATE/feature_request.yaml`
 
-* Default: `false`
-* Description: Whether to enable self-maintaining directories for source code and worktrees.
-* Example: `true`
+- `files/.github/PULL_REQUEST_TEMPLATE.md`
 
-### `services.codeStorage.frequency`
+- `files/.github/dependabot.yaml`
 
-* Default: `"daily"`
-* Description: The interval at which code storage maintenance runs.
+- `files/.github/workflows/ci.yaml`
 
-This value is passed to the systemd timer configuration
-as the `OnCalendar` option.
+- `files/LICENSE`
 
-The format is described in {manpage}`systemd.time(7)`.
+- `files/README.md`
 
-On Darwin, it must be one of: hourly, daily, weekly, monthly, semiannually, annually, which are implemented as defined in {manpage}`systemd.time(7)`.
+- `packageMetadata`
 
+- `snekcheck`
 
-* Example: `"weekly"`
+- `treefmt`
 
-### `services.musicLibrary.enable`
+### `devShells`
 
-* Default: `false`
-* Description: Whether to enable a curated music library.
-* Example: `true`
+- `default`
 
-### `services.serviceStatus.enable`
+### `flakeModules`
 
-* Default: `false`
-* Description: Whether to enable HTTP server that reports managed background service status.
-* Example: `true`
+- `default`
 
-### `services.serviceStatus.port`
+- `flakeMetadata`
 
-* Default: `5679`
-* Description: Port to listen on.
+- `nixosTests`
+
+- `packageMetadataChecks`
+
+### `formatter`
+
+### `homeConfigurations`
+
+- `jtrrll`
+
+### `homeModules`
+
+- `bonsai`
+  - `programs.bonsai.enable` - Whether to enable a bonsai tree screensaver. (default: `false`)
+
+- `code-storage`
+  - `services.codeStorage.enable` - Whether to enable self-maintaining directories for source code and worktrees. (default: `false`)
+  - `services.codeStorage.frequency` - The interval at which code storage maintenance runs. (default: `"daily"`)
+
+- `edit`
+  - `programs.edit.enable` - Whether to enable edit. (default: `false`)
+  - `programs.edit.package` - The edit package to use (default: `<derivation edit>`)
+
+- `matrix`
+  - `programs.matrix.enable` - Whether to enable a matrix rain screensaver. (default: `false`)
+
+- `music-library`
+  - `services.musicLibrary.enable` - Whether to enable a curated music library. (default: `false`)
+
+- `service-status`
+  - `services.serviceStatus.enable` - Whether to enable HTTP server that reports managed background service status. (default: `false`)
+  - `services.serviceStatus.port` - Port to listen on. (default: `5679`)
+
+- `snekcheck`
+  - `programs.snekcheck.enable` - Whether to enable snekcheck. (default: `false`)
+  - `programs.snekcheck.package` - The snekcheck package to use (default: `<derivation snekcheck-0.1.0>`)
+
+### `nixosConfigurations`
+
+- `ares`
+
+- `athena`
+
+### `nixosModules`
+
+- `romm`
+
+- `users`
+
+### `nixosTests`
+
+- `romm`
+
+### `packages`
+
+- `activate` - Activates a home or NixOS configuration
+
+- `bonsai` - A botanical terminal screensaver
+
+- `crt-shader` - A CRT shader that blends pixels
+
+- `ds-shader` - A DS shader that replicates original hardware
+
+- `edit` - Launches a text editor
+
+- `gba-shader` - A GBA shader that replicates original hardware
+
+- `gbc-shader` - A GB and GBC shader that replicates original hardware
+
+- `git-clone-with-worktrees` - Clones a bare git repo and creates worktrees for each given suffix
+
+- `git-ezswitch` - Interactively switches git branches
+
+- `git-open` - Opens the upstream git repository in a browser
+
+- `git-trim` - Deletes all working git branches and updates main branch
+
+- `keep-awake` - Prevents system sleep while a command runs
+
+- `matrix` - A cyberpunk terminal screensaver
+
+- `neovim` - Personalized Neovim distribution built with Nixvim
+
+- `psp-shader` - A PSP shader that replicates original hardware
+
+- `service-status` - Serves managed background service status over HTTP
+
+- `splash` - Prints a splash screen
