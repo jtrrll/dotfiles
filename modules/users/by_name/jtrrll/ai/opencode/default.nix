@@ -82,6 +82,16 @@
         };
       };
     })
+    (lib.mkIf (config.programs.opencode.enable && config.services.ollama.enable) {
+      programs.opencode.settings.provider.ollama = {
+        npm = "@ai-sdk/openai-compatible";
+        name = "Ollama (local)";
+        options.baseURL = "http://${config.services.ollama.host}:${toString config.services.ollama.port}/v1";
+        models."deepseek-coder-v2:16b-lite-instruct-q5_K_M" = {
+          name = "DeepSeek Coder V2 16B (local)";
+        };
+      };
+    })
     (lib.mkIf (options ? stylix) { stylix.targets.opencode.enable = false; })
   ];
 }
