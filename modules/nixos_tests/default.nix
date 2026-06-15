@@ -32,6 +32,7 @@ in
       config,
       lib,
       pkgs,
+      system,
       ...
     }:
     let
@@ -56,8 +57,16 @@ in
     in
     {
       config.nixosTests = importTestsFromDirectory ./by_name;
-      config.checks = lib.mkIf pkgs.stdenv.isLinux (
-        lib.mapAttrs' (name: lib.nameValuePair "nixosTest-${name}") config.nixosTests
-      );
+      config.checks = lib.mapAttrs' (
+        name: drv:
+        lib.nameValuePair "nixosTest-${name}" (
+          if pkgs.stdenv.isLinux then
+            drv
+          else
+            pkgs.runCommand "nixosTest-${name}" { } ''
+              echo "skipped on ${system}" > $out
+            ''
+        )
+      ) config.nixosTests;
     };
 }
