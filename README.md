@@ -25,7 +25,7 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 
 - `default` - Activates a home or NixOS configuration
 
-- `github-tf`
+- `github-tf` - Manages GitHub repository with OpenTofu
 
 - `update-demo` - Updates the demo gif
 

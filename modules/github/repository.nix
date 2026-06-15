@@ -134,6 +134,7 @@ _: {
             ];
           };
           apps.github-tf = {
+            meta.description = "Manages GitHub repository with OpenTofu";
             type = "app";
             program = config.terranix.terranixConfigurations.github-tf.result.app;
           };
