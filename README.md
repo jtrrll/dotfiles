@@ -57,6 +57,8 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 
 - `files/README.md`
 
+- `nixosTest-romm`
+
 - `packageMetadata`
 
 - `snekcheck`
