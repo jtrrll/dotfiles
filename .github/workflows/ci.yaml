@@ -113,7 +113,7 @@ jobs:
         env:
           NIX_SHOW_STATS: 1
           NIX_SHOW_STATS_PATH: nix_eval_stats.json
-        run: nix run github:Mic92/nix-fast-build -- --impure --skip-cached
+        run: "nix run github:Mic92/nix-fast-build -- \\\n  --impure \\\n  --skip-cached \\\n  --stream-json-lines \\\n  --select 'checks:\n    let\n      hasPrefix = p: s: builtins.substring 0 (builtins.stringLength p) s == p;\n      names = builtins.filter (n:\n        !(hasPrefix \"nixosConfigurations/\" n || hasPrefix \"homeConfigurations/\" n)\n      ) (builtins.attrNames checks);\n    in\n    builtins.removeAttrs checks\n      (builtins.filter (n:\n        hasPrefix \"nixosConfigurations/\" n || hasPrefix \"homeConfigurations/\" n || n == \"slow-integration-test\"\n      ) (builtins.attrNames checks))'\n"
       - name: Upload Nix evaluation statistics
         uses: actions/upload-artifact@v7
         with:

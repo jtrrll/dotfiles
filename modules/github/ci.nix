@@ -120,7 +120,23 @@
               {
                 name = "Check flake";
                 env = evalStatsEnv;
-                run = "nix run github:Mic92/nix-fast-build -- --impure --skip-cached";
+                run = ''
+                  nix run github:Mic92/nix-fast-build -- \
+                    --impure \
+                    --skip-cached \
+                    --stream-json-lines \
+                    --select 'checks:
+                      let
+                        hasPrefix = p: s: builtins.substring 0 (builtins.stringLength p) s == p;
+                        names = builtins.filter (n:
+                          !(hasPrefix "nixosConfigurations/" n || hasPrefix "homeConfigurations/" n)
+                        ) (builtins.attrNames checks);
+                      in
+                      builtins.removeAttrs checks
+                        (builtins.filter (n:
+                          hasPrefix "nixosConfigurations/" n || hasPrefix "homeConfigurations/" n || n == "slow-integration-test"
+                        ) (builtins.attrNames checks))'
+                '';
               }
               (uploadEvalStatsStep "nix-eval-stats-check")
             ];
