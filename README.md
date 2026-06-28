@@ -188,6 +188,7 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
   - `services.romm.valkeyImage` - Valkey (Redis-compatible) container image derivation. (default: `<derivation docker-image-valkey-valkey-8.tar>`)
 
 - `tests`
+  - `tests` - Tests associated with this host. Each value is a derivation that succeeds if the test passes. (default: `{ }`)
 
 - `users`
   - `dotfiles.users.enable` - Whether to enable user configurations. (default: `false`)

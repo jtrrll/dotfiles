@@ -95,7 +95,6 @@
           ];
           excludePrefixes = [
             "_module"
-            "tests"
           ];
         };
       outputsMarkdown =
