@@ -1,6 +1,6 @@
 {
   config,
-  inputs,
+  lib,
   ...
 }:
 let
@@ -20,6 +20,11 @@ let
       file = ./default.nix;
     };
   inherit (config) flake;
+  hostTests = builtins.concatLists (
+    lib.mapAttrsToList (_: nixos: lib.mapAttrsToList lib.nameValuePair nixos.config.tests) (
+      flake.nixosConfigurations or { }
+    )
+  );
 in
 {
   imports = [
@@ -36,34 +41,17 @@ in
       ...
     }:
     let
-      runNixOSTest =
-        testModule:
-        pkgs.testers.runNixOSTest {
-          imports = [ testModule ];
-          extraBaseModules.imports = lib.attrValues flake.nixosModules ++ [
-            inputs.home-manager.nixosModules.home-manager
-          ];
-          globalTimeout = lib.mkDefault 300;
-        };
-      testPkgs = pkgs.extend (_: _: { inherit runNixOSTest; });
-      importTestsFromDirectory =
-        dir:
-        lib.mapAttrs' (
-          name: _:
-          lib.nameValuePair (lib.replaceStrings [ "_" ] [ "-" ] name) (
-            testPkgs.callPackage (dir + "/${name}/test.nix") { }
-          )
-        ) (builtins.readDir dir);
+      testsFromHosts = lib.listToAttrs hostTests;
     in
     {
-      config.nixosTests = importTestsFromDirectory ./by_name;
+      config.nixosTests = testsFromHosts;
       config.checks = lib.mapAttrs' (
         name: drv:
-        lib.nameValuePair "nixosTest-${name}" (
+        lib.nameValuePair "nixosModules/${name}" (
           if pkgs.stdenv.isLinux then
             drv
           else
-            pkgs.runCommand "nixosTest-${name}" { } ''
+            pkgs.runCommand "nixosModules/${name}" { } ''
               echo "skipped on ${system}" > $out
             ''
         )

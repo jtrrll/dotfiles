@@ -57,9 +57,59 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 
 - `files/README.md`
 
-- `nixosTest-romm`
+- `homeConfigurations/jtrrll/build`
 
-- `packageMetadata`
+- `metadata/packages`
+
+- `nixosConfigurations/ares/build`
+
+- `nixosConfigurations/athena/build`
+
+- `nixosModules/romm/http`
+
+- `packages/activate/build`
+
+- `packages/bonsai/build`
+
+- `packages/crt-shader/build`
+
+- `packages/ds-shader/build`
+
+- `packages/edit/build`
+
+- `packages/gba-shader/build`
+
+- `packages/gbc-shader/build`
+
+- `packages/git-clone-with-worktrees/build`
+
+- `packages/git-ezswitch/build`
+
+- `packages/git-open/build`
+
+- `packages/git-trim/build`
+
+- `packages/keep-awake/build`
+
+- `packages/matrix/build`
+
+- `packages/neovim/build`
+
+- `packages/neovim/nixvim-check`
+
+- `packages/neovim/version`
+
+- `packages/psp-shader/build`
+
+- `packages/service-status/build`
+
+- `packages/service-status/ports-endpoint`
+
+- `packages/service-status/status-endpoint`
+
+- `packages/service-status/version`
+
+- `packages/splash/build`
 
 - `snekcheck`
 
@@ -83,7 +133,7 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 
 ### `homeConfigurations`
 
-- `jtrrll`
+- `jtrrll` - Jackson Terrill's home configuration
 
 ### `homeModules`
 
@@ -101,6 +151,9 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 - `matrix`
   - `programs.matrix.enable` - Whether to enable a matrix rain screensaver. (default: `false`)
 
+- `meta`
+  - `meta.description` - A short description of this configuration. (default: `""`)
+
 - `music-library`
   - `services.musicLibrary.enable` - Whether to enable a curated music library. (default: `false`)
 
@@ -114,19 +167,34 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 
 ### `nixosConfigurations`
 
-- `ares`
+- `ares` - jtrrll's gaming/workstation desktop
 
-- `athena`
+- `athena` - jtrrll's personal laptop
 
 ### `nixosModules`
 
+- `meta`
+  - `meta.description` - A short description of this configuration. (default: `""`)
+
 - `romm`
+  - `services.romm.dataDir` - Base directory for RomM persistent data (database, redis, resources, assets, config). (default: `"/var/lib/romm"`)
+  - `services.romm.enable` - Whether to enable RomM, a self-hosted ROM manager and player. (default: `false`)
+  - `services.romm.environmentFile` - Path to an environment file containing secrets. Must define at minimum:
+  - `services.romm.image` - RomM container image derivation. (default: `<derivation docker-image-rommapp-romm-4.8.1.tar>`)
+  - `services.romm.libraryDir` - Directory containing ROMs and BIOS files. (default: `"/var/lib/romm/library"`)
+  - `services.romm.mariadbImage` - MariaDB container image derivation. (default: `<derivation docker-image-mariadb-11.4.tar>`)
+  - `services.romm.openFirewall` - Whether to open the firewall for RomM's port. (default: `false`)
+  - `services.romm.port` - Port to expose the RomM web UI on the host. (default: `8080`)
+  - `services.romm.valkeyImage` - Valkey (Redis-compatible) container image derivation. (default: `<derivation docker-image-valkey-valkey-8.tar>`)
+
+- `tests`
 
 - `users`
+  - `dotfiles.users.enable` - Whether to enable user configurations. (default: `false`)
 
 ### `nixosTests`
 
-- `romm`
+- `romm/http` - Verify RomM containers start and serve HTTP
 
 ### `packages`
 

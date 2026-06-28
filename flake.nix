@@ -31,10 +31,7 @@
     ### Home Manager dependencies ###
     # keep-sorted start block=yes
     home-manager.url = "github:nix-community/home-manager/master";
-    nixvim = {
-      inputs.nixpkgs.follows = "home-manager/nixpkgs";
-      url = "github:nix-community/nixvim/main";
-    };
+    nixvim.url = "github:nix-community/nixvim/main";
     snekcheck = {
       inputs.nixpkgs.follows = "home-manager/nixpkgs";
       url = "github:jtrrll/snekcheck/main";

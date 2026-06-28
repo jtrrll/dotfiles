@@ -70,7 +70,17 @@
         ];
         specialArgs = {
           nixosHardwareModules = inputs.nixos-hardware.nixosModules;
+          nixosModules = lib.attrValues config.flake.nixosModules;
         };
       }
     ) hosts;
+
+  config.perSystem =
+    { lib, ... }:
+    {
+      checks = lib.mapAttrs' (
+        name: nixos:
+        lib.nameValuePair "nixosConfigurations/${name}/build" nixos.config.system.build.toplevel
+      ) config.flake.nixosConfigurations;
+    };
 }

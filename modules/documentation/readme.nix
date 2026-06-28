@@ -2,7 +2,7 @@
 {
   config.perSystem =
     let
-      inherit (config.flake) homeModules;
+      inherit (config.flake) homeModules nixosModules;
       inherit (config) processedFlake;
     in
     {
@@ -55,30 +55,49 @@
           ];
         in
         "  - `${name}`${details}";
-      filterOpts = lib.filter (
-        opt:
-        !(
-          lib.hasPrefix "_module" opt.name
-          || lib.hasPrefix "programs.__stub" opt.name
-          || lib.hasPrefix "home." opt.name
-        )
-      );
-      optionsForModule =
-        moduleName:
+      filterOpts =
+        excludePrefixes:
+        lib.filter (opt: !(lib.any (prefix: lib.hasPrefix prefix opt.name) excludePrefixes));
+      optionsForModules =
+        {
+          modules,
+          excludePrefixes,
+          evalModules ? lib.evalModules,
+        }:
         let
-          mod = homeModules.${moduleName};
-          eval = hmLib.evalModules {
-            modules = [ mod ] ++ stubModules;
-          };
-          opts = filterOpts (lib.optionAttrSetToDocList eval.options);
+          eval = evalModules { inherit modules; };
         in
-        opts;
+        filterOpts excludePrefixes (lib.optionAttrSetToDocList eval.options);
       renderModuleOptions =
+        opts: if opts == [ ] then "" else lib.concatStringsSep "\n" (map renderOption opts);
+      homeModuleOptions =
         moduleName:
-        let
-          opts = optionsForModule moduleName;
-        in
-        if opts == [ ] then "" else lib.concatStringsSep "\n" (map renderOption opts);
+        optionsForModules {
+          inherit (hmLib) evalModules;
+          modules = [ homeModules.${moduleName} ] ++ stubModules;
+          excludePrefixes = [
+            "_module"
+            "programs.__stub"
+            "home."
+          ];
+        };
+      nixosModuleOptions =
+        moduleName:
+        optionsForModules {
+          modules = [
+            nixosModules.${moduleName}
+            {
+              config._module = {
+                args.pkgs = pkgs;
+                check = false;
+              };
+            }
+          ];
+          excludePrefixes = [
+            "_module"
+            "tests"
+          ];
+        };
       outputsMarkdown =
         let
           isPerSystem =
@@ -92,6 +111,9 @@
           ];
           describedOutputs = [
             "apps"
+            "homeConfigurations"
+            "nixosConfigurations"
+            "nixosTests"
             "packages"
           ];
           attrNamesFor =
@@ -122,7 +144,13 @@
           formatAttr =
             outputName: attrName:
             let
-              optionsMd = if outputName == "homeModules" then renderModuleOptions attrName else "";
+              optionsMd =
+                if outputName == "homeModules" then
+                  renderModuleOptions (homeModuleOptions attrName)
+                else if outputName == "nixosModules" then
+                  renderModuleOptions (nixosModuleOptions attrName)
+                else
+                  "";
               description =
                 if lib.elem outputName describedOutputs then
                   let
@@ -134,6 +162,8 @@
                   in
                   if lib.isDerivation val then
                     val.meta.description or null
+                  else if lib.isAttrs val && val ? config.meta.description then
+                    val.config.meta.description
                   else if lib.isAttrs val && val ? meta && lib.isAttrs val.meta then
                     val.meta.description or null
                   else
