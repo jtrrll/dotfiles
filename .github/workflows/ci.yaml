@@ -107,7 +107,7 @@ jobs:
         env:
           NIX_SHOW_STATS: 1
           NIX_SHOW_STATS_PATH: nix_eval_stats.json
-        run: nix flake check --impure
+        run: nix run github:Mic92/nix-fast-build -- --impure --skip-cached
       - name: Upload Nix evaluation statistics
         uses: actions/upload-artifact@v7
         with:

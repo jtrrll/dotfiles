@@ -119,7 +119,7 @@
               {
                 name = "Check flake";
                 env = evalStatsEnv;
-                run = "nix flake check --impure";
+                run = "nix run github:Mic92/nix-fast-build -- --impure --skip-cached";
               }
               (uploadEvalStatsStep "nix-eval-stats-check")
             ];
