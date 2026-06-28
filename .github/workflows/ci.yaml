@@ -42,9 +42,7 @@ jobs:
 
             extra-substituters = https://devenv.cachix.org https://install.determinate.systems https://nix-community.cachix.org
 
-            extra-trusted-public-keys = devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw= cache.flakehub.com-3:hJuILl5sVK4iKm86JzgdXW12Y2Hwd5G07qKtHTOcDCM= nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=
-
-'
+            extra-trusted-public-keys = devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw= cache.flakehub.com-3:hJuILl5sVK4iKm86JzgdXW12Y2Hwd5G07qKtHTOcDCM= nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs='
       - name: Build ${{ matrix.configuration }} configuration
         env:
           NIX_SHOW_STATS: 1
@@ -81,9 +79,7 @@ jobs:
 
             extra-substituters = https://devenv.cachix.org https://install.determinate.systems https://nix-community.cachix.org
 
-            extra-trusted-public-keys = devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw= cache.flakehub.com-3:hJuILl5sVK4iKm86JzgdXW12Y2Hwd5G07qKtHTOcDCM= nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=
-
-'
+            extra-trusted-public-keys = devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw= cache.flakehub.com-3:hJuILl5sVK4iKm86JzgdXW12Y2Hwd5G07qKtHTOcDCM= nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs='
       - name: Build ${{ matrix.configuration }} configuration
         env:
           NIX_SHOW_STATS: 1
@@ -105,15 +101,13 @@ jobs:
 
             extra-substituters = https://devenv.cachix.org https://install.determinate.systems https://nix-community.cachix.org
 
-            extra-trusted-public-keys = devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw= cache.flakehub.com-3:hJuILl5sVK4iKm86JzgdXW12Y2Hwd5G07qKtHTOcDCM= nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=
-
-'
+            extra-trusted-public-keys = devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw= cache.flakehub.com-3:hJuILl5sVK4iKm86JzgdXW12Y2Hwd5G07qKtHTOcDCM= nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs='
       - uses: DeterminateSystems/flake-checker-action@v12
       - name: Check flake
         env:
           NIX_SHOW_STATS: 1
           NIX_SHOW_STATS_PATH: nix_eval_stats.json
-        run: "nix run github:Mic92/nix-fast-build -- \\\n  --impure \\\n  --skip-cached \\\n  --stream-json-lines \\\n  --select 'checks:\n    let\n      hasPrefix = p: s: builtins.substring 0 (builtins.stringLength p) s == p;\n      names = builtins.filter (n:\n        !(hasPrefix \"nixosConfigurations/\" n || hasPrefix \"homeConfigurations/\" n)\n      ) (builtins.attrNames checks);\n    in\n    builtins.removeAttrs checks\n      (builtins.filter (n:\n        hasPrefix \"nixosConfigurations/\" n || hasPrefix \"homeConfigurations/\" n || n == \"slow-integration-test\"\n      ) (builtins.attrNames checks))'\n"
+        run: 'nix run github:Mic92/nix-fast-build -- --impure --skip-cached --stream-json-lines --select ''checks: let hasPrefix = p: s: builtins.substring 0 (builtins.stringLength p) s == p; in builtins.removeAttrs checks (builtins.filter (n: hasPrefix "nixosConfigurations/" n || hasPrefix "homeConfigurations/" n) (builtins.attrNames checks))'''
       - name: Upload Nix evaluation statistics
         uses: actions/upload-artifact@v7
         with:
