@@ -112,7 +112,6 @@
             "apps"
             "homeConfigurations"
             "nixosConfigurations"
-            "nixosTests"
             "packages"
           ];
           attrNamesFor =

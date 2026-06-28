@@ -70,7 +70,6 @@
         ];
         specialArgs = {
           nixosHardwareModules = inputs.nixos-hardware.nixosModules;
-          nixosModules = lib.attrValues config.flake.nixosModules;
         };
       }
     ) hosts;

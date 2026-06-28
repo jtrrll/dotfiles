@@ -113,7 +113,6 @@
               homeModules.enable = true;
               nixosConfigurations.enable = true;
               nixosModules.enable = true;
-              nixosTests.enable = true;
               packages.enable = true;
               # keep-sorted end
             };

@@ -65,8 +65,6 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 
 - `nixosConfigurations/athena/build`
 
-- `nixosModules/romm/http`
-
 - `packages/activate/build`
 
 - `packages/bonsai/build`
@@ -124,8 +122,6 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 - `default`
 
 - `flakeMetadata`
-
-- `nixosTests`
 
 - `packageMetadataChecks`
 
@@ -192,10 +188,6 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 
 - `users`
   - `dotfiles.users.enable` - Whether to enable user configurations. (default: `false`)
-
-### `nixosTests`
-
-- `romm/http` - Verify RomM containers start and serve HTTP
 
 ### `packages`
 
