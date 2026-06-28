@@ -99,7 +99,13 @@
           perSystem = _: {
             terranix.exportDevShells = false;
           };
-          systems = lib.systems.flakeExposed;
+          systems = [
+            # keep-sorted start
+            "aarch64-darwin"
+            "aarch64-linux"
+            "x86_64-linux"
+            # keep-sorted end
+          ];
           touchup = {
             any.enable = lib.mkDefault false;
             attr = {
