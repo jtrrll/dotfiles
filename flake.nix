@@ -31,10 +31,7 @@
     ### Home Manager dependencies ###
     # keep-sorted start block=yes
     home-manager.url = "github:nix-community/home-manager/master";
-    nixvim = {
-      inputs.nixpkgs.follows = "home-manager/nixpkgs";
-      url = "github:nix-community/nixvim/main";
-    };
+    nixvim.url = "github:nix-community/nixvim/main";
     snekcheck = {
       inputs.nixpkgs.follows = "home-manager/nixpkgs";
       url = "github:jtrrll/snekcheck/main";
@@ -102,7 +99,13 @@
           perSystem = _: {
             terranix.exportDevShells = false;
           };
-          systems = lib.systems.flakeExposed;
+          systems = [
+            # keep-sorted start
+            "aarch64-darwin"
+            "aarch64-linux"
+            "x86_64-linux"
+            # keep-sorted end
+          ];
           touchup = {
             any.enable = lib.mkDefault false;
             attr = {
@@ -116,7 +119,6 @@
               homeModules.enable = true;
               nixosConfigurations.enable = true;
               nixosModules.enable = true;
-              nixosTests.enable = true;
               packages.enable = true;
               # keep-sorted end
             };

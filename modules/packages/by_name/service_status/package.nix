@@ -76,7 +76,7 @@ buildGoModule (finalAttrs: {
   meta = {
     description = "Serves managed background service status over HTTP";
     mainProgram = "service-status";
-    platforms = lib.platforms.linux ++ lib.platforms.darwin;
+    platforms = lib.platforms.unix;
     sourceProvenance = [ lib.sourceTypes.fromSource ];
   };
 })

@@ -3,6 +3,8 @@
   ...
 }:
 {
+  meta.description = "jtrrll's personal laptop";
+
   imports = [
     nixosHardwareModules.lenovo-thinkpad-x1
   ];

@@ -9,10 +9,11 @@
     let
       yaml = pkgs.formats.yaml { };
 
-      nixInstallerConf = ''
-        extra-substituters = https://devenv.cachix.org https://install.determinate.systems https://nix-community.cachix.org
-        extra-trusted-public-keys = devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw= cache.flakehub.com-3:hJuILl5sVK4iKm86JzgdXW12Y2Hwd5G07qKtHTOcDCM= nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=
-      '';
+      nixInstallerConf = lib.concatStringsSep "\n" [
+        "allow-import-from-derivation = false"
+        "extra-substituters = https://devenv.cachix.org https://install.determinate.systems https://nix-community.cachix.org"
+        "extra-trusted-public-keys = devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw= cache.flakehub.com-3:hJuILl5sVK4iKm86JzgdXW12Y2Hwd5G07qKtHTOcDCM= nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+      ];
 
       freeDiskSpaceStep = {
         name = "Free disk space";
@@ -119,7 +120,7 @@
               {
                 name = "Check flake";
                 env = evalStatsEnv;
-                run = "nix flake check --impure";
+                run = "nix run github:Mic92/nix-fast-build -- --flake .#checks.x86_64-linux --impure --skip-cached --stream-json-lines --select 'checks: let lib = (builtins.getFlake \"nixpkgs\").lib; exclude = n: lib.hasInfix \"nixosConfigurations/\" n || lib.hasInfix \"homeConfigurations/\" n; in lib.filterAttrs (n: _: !exclude n) checks'";
               }
               (uploadEvalStatsStep "nix-eval-stats-check")
             ];

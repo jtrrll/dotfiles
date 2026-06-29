@@ -39,7 +39,7 @@ let
             };
           };
 
-          config.checks.packageMetadata = lib.mkIf cfg.enable (
+          config.checks."metadata/packages" = lib.mkIf cfg.enable (
             let
               checkPackageMetadata =
                 { meta, name, ... }:

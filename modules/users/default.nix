@@ -71,4 +71,25 @@
           };
         };
     };
+
+  config.perSystem =
+    { lib, system, ... }:
+    let
+      hmPkgs = inputs.home-manager.inputs.nixpkgs.legacyPackages.${system}.extend (
+        _: _: config.flake.packages.${system}
+      );
+    in
+    {
+      checks = lib.mapAttrs' (
+        name: hm:
+        lib.nameValuePair "homeConfigurations/${name}/build"
+          (hm.extendModules {
+            modules = [
+              {
+                _module.args.pkgs = lib.mkForce hmPkgs;
+              }
+            ];
+          }).activationPackage
+      ) config.flake.homeConfigurations;
+    };
 }
