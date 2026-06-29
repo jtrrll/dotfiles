@@ -120,7 +120,7 @@
               {
                 name = "Check flake";
                 env = evalStatsEnv;
-                run = "nix run github:Mic92/nix-fast-build -- --impure --skip-cached --stream-json-lines --select 'checks: let hasPrefix = p: s: builtins.substring 0 (builtins.stringLength p) s == p; in builtins.removeAttrs checks (builtins.filter (n: hasPrefix \"nixosConfigurations/\" n || hasPrefix \"homeConfigurations/\" n) (builtins.attrNames checks))'";
+                run = "nix run github:Mic92/nix-fast-build -- --eval-workers 2 --impure --skip-cached --stream-json-lines --select 'checks: let hasPrefix = p: s: builtins.substring 0 (builtins.stringLength p) s == p; in builtins.removeAttrs checks (builtins.filter (n: hasPrefix \"nixosConfigurations/\" n || hasPrefix \"homeConfigurations/\" n) (builtins.attrNames checks))'";
               }
               (uploadEvalStatsStep "nix-eval-stats-check")
             ];
