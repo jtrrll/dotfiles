@@ -120,7 +120,7 @@
               {
                 name = "Check flake";
                 env = evalStatsEnv;
-                run = "nix run github:Mic92/nix-fast-build -- --eval-workers 2 --impure --skip-cached --stream-json-lines --select 'checks: let lib = (builtins.getFlake \"nixpkgs\").lib; exclude = n: lib.hasInfix \"nixosConfigurations/\" n || lib.hasInfix \"homeConfigurations/\" n; in lib.filterAttrs (n: _: !exclude n) checks'";
+                run = "nix run github:Mic92/nix-fast-build -- --flake .#checks.x86_64-linux --impure --skip-cached --stream-json-lines --select 'checks: let lib = (builtins.getFlake \"nixpkgs\").lib; exclude = n: lib.hasInfix \"nixosConfigurations/\" n || lib.hasInfix \"homeConfigurations/\" n; in lib.filterAttrs (n: _: !exclude n) checks'";
               }
               (uploadEvalStatsStep "nix-eval-stats-check")
             ];
