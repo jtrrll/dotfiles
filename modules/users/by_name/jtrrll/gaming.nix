@@ -54,7 +54,7 @@
             mesen.enable = true;
             mgba.enable = true;
             mupen64plus.enable = true;
-            ppsspp.enable = true;
+            ppsspp.enable = pkgs.stdenv.hostPlatform.isx86_64;
             snes9x.enable = true;
             swanstation.enable = true;
           };

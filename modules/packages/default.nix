@@ -17,10 +17,13 @@
       };
       pkgs' = pkgs.extend (
         lib.composeManyExtensions [
-          inputs.nixvim.overlays.default
+          (_: prev: {
+            lib = prev.lib.extend inputs.nixvim.lib.overlay;
+          })
           (_: _: packages)
         ]
       );
+
       callPackage = path: args: addCommonMetadata (pkgs'.callPackage path args);
       importPackagesFromDirectory =
         dir:
@@ -35,6 +38,14 @@
     {
       config = {
         inherit packages;
+        checks =
+          lib.mapAttrs' (name: pkg: lib.nameValuePair "packages:${name}/build" pkg) packages
+          // lib.concatMapAttrs (
+            pkgName: pkg:
+            lib.mapAttrs' (testName: test: lib.nameValuePair "packages:${pkgName}/${testName}" test) (
+              pkg.passthru.tests or { }
+            )
+          ) packages;
         devenv.modules = [ { overlays = [ (_: _: packages) ]; } ];
       };
     };

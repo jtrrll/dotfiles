@@ -31,9 +31,11 @@
       {"╰", "FloatBorder"},
       {"│", "FloatBorder"},
     }
-    vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
-      vim.lsp.handlers.hover, { border = border }
-    )
+    vim.lsp.handlers["textDocument/hover"] = function(err, result, ctx, config)
+      config = config or {}
+      config.border = border
+      return vim.lsp.handlers.hover(err, result, ctx, config)
+    end
   '';
   plugins = {
     lsp = {

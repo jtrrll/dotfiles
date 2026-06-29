@@ -1,4 +1,6 @@
 {
+  meta.description = "jtrrll's gaming/workstation desktop";
+
   users.users.jtrrll = {
     enable = true;
     extraGroups = [
