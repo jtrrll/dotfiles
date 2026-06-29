@@ -33,81 +33,81 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 
 ### `checks`
 
-- `files/.github/CODEOWNERS`
+- `files:.github/CODEOWNERS`
 
-- `files/.github/CODE_OF_CONDUCT.md`
+- `files:.github/CODE_OF_CONDUCT.md`
 
-- `files/.github/CONTRIBUTING.md`
+- `files:.github/CONTRIBUTING.md`
 
-- `files/.github/ISSUE_TEMPLATE/bug_report.yaml`
+- `files:.github/ISSUE_TEMPLATE/bug_report.yaml`
 
-- `files/.github/ISSUE_TEMPLATE/config.yaml`
+- `files:.github/ISSUE_TEMPLATE/config.yaml`
 
-- `files/.github/ISSUE_TEMPLATE/documentation_issue.yaml`
+- `files:.github/ISSUE_TEMPLATE/documentation_issue.yaml`
 
-- `files/.github/ISSUE_TEMPLATE/feature_request.yaml`
+- `files:.github/ISSUE_TEMPLATE/feature_request.yaml`
 
-- `files/.github/PULL_REQUEST_TEMPLATE.md`
+- `files:.github/PULL_REQUEST_TEMPLATE.md`
 
-- `files/.github/dependabot.yaml`
+- `files:.github/dependabot.yaml`
 
-- `files/.github/workflows/ci.yaml`
+- `files:.github/workflows/ci.yaml`
 
-- `files/LICENSE`
+- `files:LICENSE`
 
-- `files/README.md`
+- `files:README.md`
 
-- `homeConfigurations/jtrrll/build`
+- `homeConfigurations:jtrrll/build`
 
-- `metadata/packages`
+- `metadata:packages`
 
-- `nixosConfigurations/ares/build`
+- `nixosConfigurations:ares/build`
 
-- `nixosConfigurations/athena/build`
+- `nixosConfigurations:athena/build`
 
-- `packages/activate/build`
+- `packages:activate/build`
 
-- `packages/bonsai/build`
+- `packages:bonsai/build`
 
-- `packages/crt-shader/build`
+- `packages:crt-shader/build`
 
-- `packages/ds-shader/build`
+- `packages:ds-shader/build`
 
-- `packages/edit/build`
+- `packages:edit/build`
 
-- `packages/gba-shader/build`
+- `packages:gba-shader/build`
 
-- `packages/gbc-shader/build`
+- `packages:gbc-shader/build`
 
-- `packages/git-clone-with-worktrees/build`
+- `packages:git-clone-with-worktrees/build`
 
-- `packages/git-ezswitch/build`
+- `packages:git-ezswitch/build`
 
-- `packages/git-open/build`
+- `packages:git-open/build`
 
-- `packages/git-trim/build`
+- `packages:git-trim/build`
 
-- `packages/keep-awake/build`
+- `packages:keep-awake/build`
 
-- `packages/matrix/build`
+- `packages:matrix/build`
 
-- `packages/neovim/build`
+- `packages:neovim/build`
 
-- `packages/neovim/nixvim-check`
+- `packages:neovim/nixvim-check`
 
-- `packages/neovim/version`
+- `packages:neovim/version`
 
-- `packages/psp-shader/build`
+- `packages:psp-shader/build`
 
-- `packages/service-status/build`
+- `packages:service-status/build`
 
-- `packages/service-status/ports-endpoint`
+- `packages:service-status/ports-endpoint`
 
-- `packages/service-status/status-endpoint`
+- `packages:service-status/status-endpoint`
 
-- `packages/service-status/version`
+- `packages:service-status/version`
 
-- `packages/splash/build`
+- `packages:splash/build`
 
 - `snekcheck`
 

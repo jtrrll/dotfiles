@@ -107,7 +107,7 @@ jobs:
         env:
           NIX_SHOW_STATS: 1
           NIX_SHOW_STATS_PATH: nix_eval_stats.json
-        run: 'nix run github:Mic92/nix-fast-build -- --flake .#checks.x86_64-linux --impure --skip-cached --stream-json-lines --select ''checks: let lib = (builtins.getFlake "nixpkgs").lib; exclude = n: lib.hasInfix "nixosConfigurations/" n || lib.hasInfix "homeConfigurations/" n; in lib.filterAttrs (n: _: !exclude n) checks'''
+        run: 'nix run github:Mic92/nix-fast-build -- --flake .#checks.x86_64-linux --impure --skip-cached --stream-json-lines --select ''checks: let lib = (builtins.getFlake "nixpkgs").lib; exclude = n: lib.hasPrefix "nixosConfigurations:" n || lib.hasPrefix "homeConfigurations:" n; in lib.filterAttrs (n: _: !exclude n) checks'''
       - name: Upload Nix evaluation statistics
         uses: actions/upload-artifact@v7
         with:

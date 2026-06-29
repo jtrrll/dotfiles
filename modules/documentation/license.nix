@@ -1,7 +1,7 @@
 {
   config.perSystem = _: {
     config.files = {
-      file."LICENSE".source = ./agpl_3.0.txt;
+      file."LICENSE".text = builtins.readFile ./agpl_3.0.txt;
       writer.app = true;
     };
   };
