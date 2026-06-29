@@ -79,7 +79,7 @@
     {
       checks = lib.mapAttrs' (
         name: nixos:
-        lib.nameValuePair "nixosConfigurations/${name}/build" nixos.config.system.build.toplevel
+        lib.nameValuePair "nixosConfigurations:${name}/build" nixos.config.system.build.toplevel
       ) config.flake.nixosConfigurations;
     };
 }

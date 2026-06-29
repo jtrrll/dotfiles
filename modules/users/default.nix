@@ -82,7 +82,7 @@
     {
       checks = lib.mapAttrs' (
         name: hm:
-        lib.nameValuePair "homeConfigurations/${name}/build"
+        lib.nameValuePair "homeConfigurations:${name}/build"
           (hm.extendModules {
             modules = [
               {
