@@ -6,6 +6,7 @@
 }:
 {
   config = {
+    meta.description = "Jackson Terrill's home configuration";
     assertions = [
       {
         assertion = lib.strings.hasInfix config.home.username config.home.homeDirectory;

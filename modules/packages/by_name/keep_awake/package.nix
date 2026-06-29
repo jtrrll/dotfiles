@@ -8,7 +8,7 @@ writeShellApplication rec {
   meta = {
     description = "Prevents system sleep while a command runs";
     mainProgram = name;
-    platforms = lib.platforms.linux ++ lib.platforms.darwin;
+    platforms = lib.platforms.unix;
     sourceProvenance = [ lib.sourceTypes.fromSource ];
   };
   name = "keep-awake";
