@@ -1,8 +1,6 @@
 {
   description = "jtrrll's declarative dotfiles";
 
-  nixConfig.allow-import-from-derivation = false;
-
   inputs = {
     ### Flake dependencies ###
     # keep-sorted start block=yes
