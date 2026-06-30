@@ -113,6 +113,7 @@ pub fn render(state: &mut HandlerState, rows: usize, cols: usize) {
 
     // Record total lines for scroll bounds
     state.total_lines = lines.len();
+    state.visible_rows = rows;
 
     // Clamp scroll offset
     if state.scroll_offset >= lines.len() {
@@ -123,12 +124,7 @@ pub fn render(state: &mut HandlerState, rows: usize, cols: usize) {
     let visible = &lines[state.scroll_offset..];
     for i in 0..rows {
         if i < visible.len() {
-            if state.hovered_row == Some(i) {
-                // Underline the hovered row
-                print!("\x1b[4m{}\x1b[0m", visible[i]);
-            } else {
-                print!("{}", visible[i]);
-            }
+            print!("{}", visible[i]);
         } else {
             print!("{:<width$}", "", width = cols);
         }

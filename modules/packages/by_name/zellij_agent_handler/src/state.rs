@@ -79,7 +79,7 @@ pub struct HandlerState {
     pub click_regions: Vec<ClickRegion>,
     pub scroll_offset: usize,
     pub total_lines: usize,
-    pub hovered_row: Option<usize>,
+    pub visible_rows: usize,
 }
 
 #[cfg(test)]

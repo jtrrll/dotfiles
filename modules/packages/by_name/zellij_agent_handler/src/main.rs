@@ -60,29 +60,24 @@ impl ZellijPlugin for HandlerState {
                 false
             }
             Event::Mouse(Mouse::ScrollUp(_)) => {
-                self.scroll_offset = self.scroll_offset.saturating_sub(3);
-                true
+                if self.total_lines > self.visible_rows {
+                    self.scroll_offset = self.scroll_offset.saturating_sub(3);
+                    true
+                } else {
+                    false
+                }
             }
             Event::Mouse(Mouse::ScrollDown(_)) => {
-                let max_offset = self.total_lines.saturating_sub(1);
-                self.scroll_offset = (self.scroll_offset + 3).min(max_offset);
-                true
-            }
-            Event::Mouse(Mouse::Hover(row, _)) => {
-                let row = row as usize;
-                let new_hover = self
-                    .click_regions
-                    .iter()
-                    .any(|r| r.row == row)
-                    .then_some(row);
-                if new_hover != self.hovered_row {
-                    self.hovered_row = new_hover;
+                if self.total_lines > self.visible_rows {
+                    let max_offset = self.total_lines.saturating_sub(self.visible_rows);
+                    self.scroll_offset = (self.scroll_offset + 3).min(max_offset);
                     true
                 } else {
                     false
                 }
             }
             Event::PermissionRequestResult(_) => {
+                set_selectable(false);
                 self.request_sync();
                 false
             }
@@ -130,27 +125,32 @@ impl ZellijPlugin for HandlerState {
 impl HandlerState {
     fn refresh_agents(&mut self) {
         if let Some(ref manifest) = self.pane_manifest {
-            // Build pane_id -> (tab_index, tab_name) map
+            // Build pane_id -> (tab_index, tab_name) map and track exited panes
             self.pane_to_tab.clear();
+            let mut exited_panes = std::collections::HashSet::new();
             for tab in &self.tabs {
                 if let Some(panes) = manifest.panes.get(&tab.position) {
                     for pane in panes {
                         if !pane.is_plugin {
                             self.pane_to_tab
                                 .insert(pane.id, (tab.position, tab.name.clone()));
+                            if pane.exited {
+                                exited_panes.insert(pane.id);
+                            }
                         }
                     }
                 }
             }
-            // Update tab info on known agents and remove dead panes
+            // Update tab info on known agents and remove dead/exited panes
             for agent in self.agents.values_mut() {
                 if let Some((idx, name)) = self.pane_to_tab.get(&agent.pane_id) {
                     agent.tab_index = Some(*idx);
                     agent.tab_name = Some(name.clone());
                 }
             }
-            self.agents
-                .retain(|pane_id, _| self.pane_to_tab.contains_key(pane_id));
+            self.agents.retain(|pane_id, _| {
+                self.pane_to_tab.contains_key(pane_id) && !exited_panes.contains(pane_id)
+            });
         }
     }
 
