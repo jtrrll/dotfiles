@@ -5,7 +5,7 @@ layout {
     }
     pane split_direction="vertical" {
       pane size=24 borderless=true {
-        plugin location="zellij-agent-handler"
+        plugin location="agent-handler"
       }
       children
     }
