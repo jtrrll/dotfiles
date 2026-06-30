@@ -42,8 +42,8 @@ layout {
       pane {
         name "nix flake check"
         size "50%"
-        command "nix"
-        args "run" "github:Mic92/nix-fast-build" "--" "--flake" ".#checks.aarch64-darwin" "--impure" "--skip-cached" "--select" "checks: let lib = (builtins.getFlake \"nixpkgs\").lib; exclude = n: lib.hasPrefix \"nixosConfigurations:\" n || lib.hasPrefix \"homeConfigurations:\" n; in lib.filterAttrs (n: _: !exclude n) checks"
+        command "bash"
+        args "-c" "NIXPKGS_ALLOW_UNFREE=1 nix run github:Mic92/nix-fast-build -- --flake .#checks.aarch64-darwin --impure --skip-cached --select 'checks: let lib = (builtins.getFlake \"nixpkgs\").lib; exclude = n: lib.hasPrefix \"nixosConfigurations:\" n || lib.hasPrefix \"homeConfigurations:\" n; in lib.filterAttrs (n: _: !exclude n) checks'"
         start_suspended true
       }
     }
