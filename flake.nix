@@ -22,10 +22,6 @@
     ### Development dependencies ###
     # keep-sorted start block=yes
     devenv.url = "github:cachix/devenv/main";
-    justix = {
-      inputs.nixpkgs.follows = "devenv/nixpkgs";
-      url = "github:jtrrll/justix/main";
-    };
     # keep-sorted end
 
     ### Home Manager dependencies ###

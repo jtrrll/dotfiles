@@ -8,9 +8,14 @@
 }:
 {
   config = lib.mkMerge [
-    { programs.zellij.enable = lib.mkDefault true; }
+    {
+      programs.zellij.enable = lib.mkDefault true;
+    }
     (lib.mkIf config.programs.zellij.enable {
       home.packages = [ pkgs.watch ];
+      programs.zellij.plugins = [
+        pkgs.zellij-agent-handler
+      ];
       programs.zellij.settings = {
         show_release_notes = false;
         show_startup_tips = false;
@@ -27,7 +32,10 @@
           yellow = YELLOW;
           orange = ORANGE;
         };
-        ui.pane_frames.rounded_corners = true;
+        ui.pane_frames = {
+          rounded_corners = true;
+          hide_session_name = true;
+        };
       };
     })
     (lib.mkIf (options ? stylix) { stylix.targets.zellij.enable = false; })

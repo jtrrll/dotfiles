@@ -68,6 +68,7 @@ buildGoModule (finalAttrs: {
       status-endpoint =
         runCommand "${finalAttrs.pname}-status-test"
           {
+            meta.description = "Verifies /status endpoint returns service state JSON";
             nativeBuildInputs = [
               finalAttrs.finalPackage
               curl
@@ -105,6 +106,7 @@ buildGoModule (finalAttrs: {
       ports-endpoint =
         runCommand "${finalAttrs.pname}-ports-test"
           {
+            meta.description = "Verifies /ports endpoint returns listening port info";
             nativeBuildInputs = [
               finalAttrs.finalPackage
               curl

@@ -19,6 +19,18 @@
             gofumpt.enable = true;
             keep-sorted.enable = true;
             nixfmt.enable = true;
+            prettier = {
+              enable = true;
+              excludes = [
+                "*.md"
+                "*.yaml"
+                "*.yml"
+              ];
+            };
+            rustfmt = {
+              enable = true;
+              edition = "2024";
+            };
             statix.enable = true;
           };
         };

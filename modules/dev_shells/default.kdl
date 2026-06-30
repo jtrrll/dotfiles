@@ -1,19 +1,13 @@
 layout {
   default_tab_template {
-    pane {
-      borderless true
-      plugin {
-        location "zellij:tab-bar"
-      }
-      size 1
+    pane size=1 borderless=true {
+      plugin location="zellij:tab-bar"
     }
-    children
-    pane {
-      borderless true
-      plugin {
-        location "zellij:status-bar"
+    pane split_direction="vertical" {
+      pane size=24 borderless=true {
+        plugin location="zellij-agent-handler"
       }
-      size 2
+      children
     }
   }
   tab name="workspace" focus=true split_direction="vertical" {
@@ -46,17 +40,10 @@ layout {
         args "--interval" "10" "--no-title" "--color" "git" "-c" "color.ui=always" "status" "--short"
       }
       pane {
-        name "just fmt"
-        size "20%"
-        command "nix"
-        args "develop" "." "--impure" "-c" "just" "fmt"
-        start_suspended true
-      }
-      pane {
         name "nix flake check"
-        size "40%"
+        size "50%"
         command "nix"
-        args "flake" "check" "--impure"
+        args "run" "github:Mic92/nix-fast-build" "--" "--flake" ".#checks.aarch64-darwin" "--impure" "--skip-cached" "--select" "checks: let lib = (builtins.getFlake \"nixpkgs\").lib; exclude = n: lib.hasPrefix \"nixosConfigurations:\" n || lib.hasPrefix \"homeConfigurations:\" n; in lib.filterAttrs (n: _: !exclude n) checks"
         start_suspended true
       }
     }

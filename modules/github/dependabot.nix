@@ -50,7 +50,6 @@
                   ];
                   development.patterns = [
                     "devenv"
-                    "justix"
                   ];
                   home-manager.patterns = [
                     "home-manager"
