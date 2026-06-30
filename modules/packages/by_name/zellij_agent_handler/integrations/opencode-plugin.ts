@@ -23,9 +23,7 @@ async function sendState($, activity, name, action, snippet) {
     action: action || undefined,
     snippet: snippet || undefined,
   });
-  await $`zellij pipe --name agent-handler -- ${payload}`
-    .quiet()
-    .nothrow();
+  await $`zellij pipe --name agent-handler -- ${payload}`.quiet().nothrow();
 }
 
 export const ZellijPlugin = async ({ $ }) => {

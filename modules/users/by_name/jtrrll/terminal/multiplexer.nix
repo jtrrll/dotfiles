@@ -32,10 +32,7 @@
           yellow = YELLOW;
           orange = ORANGE;
         };
-        ui.pane_frames = {
-          rounded_corners = true;
-          hide_session_name = true;
-        };
+        ui.pane_frames.rounded_corners = true;
       };
     })
     (lib.mkIf (options ? stylix) { stylix.targets.zellij.enable = false; })

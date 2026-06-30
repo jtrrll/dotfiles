@@ -83,7 +83,6 @@ impl ZellijPlugin for HandlerState {
                 }
             }
             Event::PermissionRequestResult(_) => {
-                set_selectable(false);
                 self.request_sync();
                 false
             }

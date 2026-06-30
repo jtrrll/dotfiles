@@ -1,6 +1,7 @@
 use crate::state::{Activity, ClickRegion, HandlerState};
 use std::collections::BTreeMap;
 use std::io::Write;
+use unicode_width::UnicodeWidthStr;
 
 /// Renders the agent tree sidebar.
 pub fn render(state: &mut HandlerState, rows: usize, cols: usize) {
@@ -10,14 +11,9 @@ pub fn render(state: &mut HandlerState, rows: usize, cols: usize) {
     let mut regions: Vec<Option<ClickRegion>> = Vec::new();
 
     if state.agents.is_empty() {
-        lines.push(format_line(" Agents", cols));
-        regions.push(None);
-        lines.push(format_line("  (none)", cols));
+        lines.push(format_line(" (no agents)", cols));
         regions.push(None);
     } else {
-        lines.push(format_line(" Agents", cols));
-        regions.push(None);
-
         // Group agents by tab name
         let mut groups: BTreeMap<String, Vec<&crate::state::AgentState>> = BTreeMap::new();
         for agent in state.agents.values() {
@@ -54,13 +50,14 @@ pub fn render(state: &mut HandlerState, rows: usize, cols: usize) {
 
                 let plain_text =
                     format!("{}{} {} {}", continuation, agent_branch, agent.name, symbol);
+                let plain_width = UnicodeWidthStr::width(plain_text.as_str());
                 let colored_text = format!(
                     "{}{} {}{} {}{}",
                     continuation, agent_branch, color, agent.name, symbol, reset
                 );
 
                 let row = lines.len();
-                lines.push(pad_colored(&colored_text, plain_text.len(), cols));
+                lines.push(pad_colored(&colored_text, plain_width, cols));
                 regions.push(Some(ClickRegion {
                     start_col: 0,
                     end_col: cols,
@@ -71,20 +68,27 @@ pub fn render(state: &mut HandlerState, rows: usize, cols: usize) {
 
                 // Detail lines (action and snippet) indented under the agent
                 let detail_indent = format!("{}   ", continuation);
+                let indent_width = UnicodeWidthStr::width(detail_indent.as_str());
                 if let Some(ref action) = agent.action {
                     let icon = "⚙";
-                    let detail = format!(
-                        "{}{} \x1b[3m{}\x1b[0m",
-                        detail_indent,
-                        icon,
-                        truncate(action, cols.saturating_sub(detail_indent.len() + 3))
-                    );
-                    let plain_len = detail_indent.len()
-                        + 2
-                        + action
-                            .len()
-                            .min(cols.saturating_sub(detail_indent.len() + 3));
-                    lines.push(pad_colored(&detail, plain_len, cols));
+                    let icon_width = UnicodeWidthStr::width(icon);
+                    let max_action_width = cols.saturating_sub(indent_width + icon_width + 1);
+                    let truncated = truncate(action, max_action_width);
+                    let plain_width =
+                        indent_width + icon_width + 1 + UnicodeWidthStr::width(truncated.as_str());
+                    let detail = format!("{}{} \x1b[3m{}\x1b[0m", detail_indent, icon, truncated);
+                    lines.push(pad_colored(&detail, plain_width, cols));
+                    regions.push(None);
+                }
+                if let Some(ref snippet) = agent.snippet {
+                    let icon = "›";
+                    let icon_width = UnicodeWidthStr::width(icon);
+                    let max_snippet_width = cols.saturating_sub(indent_width + icon_width + 1);
+                    let truncated = truncate(snippet, max_snippet_width);
+                    let plain_width =
+                        indent_width + icon_width + 1 + UnicodeWidthStr::width(truncated.as_str());
+                    let detail = format!("{}{} \x1b[2m{}\x1b[0m", detail_indent, icon, truncated);
+                    lines.push(pad_colored(&detail, plain_width, cols));
                     regions.push(None);
                 }
                 if let Some(ref snippet) = agent.snippet {
@@ -144,18 +148,19 @@ pub fn render(state: &mut HandlerState, rows: usize, cols: usize) {
 }
 
 fn format_line(text: &str, cols: usize) -> String {
-    if text.len() >= cols {
-        text[..cols].to_string()
+    let width = UnicodeWidthStr::width(text);
+    if width >= cols {
+        text.to_string()
     } else {
-        format!("{:<width$}", text, width = cols)
+        format!("{}{}", text, " ".repeat(cols - width))
     }
 }
 
-fn pad_colored(colored: &str, plain_len: usize, cols: usize) -> String {
-    if plain_len >= cols {
+fn pad_colored(colored: &str, plain_width: usize, cols: usize) -> String {
+    if plain_width >= cols {
         colored.to_string()
     } else {
-        format!("{}{}", colored, " ".repeat(cols - plain_len))
+        format!("{}{}", colored, " ".repeat(cols - plain_width))
     }
 }
 

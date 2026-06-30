@@ -4,7 +4,7 @@ layout {
       plugin location="zellij:tab-bar"
     }
     pane split_direction="vertical" {
-      pane size=24 borderless=true {
+      pane size=24 {
         plugin location="agent-handler"
       }
       children
