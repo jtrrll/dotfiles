@@ -20,6 +20,7 @@ func listPorts() ([]PortInfo, error) {
 }
 
 func parseLsofOutput(output string) []PortInfo {
+	seen := make(map[int]bool)
 	var ports []PortInfo
 	var pid, process string
 
@@ -36,6 +37,10 @@ func parseLsofOutput(output string) []PortInfo {
 		case 'n':
 			addr := line[1:]
 			if port, ok := parsePort(addr); ok {
+				if seen[port] {
+					continue
+				}
+				seen[port] = true
 				ports = append(ports, PortInfo{
 					Port:    port,
 					Process: process,
