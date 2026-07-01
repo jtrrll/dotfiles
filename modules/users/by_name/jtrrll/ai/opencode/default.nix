@@ -81,6 +81,8 @@
           tui.theme = "system";
         };
       };
+      xdg.configFile."opencode/plugins/zellij.ts".source =
+        pkgs.zellij-agent-handler.integrations.opencode-plugin;
     })
     (lib.mkIf (config.programs.opencode.enable && config.services.ollama.enable) {
       programs.opencode.settings.provider.ollama = {

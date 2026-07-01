@@ -32,7 +32,6 @@ updates:
       development:
         patterns:
           - devenv
-          - justix
       flake:
         patterns:
           - files

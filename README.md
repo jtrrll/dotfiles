@@ -109,7 +109,9 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 
 - `packages:splash/build`
 
-- `snekcheck`
+- `packages:zellij-agent-handler/build`
+
+- `packages:zellij-agent-handler/is-valid-wasm`
 
 - `treefmt`
 
@@ -224,3 +226,5 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 - `service-status` - Serves managed background service status over HTTP
 
 - `splash` - Prints a splash screen
+
+- `zellij-agent-handler` - Zellij plugin: agent status bar with click-to-navigate
