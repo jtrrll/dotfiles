@@ -6,7 +6,7 @@
 }:
 let
   wasi = pkgsCross.wasi32;
-  cargoToml = builtins.fromTOML (builtins.readFile ./cargo.toml);
+  cargoToml = builtins.fromTOML (builtins.readFile ./Cargo.toml);
 in
 (zellijPlugins.wrapper "zellij-agent-handler" (
   wasi.rustPlatform.buildRustPackage {
@@ -20,12 +20,12 @@ in
     src = lib.fileset.toSource {
       root = ./.;
       fileset = lib.fileset.unions [
-        ./cargo.toml
-        ./cargo.lock
+        ./Cargo.toml
+        ./Cargo.lock
         ./src
       ];
     };
-    cargoLock.lockFile = ./cargo.lock;
+    cargoLock.lockFile = ./Cargo.lock;
     nativeBuildInputs = [ wasi.lld ];
     env.RUSTFLAGS = "-C linker=wasm-ld";
   }
