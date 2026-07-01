@@ -15,18 +15,11 @@
             '';
         treefmt = {
           programs = {
+            biome.enable = true;
             deadnix.enable = true;
             gofumpt.enable = true;
             keep-sorted.enable = true;
             nixfmt.enable = true;
-            prettier = {
-              enable = true;
-              excludes = [
-                "*.md"
-                "*.yaml"
-                "*.yml"
-              ];
-            };
             rustfmt = {
               enable = true;
               edition = "2024";
