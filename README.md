@@ -113,8 +113,6 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 
 - `packages:zellij-agent-handler/is-valid-wasm`
 
-- `snekcheck`
-
 - `treefmt`
 
 ### `devShells`
