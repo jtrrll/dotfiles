@@ -28,6 +28,37 @@ type PortInfo struct {
 	Address string `json:"address"`
 }
 
+// LogEntry is a single kernel/system log line rendered by the dashboard.
+type LogEntry struct {
+	Time     string `json:"time"`
+	Priority string `json:"priority,omitempty"`
+	Unit     string `json:"unit,omitempty"`
+	Message  string `json:"message"`
+}
+
+// boot selects which boot's logs to return. The value is validated against
+// this fixed allowlist before use so no caller-controlled string is ever
+// passed to the underlying log command.
+type boot string
+
+const (
+	bootCurrent  boot = "current"
+	bootPrevious boot = "previous"
+)
+
+func parseBoot(raw string) (boot, bool) {
+	switch boot(raw) {
+	case bootCurrent:
+		return bootCurrent, true
+	case bootPrevious:
+		return bootPrevious, true
+	case "":
+		return bootCurrent, true
+	default:
+		return "", false
+	}
+}
+
 var version = "dev"
 
 func main() {
@@ -55,6 +86,7 @@ func main() {
 
 			http.HandleFunc("/status", statusHandler(querier))
 			http.HandleFunc("/ports", portsHandler())
+			http.HandleFunc("/journal", journalHandler())
 
 			addr := fmt.Sprintf("127.0.0.1:%d", port)
 			log.Printf("listening on %s (prefix=%q)", addr, prefix)
@@ -100,6 +132,27 @@ func portsHandler() http.HandlerFunc {
 
 		w.Header().Set("Content-Type", "application/json")
 		if err := json.NewEncoder(w).Encode(ports); err != nil {
+			log.Printf("failed to encode response: %v", err)
+		}
+	}
+}
+
+func journalHandler() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		which, ok := parseBoot(r.URL.Query().Get("boot"))
+		if !ok {
+			http.Error(w, "boot must be \"current\" or \"previous\"", http.StatusBadRequest)
+			return
+		}
+
+		entries, err := queryJournal(which)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		if err := json.NewEncoder(w).Encode(entries); err != nil {
 			log.Printf("failed to encode response: %v", err)
 		}
 	}

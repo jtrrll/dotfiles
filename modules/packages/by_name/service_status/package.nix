@@ -60,6 +60,22 @@ buildGoModule (finalAttrs: {
               echo "LISTEN     0      128    127.0.0.1:$MOCK_PORT     0.0.0.0:*     users:((\"service-status\",pid=1234,fd=4))"
             '';
           };
+      mockJournalBins =
+        if stdenv.hostPlatform.isDarwin then
+          {
+            log = writeShellScriptBin "log" ''
+              echo '{"timestamp":"2026-06-03 13:52:31.000000-0400","messageType":"Error","eventMessage":"mock crash entry","subsystem":"com.apple.kernel"}'
+            '';
+            sysctl = writeShellScriptBin "sysctl" ''
+              echo '{ sec = 1780509151, usec = 0 } Wed Jun  3 13:52:31 2026'
+            '';
+          }
+        else
+          {
+            journalctl = writeShellScriptBin "journalctl" ''
+              echo '{"__REALTIME_TIMESTAMP":"1780509151000000","PRIORITY":"3","_SYSTEMD_UNIT":"kernel","MESSAGE":"amdgpu: ring gfx timeout"}'
+            '';
+          };
     in
     {
       version = testers.testVersion {
@@ -130,6 +146,45 @@ buildGoModule (finalAttrs: {
             # The service itself should appear in the ports list
             if ! echo "$response" | grep -q 'service-status'; then
               echo "service-status not found in /ports response: $response"
+              exit 1
+            fi
+            touch $out
+          '';
+      journal-endpoint =
+        runCommand "${finalAttrs.pname}-journal-test"
+          {
+            meta.description = "Verifies /journal endpoint returns log entries and validates the boot selector";
+            nativeBuildInputs = [
+              finalAttrs.finalPackage
+              curl
+            ]
+            ++ (
+              if stdenv.hostPlatform.isDarwin then
+                [
+                  mockJournalBins.log
+                  mockJournalBins.sysctl
+                ]
+              else
+                [ mockJournalBins.journalctl ]
+            );
+          }
+          ''
+            service-status --port 19878 &
+            pid=$!
+            trap 'kill $pid 2>/dev/null' EXIT
+            sleep 1
+
+            response=$(curl -sf "http://127.0.0.1:19878/journal?boot=current")
+            if ! echo "$response" | grep -q '"message"'; then
+              echo "unexpected /journal response: $response"
+              exit 1
+            fi
+
+            # An unknown boot selector must be rejected, never passed through
+            # to the underlying log command.
+            code=$(curl -s -o /dev/null -w '%{http_code}' "http://127.0.0.1:19878/journal?boot=bogus")
+            if [ "$code" != "400" ]; then
+              echo "expected 400 for invalid boot selector, got $code"
               exit 1
             fi
             touch $out

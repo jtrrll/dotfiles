@@ -22,6 +22,30 @@
       services.glance.settings =
         let
           serviceStatusUrl = "http://127.0.0.1:${builtins.toString config.services.serviceStatus.port}";
+          journalTemplate = ''
+            <ul class="list list-gap-10 list-with-separator">
+              {{ range .JSON.Array "" }}
+                <li>
+                  <span class="size-h5 color-subdue">{{ .String "time" }}</span>
+                  <ul class="list-horizontal-text">
+                    {{ if eq (.String "priority") "err" }}
+                      <li class="color-negative">{{ .String "priority" }}</li>
+                    {{ else if eq (.String "priority") "error" }}
+                      <li class="color-negative">{{ .String "priority" }}</li>
+                    {{ else if eq (.String "priority") "crit" }}
+                      <li class="color-negative">{{ .String "priority" }}</li>
+                    {{ else if eq (.String "priority") "fault" }}
+                      <li class="color-negative">{{ .String "priority" }}</li>
+                    {{ else }}
+                      <li>{{ .String "priority" }}</li>
+                    {{ end }}
+                    {{ if .String "unit" }}<li>{{ .String "unit" }}</li>{{ end }}
+                  </ul>
+                  <p class="size-h5">{{ .String "message" }}</p>
+                </li>
+              {{ end }}
+            </ul>
+          '';
         in
         {
           server.port = 5678;
@@ -110,6 +134,20 @@
                         {{ end }}
                       </ul>
                     '';
+                  }
+                  {
+                    type = "custom-api";
+                    title = "Journal (current boot)";
+                    cache = "30s";
+                    url = "${serviceStatusUrl}/journal?boot=current";
+                    template = journalTemplate;
+                  }
+                  {
+                    type = "custom-api";
+                    title = "Journal (previous boot)";
+                    cache = "5m";
+                    url = "${serviceStatusUrl}/journal?boot=previous";
+                    template = journalTemplate;
                   }
                 ];
               }
