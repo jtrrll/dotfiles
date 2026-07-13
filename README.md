@@ -101,6 +101,8 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 
 - `packages:service-status/build`
 
+- `packages:service-status/journal-endpoint`
+
 - `packages:service-status/ports-endpoint`
 
 - `packages:service-status/status-endpoint`
