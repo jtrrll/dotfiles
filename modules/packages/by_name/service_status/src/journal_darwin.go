@@ -11,9 +11,6 @@ import (
 	"time"
 )
 
-// journalLineLimit caps how many entries the dashboard renders per boot.
-const journalLineLimit = 100
-
 // previousBootWindow bounds how far before the last boot the "previous boot"
 // view reaches. macOS unified logging has no boot index, so the pre-boot
 // window is a time-based approximation of "the logs from before this boot".
@@ -24,8 +21,9 @@ const previousBootWindow = 30 * time.Minute
 //
 // Unlike Linux journald, macOS has no notion of a discrete "previous boot".
 // "current" is approximated as everything since the kernel boot time, and
-// "previous" as a bounded window ending at that boot time.
-func queryJournal(which boot) ([]LogEntry, error) {
+// "previous" as a bounded window ending at that boot time. macOS `log show`
+// has no result-count flag, so the limit is applied while parsing.
+func queryJournal(which boot, limit int) ([]LogEntry, error) {
 	bootTime, err := lastBootTime()
 	if err != nil {
 		return nil, err
@@ -54,7 +52,7 @@ func queryJournal(which boot) ([]LogEntry, error) {
 		return nil, fmt.Errorf("log show: %w", err)
 	}
 
-	return parseLogShowJSON(string(output), journalLineLimit), nil
+	return parseLogShowJSON(string(output), limit), nil
 }
 
 // lastBootTime reads the kernel boot time from sysctl.

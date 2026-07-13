@@ -11,20 +11,18 @@ import (
 	"time"
 )
 
-// journalLineLimit caps how many entries the dashboard renders per boot.
-const journalLineLimit = 100
-
 // queryJournal returns kernel/system warnings-and-above for the selected boot.
 //
 // The boot argument has already been validated against a fixed allowlist by
-// parseBoot, so the arguments passed to journalctl are entirely static.
-func queryJournal(which boot) ([]LogEntry, error) {
+// parseBoot, and limit by parseLimit, so the arguments passed to journalctl
+// are entirely derived from validated input.
+func queryJournal(which boot, limit int) ([]LogEntry, error) {
 	args := []string{
 		"-k",
 		"-p", "warning",
 		"-o", "json",
 		"--no-pager",
-		"-n", strconv.Itoa(journalLineLimit),
+		"-n", strconv.Itoa(limit),
 	}
 	switch which {
 	case bootCurrent:

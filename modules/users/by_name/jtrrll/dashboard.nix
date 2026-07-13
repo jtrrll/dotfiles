@@ -23,7 +23,7 @@
         let
           serviceStatusUrl = "http://127.0.0.1:${builtins.toString config.services.serviceStatus.port}";
           journalTemplate = ''
-            <ul class="list list-gap-10 list-with-separator">
+            <ul class="list list-gap-10 list-with-separator collapsible-container" data-collapse-after="8">
               {{ range .JSON.Array "" }}
                 <li>
                   <span class="size-h5 color-subdue">{{ .String "time" }}</span>
@@ -104,7 +104,7 @@
             name = "System";
             columns = [
               {
-                size = "full";
+                size = "small";
                 widgets = [
                   {
                     type = "custom-api";
@@ -112,7 +112,7 @@
                     cache = "30s";
                     url = "${serviceStatusUrl}/status";
                     template = ''
-                      <ul class="list list-gap-14 list-with-separator">
+                      <ul class="list list-gap-14 list-with-separator collapsible-container" data-collapse-after="10">
                         {{ range .JSON.Array "" }}
                           <li>
                             <span class="size-h3 color-highlight">{{ .String "name" }}</span>
@@ -135,6 +135,11 @@
                       </ul>
                     '';
                   }
+                ];
+              }
+              {
+                size = "full";
+                widgets = [
                   {
                     type = "custom-api";
                     title = "Journal (current boot)";
@@ -142,6 +147,11 @@
                     url = "${serviceStatusUrl}/journal?boot=current";
                     template = journalTemplate;
                   }
+                ];
+              }
+              {
+                size = "full";
+                widgets = [
                   {
                     type = "custom-api";
                     title = "Journal (previous boot)";
@@ -160,7 +170,7 @@
                     cache = "10s";
                     url = "${serviceStatusUrl}/ports";
                     template = ''
-                      <ul class="list list-gap-10 list-with-separator">
+                      <ul class="list list-gap-10 list-with-separator collapsible-container" data-collapse-after="10">
                         {{ range .JSON.Array "" }}
                           <li>
                             <span class="size-h3 color-highlight">:{{ .Int "port" }}</span>

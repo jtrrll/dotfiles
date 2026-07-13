@@ -153,7 +153,7 @@ buildGoModule (finalAttrs: {
       journal-endpoint =
         runCommand "${finalAttrs.pname}-journal-test"
           {
-            meta.description = "Verifies /journal endpoint returns log entries and validates the boot selector";
+            meta.description = "Verifies /journal endpoint returns log entries and validates the boot and limit query params";
             nativeBuildInputs = [
               finalAttrs.finalPackage
               curl
@@ -180,11 +180,25 @@ buildGoModule (finalAttrs: {
               exit 1
             fi
 
+            # A valid limit is accepted.
+            code=$(curl -s -o /dev/null -w '%{http_code}' "http://127.0.0.1:19878/journal?boot=current&limit=10")
+            if [ "$code" != "200" ]; then
+              echo "expected 200 for valid limit, got $code"
+              exit 1
+            fi
+
             # An unknown boot selector must be rejected, never passed through
             # to the underlying log command.
             code=$(curl -s -o /dev/null -w '%{http_code}' "http://127.0.0.1:19878/journal?boot=bogus")
             if [ "$code" != "400" ]; then
               echo "expected 400 for invalid boot selector, got $code"
+              exit 1
+            fi
+
+            # A non-positive / non-numeric limit must be rejected.
+            code=$(curl -s -o /dev/null -w '%{http_code}' "http://127.0.0.1:19878/journal?boot=current&limit=0")
+            if [ "$code" != "400" ]; then
+              echo "expected 400 for invalid limit, got $code"
               exit 1
             fi
             touch $out

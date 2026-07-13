@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 	"slices"
+	"strconv"
 	"strings"
 
 	"github.com/urfave/cli/v3"
@@ -57,6 +58,28 @@ func parseBoot(raw string) (boot, bool) {
 	default:
 		return "", false
 	}
+}
+
+const (
+	// defaultJournalLimit is used when no limit query param is supplied.
+	defaultJournalLimit = 100
+	// maxJournalLimit bounds how many entries a single request may fetch,
+	// protecting against an unbounded journalctl/log invocation.
+	maxJournalLimit = 1000
+)
+
+// parseLimit interprets the ?limit query param for the journal endpoint.
+// An empty value falls back to defaultJournalLimit. Values are clamped to
+// maxJournalLimit. A non-numeric or non-positive value is rejected.
+func parseLimit(raw string) (int, bool) {
+	if raw == "" {
+		return defaultJournalLimit, true
+	}
+	n, err := strconv.Atoi(raw)
+	if err != nil || n <= 0 {
+		return 0, false
+	}
+	return min(n, maxJournalLimit), true
 }
 
 var version = "dev"
@@ -145,7 +168,13 @@ func journalHandler() http.HandlerFunc {
 			return
 		}
 
-		entries, err := queryJournal(which)
+		limit, ok := parseLimit(r.URL.Query().Get("limit"))
+		if !ok {
+			http.Error(w, "limit must be a positive integer", http.StatusBadRequest)
+			return
+		}
+
+		entries, err := queryJournal(which, limit)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
