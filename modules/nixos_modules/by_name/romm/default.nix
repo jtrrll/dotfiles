@@ -73,18 +73,6 @@ let
           description = "MariaDB container image derivation.";
         };
 
-        valkeyImage = lib.mkOption {
-          type = lib.types.package;
-          default = pkgs.dockerTools.pullImage {
-            imageName = "valkey/valkey";
-            imageDigest = "sha256:9917e842cfc3220e4ac3e819eb98a975cc171eff5e532c79cb75558030eb9078";
-            hash = "sha256-EwCBctbs4jVPH5HuY7KXIWlC8M3HxmonTQpzTuEHdps=";
-            finalImageName = "valkey/valkey";
-            finalImageTag = "8";
-          };
-          description = "Valkey (Redis-compatible) container image derivation.";
-        };
-
         openFirewall = lib.mkOption {
           type = lib.types.bool;
           default = false;
@@ -95,12 +83,12 @@ let
       config = lib.mkIf cfg.enable {
         systemd.tmpfiles.rules = [
           "d ${cfg.dataDir} 0750 root root -"
-          "d ${cfg.dataDir}/resources 0750 root root -"
-          "d ${cfg.dataDir}/assets 0750 root root -"
-          "d ${cfg.dataDir}/config 0750 root root -"
-          "d ${cfg.dataDir}/db 0750 root root -"
-          "d ${cfg.dataDir}/redis 0750 root root -"
-          "d ${cfg.libraryDir} 0750 root root -"
+          "d ${cfg.dataDir}/resources 0750 1000 1000 -"
+          "d ${cfg.dataDir}/assets 0750 1000 1000 -"
+          "d ${cfg.dataDir}/config 0750 1000 1000 -"
+          "d ${cfg.dataDir}/db 0750 999 999 -"
+          "d ${cfg.dataDir}/redis 0750 1000 1000 -"
+          "d ${cfg.libraryDir} 0750 1000 1000 -"
         ];
 
         systemd.services."create-romm-network" = {
@@ -110,12 +98,10 @@ let
           before = [
             "${config.virtualisation.oci-containers.backend}-romm.service"
             "${config.virtualisation.oci-containers.backend}-romm-db.service"
-            "${config.virtualisation.oci-containers.backend}-romm-redis.service"
           ];
           requiredBy = [
             "${config.virtualisation.oci-containers.backend}-romm.service"
             "${config.virtualisation.oci-containers.backend}-romm-db.service"
-            "${config.virtualisation.oci-containers.backend}-romm-redis.service"
           ];
           serviceConfig = {
             Type = "oneshot";
@@ -145,8 +131,6 @@ let
               DB_HOST = "romm-db";
               DB_NAME = "romm";
               DB_USER = "romm";
-              REDIS_HOST = "romm-redis";
-              REDIS_PORT = "6379";
             };
             ports = [ "${toString cfg.port}:8080" ];
             volumes = [
@@ -158,7 +142,6 @@ let
             ];
             dependsOn = [
               "romm-db"
-              "romm-redis"
             ];
             extraOptions = [ "--network=romm-network" ];
           };
@@ -173,15 +156,6 @@ let
             };
             volumes = [
               "${cfg.dataDir}/db:/var/lib/mysql"
-            ];
-            extraOptions = [ "--network=romm-network" ];
-          };
-
-          romm-redis = {
-            imageFile = cfg.valkeyImage;
-            image = "${cfg.valkeyImage.imageName}:${cfg.valkeyImage.imageTag}";
-            volumes = [
-              "${cfg.dataDir}/redis:/data"
             ];
             extraOptions = [ "--network=romm-network" ];
           };
@@ -232,7 +206,6 @@ let
 
               testScript = ''
                 server.wait_for_unit("podman-romm-db.service", timeout=90)
-                server.wait_for_unit("podman-romm-redis.service", timeout=90)
                 server.wait_for_unit("podman-romm.service", timeout=90)
                 server.wait_for_open_port(8080, timeout=90)
                 server.succeed("curl -sf http://localhost:8080")
