@@ -100,7 +100,8 @@ in
     # ROM manager
     romm = {
       enable = true;
-      environmentFile = config.sops.secrets."romm/env".path;
+      environmentFiles = [ config.sops.secrets."romm/app-env".path ];
+      database.environmentFiles = [ config.sops.secrets."romm/db-env".path ];
     };
 
     # Audiobooks and e-books
@@ -151,12 +152,21 @@ in
   #   ${lidarrPostImport}
   environment.etc."lidarr/post-import".source = lidarrPostImport;
 
-  # RomM secrets. The encrypted file is a dotenv document defining at minimum:
-  #   DB_PASSWD, MARIADB_PASSWORD (same value), MARIADB_ROOT_PASSWORD,
-  #   ROMM_AUTH_SECRET_KEY (generate with `openssl rand -hex 32`).
-  # Edit with `sops modules/hosts/by_name/ares/secrets/romm.env`.
-  sops.secrets."romm/env" = {
+  # RomM secrets, split between the application and database containers.
+  # Edit with `sops-with-key <file>` (pulls the age key from Bitwarden).
+  #
+  # app-env must define:
+  #   DB_PASSWD (must equal the db's MARIADB_PASSWORD)
+  #   ROMM_AUTH_SECRET_KEY (generate with `openssl rand -hex 32`)
+  # db-env must define:
+  #   MARIADB_PASSWORD (must equal the app's DB_PASSWD)
+  #   MARIADB_ROOT_PASSWORD
+  sops.secrets."romm/app-env" = {
     format = "dotenv";
-    sopsFile = ./secrets/romm.env;
+    sopsFile = ./secrets/romm-app.env;
+  };
+  sops.secrets."romm/db-env" = {
+    format = "dotenv";
+    sopsFile = ./secrets/romm-db.env;
   };
 }
