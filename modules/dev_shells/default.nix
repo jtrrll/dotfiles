@@ -17,6 +17,11 @@
                 ''printf "\033[0;1;36mDEVSHELL ACTIVATED\033[0m\n"''
               ];
 
+              packages = [
+                pkgs.sops
+                pkgs.ssh-to-age
+              ];
+
               enterTest = ''
                 nix --version
               '';

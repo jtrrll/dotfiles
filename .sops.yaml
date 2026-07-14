@@ -1,0 +1,8 @@
+keys:
+  - &ares age1f5782dgrzyx4hgtkg49s2kuwquqmsazjaravx09sgg76kxf80qnqmmrjjq
+creation_rules:
+  - path_regex: modules/hosts/by_name/ares/secrets/[^/]+\.env$
+    format: dotenv
+    key_groups:
+      - age:
+          - *ares

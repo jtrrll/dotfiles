@@ -44,6 +44,10 @@
       url = "github:nix-community/disko/master";
     };
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+    sops-nix = {
+      inputs.nixpkgs.follows = "determinate/nixpkgs";
+      url = "github:Mic92/sops-nix/master";
+    };
     # keep-sorted end
 
     ### Infrastructure dependencies ###

@@ -100,7 +100,7 @@ in
     # ROM manager
     romm = {
       enable = true;
-      environmentFile = "/run/secrets/romm.env";
+      environmentFile = config.sops.secrets."romm/env".path;
     };
 
     # Audiobooks and e-books
@@ -150,4 +150,13 @@ in
   # Configure in Lidarr UI: Settings → Connect → Custom Script → path:
   #   ${lidarrPostImport}
   environment.etc."lidarr/post-import".source = lidarrPostImport;
+
+  # RomM secrets. The encrypted file is a dotenv document defining at minimum:
+  #   DB_PASSWD, MARIADB_PASSWORD (same value), MARIADB_ROOT_PASSWORD,
+  #   ROMM_AUTH_SECRET_KEY (generate with `openssl rand -hex 32`).
+  # Edit with `sops modules/hosts/by_name/ares/secrets/romm.env`.
+  sops.secrets."romm/env" = {
+    format = "dotenv";
+    sopsFile = ./secrets/romm.env;
+  };
 }
