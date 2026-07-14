@@ -46,7 +46,10 @@ in
           RestartSec = 5;
         };
         Install.WantedBy = [ "default.target" ];
-        Unit.Description = "HTTP server that reports managed background service status";
+        Unit = {
+          Description = "HTTP server that reports managed background service status";
+          X-Restart-Triggers = [ (lib.getExe pkgs.service-status) ];
+        };
       };
     };
   };
