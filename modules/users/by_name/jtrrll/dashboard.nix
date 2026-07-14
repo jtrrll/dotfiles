@@ -22,6 +22,30 @@
       services.glance.settings =
         let
           serviceStatusUrl = "http://127.0.0.1:${builtins.toString config.services.serviceStatus.port}";
+          journalTemplate = ''
+            <ul class="list list-gap-10 list-with-separator collapsible-container" data-collapse-after="8">
+              {{ range .JSON.Array "" }}
+                <li>
+                  <span class="size-h5 color-subdue">{{ .String "time" }}</span>
+                  <ul class="list-horizontal-text">
+                    {{ if eq (.String "priority") "err" }}
+                      <li class="color-negative">{{ .String "priority" }}</li>
+                    {{ else if eq (.String "priority") "error" }}
+                      <li class="color-negative">{{ .String "priority" }}</li>
+                    {{ else if eq (.String "priority") "crit" }}
+                      <li class="color-negative">{{ .String "priority" }}</li>
+                    {{ else if eq (.String "priority") "fault" }}
+                      <li class="color-negative">{{ .String "priority" }}</li>
+                    {{ else }}
+                      <li>{{ .String "priority" }}</li>
+                    {{ end }}
+                    {{ if .String "unit" }}<li>{{ .String "unit" }}</li>{{ end }}
+                  </ul>
+                  <p class="size-h5">{{ .String "message" }}</p>
+                </li>
+              {{ end }}
+            </ul>
+          '';
         in
         {
           server.port = 5678;
@@ -80,7 +104,7 @@
             name = "System";
             columns = [
               {
-                size = "full";
+                size = "small";
                 widgets = [
                   {
                     type = "custom-api";
@@ -88,7 +112,7 @@
                     cache = "30s";
                     url = "${serviceStatusUrl}/status";
                     template = ''
-                      <ul class="list list-gap-14 list-with-separator">
+                      <ul class="list list-gap-14 list-with-separator collapsible-container" data-collapse-after="10">
                         {{ range .JSON.Array "" }}
                           <li>
                             <span class="size-h3 color-highlight">{{ .String "name" }}</span>
@@ -122,7 +146,7 @@
                     cache = "10s";
                     url = "${serviceStatusUrl}/ports";
                     template = ''
-                      <ul class="list list-gap-10 list-with-separator">
+                      <ul class="list list-gap-10 list-with-separator collapsible-container" data-collapse-after="10">
                         {{ range .JSON.Array "" }}
                           <li>
                             <span class="size-h3 color-highlight">:{{ .Int "port" }}</span>
@@ -134,6 +158,25 @@
                         {{ end }}
                       </ul>
                     '';
+                  }
+                ];
+              }
+              {
+                size = "full";
+                widgets = [
+                  {
+                    type = "custom-api";
+                    title = "Journal (current boot)";
+                    cache = "30s";
+                    url = "${serviceStatusUrl}/journal?boot=current";
+                    template = journalTemplate;
+                  }
+                  {
+                    type = "custom-api";
+                    title = "Journal (previous boot)";
+                    cache = "5m";
+                    url = "${serviceStatusUrl}/journal?boot=previous";
+                    template = journalTemplate;
                   }
                 ];
               }
