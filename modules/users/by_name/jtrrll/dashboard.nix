@@ -135,6 +135,11 @@
                       </ul>
                     '';
                   }
+                ];
+              }
+              {
+                size = "small";
+                widgets = [
                   {
                     type = "custom-api";
                     title = "Listening Ports";
@@ -166,11 +171,6 @@
                     url = "${serviceStatusUrl}/journal?boot=current";
                     template = journalTemplate;
                   }
-                ];
-              }
-              {
-                size = "full";
-                widgets = [
                   {
                     type = "custom-api";
                     title = "Journal (previous boot)";
