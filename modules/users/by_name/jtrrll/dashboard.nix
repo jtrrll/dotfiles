@@ -135,6 +135,25 @@
                       </ul>
                     '';
                   }
+                  {
+                    type = "custom-api";
+                    title = "Listening Ports";
+                    cache = "10s";
+                    url = "${serviceStatusUrl}/ports";
+                    template = ''
+                      <ul class="list list-gap-10 list-with-separator collapsible-container" data-collapse-after="10">
+                        {{ range .JSON.Array "" }}
+                          <li>
+                            <span class="size-h3 color-highlight">:{{ .Int "port" }}</span>
+                            <ul class="list-horizontal-text">
+                              <li>{{ .String "process" }}</li>
+                              <li>pid {{ .String "pid" }}</li>
+                            </ul>
+                          </li>
+                        {{ end }}
+                      </ul>
+                    '';
+                  }
                 ];
               }
               {
@@ -158,30 +177,6 @@
                     cache = "5m";
                     url = "${serviceStatusUrl}/journal?boot=previous";
                     template = journalTemplate;
-                  }
-                ];
-              }
-              {
-                size = "small";
-                widgets = [
-                  {
-                    type = "custom-api";
-                    title = "Listening Ports";
-                    cache = "10s";
-                    url = "${serviceStatusUrl}/ports";
-                    template = ''
-                      <ul class="list list-gap-10 list-with-separator collapsible-container" data-collapse-after="10">
-                        {{ range .JSON.Array "" }}
-                          <li>
-                            <span class="size-h3 color-highlight">:{{ .Int "port" }}</span>
-                            <ul class="list-horizontal-text">
-                              <li>{{ .String "process" }}</li>
-                              <li>pid {{ .String "pid" }}</li>
-                            </ul>
-                          </li>
-                        {{ end }}
-                      </ul>
-                    '';
                   }
                 ];
               }
