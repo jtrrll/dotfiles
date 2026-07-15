@@ -37,7 +37,8 @@ let
           config.checks = lib.mkIf cfg.enable (
             lib.mapAttrs' (
               name: hm:
-              lib.nameValuePair "homeConfigurations:${name}/build" (hm.extendModules { modules = cfg.extraModules; }).activationPackage
+              lib.nameValuePair "homeConfigurations:${name}/build"
+                (hm.extendModules { modules = cfg.extraModules; }).activationPackage
             ) cfg.homeConfigurations
           );
         }
