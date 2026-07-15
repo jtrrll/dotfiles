@@ -64,9 +64,15 @@
           inputs.determinate.nixosModules.default
           inputs.disko.nixosModules.disko
           inputs.home-manager.nixosModules.home-manager
+          inputs.sops-nix.nixosModules.sops
           homeManagerConfig
           nixConfig
           { dotfiles.users.enable = true; }
+          {
+            nixpkgs.overlays = [
+              (_: prev: config.flake.packages.${prev.stdenv.hostPlatform.system} or { })
+            ];
+          }
         ];
         specialArgs = {
           nixosHardwareModules = inputs.nixos-hardware.nixosModules;
@@ -77,9 +83,11 @@
   config.perSystem =
     { lib, ... }:
     {
-      checks = lib.mapAttrs' (
-        name: nixos:
-        lib.nameValuePair "nixosConfigurations:${name}/build" nixos.config.system.build.toplevel
+      checks = lib.concatMapAttrs (
+        hostName: nixos:
+        lib.mapAttrs' (
+          testName: test: lib.nameValuePair "nixosConfigurations:${hostName}/tests/${testName}" test
+        ) nixos.config.tests
       ) config.flake.nixosConfigurations;
     };
 }

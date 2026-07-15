@@ -15,6 +15,7 @@ in
     meta = {
       description = "Zellij plugin: agent status bar with click-to-navigate";
       platforms = lib.platforms.all;
+      sourceProvenance = [ lib.sourceTypes.fromSource ];
     };
 
     src = lib.fileset.toSource {

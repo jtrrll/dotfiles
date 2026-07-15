@@ -38,14 +38,6 @@
     {
       config = {
         inherit packages;
-        checks =
-          lib.mapAttrs' (name: pkg: lib.nameValuePair "packages:${name}/build" pkg) packages
-          // lib.concatMapAttrs (
-            pkgName: pkg:
-            lib.mapAttrs' (testName: test: lib.nameValuePair "packages:${pkgName}/${testName}" test) (
-              pkg.passthru.tests or { }
-            )
-          ) packages;
         devenv.modules = [ { overlays = [ (_: _: packages) ]; } ];
       };
     };

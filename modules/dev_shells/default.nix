@@ -17,6 +17,33 @@
                 ''printf "\033[0;1;36mDEVSHELL ACTIVATED\033[0m\n"''
               ];
 
+              packages = [
+                pkgs.rbw
+                pkgs.sops
+                pkgs.ssh-to-age
+              ];
+
+              scripts.sops-with-key = {
+                description = "Run sops with the global age key pulled from Bitwarden via rbw.";
+                exec = ''
+                  set -euo pipefail
+
+                  bitwarden_entry="dotfiles/sops-age-key"
+
+                  age_key="$(
+                    ${lib.getExe pkgs.rbw} get --full "$bitwarden_entry" \
+                      | ${lib.getExe pkgs.ripgrep} --only-matching --max-count 1 'AGE-SECRET-KEY-[0-9A-Z]+'
+                  )"
+
+                  if [ -z "$age_key" ]; then
+                    printf 'error: no AGE-SECRET-KEY found in Bitwarden entry "%s"\n' "$bitwarden_entry" >&2
+                    exit 1
+                  fi
+
+                  SOPS_AGE_KEY="$age_key" ${lib.getExe pkgs.sops} "$@"
+                '';
+              };
+
               enterTest = ''
                 nix --version
               '';

@@ -182,7 +182,12 @@
             if attrs == [ ] then
               "### `${name}`"
             else
-              "### `${name}`\n\n${lib.concatStringsSep "\n\n" (map (formatAttr name) attrs)}";
+              lib.concatStrings [
+                "### `${name}`\n\n"
+                "<details>\n<summary>Show ${toString (lib.length attrs)}</summary>\n\n"
+                "${lib.concatStringsSep "\n\n" (map (formatAttr name) attrs)}\n\n"
+                "</details>"
+              ];
         in
         lib.concatStringsSep "\n\n" (map formatSection outputNames);
     in

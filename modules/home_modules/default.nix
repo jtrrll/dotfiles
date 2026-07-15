@@ -5,6 +5,7 @@
   ...
 }:
 let
+  mergeWithoutCollisions = builtins.foldl' lib.attrsets.unionOfDisjoint { };
   importModulesFromDirectory =
     dir:
     lib.mapAttrs' (
@@ -16,11 +17,17 @@ let
 in
 {
   config.flake = {
-    homeModules = lib.mapAttrs (_: module: {
-      imports = [ module ];
-      meta = {
-        inherit (config.flake.meta) maintainers;
-      };
-    }) (config.flake.modules.homeManager // (importModulesFromDirectory ./by_name));
+    homeModules =
+      lib.mapAttrs
+        (_: module: {
+          imports = [ module ];
+          meta = {
+            inherit (config.flake.meta) maintainers;
+          };
+        })
+        (mergeWithoutCollisions [
+          config.flake.modules.homeManager
+          (importModulesFromDirectory ./by_name)
+        ]);
   };
 }

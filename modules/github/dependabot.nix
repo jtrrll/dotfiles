@@ -61,6 +61,7 @@
                     "determinate"
                     "disko"
                     "nixos-hardware"
+                    "sops-nix"
                   ];
                   infrastructure.patterns = [
                     "terranix"

@@ -53,3 +53,4 @@ updates:
           - determinate
           - disko
           - nixos-hardware
+          - sops-nix

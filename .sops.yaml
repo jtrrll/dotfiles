@@ -1,0 +1,16 @@
+keys:
+  - &ares age1f5782dgrzyx4hgtkg49s2kuwquqmsazjaravx09sgg76kxf80qnqmmrjjq
+  - &global age1rc792phfcp3e7cec00mju0546x5tnca8mz7p8jm5sr8mgp6y5dfqp42hj0
+creation_rules:
+  - path_regex: modules/hosts/by_name/ares/secrets/[^/]+\.env$
+    format: dotenv
+    key_groups:
+      - age:
+          - *ares
+          - *global
+  - path_regex: modules/hosts/by_name/ares/secrets/[^/]+\.yaml$
+    format: yaml
+    key_groups:
+      - age:
+          - *ares
+          - *global
