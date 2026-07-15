@@ -8,3 +8,9 @@ creation_rules:
       - age:
           - *ares
           - *global
+  - path_regex: modules/hosts/by_name/ares/secrets/[^/]+\.yaml$
+    format: yaml
+    key_groups:
+      - age:
+          - *ares
+          - *global

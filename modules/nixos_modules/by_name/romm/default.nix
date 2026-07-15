@@ -9,8 +9,6 @@ let
     let
       cfg = config.services.romm;
 
-      inherit (config.virtualisation.oci-containers) backend;
-
       # Coerce a freeform settings value to the string form expected by a
       # container environment variable.
       renderValue = value: if lib.isBool value then lib.boolToString value else toString value;
@@ -34,13 +32,8 @@ let
 
         image = lib.mkOption {
           type = lib.types.package;
-          default = pkgs.dockerTools.pullImage {
-            imageName = "rommapp/romm";
-            imageDigest = "sha256:2b7a1714b287f69b081ad2a63bb8c2fa673666a17b2f21322b580b0cd51cb266";
-            hash = "sha256-/aYg4BVUAsRxM/lo9e+Vxlj0kk/Gs9eTXa6hnrCrqLA=";
-            finalImageName = "rommapp/romm";
-            finalImageTag = "4.8.1";
-          };
+          default = pkgs.romm-image;
+          defaultText = lib.literalExpression "pkgs.romm-image";
           description = "RomM container image derivation.";
         };
 
@@ -59,7 +52,7 @@ let
         dataDir = lib.mkOption {
           type = lib.types.path;
           default = "/var/lib/romm";
-          description = "Base directory for RomM persistent data (resources, assets, config, redis, database).";
+          description = "Base directory for RomM persistent data (resources, assets, config, redis).";
         };
 
         libraryDir = lib.mkOption {
@@ -89,6 +82,10 @@ let
           description = "Application log level (LOGLEVEL).";
         };
 
+        # RomM does not ship a database; consumers bring their own (a sibling
+        # container, a native NixOS database service, or an external host).
+        # These options describe how RomM connects to it. The password is a
+        # secret and must be supplied via `environmentFiles` as `DB_PASSWD`.
         database = {
           driver = lib.mkOption {
             type = lib.types.enum [
@@ -97,67 +94,32 @@ let
               "postgresql"
             ];
             default = "mariadb";
-            description = "Database driver (ROMM_DB_DRIVER).";
+            description = "Database driver RomM connects with (ROMM_DB_DRIVER).";
           };
 
           host = lib.mkOption {
             type = lib.types.str;
-            default = "romm-db";
-            description = "Database host (DB_HOST).";
+            example = "romm-db";
+            description = "Host name of the database RomM connects to (DB_HOST).";
           };
 
           port = lib.mkOption {
             type = lib.types.port;
-            default = 3306;
-            description = "Database port (DB_PORT).";
+            default = if cfg.database.driver == "postgresql" then 5432 else 3306;
+            defaultText = lib.literalExpression ''if driver == "postgresql" then 5432 else 3306'';
+            description = "Port of the database RomM connects to (DB_PORT).";
           };
 
           name = lib.mkOption {
             type = lib.types.str;
             default = "romm";
-            description = "Database name (DB_NAME / MARIADB_DATABASE).";
+            description = "Database name RomM connects to (DB_NAME).";
           };
 
           user = lib.mkOption {
             type = lib.types.str;
             default = "romm";
-            description = "Database user (DB_USER / MARIADB_USER).";
-          };
-
-          image = lib.mkOption {
-            type = lib.types.package;
-            default = pkgs.dockerTools.pullImage {
-              imageName = "mariadb";
-              imageDigest = "sha256:3b4dfcc32247eb07adbebec0793afae2a8eafa6860ec523ee56af4d3dec42f7f";
-              hash = "sha256-tACQsoe0sOUjI2J7XaF4yemlgzSO31XidTgur8NKmes=";
-              finalImageName = "mariadb";
-              finalImageTag = "11.4";
-            };
-            description = "Database container image derivation.";
-          };
-
-          environmentFiles = lib.mkOption {
-            type = lib.types.listOf lib.types.path;
-            default = [ ];
-            example = lib.literalExpression ''[ config.sops.secrets."romm/db-env".path ]'';
-            description = ''
-              Environment files for the database container. Must define the
-              database secrets:
-              - `MARIADB_ROOT_PASSWORD`
-              - `MARIADB_PASSWORD` (must match the RomM app's `DB_PASSWD`)
-
-              Provide these via a secrets manager (e.g. sops-nix) so they are
-              never written to the Nix store.
-            '';
-          };
-
-          settings = lib.mkOption {
-            type = settingsType;
-            default = { };
-            description = ''
-              Extra environment variables for the database container, merged
-              over the module-managed defaults.
-            '';
+            description = "Database user RomM connects as (DB_USER).";
           };
         };
 
@@ -188,7 +150,7 @@ let
           description = ''
             Environment files for the RomM application container. Must define
             the application secrets:
-            - `DB_PASSWD` (must match the database's `MARIADB_PASSWORD`)
+            - `DB_PASSWD` (must match the database user's password)
             - `ROMM_AUTH_SECRET_KEY` (generate with `openssl rand -hex 32`)
 
             Optionally, metadata provider credentials such as
@@ -198,6 +160,13 @@ let
             Provide these via a secrets manager (e.g. sops-nix) so they are
             never written to the Nix store.
           '';
+        };
+
+        extraOptions = lib.mkOption {
+          type = lib.types.listOf lib.types.str;
+          default = [ ];
+          example = [ "--network=host" ];
+          description = "Extra command-line options passed to the RomM container runtime.";
         };
 
         metadataProviders = {
@@ -242,81 +211,35 @@ let
           REFRESH_RETROACHIEVEMENTS_CACHE_DAYS = lib.mkDefault cfg.metadataProviders.retroachievements.cacheRefreshDays;
         };
 
-        services.romm.database.settings = {
-          MARIADB_DATABASE = lib.mkDefault cfg.database.name;
-          MARIADB_USER = lib.mkDefault cfg.database.user;
-        };
-
         systemd.tmpfiles.rules = [
           "d ${cfg.dataDir} 0750 root root -"
           "d ${cfg.dataDir}/resources 0750 1000 1000 -"
           "d ${cfg.dataDir}/assets 0750 1000 1000 -"
           "d ${cfg.dataDir}/config 0750 1000 1000 -"
-          "d ${cfg.dataDir}/db 0750 999 999 -"
           "d ${cfg.dataDir}/redis 0750 1000 1000 -"
           "d ${cfg.libraryDir} 0750 1000 1000 -"
         ];
 
-        systemd.services."create-romm-network" = {
-          description = "Create container network for RomM";
-          wantedBy = [ "multi-user.target" ];
-          after = [ "network.target" ];
-          before = [
-            "${backend}-romm.service"
-            "${backend}-romm-db.service"
+        virtualisation.oci-containers.containers.romm = {
+          imageFile = cfg.image;
+          image = "${cfg.image.imageName}:${cfg.image.imageTag}";
+          inherit (cfg) environmentFiles;
+          environment = renderSettings cfg.settings;
+          ports = [ "${toString cfg.port}:8080" ];
+          volumes = [
+            "${cfg.dataDir}/resources:/romm/resources"
+            "${cfg.dataDir}/assets:/romm/assets"
+            "${cfg.dataDir}/config:/romm/config"
+            "${cfg.dataDir}/redis:/redis-data"
+            "${cfg.libraryDir}:/romm/library"
           ];
-          requiredBy = [
-            "${backend}-romm.service"
-            "${backend}-romm-db.service"
-          ];
-          serviceConfig = {
-            Type = "oneshot";
-            RemainAfterExit = true;
-          };
-          script = ''
-            ${backend} network inspect romm-network >/dev/null 2>&1 || \
-              ${backend} network create romm-network
-          '';
-          path =
-            if backend == "docker" then
-              [ config.virtualisation.docker.package ]
-            else
-              [ config.virtualisation.podman.package ];
-        };
-
-        virtualisation.oci-containers.containers = {
-          romm = {
-            imageFile = cfg.image;
-            image = "${cfg.image.imageName}:${cfg.image.imageTag}";
-            inherit (cfg) environmentFiles;
-            environment = renderSettings cfg.settings;
-            ports = [ "${toString cfg.port}:8080" ];
-            volumes = [
-              "${cfg.dataDir}/resources:/romm/resources"
-              "${cfg.dataDir}/assets:/romm/assets"
-              "${cfg.dataDir}/config:/romm/config"
-              "${cfg.dataDir}/redis:/redis-data"
-              "${cfg.libraryDir}:/romm/library"
-            ];
-            dependsOn = [ "romm-db" ];
-            extraOptions = [ "--network=romm-network" ];
-          };
-
-          romm-db = {
-            imageFile = cfg.database.image;
-            image = "${cfg.database.image.imageName}:${cfg.database.image.imageTag}";
-            environmentFiles = cfg.database.environmentFiles;
-            environment = renderSettings cfg.database.settings;
-            volumes = [
-              "${cfg.dataDir}/db:/var/lib/mysql"
-            ];
-            extraOptions = [ "--network=romm-network" ];
-          };
+          inherit (cfg) extraOptions;
         };
 
         networking.firewall.allowedTCPPorts = lib.mkIf cfg.openFirewall [ cfg.port ];
       };
     };
+
   moduleTests =
     {
       config,
@@ -331,7 +254,7 @@ let
       tests."romm/http" = lib.mkIf cfg.enable (
         lib.addMetaAttrs
           {
-            description = "Verify RomM containers start and serve HTTP";
+            description = "Verify RomM starts against an external database and serves HTTP";
           }
           (
             pkgs.testers.runNixOSTest {
@@ -339,32 +262,46 @@ let
               globalTimeout = 60 * 3;
               extraBaseModules.imports = [ module ];
 
-              nodes.server = {
-                virtualisation = {
-                  diskSize = 1024 * 4;
-                  podman.enable = true;
-                  oci-containers.backend = "podman";
-                };
+              nodes.server =
+                { pkgs, ... }:
+                {
+                  virtualisation = {
+                    diskSize = 1024 * 4;
+                    podman.enable = true;
+                    oci-containers.backend = "podman";
+                  };
 
-                services.romm = {
-                  enable = true;
-                  environmentFiles = [
-                    (pkgs.writeText "romm-app-env" ''
-                      DB_PASSWD=testpassword
-                      ROMM_AUTH_SECRET_KEY=0000000000000000000000000000000000000000000000000000000000000000
-                    '')
-                  ];
-                  database.environmentFiles = [
-                    (pkgs.writeText "romm-db-env" ''
-                      MARIADB_PASSWORD=testpassword
-                      MARIADB_ROOT_PASSWORD=rootpassword
-                    '')
-                  ];
+                  # Bring-your-own database: a native MariaDB on the host.
+                  services.mysql = {
+                    enable = true;
+                    package = pkgs.mariadb;
+                    initialDatabases = [ { name = "romm"; } ];
+                    initialScript = pkgs.writeText "romm-db-init" ''
+                      CREATE USER IF NOT EXISTS 'romm'@'%' IDENTIFIED BY 'testpassword';
+                      GRANT ALL PRIVILEGES ON romm.* TO 'romm'@'%';
+                      FLUSH PRIVILEGES;
+                    '';
+                  };
+
+                  networking.firewall.allowedTCPPorts = [ 3306 ];
+
+                  services.romm = {
+                    enable = true;
+                    # Reach the host's MariaDB from inside the container.
+                    extraOptions = [ "--network=host" ];
+                    database.host = "127.0.0.1";
+                    environmentFiles = [
+                      (pkgs.writeText "romm-app-env" ''
+                        DB_PASSWD=testpassword
+                        ROMM_AUTH_SECRET_KEY=0000000000000000000000000000000000000000000000000000000000000000
+                      '')
+                    ];
+                  };
                 };
-              };
 
               testScript = ''
-                server.wait_for_unit("podman-romm-db.service", timeout=90)
+                server.wait_for_unit("mysql.service", timeout=90)
+                server.wait_for_open_port(3306, timeout=90)
                 server.wait_for_unit("podman-romm.service", timeout=90)
                 server.wait_for_open_port(8080, timeout=90)
                 server.succeed("curl -sf http://localhost:8080")

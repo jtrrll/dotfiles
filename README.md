@@ -23,6 +23,9 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 
 ### `apps`
 
+<details>
+<summary>Show 4</summary>
+
 - `default` - Activates a home or NixOS configuration
 
 - `github-tf` - Manages GitHub repository with OpenTofu
@@ -31,7 +34,12 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 
 - `write-files` - Write all configured files to their paths
 
+</details>
+
 ### `checks`
+
+<details>
+<summary>Show 63</summary>
 
 - `files:.github/CODEOWNERS`
 
@@ -59,83 +67,153 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 
 - `homeConfigurations:jtrrll/build`
 
-- `metadata:packages`
-
 - `nixosConfigurations:ares/build`
+
+- `nixosConfigurations:ares/romm/http`
+
+- `nixosConfigurations:ares/romm/postgresql`
 
 - `nixosConfigurations:athena/build`
 
 - `packages:activate/build`
 
+- `packages:activate/metadata`
+
 - `packages:bonsai/build`
+
+- `packages:bonsai/metadata`
 
 - `packages:crt-shader/build`
 
+- `packages:crt-shader/metadata`
+
 - `packages:ds-shader/build`
+
+- `packages:ds-shader/metadata`
 
 - `packages:edit/build`
 
+- `packages:edit/metadata`
+
 - `packages:gba-shader/build`
+
+- `packages:gba-shader/metadata`
 
 - `packages:gbc-shader/build`
 
+- `packages:gbc-shader/metadata`
+
 - `packages:git-clone-with-worktrees/build`
+
+- `packages:git-clone-with-worktrees/metadata`
 
 - `packages:git-ezswitch/build`
 
+- `packages:git-ezswitch/metadata`
+
 - `packages:git-open/build`
+
+- `packages:git-open/metadata`
 
 - `packages:git-trim/build`
 
+- `packages:git-trim/metadata`
+
 - `packages:keep-awake/build`
+
+- `packages:keep-awake/metadata`
 
 - `packages:matrix/build`
 
+- `packages:matrix/metadata`
+
 - `packages:neovim/build`
 
-- `packages:neovim/nixvim-check`
+- `packages:neovim/metadata`
 
-- `packages:neovim/version`
+- `packages:neovim/tests/nixvim-check`
+
+- `packages:neovim/tests/version`
 
 - `packages:psp-shader/build`
 
+- `packages:psp-shader/metadata`
+
+- `packages:romm-image/build`
+
+- `packages:romm-image/metadata`
+
 - `packages:service-status/build`
 
-- `packages:service-status/journal-endpoint`
+- `packages:service-status/metadata`
 
-- `packages:service-status/ports-endpoint`
+- `packages:service-status/tests/journal-endpoint`
 
-- `packages:service-status/status-endpoint`
+- `packages:service-status/tests/ports-endpoint`
 
-- `packages:service-status/version`
+- `packages:service-status/tests/status-endpoint`
+
+- `packages:service-status/tests/version`
 
 - `packages:splash/build`
 
+- `packages:splash/metadata`
+
 - `packages:zellij-agent-handler/build`
 
-- `packages:zellij-agent-handler/is-valid-wasm`
+- `packages:zellij-agent-handler/metadata`
+
+- `packages:zellij-agent-handler/tests/is-valid-wasm`
 
 - `treefmt`
 
+</details>
+
 ### `devShells`
+
+<details>
+<summary>Show 1</summary>
 
 - `default`
 
+</details>
+
 ### `flakeModules`
+
+<details>
+<summary>Show 7</summary>
 
 - `default`
 
 - `flakeMetadata`
 
+- `homeConfigurationBuildChecks`
+
+- `nixosConfigurationBuildChecks`
+
+- `packageBuildChecks`
+
 - `packageMetadataChecks`
+
+- `packagePassthruTestsChecks`
+
+</details>
 
 ### `formatter`
 
 ### `homeConfigurations`
 
+<details>
+<summary>Show 1</summary>
+
 - `jtrrll` - Jackson Terrill's home configuration
 
+</details>
+
 ### `homeModules`
+
+<details>
+<summary>Show 8</summary>
 
 - `bonsai`
   - `programs.bonsai.enable` - Whether to enable a bonsai tree screensaver. (default: `false`)
@@ -165,31 +243,39 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
   - `programs.snekcheck.enable` - Whether to enable snekcheck. (default: `false`)
   - `programs.snekcheck.package` - The snekcheck package to use (default: `<derivation snekcheck-0.1.0>`)
 
+</details>
+
 ### `nixosConfigurations`
+
+<details>
+<summary>Show 2</summary>
 
 - `ares` - jtrrll's gaming/workstation desktop
 
 - `athena` - jtrrll's personal laptop
 
+</details>
+
 ### `nixosModules`
+
+<details>
+<summary>Show 4</summary>
 
 - `meta`
   - `meta.description` - A short description of this configuration. (default: `""`)
 
 - `romm`
   - `services.romm.baseUrl` - Public URL of this RomM instance (ROMM_BASE_URL). (default: `"http://0.0.0.0"`)
-  - `services.romm.dataDir` - Base directory for RomM persistent data (resources, assets, config, redis, database). (default: `"/var/lib/romm"`)
-  - `services.romm.database.driver` - Database driver (ROMM_DB_DRIVER). (default: `"mariadb"`)
-  - `services.romm.database.environmentFiles` - Environment files for the database container. Must define the (default: `[ ]`)
-  - `services.romm.database.host` - Database host (DB_HOST). (default: `"romm-db"`)
-  - `services.romm.database.image` - Database container image derivation. (default: `<derivation docker-image-mariadb-11.4.tar>`)
-  - `services.romm.database.name` - Database name (DB_NAME / MARIADB_DATABASE). (default: `"romm"`)
-  - `services.romm.database.port` - Database port (DB_PORT). (default: `3306`)
-  - `services.romm.database.settings` - Extra environment variables for the database container, merged (default: `{ }`)
-  - `services.romm.database.user` - Database user (DB_USER / MARIADB_USER). (default: `"romm"`)
+  - `services.romm.dataDir` - Base directory for RomM persistent data (resources, assets, config, redis). (default: `"/var/lib/romm"`)
+  - `services.romm.database.driver` - Database driver RomM connects with (ROMM_DB_DRIVER). (default: `"mariadb"`)
+  - `services.romm.database.host` - Host name of the database RomM connects to (DB_HOST).
+  - `services.romm.database.name` - Database name RomM connects to (DB_NAME). (default: `"romm"`)
+  - `services.romm.database.port` - Port of the database RomM connects to (DB_PORT). (default: `if driver == "postgresql" then 5432 else 3306`)
+  - `services.romm.database.user` - Database user RomM connects as (DB_USER). (default: `"romm"`)
   - `services.romm.enable` - Whether to enable RomM, a self-hosted ROM manager and player. (default: `false`)
   - `services.romm.environmentFiles` - Environment files for the RomM application container. Must define (default: `[ ]`)
-  - `services.romm.image` - RomM container image derivation. (default: `<derivation docker-image-rommapp-romm-4.8.1.tar>`)
+  - `services.romm.extraOptions` - Extra command-line options passed to the RomM container runtime. (default: `[ ]`)
+  - `services.romm.image` - RomM container image derivation. (default: `pkgs.romm-image`)
   - `services.romm.libraryDir` - Directory containing ROMs and BIOS files. (default: `"/var/lib/romm/library"`)
   - `services.romm.logLevel` - Application log level (LOGLEVEL). (default: `"INFO"`)
   - `services.romm.metadataProviders.flashpoint.enable` - Whether to enable the Flashpoint metadata provider (FLASHPOINT_API_ENABLED). (default: `false`)
@@ -209,7 +295,12 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 - `users`
   - `dotfiles.users.enable` - Whether to enable user configurations. (default: `false`)
 
+</details>
+
 ### `packages`
+
+<details>
+<summary>Show 19</summary>
 
 - `activate` - Activates a home or NixOS configuration
 
@@ -241,8 +332,12 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 
 - `psp-shader` - A PSP shader that replicates original hardware
 
+- `romm-image` - Container image for RomM, a self-hosted ROM manager and player
+
 - `service-status` - Serves managed background service status over HTTP
 
 - `splash` - Prints a splash screen
 
 - `zellij-agent-handler` - Zellij plugin: agent status bar with click-to-navigate
+
+</details>

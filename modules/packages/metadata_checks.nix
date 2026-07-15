@@ -39,7 +39,7 @@ let
             };
           };
 
-          config.checks."metadata:packages" = lib.mkIf cfg.enable (
+          config.checks = lib.mkIf cfg.enable (
             let
               checkPackageMetadata =
                 { meta, name, ... }:
@@ -64,20 +64,27 @@ let
                       ${lib.concatMapStringsSep "\n" ({ error, ... }: "- ${error}") result}
                     '';
                   };
-              checkFlake = lib.mapAttrsToList (_: checkPackageMetadata) cfg.packages;
-              failedPackages = lib.filter (result: !result.success) checkFlake;
             in
-            pkgs.runCommand "check-metadata" { } (
+            lib.mapAttrs' (
+              name: package:
               let
-                failedCount = lib.length failedPackages;
+                result = checkPackageMetadata {
+                  inherit (package) meta;
+                  inherit name;
+                };
               in
-              if failedCount > 0 then
-                throw "\n${toString failedCount} package(s) failed metadata validation:\n${
-                  lib.concatMapStringsSep "\n" (result: result.error) failedPackages
-                }"
-              else
-                "echo 'All packages passed metadata validation' > $out"
-            )
+              lib.nameValuePair "packages:${name}/metadata" (
+                pkgs.runCommand "check-metadata-${name}" { } (
+                  if result.success then
+                    "echo 'Package ${name} passed metadata validation' > $out"
+                  else
+                    ''
+                      echo ${lib.escapeShellArg result.error} >&2
+                      exit 1
+                    ''
+                )
+              )
+            ) cfg.packages
           );
         }
       );
@@ -284,6 +291,32 @@ in
               {
                 success = false;
                 error = "The supported platforms must be a list";
+              }
+          )
+          (
+            meta:
+            if meta ? sourceProvenance then
+              {
+                success = true;
+                error = null;
+              }
+            else
+              {
+                success = false;
+                error = "The source provenance must be set";
+              }
+          )
+          (
+            meta:
+            if lib.isList (meta.sourceProvenance or [ ]) then
+              {
+                success = true;
+                error = null;
+              }
+            else
+              {
+                success = false;
+                error = "The source provenance must be a list";
               }
           )
         ];
