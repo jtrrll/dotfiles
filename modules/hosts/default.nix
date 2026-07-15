@@ -86,7 +86,7 @@
       checks = lib.concatMapAttrs (
         hostName: nixos:
         lib.mapAttrs' (
-          testName: test: lib.nameValuePair "nixosConfigurations:${hostName}/${testName}" test
+          testName: test: lib.nameValuePair "nixosConfigurations:${hostName}/tests/${testName}" test
         ) nixos.config.tests
       ) config.flake.nixosConfigurations;
     };

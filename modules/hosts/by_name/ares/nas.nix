@@ -102,9 +102,7 @@ in
     # Music automation
     lidarr.enable = true;
 
-    # ROM manager. Uses the host's native PostgreSQL (see below) rather than a
-    # bundled database container. The container shares the host network so it
-    # can reach PostgreSQL on 127.0.0.1.
+    # ROM manager
     romm = {
       enable = true;
       extraOptions = [ "--network=host" ];
@@ -115,7 +113,7 @@ in
       environmentFiles = [ config.sops.templates."romm-app-env".path ];
     };
 
-    # PostgreSQL database backing RomM.
+    # SQL database
     postgresql = {
       enable = true;
       ensureDatabases = [ "romm" ];
@@ -125,8 +123,6 @@ in
           ensureDBOwnership = true;
         }
       ];
-      # Allow the RomM container (connecting over TCP via --network=host) to
-      # authenticate with a password.
       authentication = lib.mkAfter ''
         host romm romm 127.0.0.1/32 scram-sha-256
         host romm romm ::1/128 scram-sha-256
@@ -181,8 +177,6 @@ in
   #   ${lidarrPostImport}
   environment.etc."lidarr/post-import".source = lidarrPostImport;
 
-  # RomM secrets. A single source of truth (romm.yaml) holds the raw database
-  # password and auth secret key. Edit with `sops-with-key <file>`.
   sops.secrets = {
     "romm/db-password" = {
       key = "db-password";
@@ -194,8 +188,6 @@ in
     };
   };
 
-  # RomM's application env file, rendered at runtime from the decrypted
-  # secrets so the values never touch the Nix store.
   sops.templates."romm-app-env".content = ''
     DB_PASSWD=${config.sops.placeholder."romm/db-password"}
     ROMM_AUTH_SECRET_KEY=${config.sops.placeholder."romm/auth-secret-key"}

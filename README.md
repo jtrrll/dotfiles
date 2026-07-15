@@ -69,9 +69,9 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 
 - `nixosConfigurations:ares/build`
 
-- `nixosConfigurations:ares/romm/http`
+- `nixosConfigurations:ares/tests/romm/http`
 
-- `nixosConfigurations:ares/romm/postgresql`
+- `nixosConfigurations:ares/tests/romm/postgresql`
 
 - `nixosConfigurations:athena/build`
 
