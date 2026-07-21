@@ -34,6 +34,10 @@
       inputs.nixpkgs.follows = "home-manager/nixpkgs";
       url = "github:nix-community/stylix/master";
     };
+    vicinae = {
+      inputs.nixpkgs.follows = "home-manager/nixpkgs";
+      url = "github:vicinaehq/vicinae/main";
+    };
     # keep-sorted end
 
     ### NixOS dependencies ###
