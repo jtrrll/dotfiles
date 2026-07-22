@@ -17,14 +17,6 @@
           applications = 16.5;
         };
       };
-      # Disable stylix's generic base16->Zed template (tinted-zed): it
-      # reuses base03/base04 across ~20 unrelated chrome roles (muted
-      # text, disabled icons, scrollbar thumbs, line numbers, etc.), so
-      # remapping them for comment color paints all of that chrome the
-      # same color. It also uses base00 (the scheme's darkest gray) for
-      # every background role, which is much darker than real VS Code
-      # Dark Modern's editor background. A custom theme is defined below
-      # instead, giving each role its own independent slot.
       stylix.targets.zed.colors.enable = false;
     })
     (lib.mkIf config.programs.zed-editor.enable {
@@ -95,6 +87,11 @@
                   "editor.line_number" = c.base03;
                   "editor.active_line_number" = c.base05;
                   "editor.active_line.background" = c.base01;
+                  # Defaults to Zed's hardcoded green().dark_alpha().step_6()
+                  # if unset (crates/theme/src/default_colors.rs), which is
+                  # why matching-bracket highlights were green regardless of
+                  # the active theme.
+                  "editor.document_highlight.bracket_background" = "${c.base0D}26";
                   text = c.base05;
                   "text.muted" = c.base04;
                   "text.accent" = c.base0D;
@@ -136,25 +133,18 @@
                   error = c.base08;
                   warning = c.base0A;
                   info = c.base0D;
-                  # `hint` doubles as the git-blame inline text color in
-                  # Zed's own git_ui crate (blame_ui.rs uses
-                  # cx.theme().status().hint for the muted blame label,
-                  # not text_muted), so keep it a neutral gray here rather
-                  # than an accent color, even though it's semantically
-                  # "diagnostic hint" everywhere else.
                   hint = c.base04;
+                  modified = c.base0A;
+                  created = c.base0B;
+                  deleted = c.base08;
+                  conflict = c.base0E;
+                  ignored = c.base04;
                   "version_control.added" = c.base0B;
                   "version_control.modified" = c.base0A;
                   "version_control.deleted" = c.base08;
-                  # Only the local player (index 0) is overridden; Zed
-                  # ignores this list entirely (keeping its own built-in
-                  # 8-color palette) if it's empty, so there's no need to
-                  # restate the collaborator colors just to change our own
-                  # cursor. See merge_player_colors in
-                  # crates/theme_settings/src/theme_settings.rs.
                   players = [
                     {
-                      cursor = c.base05; # local cursor: text color/white
+                      cursor = c.base05;
                       background = null;
                       selection = "${c.base05}33";
                     }
