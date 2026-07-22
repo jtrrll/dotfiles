@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  options,
   pkgs,
   ...
 }:
@@ -9,6 +10,36 @@
     {
       programs.zed-editor.enable = lib.mkDefault true;
     }
+    (lib.mkIf (options ? stylix) {
+      stylix.targets.zed.fonts.override = {
+        sizes = {
+          terminal = 15;
+          applications = 16.5;
+        };
+      };
+      stylix.targets.zed.colors.override =
+        let
+          inherit (config.lib.stylix.colors)
+            base08
+            base09
+            base0A
+            base0B
+            base0C
+            base0D
+            ;
+        in
+        {
+          "base03-hex" = base0B; # comment/hint/predictive -> VS Code comment green
+          "base04-hex" = base0B; # comment.doc -> VS Code comment green
+          "base08-hex" = base0C; # property/variable/tag -> VS Code variable cyan
+          "base09-hex" = base0D; # boolean/constant/number/attribute -> VS Code boolean/constant blue
+          "base0A-hex" = base0C; # type/namespace/emphasis.strong -> VS Code type teal (#4ec9b0, no exact slot; cyan closest)
+          "base0B-hex" = base09; # string/string.special.symbol -> VS Code string orange
+          "base0C-hex" = base08; # string.escape/regex/special/enum -> VS Code regex/special salmon (#d16969, no exact slot; red closest)
+          "base0D-hex" = base0A; # function/constructor/title -> VS Code function yellow
+          "base0E-hex" = base0D; # keyword/emphasis/selector -> VS Code keyword blue
+        };
+    })
     (lib.mkIf config.programs.zed-editor.enable {
       fonts.fontconfig.enable = true;
       home = {
