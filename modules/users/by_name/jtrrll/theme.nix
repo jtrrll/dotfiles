@@ -61,7 +61,7 @@ in
         };
         image = lib.mkDefault (config.lib.stylix.pixel "base0D");
         opacity = {
-          popups = 0.95;
+          popups = 0.7;
         };
       };
     })
