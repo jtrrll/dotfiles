@@ -1,5 +1,6 @@
 {
   lib,
+  options,
   pkgs,
   ...
 }:
@@ -50,6 +51,11 @@
           command = "vicinae toggle";
           binding = "<Super>space";
         };
+      };
+    })
+    (lib.mkIf (options ? stylix) {
+      stylix.targets.vicinae.opacity.override = {
+        popups = 0.95;
       };
     })
   ];
