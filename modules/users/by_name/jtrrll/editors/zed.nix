@@ -1,7 +1,6 @@
 {
   config,
   lib,
-  options,
   pkgs,
   ...
 }:
@@ -50,13 +49,8 @@
               "zig"
               # keep-sorted end
             ];
-            ui = [
-              # keep-sorted start
-              "vscode-dark-modern"
-              # keep-sorted end
-            ];
           in
-          lib.sort (a: b: a < b) languages ++ ui;
+          lib.sort (a: b: a < b) languages;
         extraPackages = [
           # keep-sorted start
           pkgs.netcat # required by GDScript extension
@@ -115,15 +109,9 @@
           vertical_scroll_margin = 8;
           vim_mode = true;
 
-          theme = "VSCode Dark Modern";
-          buffer_font_family = "Hack Nerd Font Mono";
           buffer_font_features.calt = false; # Disable ligatures
-          buffer_font_size = 20;
-          ui_font_family = "IBM Plex Sans";
-          ui_font_size = 22;
         };
       };
     })
-    (lib.mkIf (options ? stylix) { stylix.targets.zed.enable = false; })
   ];
 }

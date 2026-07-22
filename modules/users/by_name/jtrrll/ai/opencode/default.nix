@@ -1,7 +1,6 @@
 {
   config,
   lib,
-  options,
   pkgs,
   ...
 }:
@@ -78,7 +77,6 @@
             };
             share = "disabled";
           };
-          tui.theme = "system";
         };
       };
       xdg.configFile."opencode/plugins/zellij.ts".source =
@@ -94,6 +92,5 @@
         };
       };
     })
-    (lib.mkIf (options ? stylix) { stylix.targets.opencode.enable = false; })
   ];
 }

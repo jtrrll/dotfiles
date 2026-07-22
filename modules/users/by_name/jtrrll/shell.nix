@@ -1,7 +1,6 @@
 {
   config,
   lib,
-  options,
   ...
 }:
 {
@@ -93,6 +92,5 @@
         };
       };
     })
-    (lib.mkIf (options ? stylix) { stylix.targets.fish.enable = false; })
   ];
 }
