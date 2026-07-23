@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  options,
   pkgs,
   ...
 }:
@@ -77,10 +78,7 @@
             };
             share = "disabled";
           };
-          themes.stylix.theme.background = lib.mkForce {
-            dark = "none";
-            light = "none";
-          };
+          tui.theme = "system";
         };
       };
       xdg.configFile."opencode/plugins/zellij.ts".source =
@@ -96,5 +94,6 @@
         };
       };
     })
+    (lib.mkIf (options ? stylix) { stylix.targets.opencode.colors.enable = false; })
   ];
 }
