@@ -67,17 +67,17 @@
           # keep-sorted end
         ];
 
-        themes."jtrrll custom" = lib.mkIf (options ? stylix) (
+        themes."stylix-override" = lib.mkIf (options ? stylix) (
           let
             c = config.lib.stylix.colors.withHashtag;
           in
           {
             "$schema" = "https://zed.dev/schema/themes/v0.2.0.json";
-            name = "jtrrll custom";
+            name = "stylix-override";
             author = "jtrrll";
             themes = [
               {
-                name = "jtrrll custom";
+                name = "stylix-override";
                 appearance = "dark";
                 style = {
                   background = c.base02;
@@ -87,17 +87,13 @@
                   "editor.line_number" = c.base03;
                   "editor.active_line_number" = c.base05;
                   "editor.active_line.background" = c.base01;
-                  # Defaults to Zed's hardcoded green().dark_alpha().step_6()
-                  # if unset (crates/theme/src/default_colors.rs), which is
-                  # why matching-bracket highlights were green regardless of
-                  # the active theme.
                   "editor.document_highlight.bracket_background" = "${c.base0D}26";
                   text = c.base05;
                   "text.muted" = c.base04;
                   "text.accent" = c.base0D;
                   "text.placeholder" = c.base03;
                   "text.disabled" = c.base03;
-                  border = "${c.base03}66"; # reduced opacity: base03 at full strength reads as a bright outline against the dark background
+                  border = "${c.base03}66";
                   "border.variant" = c.base01;
                   "border.focused" = c.base0D;
                   "border.selected" = "${c.base03}66";
@@ -238,7 +234,7 @@
             args = [ "acp" ];
           };
 
-          theme = lib.mkIf (options ? stylix) "jtrrll custom";
+          theme = lib.mkIf (options ? stylix) "stylix-override";
 
           file_scan_exclusions = [
             # keep-sorted start

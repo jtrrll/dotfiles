@@ -77,6 +77,10 @@
             };
             share = "disabled";
           };
+          themes.stylix.theme.background = lib.mkForce {
+            dark = "none";
+            light = "none";
+          };
         };
       };
       xdg.configFile."opencode/plugins/zellij.ts".source =
