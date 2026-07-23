@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  options,
   pkgs,
   ...
 }:
@@ -9,6 +10,7 @@
     { programs.bat.enable = lib.mkDefault true; }
     (lib.mkIf config.programs.bat.enable {
       programs.bat = {
+        config.theme = "Visual Studio Dark+";
         extraPackages = with pkgs.bat-extras; [
           batdiff
           batgrep
@@ -16,5 +18,6 @@
         ];
       };
     })
+    (lib.mkIf (options ? stylix) { stylix.targets.bat.colors.enable = false; })
   ];
 }

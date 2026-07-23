@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  options,
   pkgs,
   ...
 }:
@@ -21,10 +22,34 @@
           auto-update = "off";
           font-family = "Hack Nerd Font Mono";
           font-thicken = true;
+          theme = "VS Code";
           window-padding-x = 8;
           window-padding-y = 8;
         };
+        themes."VS Code" = {
+          palette = [
+            "0=#181818"
+            "1=#f44747"
+            "2=#6a9955"
+            "3=#dcdcaa"
+            "4=#569cd6"
+            "5=#c586c0"
+            "6=#9cdcfe"
+            "7=#cccccc"
+            "8=#6e7681"
+            "9=#ce9178"
+            "10=#4ec9b0"
+            "11=#dcdcaa"
+            "12=#569cd6"
+            "13=#c586c0"
+            "14=#9cdcfe"
+            "15=#e5e5e5"
+          ];
+          background = "#1f1f1f";
+          foreground = "#cccccc";
+        };
       };
     })
+    (lib.mkIf (options ? stylix) { stylix.targets.ghostty.colors.enable = false; })
   ];
 }

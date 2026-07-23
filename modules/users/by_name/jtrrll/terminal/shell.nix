@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  options,
   ...
 }:
 {
@@ -56,9 +57,6 @@
     })
     (lib.mkIf config.programs.fish.enable {
       programs.fish = {
-        shellInit = ''
-          set -gx BASE16_SHELL_SET_BACKGROUND false
-        '';
         functions = {
           fish_greeting.body = "";
           fish_prompt.body = ''
@@ -95,5 +93,6 @@
         };
       };
     })
+    (lib.mkIf (options ? stylix) { stylix.targets.fish.colors.enable = false; })
   ];
 }

@@ -17,6 +17,7 @@
       programs.zellij.settings = {
         show_release_notes = false;
         show_startup_tips = false;
+        theme = "ansi";
         ui.pane_frames.rounded_corners = true;
       };
     })
