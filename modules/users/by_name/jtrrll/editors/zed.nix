@@ -10,6 +10,17 @@
     {
       programs.zed-editor.enable = lib.mkDefault true;
     }
+    (lib.mkIf (options ? stylix) {
+      stylix.targets.zed = {
+        colors.enable = false;
+        fonts.override = {
+          sizes = {
+            terminal = 15;
+            applications = 16.5;
+          };
+        };
+      };
+    })
     (lib.mkIf config.programs.zed-editor.enable {
       fonts.fontconfig.enable = true;
       home = {
@@ -56,7 +67,7 @@
               # keep-sorted end
             ];
           in
-          lib.sort (a: b: a < b) languages ++ ui;
+          lib.sort (a: b: a < b) (languages ++ ui);
         extraPackages = [
           # keep-sorted start
           pkgs.netcat # required by GDScript extension
@@ -68,6 +79,9 @@
             command = "opencode";
             args = [ "acp" ];
           };
+
+          theme = "VSCode Dark Modern";
+          buffer_font_features.calt = false; # Disable ligatures
 
           file_scan_exclusions = [
             # keep-sorted start
@@ -114,16 +128,8 @@
           ];
           vertical_scroll_margin = 8;
           vim_mode = true;
-
-          theme = "VSCode Dark Modern";
-          buffer_font_family = "Hack Nerd Font Mono";
-          buffer_font_features.calt = false; # Disable ligatures
-          buffer_font_size = 20;
-          ui_font_family = "IBM Plex Sans";
-          ui_font_size = 22;
         };
       };
     })
-    (lib.mkIf (options ? stylix) { stylix.targets.zed.enable = false; })
   ];
 }

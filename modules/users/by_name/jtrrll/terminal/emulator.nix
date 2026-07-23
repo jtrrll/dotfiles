@@ -1,6 +1,5 @@
 {
   config,
-  constants,
   lib,
   options,
   pkgs,
@@ -27,30 +26,30 @@
           window-padding-x = 8;
           window-padding-y = 8;
         };
-        themes."VS Code" = with constants.COLOR; {
+        themes."VS Code" = {
           palette = [
-            "0=${BLACK}"
-            "1=${RED}"
-            "2=${GREEN}"
-            "3=${YELLOW}"
-            "4=${BLUE}"
-            "5=${PINK}"
-            "6=${CYAN}"
-            "7=${SILVER}"
-            "8=${GRAY}"
-            "9=${ORANGE}"
-            "10=${TEAL}"
-            "11=${YELLOW}"
-            "12=${BLUE}"
-            "13=${PINK}"
-            "14=${CYAN}"
-            "15=${WHITE}"
+            "0=#181818"
+            "1=#f44747"
+            "2=#6a9955"
+            "3=#dcdcaa"
+            "4=#569cd6"
+            "5=#c586c0"
+            "6=#9cdcfe"
+            "7=#cccccc"
+            "8=#6e7681"
+            "9=#ce9178"
+            "10=#4ec9b0"
+            "11=#dcdcaa"
+            "12=#569cd6"
+            "13=#c586c0"
+            "14=#9cdcfe"
+            "15=#e5e5e5"
           ];
-          background = DARK_GRAY;
-          foreground = SILVER;
+          background = "#1f1f1f";
+          foreground = "#cccccc";
         };
       };
     })
-    (lib.mkIf (options ? stylix) { stylix.targets.ghostty.enable = false; })
+    (lib.mkIf (options ? stylix) { stylix.targets.ghostty.colors.enable = false; })
   ];
 }

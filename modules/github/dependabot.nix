@@ -56,6 +56,7 @@
                     "nixvim"
                     "snekcheck"
                     "stylix"
+                    "vicinae"
                   ];
                   nixos.patterns = [
                     "determinate"

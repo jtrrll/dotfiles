@@ -20,5 +20,9 @@
       stateVersion = "23.11";
     };
     xdg.enable = lib.mkDefault true;
+    targets.darwin = lib.mkIf pkgs.stdenv.isDarwin {
+      copyApps.enable = true;
+      linkApps.enable = false;
+    };
   };
 }

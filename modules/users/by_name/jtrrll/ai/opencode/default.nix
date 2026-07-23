@@ -94,6 +94,6 @@
         };
       };
     })
-    (lib.mkIf (options ? stylix) { stylix.targets.opencode.enable = false; })
+    (lib.mkIf (options ? stylix) { stylix.targets.opencode.colors.enable = false; })
   ];
 }

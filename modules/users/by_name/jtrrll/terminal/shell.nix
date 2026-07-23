@@ -93,6 +93,6 @@
         };
       };
     })
-    (lib.mkIf (options ? stylix) { stylix.targets.fish.enable = false; })
+    (lib.mkIf (options ? stylix) { stylix.targets.fish.colors.enable = false; })
   ];
 }

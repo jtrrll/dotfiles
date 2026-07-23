@@ -18,6 +18,6 @@
         ];
       };
     })
-    (lib.mkIf (options ? stylix) { stylix.targets.bat.enable = false; })
+    (lib.mkIf (options ? stylix) { stylix.targets.bat.colors.enable = false; })
   ];
 }

@@ -7,8 +7,9 @@
 {
   config.flake =
     let
-      sharedModules = [
+      sharedModules = (lib.attrValues config.flake.homeModules) ++ [
         inputs.stylix.homeModules.stylix
+        inputs.vicinae.homeManagerModules.default
       ];
       importUsersFromDirectory =
         dir:
@@ -32,18 +33,15 @@
         lib.mapAttrs (
           _: userConfig:
           inputs.home-manager.lib.homeManagerConfiguration {
-            modules =
-              lib.attrValues config.flake.homeModules
-              ++ sharedModules
-              ++ [
-                userConfig
-                {
-                  home = {
-                    homeDirectory = HOME;
-                    username = USER;
-                  };
-                }
-              ];
+            modules = sharedModules ++ [
+              userConfig
+              {
+                home = {
+                  homeDirectory = HOME;
+                  username = USER;
+                };
+              }
+            ];
             pkgs = inputs.home-manager.inputs.nixpkgs.legacyPackages.${SYSTEM}.extend (
               _: _: config.flake.packages.${SYSTEM}
             );

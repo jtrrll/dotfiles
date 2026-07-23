@@ -45,6 +45,7 @@ updates:
           - nixvim
           - snekcheck
           - stylix
+          - vicinae
       infrastructure:
         patterns:
           - terranix
