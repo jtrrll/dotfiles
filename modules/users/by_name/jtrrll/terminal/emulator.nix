@@ -14,6 +14,10 @@
         packages = [ pkgs.nerd-fonts.hack ];
         sessionVariables.SHELL = lib.getExe config.programs.fish.package;
       };
+      xdg.terminal-exec = {
+        enable = true;
+        settings.default = [ "com.mitchellh.ghostty.desktop" ];
+      };
       programs.ghostty = {
         installBatSyntax = !pkgs.stdenv.isDarwin;
         installVimSyntax = !pkgs.stdenv.isDarwin;

@@ -23,7 +23,7 @@
       # Disable the spotlight hotkey so that vicinae can take its place.
       home.activation.disableSpotlightHotkey = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
         plist="$HOME/Library/Preferences/com.apple.symbolichotkeys.plist"
-        for id in 60 61; do
+        for id in 64; do
           run /usr/libexec/PlistBuddy -c "Set :AppleSymbolicHotKeys:$id:enabled false" "$plist" \
             || run /usr/libexec/PlistBuddy -c "Add :AppleSymbolicHotKeys:$id:enabled bool false" "$plist"
         done
