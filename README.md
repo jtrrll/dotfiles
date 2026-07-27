@@ -316,7 +316,7 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 
 - `edit` - Launches a text editor
 
-- `fish` - Smart and user-friendly command line shell
+- `fish` - Personalized fish distribution
 
 - `gba-shader` - A GBA shader that replicates original hardware
 
