@@ -53,6 +53,7 @@
                   ];
                   home-manager.patterns = [
                     "home-manager"
+                    "nix-wrapper-modules"
                     "nixvim"
                     "snekcheck"
                     "stylix"

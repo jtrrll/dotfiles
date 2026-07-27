@@ -39,7 +39,7 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 ### `checks`
 
 <details>
-<summary>Show 63</summary>
+<summary>Show 65</summary>
 
 - `files:.github/CODEOWNERS`
 
@@ -94,6 +94,10 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 - `packages:edit/build`
 
 - `packages:edit/metadata`
+
+- `packages:fish/build`
+
+- `packages:fish/metadata`
 
 - `packages:gba-shader/build`
 
@@ -300,7 +304,7 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 ### `packages`
 
 <details>
-<summary>Show 19</summary>
+<summary>Show 20</summary>
 
 - `activate` - Activates a home or NixOS configuration
 
@@ -311,6 +315,8 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 - `ds-shader` - A DS shader that replicates original hardware
 
 - `edit` - Launches a text editor
+
+- `fish` - Smart and user-friendly command line shell
 
 - `gba-shader` - A GBA shader that replicates original hardware
 
