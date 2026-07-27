@@ -25,6 +25,10 @@
     ### Home Manager dependencies ###
     # keep-sorted start block=yes
     home-manager.url = "github:nix-community/home-manager/master";
+    nix-wrapper-modules = {
+      inputs.nixpkgs.follows = "home-manager/nixpkgs";
+      url = "github:BirdeeHub/nix-wrapper-modules/main";
+    };
     nixvim.url = "github:nix-community/nixvim/main";
     snekcheck = {
       inputs.nixpkgs.follows = "home-manager/nixpkgs";
@@ -87,6 +91,7 @@
           inputs.flake-parts.flakeModules.modules
           inputs.flake-parts.flakeModules.touchup
           inputs.home-manager.flakeModules.home-manager
+          inputs.nix-wrapper-modules.flakeModules.default
           inputs.terranix.flakeModule
           inputs.treefmt-nix.flakeModule
           modules-tree.result
