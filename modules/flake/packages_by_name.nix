@@ -70,7 +70,7 @@
             let
               isDir = kind == "directory";
               name = if isDir then entry else lib.removeSuffix ".nix" entry;
-              path = if isDir then "${dir}/${entry}/package.nix" else "${dir}/${entry}";
+              path = if isDir then dir + "/${entry}/package.nix" else dir + "/${entry}";
             in
             lib.nameValuePair name path
           ))
