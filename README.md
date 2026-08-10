@@ -39,7 +39,7 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 ### `checks`
 
 <details>
-<summary>Show 63</summary>
+<summary>Show 64</summary>
 
 - `files:.github/CODEOWNERS`
 
@@ -66,6 +66,8 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 - `files:README.md`
 
 - `homeConfigurations:jtrrll/build`
+
+- `lib`
 
 - `nixosConfigurations:ares/build`
 
@@ -181,21 +183,25 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 ### `flakeModules`
 
 <details>
-<summary>Show 7</summary>
+<summary>Show 9</summary>
 
 - `default`
 
-- `flakeMetadata`
+- `flake-metadata`
 
-- `homeConfigurationBuildChecks`
+- `home-configuration-build-checks`
 
-- `nixosConfigurationBuildChecks`
+- `nixos-configuration-build-checks`
 
-- `packageBuildChecks`
+- `nixos-configuration-test-checks`
 
-- `packageMetadataChecks`
+- `package-build-checks`
 
-- `packagePassthruTestsChecks`
+- `package-metadata-checks`
+
+- `package-passthru-tests-checks`
+
+- `packages-by-name`
 
 </details>
 
@@ -231,6 +237,7 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 
 - `meta`
   - `meta.description` - A short description of this configuration. (default: `""`)
+  - `meta.tags` - Strings used to categorize this configuration. (default: `[ ]`)
 
 - `music-library`
   - `services.musicLibrary.enable` - Whether to enable a curated music library. (default: `false`)
@@ -263,6 +270,7 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 
 - `meta`
   - `meta.description` - A short description of this configuration. (default: `""`)
+  - `meta.tags` - Strings used to categorize this configuration. (default: `[ ]`)
 
 - `romm`
   - `services.romm.baseUrl` - Public URL of this RomM instance (ROMM_BASE_URL). (default: `"http://0.0.0.0"`)
@@ -294,6 +302,15 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 
 - `users`
   - `dotfiles.users.enable` - Whether to enable user configurations. (default: `false`)
+
+</details>
+
+### `overlays`
+
+<details>
+<summary>Show 1</summary>
+
+- `default`
 
 </details>
 
