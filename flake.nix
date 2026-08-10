@@ -41,14 +41,14 @@
 
     ### NixOS dependencies ###
     # keep-sorted start block=yes
-    determinate.url = "github:DeterminateSystems/determinate/main";
     disko = {
-      inputs.nixpkgs.follows = "determinate/nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-nixos";
       url = "github:nix-community/disko/master";
     };
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+    nixpkgs-nixos.url = "github:NixOS/nixpkgs/nixos-unstable";
     sops-nix = {
-      inputs.nixpkgs.follows = "determinate/nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-nixos";
       url = "github:Mic92/sops-nix/master";
     };
     # keep-sorted end

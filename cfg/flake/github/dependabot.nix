@@ -58,9 +58,9 @@
                     "vicinae"
                   ];
                   nixos.patterns = [
-                    "determinate"
                     "disko"
                     "nixos-hardware"
+                    "nixpkgs-nixos"
                     "sops-nix"
                   ];
                   infrastructure.patterns = [
