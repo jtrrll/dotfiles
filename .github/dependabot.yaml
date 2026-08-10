@@ -12,7 +12,7 @@ updates:
   - package-ecosystem: gomod
     commit-message:
       prefix: deps(service-status)
-    directory: /modules/packages/by_name/service_status/src
+    directory: /pkgs/service_status/src
     labels:
       - automated
       - dependencies
@@ -36,7 +36,6 @@ updates:
         patterns:
           - files
           - flake-parts
-          - import-tree
           - nixpkgs
           - treefmt-nix
       home-manager:
