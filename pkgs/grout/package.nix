@@ -1,5 +1,6 @@
 {
   lib,
+  callPackage,
   buildGoModule,
   fetchFromGitHub,
   pkg-config,
@@ -52,11 +53,30 @@ buildGoModule (finalAttrs: {
     mv $out/bin/app $out/bin/grout
   '';
 
-  passthru.updateScript = nix-update-script {
-    extraArgs = [
-      "--version-regex"
-      "v([0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)"
-    ];
+  passthru = {
+    updateScript = nix-update-script {
+      extraArgs = [
+        "--version-regex"
+        "v([0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)"
+      ];
+    };
+
+    # Firmware "pak" bundles for running grout on retro handhelds.
+    paks =
+      lib.mapAttrs
+        (
+          _: spec:
+          callPackage ./pak.nix {
+            grout = finalAttrs.finalPackage;
+            inherit spec;
+          }
+        )
+        (
+          import ./paks.nix {
+            inherit lib;
+            inherit (finalAttrs) src;
+          }
+        );
   };
 
   meta = {
