@@ -9,8 +9,26 @@ let
     let
       cfg = config.services.romm;
 
-      # Coerce a freeform settings value to the string form expected by a
-      # container environment variable.
+      redisPort = 6379;
+
+      decodeJs = pkgs.writeText "decode.js" ''
+        function decodeBase64(r) {
+          var encodedValue = r.args.value;
+          if (!encodedValue) {
+            r.return(400, "Missing 'value' query parameter");
+            return;
+          }
+          try {
+            r.return(200, atob(encodedValue));
+          } catch (e) {
+            r.return(400, "Invalid Base64 encoding");
+          }
+        }
+        export default { decodeBase64 };
+      '';
+
+      # Coerce freeform settings values to the strings systemd's `environment`
+      # expects, dropping nulls.
       renderValue = value: if lib.isBool value then lib.boolToString value else toString value;
 
       renderSettings =
@@ -30,17 +48,52 @@ let
       options.services.romm = {
         enable = lib.mkEnableOption "RomM, a self-hosted ROM manager and player";
 
-        image = lib.mkOption {
+        package = lib.mkOption {
           type = lib.types.package;
-          default = pkgs.romm-image;
-          defaultText = lib.literalExpression "pkgs.romm-image";
-          description = "RomM container image derivation.";
+          default = pkgs.romm;
+          defaultText = lib.literalExpression "pkgs.romm";
+          description = "The RomM package to run.";
+        };
+
+        rahasher = lib.mkOption {
+          type = lib.types.nullOr lib.types.package;
+          default = pkgs.rahasher;
+          defaultText = lib.literalExpression "pkgs.rahasher";
+          description = ''
+            RAHasher package providing the `RAHasher` binary used to compute
+            RetroAchievements hashes. Set to `null` to disable (RA hashing is
+            optional).
+          '';
         };
 
         port = lib.mkOption {
           type = lib.types.port;
           default = 8080;
           description = "Host port to expose the RomM web UI on.";
+        };
+
+        gunicornSocket = lib.mkOption {
+          type = lib.types.path;
+          default = "/run/romm/gunicorn.sock";
+          readOnly = true;
+          description = ''
+            Path of the Unix socket the backend's gunicorn server listens on.
+            Read-only; exposed so an external reverse proxy can be pointed at it
+            when {option}`services.romm.nginx.enable` is `false`.
+          '';
+        };
+
+        nginx.enable = lib.mkOption {
+          type = lib.types.bool;
+          default = true;
+          description = ''
+            Whether to configure `services.nginx` to serve the RomM frontend and
+            reverse-proxy the backend. The required `njs` and `mod_zip` modules
+            are added via {option}`services.nginx.additionalModules`.
+
+            Disable to run your own reverse proxy in front of the backend's
+            gunicorn socket ({option}`services.romm.gunicornSocket`).
+          '';
         };
 
         openFirewall = lib.mkOption {
@@ -82,10 +135,10 @@ let
           description = "Application log level (LOGLEVEL).";
         };
 
-        # RomM does not ship a database; consumers bring their own (a sibling
-        # container, a native NixOS database service, or an external host).
-        # These options describe how RomM connects to it. The password is a
-        # secret and must be supplied via `environmentFiles` as `DB_PASSWD`.
+        # RomM does not ship a database; consumers bring their own (a native
+        # NixOS database service or an external host). These options describe how
+        # RomM connects to it. The password is a secret and must be supplied via
+        # `environmentFiles` as `DB_PASSWD`.
         database = {
           driver = lib.mkOption {
             type = lib.types.enum [
@@ -126,6 +179,7 @@ let
         settings = lib.mkOption {
           type = settingsType;
           default = { };
+          apply = renderSettings;
           example = lib.literalExpression ''
             {
               HASHEOUS_API_ENABLED = true;
@@ -133,7 +187,7 @@ let
             }
           '';
           description = ''
-            Environment variables for the RomM application container, merged
+            Environment variables for the RomM application, merged
             over the module-managed defaults. Any variable documented at
             <https://docs.romm.app/latest/reference/environment-variables/>
             may be set here.
@@ -148,7 +202,7 @@ let
           default = [ ];
           example = lib.literalExpression ''[ config.sops.secrets."romm/app-env".path ]'';
           description = ''
-            Environment files for the RomM application container. Must define
+            Environment files for the RomM service. Must define
             the application secrets:
             - `DB_PASSWD` (must match the database user's password)
             - `ROMM_AUTH_SECRET_KEY` (generate with `openssl rand -hex 32`)
@@ -160,13 +214,6 @@ let
             Provide these via a secrets manager (e.g. sops-nix) so they are
             never written to the Nix store.
           '';
-        };
-
-        extraOptions = lib.mkOption {
-          type = lib.types.listOf lib.types.str;
-          default = [ ];
-          example = [ "--network=host" ];
-          description = "Extra command-line options passed to the RomM container runtime.";
         };
 
         metadataProviders = {
@@ -202,6 +249,11 @@ let
           DB_USER = lib.mkDefault cfg.database.user;
           LOGLEVEL = lib.mkDefault cfg.logLevel;
 
+          ROMM_BASE_PATH = lib.mkDefault cfg.dataDir;
+          REDIS_HOST = lib.mkDefault "127.0.0.1";
+          REDIS_PORT = lib.mkDefault redisPort;
+          GUNICORN_SOCKET = lib.mkDefault cfg.gunicornSocket;
+
           HASHEOUS_API_ENABLED = lib.mkDefault cfg.metadataProviders.hasheous.enable;
           LAUNCHBOX_API_ENABLED = lib.mkDefault cfg.metadataProviders.launchbox.enable;
           PLAYMATCH_API_ENABLED = lib.mkDefault cfg.metadataProviders.playmatch.enable;
@@ -211,29 +263,136 @@ let
           REFRESH_RETROACHIEVEMENTS_CACHE_DAYS = lib.mkDefault cfg.metadataProviders.retroachievements.cacheRefreshDays;
         };
 
+        users.users.romm = {
+          isSystemUser = true;
+          group = "romm";
+          home = cfg.dataDir;
+        };
+        users.groups.romm = { };
+
         systemd.tmpfiles.rules = [
-          "d ${cfg.dataDir} 0750 root root -"
-          "d ${cfg.dataDir}/resources 0750 1000 1000 -"
-          "d ${cfg.dataDir}/assets 0750 1000 1000 -"
-          "d ${cfg.dataDir}/config 0750 1000 1000 -"
-          "d ${cfg.dataDir}/redis 0750 1000 1000 -"
-          "d ${cfg.libraryDir} 0750 1000 1000 -"
+          "d ${cfg.dataDir} 0750 romm romm -"
+          "d ${cfg.dataDir}/resources 0750 romm romm -"
+          "d ${cfg.dataDir}/assets 0750 romm romm -"
+          "d ${cfg.dataDir}/config 0750 romm romm -"
+          "d ${cfg.libraryDir} 0750 romm romm -"
         ];
 
-        virtualisation.oci-containers.containers.romm = {
-          imageFile = cfg.image;
-          image = "${cfg.image.imageName}:${cfg.image.imageTag}";
-          inherit (cfg) environmentFiles;
-          environment = renderSettings cfg.settings;
-          ports = [ "${toString cfg.port}:8080" ];
-          volumes = [
-            "${cfg.dataDir}/resources:/romm/resources"
-            "${cfg.dataDir}/assets:/romm/assets"
-            "${cfg.dataDir}/config:/romm/config"
-            "${cfg.dataDir}/redis:/redis-data"
-            "${cfg.libraryDir}:/romm/library"
+        services.redis.servers.romm = {
+          enable = true;
+          user = "romm";
+          port = redisPort;
+          bind = "127.0.0.1";
+        };
+
+        systemd.services.romm = {
+          description = "RomM, a self-hosted ROM manager and player";
+          wantedBy = [ "multi-user.target" ];
+          after = [
+            "network.target"
+            "redis-romm.service"
           ];
-          inherit (cfg) extraOptions;
+          requires = [ "redis-romm.service" ];
+          environment = cfg.settings;
+          path = lib.optional (cfg.rahasher != null) cfg.rahasher;
+          serviceConfig = {
+            ExecStart = lib.getExe cfg.package;
+            User = "romm";
+            Group = "romm";
+            EnvironmentFile = cfg.environmentFiles;
+            RuntimeDirectory = "romm";
+            RuntimeDirectoryMode = "0750";
+            WorkingDirectory = cfg.dataDir;
+            Restart = "on-failure";
+            RestartSec = 5;
+          };
+        };
+
+        # njs backs the internal `/decode` route; mod_zip (nginxModules.zip)
+        # backs streamed multi-file ROM downloads.
+        services.nginx = lib.mkIf cfg.nginx.enable {
+          enable = true;
+          additionalModules = [
+            pkgs.nginxModules.njs
+            pkgs.nginxModules.zip
+          ];
+          commonHttpConfig = ''
+            js_import decode from ${decodeJs};
+            upstream romm_wsgi_server {
+              server unix:${cfg.gunicornSocket};
+            }
+            map $http_x_forwarded_proto $forwardscheme {
+              default $scheme;
+              https https;
+            }
+            # COEP/COOP for the EmulatorJS player path, enabling SharedArrayBuffer
+            # (needed for multi-threaded cores).
+            map $request_uri $coep_header {
+              default        "";
+              ~^/rom/.*/ejs$ "require-corp";
+            }
+            map $request_uri $coop_header {
+              default        "";
+              ~^/rom/.*/ejs$ "same-origin";
+            }
+          '';
+          virtualHosts."romm" = {
+            listen = [
+              {
+                addr = "0.0.0.0";
+                inherit (cfg) port;
+              }
+            ];
+            root = "${cfg.package.frontend}";
+            locations = {
+              "/" = {
+                tryFiles = "$uri $uri/ /index.html";
+                extraConfig = ''
+                  proxy_redirect off;
+                  add_header Access-Control-Allow-Origin *;
+                  add_header Access-Control-Allow-Methods *;
+                  add_header Access-Control-Allow-Headers *;
+                  add_header Cross-Origin-Embedder-Policy $coep_header;
+                  add_header Cross-Origin-Opener-Policy $coop_header;
+                '';
+              };
+              "/assets" = {
+                tryFiles = "$uri $uri/ =404";
+              };
+              "/openapi.json".proxyPass = "http://romm_wsgi_server";
+              "/api" = {
+                proxyPass = "http://romm_wsgi_server";
+                extraConfig = ''
+                  proxy_request_buffering off;
+                  proxy_buffering off;
+                  proxy_read_timeout 300s;
+                '';
+              };
+              "~ ^/(ws|netplay)" = {
+                proxyPass = "http://romm_wsgi_server";
+                proxyWebsockets = true;
+              };
+              "/library/" = {
+                extraConfig = ''
+                  internal;
+                  alias ${cfg.libraryDir}/;
+                '';
+              };
+              "/decode" = {
+                extraConfig = ''
+                  internal;
+                  js_content decode.decodeBase64;
+                '';
+              };
+            };
+            extraConfig = ''
+              client_max_body_size 0;
+              proxy_set_header Host $host;
+              proxy_set_header X-Real-IP $remote_addr;
+              proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+              proxy_set_header X-Forwarded-Proto $forwardscheme;
+            '';
+          };
         };
 
         networking.firewall.allowedTCPPorts = lib.mkIf cfg.openFirewall [ cfg.port ];
@@ -265,11 +424,7 @@ let
               nodes.server =
                 { pkgs, ... }:
                 {
-                  virtualisation = {
-                    diskSize = 1024 * 4;
-                    podman.enable = true;
-                    oci-containers.backend = "podman";
-                  };
+                  virtualisation.diskSize = 1024 * 4;
 
                   # Bring-your-own database: a native MariaDB on the host.
                   services.mysql = {
@@ -283,12 +438,8 @@ let
                     '';
                   };
 
-                  networking.firewall.allowedTCPPorts = [ 3306 ];
-
                   services.romm = {
                     enable = true;
-                    # Reach the host's MariaDB from inside the container.
-                    extraOptions = [ "--network=host" ];
                     database.host = "127.0.0.1";
                     environmentFiles = [
                       (pkgs.writeText "romm-app-env" ''
@@ -302,8 +453,10 @@ let
               testScript = ''
                 server.wait_for_unit("mysql.service", timeout=90)
                 server.wait_for_open_port(3306, timeout=90)
-                server.wait_for_unit("podman-romm.service", timeout=90)
-                server.wait_for_open_port(8080, timeout=90)
+                server.wait_for_unit("redis-romm.service", timeout=90)
+                server.wait_for_unit("romm.service", timeout=120)
+                server.wait_for_unit("nginx.service", timeout=90)
+                server.wait_for_open_port(8080, timeout=120)
                 server.succeed("curl -sf http://localhost:8080")
               '';
             }

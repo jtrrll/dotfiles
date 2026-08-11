@@ -105,7 +105,6 @@ in
     # ROM manager
     romm = {
       enable = true;
-      extraOptions = [ "--network=host" ];
       database = {
         driver = "postgresql";
         host = "127.0.0.1";
@@ -270,7 +269,6 @@ in
 
         services.romm = {
           enable = true;
-          extraOptions = [ "--network=host" ];
           database = {
             driver = "postgresql";
             host = "127.0.0.1";
