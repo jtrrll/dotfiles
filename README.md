@@ -39,7 +39,7 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 ### `checks`
 
 <details>
-<summary>Show 64</summary>
+<summary>Show 68</summary>
 
 - `files:.github/CODEOWNERS`
 
@@ -121,6 +121,10 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 
 - `packages:git-trim/metadata`
 
+- `packages:grout/build`
+
+- `packages:grout/metadata`
+
 - `packages:keep-awake/build`
 
 - `packages:keep-awake/metadata`
@@ -141,9 +145,13 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 
 - `packages:psp-shader/metadata`
 
-- `packages:romm-image/build`
+- `packages:rahasher/build`
 
-- `packages:romm-image/metadata`
+- `packages:rahasher/metadata`
+
+- `packages:romm/build`
+
+- `packages:romm/metadata`
 
 - `packages:service-status/build`
 
@@ -281,9 +289,8 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
   - `services.romm.database.port` - Port of the database RomM connects to (DB_PORT). (default: `if driver == "postgresql" then 5432 else 3306`)
   - `services.romm.database.user` - Database user RomM connects as (DB_USER). (default: `"romm"`)
   - `services.romm.enable` - Whether to enable RomM, a self-hosted ROM manager and player. (default: `false`)
-  - `services.romm.environmentFiles` - Environment files for the RomM application container. Must define (default: `[ ]`)
-  - `services.romm.extraOptions` - Extra command-line options passed to the RomM container runtime. (default: `[ ]`)
-  - `services.romm.image` - RomM container image derivation. (default: `pkgs.romm-image`)
+  - `services.romm.environmentFiles` - Environment files for the RomM service. Must define (default: `[ ]`)
+  - `services.romm.gunicornSocket` - Path of the Unix socket the backend's gunicorn server listens on. (default: `"/run/romm/gunicorn.sock"`)
   - `services.romm.libraryDir` - Directory containing ROMs and BIOS files. (default: `"/var/lib/romm/library"`)
   - `services.romm.logLevel` - Application log level (LOGLEVEL). (default: `"INFO"`)
   - `services.romm.metadataProviders.flashpoint.enable` - Whether to enable the Flashpoint metadata provider (FLASHPOINT_API_ENABLED). (default: `false`)
@@ -293,9 +300,12 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
   - `services.romm.metadataProviders.playmatch.enable` - Whether to enable the PlayMatch metadata provider (PLAYMATCH_API_ENABLED). (default: `false`)
   - `services.romm.metadataProviders.retroachievements.cacheRefreshDays` - RetroAchievements metadata cache refresh interval in days (default: `30`)
   - `services.romm.metadataProviders.tgdb.enable` - Whether to enable the TheGamesDB metadata provider (TGDB_API_ENABLED). (default: `false`)
+  - `services.romm.nginx.enable` - Whether to configure `services.nginx` to serve the RomM frontend and (default: `true`)
   - `services.romm.openFirewall` - Whether to open the firewall for RomM's port. (default: `false`)
+  - `services.romm.package` - The RomM package to run. (default: `pkgs.romm`)
   - `services.romm.port` - Host port to expose the RomM web UI on. (default: `8080`)
-  - `services.romm.settings` - Environment variables for the RomM application container, merged (default: `{ }`)
+  - `services.romm.rahasher` - RAHasher package providing the `RAHasher` binary used to compute (default: `pkgs.rahasher`)
+  - `services.romm.settings` - Environment variables for the RomM application, merged (default: `{ }`)
 
 - `tests`
   - `tests` - Tests associated with this host. Each value is a derivation that succeeds if the test passes. (default: `{ }`)
@@ -317,7 +327,7 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 ### `packages`
 
 <details>
-<summary>Show 19</summary>
+<summary>Show 21</summary>
 
 - `activate` - Activates a home or NixOS configuration
 
@@ -341,6 +351,8 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 
 - `git-trim` - Deletes all working git branches and updates main branch
 
+- `grout` - RomM client for Linux retro handhelds
+
 - `keep-awake` - Prevents system sleep while a command runs
 
 - `matrix` - A cyberpunk terminal screensaver
@@ -349,7 +361,9 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 
 - `psp-shader` - A PSP shader that replicates original hardware
 
-- `romm-image` - Container image for RomM, a self-hosted ROM manager and player
+- `rahasher` - Hashing tool from RALibretro used by RomM for RetroAchievements
+
+- `romm` - Self-hosted ROM manager and player
 
 - `service-status` - Serves managed background service status over HTTP
 
