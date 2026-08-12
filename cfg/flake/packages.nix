@@ -8,6 +8,7 @@
   config.packagesByName = {
     path = ../../pkgs;
     overlays = [
+      inputs.vicinae.overlays.default
       (final: prev: {
         lib = prev.lib.extend inputs.nixvim.lib.overlay;
         snekcheck = inputs.snekcheck.packages.${final.stdenv.hostPlatform.system}.default;

@@ -8,6 +8,19 @@
   config = lib.mkMerge [
     { programs.aerospace.enable = lib.mkDefault pkgs.stdenv.isDarwin; }
     (lib.mkIf config.programs.aerospace.enable {
+      programs.vicinae.extensions = [
+        (pkgs.mkRayCastExtension {
+          name = "aerospace";
+          rev = "538edb196091b54e9b46d326e764b4e2baf12de2";
+          hash = "sha256-V/M70priUy94OTAPuZ0C2RFXY6Ui5CtAgNup7AqaAcw=";
+          installPhase = ''
+            runHook preInstall
+            mkdir -p "$out"
+            cp -r "$HOME/.config/raycast/extensions/"*/. "$out"/
+            runHook postInstall
+          '';
+        })
+      ];
       programs.aerospace = {
         launchd.enable = true;
         settings = {
