@@ -3,30 +3,37 @@
   pkgs,
   ...
 }:
-let
-  vicinaeExtensionsSrc = pkgs.fetchFromGitHub {
-    owner = "vicinaehq";
-    repo = "extensions";
-    rev = "main";
-    hash = "sha256-fzEQzmsU/EsW+GA7d9US1PbN6ohPqg8fHXbcAJiX+uM=";
-  };
-in
 {
   config = lib.mkMerge [
     {
       programs.vicinae = {
         enable = true;
-        extensions = [
-          (pkgs.mkVicinaeExtension {
-            pname = "vicinae-extension-nix";
-            version = "0";
-            src = "${vicinaeExtensionsSrc}/extensions/nix";
-            npmFlags = [ "--legacy-peer-deps" ];
-            postPatch = ''
-              substituteInPlace tsconfig.json --replace "../../" "${vicinaeExtensionsSrc}/"
-            '';
-          })
-        ];
+        extensions =
+          let
+            vicinaeExtensionsSrc = pkgs.fetchFromGitHub {
+              owner = "vicinaehq";
+              repo = "extensions";
+              rev = "main";
+              hash = "sha256-fzEQzmsU/EsW+GA7d9US1PbN6ohPqg8fHXbcAJiX+uM=";
+            };
+          in
+          [
+            (pkgs.mkVicinaeExtension (finalAttrs: {
+              pname = "vicinae-extension-nix";
+              version = "0";
+              src = "${vicinaeExtensionsSrc}/extensions/nix";
+              npmFlags = [ "--legacy-peer-deps" ];
+              npmDeps = pkgs.fetchNpmDeps {
+                name = "vicinae-extension-nix-npm-deps";
+                inherit (finalAttrs) src;
+                hash = "sha256-TEyCCDjAtRYX2uH2TpLfe4/hTzyfMiyDhzVdyQXhEus=";
+              };
+              inherit (pkgs.npmHooks) npmConfigHook;
+              postPatch = ''
+                substituteInPlace tsconfig.json --replace "../../" "${vicinaeExtensionsSrc}/"
+              '';
+            }))
+          ];
         settings = {
           global_shortcuts = {
             toggle = if pkgs.stdenv.isDarwin then "cmd+space" else "super+space";
