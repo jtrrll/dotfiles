@@ -1,23 +1,5 @@
 { src }:
 {
-  muos = {
-    name = "muos";
-    label = "muOS";
-    appDir = "Grout";
-    launchSource = "${src}/scripts/muOS/mux_launch.sh";
-    launchDest = "Grout/mux_launch.sh";
-    assets = [
-      {
-        src = "${src}/scripts/muOS/resources";
-        dest = "resources";
-      }
-    ];
-    # muOS installs a `.muxapp`, which is a zip of the app directory.
-    package = workdir: out: ''
-      (cd "${workdir}" && zip -qr "${out}/Grout.muxapp" Grout)
-    '';
-  };
-
   rocknix = {
     name = "rocknix";
     label = "ROCKNIX";

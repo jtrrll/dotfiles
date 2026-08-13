@@ -1,5 +1,6 @@
 {
   lib,
+  stdenv,
   callPackage,
   buildGoModule,
   fetchFromGitHub,
@@ -25,6 +26,8 @@ buildGoModule (finalAttrs: {
   vendorHash = "sha256-earNKxaG8FCkBo5qQWK4ismu+PznPph+asgMg6jRTlc=";
 
   subPackages = [ "app" ];
+
+  doCheck = stdenv.hostPlatform == stdenv.buildPlatform;
 
   nativeBuildInputs = [ pkg-config ];
   buildInputs = [
@@ -73,7 +76,6 @@ buildGoModule (finalAttrs: {
         )
         (
           import ./paks.nix {
-            inherit lib;
             inherit (finalAttrs) src;
           }
         );
