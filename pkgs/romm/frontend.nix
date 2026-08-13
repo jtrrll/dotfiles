@@ -5,18 +5,18 @@
 }:
 buildNpmPackage (finalAttrs: {
   pname = "romm-frontend";
-  version = "4.8.1";
+  version = "5.0.0";
 
   src = fetchFromGitHub {
     owner = "rommapp";
     repo = "romm";
     tag = finalAttrs.version;
-    hash = "sha256-/HOY/N5ykqRBw5IPlO4gJGyrZhPeKMXeDT2/pBSrUhs=";
+    hash = "sha256-1LUWXt89lXId32RFDVV4wOkrPwPtnFVVKEnycAS/Nrg=";
   };
 
   sourceRoot = "${finalAttrs.src.name}/frontend";
 
-  npmDepsHash = "sha256-t76GSbSlRh3raClqRFOtCI5bcdpuRhXGmJG1R2+rSZI=";
+  npmDepsHash = "sha256-p8v5LcBSnKt+UC8JwnzU0gdmE4AQk7YsHIxJ5C26NEc=";
 
   makeCacheWritable = true;
 
