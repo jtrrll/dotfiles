@@ -362,6 +362,10 @@ let
               "/assets" = {
                 tryFiles = "$uri $uri/ =404";
               };
+              "/assets/romm/resources/" = {
+                alias = "${cfg.dataDir}/resources/";
+                tryFiles = "$uri $uri/ =404";
+              };
               "/openapi.json".proxyPass = "http://romm_wsgi_server";
               "/api" = {
                 proxyPass = "http://romm_wsgi_server";
