@@ -106,6 +106,7 @@ in
     # ROM manager
     romm = {
       enable = true;
+      openFirewall = true;
       database = {
         driver = "postgresql";
         host = "127.0.0.1";
@@ -175,6 +176,13 @@ in
 
   # qBittorrent's port for inbound P2P connections.
   networking.firewall.allowedTCPPorts = [ config.services.qbittorrent.torrentingPort ];
+
+  systemd.tmpfiles.settings.qbittorrent-downloads."${config.services.qbittorrent.profileDir}/downloads"."d" =
+    {
+      mode = "0755";
+      user = config.services.qbittorrent.user;
+      group = config.services.qbittorrent.group;
+    };
 
   # Lidarr post-import script for embedding lyrics via beets.
   # Configure in Lidarr UI: Settings → Connect → Custom Script → path:
