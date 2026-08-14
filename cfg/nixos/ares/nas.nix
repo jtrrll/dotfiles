@@ -94,6 +94,7 @@ in
     # Torrent client
     qbittorrent = {
       enable = true;
+      webuiPort = 8090;
       torrentingPort = 51413;
       serverConfig.Preferences.Downloads.SavePath = "${config.services.qbittorrent.profileDir}/downloads";
     };
