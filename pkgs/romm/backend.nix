@@ -1,17 +1,45 @@
 {
   lib,
   fetchFromGitHub,
+  fetchPypi,
   python313,
   stdenvNoCC,
 }:
 let
   python = python313.override {
     self = python;
-    packageOverrides = final: _prev: {
+    packageOverrides = final: prev: {
       crontab = final.callPackage ./crontab.nix { };
       strsimpy = final.callPackage ./strsimpy.nix { };
       zipfile-inflate64 = final.callPackage ./zipfile_inflate64.nix { };
       rq-scheduler = final.callPackage ./rq_scheduler.nix { };
+
+      fastapi = prev.fastapi.overridePythonAttrs (_old: rec {
+        version = "0.134.0";
+        src = fetchPypi {
+          pname = "fastapi";
+          inherit version;
+          hash = "sha256-MSKx6g2+qrSLWXboC5nKftoCvhVL8D4SajMiDnMlWpo=";
+        };
+      });
+
+      starlette = prev.starlette.overridePythonAttrs (_old: rec {
+        version = "1.0.1";
+        src = fetchPypi {
+          pname = "starlette";
+          inherit version;
+          hash = "sha256-USOZxfHef6yZyIVyIS3tnd7d7y+zKvqC1yQADoizj08=";
+        };
+      });
+
+      fastapi-pagination = prev.fastapi-pagination.overridePythonAttrs (_old: rec {
+        version = "0.15.0";
+        src = fetchPypi {
+          pname = "fastapi_pagination";
+          inherit version;
+          hash = "sha256-Ef45y+GB7TwYkZuQ+va/y+QMtZaqnFKpi7zoURGimk8=";
+        };
+      });
     };
   };
 

@@ -45,10 +45,8 @@ let
         export ROMM_AUTH_SECRET_KEY
       fi
 
-      # opentelemetry-instrument prepends its own bootstrap dir containing a
-      # sitecustomize.py to PYTHONPATH. Python only loads the first
-      # sitecustomize module it finds, so we put site-packages on PYTHONPATH
-      # explicitly so it survives regardless of which sitecustomize wins.
+      # opentelemetry-instrument's sitecustomize.py shadows nixpkgs', dropping NIX_PYTHONPATH.
+      # Put site-packages on PYTHONPATH so imports survive.
       site_packages="$(python -c 'import sysconfig; print(sysconfig.get_path("purelib"))')"
       export PYTHONPATH="$site_packages''${PYTHONPATH:+:$PYTHONPATH}"
 
