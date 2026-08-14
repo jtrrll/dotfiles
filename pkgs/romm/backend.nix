@@ -19,8 +19,10 @@ let
     ps.aiohttp
     ps.alembic
     ps.anyio
+    ps.asyncssh
     ps.authlib
     ps.colorama
+    ps.cryptography
     ps.defusedxml
     ps.fastapi
     ps.fastapi-pagination
@@ -28,6 +30,7 @@ let
     ps.httpx
     ps.itsdangerous
     ps.joserfc
+    ps.mutagen
     ps.opentelemetry-distro
     ps.opentelemetry-exporter-otlp
     ps.opentelemetry-instrumentation-aiohttp-client
@@ -53,12 +56,14 @@ let
     ps.starlette
     ps.streaming-form-data
     ps.strsimpy
+    ps.ua-parser
     ps.unidecode
     ps.uvicorn
     ps.uvicorn-worker
     ps.watchfiles
     ps.yarl
     ps.zipfile-inflate64
+    ps.zstandard
     # runtime helpers used by the socket/worker layers
     ps.bcrypt
     ps.mysqlclient
