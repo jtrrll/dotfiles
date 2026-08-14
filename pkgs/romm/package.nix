@@ -45,6 +45,13 @@ let
         export ROMM_AUTH_SECRET_KEY
       fi
 
+      # opentelemetry-instrument prepends its own bootstrap dir containing a
+      # sitecustomize.py to PYTHONPATH. Python only loads the first
+      # sitecustomize module it finds, so we put site-packages on PYTHONPATH
+      # explicitly so it survives regardless of which sitecustomize wins.
+      site_packages="$(python -c 'import sysconfig; print(sysconfig.get_path("purelib"))')"
+      export PYTHONPATH="$site_packages''${PYTHONPATH:+:$PYTHONPATH}"
+
       cd "$backend_dir"
 
       echo "Starting backend (gunicorn)..."
