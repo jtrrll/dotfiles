@@ -111,8 +111,6 @@ stdenvNoCC.mkDerivation {
   dontBuild = true;
   dontPatchShebangs = true;
 
-  # Plain text/image assets we copied out ourselves -- should be no leftover
-  # store references.
   allowedReferences = [ ];
 
   inherit (generated) presetText;

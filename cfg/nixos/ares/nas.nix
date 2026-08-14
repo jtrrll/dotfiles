@@ -171,8 +171,7 @@ in
     };
   };
 
-  # qBittorrent's peer port, for inbound P2P connections -- the WebUI stays
-  # off the open firewall since it's already reached through Caddy.
+  # qBittorrent's port for inbound P2P connections.
   networking.firewall.allowedTCPPorts = [ config.services.qbittorrent.torrentingPort ];
 
   # Lidarr post-import script for embedding lyrics via beets.
