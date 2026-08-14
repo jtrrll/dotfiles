@@ -55,8 +55,8 @@ in
           handle_path /prowlarr/* {
             reverse_proxy localhost:9696
           }
-          handle_path /transmission/* {
-            reverse_proxy localhost:${toString cfg.transmission.settings.rpc-port}
+          handle_path /qbittorrent/* {
+            reverse_proxy localhost:${toString cfg.qbittorrent.webuiPort}
           }
           handle_path /romm/* {
             reverse_proxy localhost:${toString cfg.romm.port}
@@ -92,11 +92,10 @@ in
     bazarr.enable = true;
 
     # Torrent client
-    transmission = {
+    qbittorrent = {
       enable = true;
-      package = pkgs.transmission_4;
-      openFirewall = true;
-      settings.rpc-url = "/transmission/";
+      torrentingPort = 51413;
+      serverConfig.Preferences.Downloads.SavePath = "${config.services.qbittorrent.profileDir}/downloads";
     };
 
     # Music automation
@@ -110,6 +109,7 @@ in
         host = "127.0.0.1";
       };
       environmentFiles = [ config.sops.templates."romm-app-env".path ];
+      metadataProviders.hasheous.enable = true;
     };
 
     # SQL database
@@ -144,7 +144,7 @@ in
           "map to guest" = "Bad User";
         };
         downloads = {
-          path = "${config.services.transmission.home}/Downloads";
+          path = "${config.services.qbittorrent.profileDir}/downloads";
           browseable = "yes";
           "read only" = "no";
           "guest ok" = "no";
@@ -171,6 +171,10 @@ in
     };
   };
 
+  # qBittorrent's peer port, for inbound P2P connections -- the WebUI stays
+  # off the open firewall since it's already reached through Caddy.
+  networking.firewall.allowedTCPPorts = [ config.services.qbittorrent.torrentingPort ];
+
   # Lidarr post-import script for embedding lyrics via beets.
   # Configure in Lidarr UI: Settings → Connect → Custom Script → path:
   #   ${lidarrPostImport}
@@ -185,11 +189,16 @@ in
       key = "auth-secret-key";
       sopsFile = ./secrets/romm.yaml;
     };
+    "romm/retroachievements-api-key" = {
+      key = "retroachievements-api-key";
+      sopsFile = ./secrets/romm.yaml;
+    };
   };
 
   sops.templates."romm-app-env".content = ''
     DB_PASSWD=${config.sops.placeholder."romm/db-password"}
     ROMM_AUTH_SECRET_KEY=${config.sops.placeholder."romm/auth-secret-key"}
+    RETROACHIEVEMENTS_API_KEY=${config.sops.placeholder."romm/retroachievements-api-key"}
   '';
 
   # Set the PostgreSQL `romm` role's password from the same secret, so it
