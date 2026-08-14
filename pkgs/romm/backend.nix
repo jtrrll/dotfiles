@@ -21,6 +21,7 @@ let
           inherit version;
           hash = "sha256-MSKx6g2+qrSLWXboC5nKftoCvhVL8D4SajMiDnMlWpo=";
         };
+        dontUsePytestCheck = true;
       });
 
       starlette = prev.starlette.overridePythonAttrs (_old: rec {
@@ -30,6 +31,7 @@ let
           inherit version;
           hash = "sha256-USOZxfHef6yZyIVyIS3tnd7d7y+zKvqC1yQADoizj08=";
         };
+        dontUsePytestCheck = true;
       });
 
       fastapi-pagination = prev.fastapi-pagination.overridePythonAttrs (_old: rec {
