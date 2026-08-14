@@ -58,9 +58,10 @@ in
           handle_path /qbittorrent/* {
             reverse_proxy localhost:${toString cfg.qbittorrent.webuiPort}
           }
-          handle_path /romm/* {
-            reverse_proxy localhost:${toString cfg.romm.port}
-          }
+          # romm/* intentionally omitted because its frontend doesn't
+          # support being served from a subpath. Access it directly at
+          # localhost:${toString cfg.romm.port} until it gets its own
+          # subdomain.
           handle_path /lidarr/* {
             reverse_proxy localhost:8686
           }
