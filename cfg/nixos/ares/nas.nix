@@ -209,8 +209,8 @@ in
     after = [ "postgresql.service" ];
     requires = [ "postgresql.service" ];
     wantedBy = [ "multi-user.target" ];
-    before = [ "podman-romm.service" ];
-    requiredBy = [ "podman-romm.service" ];
+    before = [ "romm.service" ];
+    requiredBy = [ "romm.service" ];
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
@@ -225,11 +225,6 @@ in
     '';
   };
 
-  # Live-boot integration test for the RomM + native PostgreSQL wiring. This
-  # mirrors the host setup (native PostgreSQL, the romm container on the host
-  # network, and the role-password sync unit) but supplies the database
-  # password from a plain file instead of sops, since the test VM has no
-  # decryption key.
   tests."romm/postgresql" = pkgs.testers.runNixOSTest {
     name = "romm-postgresql";
     globalTimeout = 60 * 5;
@@ -237,11 +232,7 @@ in
     nodes.server =
       { config, pkgs, ... }:
       {
-        virtualisation = {
-          diskSize = 1024 * 4;
-          podman.enable = true;
-          oci-containers.backend = "podman";
-        };
+        virtualisation.diskSize = 1024 * 4;
 
         services.postgresql = {
           enable = true;
@@ -263,8 +254,8 @@ in
           after = [ "postgresql.service" ];
           requires = [ "postgresql.service" ];
           wantedBy = [ "multi-user.target" ];
-          before = [ "podman-romm.service" ];
-          requiredBy = [ "podman-romm.service" ];
+          before = [ "romm.service" ];
+          requiredBy = [ "romm.service" ];
           serviceConfig = {
             Type = "oneshot";
             RemainAfterExit = true;
@@ -295,7 +286,7 @@ in
     testScript = ''
       server.wait_for_unit("postgresql.service", timeout=120)
       server.wait_for_unit("romm-db-password.service", timeout=120)
-      server.wait_for_unit("podman-romm.service", timeout=180)
+      server.wait_for_unit("romm.service", timeout=180)
       server.wait_for_open_port(8080, timeout=180)
       # RomM only serves successfully once it has connected to and migrated the
       # database, so a healthy HTTP response exercises the full DB path.
