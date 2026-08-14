@@ -52,6 +52,12 @@ let
 
       cd "$backend_dir"
 
+      echo "Running database migrations..."
+      alembic upgrade head
+
+      echo "Running startup tasks..."
+      python startup.py
+
       echo "Starting backend (gunicorn)..."
       rm -f "$gunicorn_socket"
       opentelemetry-instrument \
