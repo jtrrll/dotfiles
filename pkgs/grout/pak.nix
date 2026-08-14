@@ -4,6 +4,11 @@
   patchelf,
   grout,
   SDL2_gfx,
+  glibc,
+  sdl2-compat,
+  tzdata,
+  iana-etc,
+  mailcap,
   spec,
 }:
 let
@@ -25,6 +30,18 @@ stdenvNoCC.mkDerivation {
   dontBuild = true;
   dontPatchShebangs = true;
 
+  # This artifact runs on a device with no Nix store,
+  # so it must not have a runtime dependency on the store.
+  # patchelf can't scrub every embedded string because Go's stdlib bakes in default fallback paths.
+  # They're allowed here explicitly so genuinely new store references are still caught.
+  allowedReferences = [
+    glibc
+    sdl2-compat
+    tzdata
+    iana-etc
+    mailcap
+  ];
+
   installPhase = ''
     runHook preInstall
 
@@ -36,7 +53,14 @@ stdenvNoCC.mkDerivation {
     patchelf --set-interpreter ${loader} --set-rpath '$ORIGIN/lib' "$appdir/grout"
 
     for so in ${lib.getLib SDL2_gfx}/lib/libSDL2_gfx*.so*; do
-      [ -e "$so" ] && cp -aL "$so" "$appdir/lib/" || true
+      if [ -e "$so" ]; then
+        dest="$appdir/lib/$(basename "$so")"
+        cp -aL "$so" "$dest"
+        chmod u+w "$dest"
+        # Drop the nixpkgs-build RPATH (pointing at sdl2-compat/glibc/etc in
+        # the store); the device's own loader config resolves its deps.
+        patchelf --remove-rpath "$dest" || true
+      fi
     done
 
     cp ${spec.launchSource} "$workdir/${spec.launchDest}"

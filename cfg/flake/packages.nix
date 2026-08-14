@@ -16,13 +16,17 @@
     ];
     transform = name: pkg: {
       name = lib.replaceStrings [ "_" ] [ "-" ] name;
-      package = pkg.overrideAttrs (old: {
-        meta = {
-          inherit (config.flake.meta) homepage maintainers;
-          license = lib.licenses.agpl3Plus;
-        }
-        // (old.meta or { });
-      });
+      package =
+        if lib.isFunction pkg then
+          pkg
+        else
+          pkg.overrideAttrs (old: {
+            meta = {
+              inherit (config.flake.meta) homepage maintainers;
+              license = lib.licenses.agpl3Plus;
+            }
+            // (old.meta or { });
+          });
     };
   };
 

@@ -26,23 +26,23 @@
         };
         globalShader = {
           target = ".config/retroarch/config/global.slangp";
-          source = pkgs.crt-shader;
+          source = "${pkgs.crt-shader}/crt_shader.slangp";
         };
         gambatteShader = {
           target = ".config/retroarch/config/Gambatte/Gambatte.slangp";
-          source = pkgs.gbc-shader;
+          source = "${pkgs.gbc-shader}/gbc_shader.slangp";
         };
         melondsShader = {
           target = ".config/retroarch/config/melonDS/melonDS.slangp";
-          source = pkgs.ds-shader;
+          source = "${pkgs.ds-shader}/ds_shader.slangp";
         };
         mgbaShader = {
           target = ".config/retroarch/config/mGBA/mGBA.slangp";
-          source = pkgs.gba-shader;
+          source = "${pkgs.gba-shader}/gba_shader.slangp";
         };
         ppssppShader = {
           target = ".config/retroarch/config/PPSSPP/PPSSPP.slangp";
-          source = pkgs.psp-shader;
+          source = "${pkgs.psp-shader}/psp_shader.slangp";
         };
       };
       programs = {

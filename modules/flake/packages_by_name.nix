@@ -39,8 +39,12 @@
                 description = "The attribute name of the package.";
               };
               package = lib.mkOption {
-                type = lib.types.package;
-                description = "The package.";
+                type = lib.types.either lib.types.package (lib.types.functionTo lib.types.package);
+                description = ''
+                  The package, or a builder function. Only actual packages are exposed via
+                  `perSystem.packages` and checked by the package checks;
+                  builder functions are only added to `flake.overlays.default`.
+                '';
               };
             };
           }
@@ -95,7 +99,9 @@
       perSystem =
         { pkgs, ... }:
         {
-          config.packages = discoveredPackages (pkgs.extend config.flake.overlays.default);
+          config.packages = lib.filterAttrs (_: lib.isDerivation) (
+            discoveredPackages (pkgs.extend config.flake.overlays.default)
+          );
         };
     };
 }
