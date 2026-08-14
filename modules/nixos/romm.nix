@@ -302,6 +302,7 @@ let
             EnvironmentFile = cfg.environmentFiles;
             RuntimeDirectory = "romm";
             RuntimeDirectoryMode = "0750";
+            UMask = "0007";
             WorkingDirectory = cfg.dataDir;
             Restart = "on-failure";
             RestartSec = 5;
@@ -310,6 +311,8 @@ let
 
         # njs backs the internal `/decode` route; mod_zip (nginxModules.zip)
         # backs streamed multi-file ROM downloads.
+        users.users.${config.services.nginx.user}.extraGroups = lib.mkIf cfg.nginx.enable [ "romm" ];
+
         services.nginx = lib.mkIf cfg.nginx.enable {
           enable = true;
           additionalModules = [
