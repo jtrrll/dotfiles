@@ -24,11 +24,14 @@ let
     ps.colorama
     ps.cryptography
     ps.defusedxml
+    ps.email-validator
     ps.fastapi
     ps.fastapi-pagination
     ps.gunicorn
+    ps.httptools
     ps.httpx
     ps.itsdangerous
+    ps.jinja2
     ps.joserfc
     ps.mutagen
     ps.opentelemetry-distro
@@ -43,9 +46,12 @@ let
     ps.psycopg
     ps.psycopg-c
     ps.pydantic
+    ps.pydantic-extra-types
+    ps.pydantic-settings
     ps.pydash
     ps.python-dotenv
     ps.python-magic
+    ps.python-multipart
     ps.python-socketio
     ps.pyyaml
     ps.redis
@@ -60,7 +66,9 @@ let
     ps.unidecode
     ps.uvicorn
     ps.uvicorn-worker
+    ps.uvloop
     ps.watchfiles
+    ps.websockets
     ps.yarl
     ps.zipfile-inflate64
     ps.zstandard
