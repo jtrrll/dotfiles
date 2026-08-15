@@ -118,6 +118,12 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     hash = "sha256-1LUWXt89lXId32RFDVV4wOkrPwPtnFVVKEnycAS/Nrg=";
   };
 
+  # Upstream's release CI replaces the `<version>` placeholder in
+  # __version__.py; without it get_version() reports "development".
+  postPatch = ''
+    echo '__version__ = "${finalAttrs.version}"' > backend/__version__.py
+  '';
+
   # The backend is run directly from its source tree (uv run python main.py),
   # not installed as a wheel. Ship the source plus a Python environment with all
   # runtime dependencies.
