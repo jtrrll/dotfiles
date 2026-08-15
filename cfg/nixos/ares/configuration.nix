@@ -12,6 +12,8 @@
 
   boot = {
     binfmt.emulatedSystems = [ "aarch64-linux" ]; # For building ARM packages
+    # Keep the Bluetooth controller from autosuspending, which seems to crash it.
+    kernelParams = [ "btusb.enable_autosuspend=0" ];
     loader = {
       systemd-boot = {
         configurationLimit = 2;

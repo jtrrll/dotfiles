@@ -13,8 +13,8 @@
             vicinaeExtensionsSrc = pkgs.fetchFromGitHub {
               owner = "vicinaehq";
               repo = "extensions";
-              rev = "main";
-              hash = "sha256-fzEQzmsU/EsW+GA7d9US1PbN6ohPqg8fHXbcAJiX+uM=";
+              rev = "d61bf7b835ebd29c806387f0e013df04dd61a368";
+              hash = "sha256-E3ZW5x/hemm6qEIY98fp7DrXiMg7uQdg80wIqcSRGCA=";
             };
           in
           [
