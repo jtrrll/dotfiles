@@ -5,7 +5,7 @@ mkSlangShader {
   passes = [
     { shader = "handheld/shaders/color/lut/GBA-LUT.slang"; }
     {
-      shader = "handheld/shaders/lcd-cgwg/lcd-grid-v2.slang";
+      shader = "handheld/shaders/lcd3x.slang";
       scaleTypeX = "viewport";
       scaleTypeY = "viewport";
     }
@@ -21,8 +21,7 @@ mkSlangShader {
     SamplerLUT2.path = "handheld/shaders/color/lut/gba-grey2.png";
   };
   params = {
-    gamma = "3.500000";
-    blacklevel = "0.000000";
-    BGR = "1.000000";
+    # pixel_transparency
+    PT_ACCEL_ENABLE = "0.000000";
   };
 }

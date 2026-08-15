@@ -5,7 +5,7 @@ mkSlangShader {
   passes = [
     { shader = "handheld/shaders/color/lut/GBC-LUT.slang"; }
     {
-      shader = "handheld/shaders/lcd-cgwg/lcd-grid-v2.slang";
+      shader = "handheld/shaders/lcd3x.slang";
       scaleTypeX = "viewport";
       scaleTypeY = "viewport";
     }
@@ -22,8 +22,7 @@ mkSlangShader {
   };
   params = {
     LUT_selector_param = "2.000000";
-    gain = "1.250000";
-    gamma = "3.500000";
-    blacklevel = "0.000000";
+    # pixel_transparency
+    PT_ACCEL_ENABLE = "0.000000";
   };
 }
