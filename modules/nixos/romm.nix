@@ -302,6 +302,7 @@ let
             EnvironmentFile = cfg.environmentFiles;
             RuntimeDirectory = "romm";
             RuntimeDirectoryMode = "0750";
+            UMask = "0007";
             WorkingDirectory = cfg.dataDir;
             Restart = "on-failure";
             RestartSec = 5;
@@ -310,6 +311,8 @@ let
 
         # njs backs the internal `/decode` route; mod_zip (nginxModules.zip)
         # backs streamed multi-file ROM downloads.
+        users.users.${config.services.nginx.user}.extraGroups = lib.mkIf cfg.nginx.enable [ "romm" ];
+
         services.nginx = lib.mkIf cfg.nginx.enable {
           enable = true;
           additionalModules = [
@@ -357,6 +360,10 @@ let
                 '';
               };
               "/assets" = {
+                tryFiles = "$uri $uri/ =404";
+              };
+              "/assets/romm/resources/" = {
+                alias = "${cfg.dataDir}/resources/";
                 tryFiles = "$uri $uri/ =404";
               };
               "/openapi.json".proxyPass = "http://romm_wsgi_server";
@@ -458,6 +465,84 @@ let
                 server.wait_for_unit("nginx.service", timeout=90)
                 server.wait_for_open_port(8080, timeout=120)
                 server.succeed("curl -sf http://localhost:8080")
+              '';
+            }
+          )
+      );
+
+      tests."romm/postgresql" = lib.mkIf cfg.enable (
+        lib.addMetaAttrs
+          {
+            description = "Verify RomM starts against a native PostgreSQL database and serves HTTP";
+          }
+          (
+            pkgs.testers.runNixOSTest {
+              name = "romm-postgresql";
+              globalTimeout = 60 * 5;
+              extraBaseModules.imports = [ module ];
+
+              nodes.server =
+                { config, pkgs, ... }:
+                {
+                  virtualisation.diskSize = 1024 * 4;
+
+                  services.postgresql = {
+                    enable = true;
+                    ensureDatabases = [ "romm" ];
+                    ensureUsers = [
+                      {
+                        name = "romm";
+                        ensureDBOwnership = true;
+                      }
+                    ];
+                    authentication = lib.mkAfter ''
+                      host romm romm 127.0.0.1/32 scram-sha-256
+                      host romm romm ::1/128 scram-sha-256
+                    '';
+                  };
+
+                  systemd.services.romm-db-password = {
+                    description = "Set the RomM PostgreSQL role password";
+                    after = [ "postgresql.service" ];
+                    requires = [ "postgresql.service" ];
+                    wantedBy = [ "multi-user.target" ];
+                    before = [ "romm.service" ];
+                    requiredBy = [ "romm.service" ];
+                    serviceConfig = {
+                      Type = "oneshot";
+                      RemainAfterExit = true;
+                      User = "postgres";
+                    };
+                    script = ''
+                      ${config.services.postgresql.package}/bin/psql --no-psqlrc --set ON_ERROR_STOP=1 <<SQL
+                      ALTER ROLE romm WITH PASSWORD 'testpassword';
+                      SQL
+                    '';
+                  };
+
+                  services.romm = {
+                    enable = true;
+                    database = {
+                      driver = "postgresql";
+                      host = "127.0.0.1";
+                    };
+                    environmentFiles = [
+                      (pkgs.writeText "romm-app-env" ''
+                        DB_PASSWD=testpassword
+                        ROMM_AUTH_SECRET_KEY=0000000000000000000000000000000000000000000000000000000000000000
+                      '')
+                    ];
+                  };
+                };
+
+              testScript = ''
+                server.wait_for_unit("postgresql.service", timeout=120)
+                server.wait_for_unit("romm-db-password.service", timeout=120)
+                server.wait_for_unit("romm.service", timeout=180)
+                server.wait_for_open_port(8080, timeout=180)
+                # RomM only serves successfully once it has connected to and migrated the
+                # database, so a healthy HTTP response exercises the full DB path.
+                server.wait_until_succeeds("curl -sf http://localhost:8080", timeout=180)
               '';
             }
           )

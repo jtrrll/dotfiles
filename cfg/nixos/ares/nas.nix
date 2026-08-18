@@ -55,12 +55,13 @@ in
           handle_path /prowlarr/* {
             reverse_proxy localhost:9696
           }
-          handle_path /transmission/* {
-            reverse_proxy localhost:${toString cfg.transmission.settings.rpc-port}
+          handle_path /qbittorrent/* {
+            reverse_proxy localhost:${toString cfg.qbittorrent.webuiPort}
           }
-          handle_path /romm/* {
-            reverse_proxy localhost:${toString cfg.romm.port}
-          }
+          # romm/* intentionally omitted because its frontend doesn't
+          # support being served from a subpath. Access it directly at
+          # localhost:${toString cfg.romm.port} until it gets its own
+          # subdomain.
           handle_path /lidarr/* {
             reverse_proxy localhost:8686
           }
@@ -92,11 +93,11 @@ in
     bazarr.enable = true;
 
     # Torrent client
-    transmission = {
+    qbittorrent = {
       enable = true;
-      package = pkgs.transmission_4;
-      openFirewall = true;
-      settings.rpc-url = "/transmission/";
+      webuiPort = 8090;
+      torrentingPort = 51413;
+      serverConfig.Preferences.Downloads.SavePath = "${config.services.qbittorrent.profileDir}/downloads";
     };
 
     # Music automation
@@ -105,11 +106,13 @@ in
     # ROM manager
     romm = {
       enable = true;
+      openFirewall = true;
       database = {
         driver = "postgresql";
         host = "127.0.0.1";
       };
       environmentFiles = [ config.sops.templates."romm-app-env".path ];
+      metadataProviders.hasheous.enable = true;
     };
 
     # SQL database
@@ -144,7 +147,7 @@ in
           "map to guest" = "Bad User";
         };
         downloads = {
-          path = "${config.services.transmission.home}/Downloads";
+          path = "${config.services.qbittorrent.profileDir}/downloads";
           browseable = "yes";
           "read only" = "no";
           "guest ok" = "no";
@@ -171,6 +174,16 @@ in
     };
   };
 
+  # qBittorrent's port for inbound P2P connections.
+  networking.firewall.allowedTCPPorts = [ config.services.qbittorrent.torrentingPort ];
+
+  systemd.tmpfiles.settings.qbittorrent-downloads."${config.services.qbittorrent.profileDir}/downloads"."d" =
+    {
+      mode = "0755";
+      user = config.services.qbittorrent.user;
+      group = config.services.qbittorrent.group;
+    };
+
   # Lidarr post-import script for embedding lyrics via beets.
   # Configure in Lidarr UI: Settings → Connect → Custom Script → path:
   #   ${lidarrPostImport}
@@ -185,11 +198,16 @@ in
       key = "auth-secret-key";
       sopsFile = ./secrets/romm.yaml;
     };
+    "romm/retroachievements-api-key" = {
+      key = "retroachievements-api-key";
+      sopsFile = ./secrets/romm.yaml;
+    };
   };
 
   sops.templates."romm-app-env".content = ''
     DB_PASSWD=${config.sops.placeholder."romm/db-password"}
     ROMM_AUTH_SECRET_KEY=${config.sops.placeholder."romm/auth-secret-key"}
+    RETROACHIEVEMENTS_API_KEY=${config.sops.placeholder."romm/retroachievements-api-key"}
   '';
 
   # Set the PostgreSQL `romm` role's password from the same secret, so it
@@ -199,8 +217,8 @@ in
     after = [ "postgresql.service" ];
     requires = [ "postgresql.service" ];
     wantedBy = [ "multi-user.target" ];
-    before = [ "podman-romm.service" ];
-    requiredBy = [ "podman-romm.service" ];
+    before = [ "romm.service" ];
+    requiredBy = [ "romm.service" ];
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
@@ -212,84 +230,6 @@ in
       ${config.services.postgresql.package}/bin/psql --no-psqlrc --set ON_ERROR_STOP=1 <<SQL
       ALTER ROLE romm WITH PASSWORD '$password';
       SQL
-    '';
-  };
-
-  # Live-boot integration test for the RomM + native PostgreSQL wiring. This
-  # mirrors the host setup (native PostgreSQL, the romm container on the host
-  # network, and the role-password sync unit) but supplies the database
-  # password from a plain file instead of sops, since the test VM has no
-  # decryption key.
-  tests."romm/postgresql" = pkgs.testers.runNixOSTest {
-    name = "romm-postgresql";
-    globalTimeout = 60 * 5;
-
-    nodes.server =
-      { config, pkgs, ... }:
-      {
-        virtualisation = {
-          diskSize = 1024 * 4;
-          podman.enable = true;
-          oci-containers.backend = "podman";
-        };
-
-        services.postgresql = {
-          enable = true;
-          ensureDatabases = [ "romm" ];
-          ensureUsers = [
-            {
-              name = "romm";
-              ensureDBOwnership = true;
-            }
-          ];
-          authentication = lib.mkAfter ''
-            host romm romm 127.0.0.1/32 scram-sha-256
-            host romm romm ::1/128 scram-sha-256
-          '';
-        };
-
-        systemd.services.romm-db-password = {
-          description = "Set the RomM PostgreSQL role password";
-          after = [ "postgresql.service" ];
-          requires = [ "postgresql.service" ];
-          wantedBy = [ "multi-user.target" ];
-          before = [ "podman-romm.service" ];
-          requiredBy = [ "podman-romm.service" ];
-          serviceConfig = {
-            Type = "oneshot";
-            RemainAfterExit = true;
-            User = "postgres";
-          };
-          script = ''
-            ${config.services.postgresql.package}/bin/psql --no-psqlrc --set ON_ERROR_STOP=1 <<SQL
-            ALTER ROLE romm WITH PASSWORD 'testpassword';
-            SQL
-          '';
-        };
-
-        services.romm = {
-          enable = true;
-          database = {
-            driver = "postgresql";
-            host = "127.0.0.1";
-          };
-          environmentFiles = [
-            (pkgs.writeText "romm-app-env" ''
-              DB_PASSWD=testpassword
-              ROMM_AUTH_SECRET_KEY=0000000000000000000000000000000000000000000000000000000000000000
-            '')
-          ];
-        };
-      };
-
-    testScript = ''
-      server.wait_for_unit("postgresql.service", timeout=120)
-      server.wait_for_unit("romm-db-password.service", timeout=120)
-      server.wait_for_unit("podman-romm.service", timeout=180)
-      server.wait_for_open_port(8080, timeout=180)
-      # RomM only serves successfully once it has connected to and migrated the
-      # database, so a healthy HTTP response exercises the full DB path.
-      server.wait_until_succeeds("curl -sf http://localhost:8080", timeout=180)
     '';
   };
 }

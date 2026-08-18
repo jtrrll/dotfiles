@@ -1,77 +1,28 @@
-{
-  lib,
-  libretro-shaders-slang,
-  writeText,
-}:
-lib.addMetaAttrs
-  {
-    description = "A GB and GBC shader that replicates original hardware";
-    platforms = lib.platforms.all;
-    sourceProvenance = [ lib.sourceTypes.fromSource ];
-  }
-  (
-    writeText "gbc.slangp" ''
-      shaders = "4"
-      feedback_pass = "0"
-
-      shader0 = "${libretro-shaders-slang}/share/libretro/shaders/shaders_slang/handheld/shaders/color/lut/GBC-LUT.slang"
-      alias0 = ""
-      wrap_mode0 = "clamp_to_border"
-      mipmap_input0 = "false"
-      filter_linear0 = "false"
-      float_framebuffer0 = "false"
-      srgb_framebuffer0 = "false"
-      scale_type_x0 = "source"
-      scale_x0 = "1.000000"
-      scale_type_y0 = "source"
-      scale_y0 = "1.000000"
-
-      shader1 = "${libretro-shaders-slang}/share/libretro/shaders/shaders_slang/handheld/shaders/lcd-cgwg/lcd-grid-v2.slang"
-      alias1 = ""
-      wrap_mode1 = "clamp_to_border"
-      mipmap_input1 = "false"
-      filter_linear1 = "false"
-      float_framebuffer1 = "false"
-      srgb_framebuffer1 = "false"
-      scale_type_x1 = "viewport"
-      scale_x1 = "1.000000"
-      scale_type_y1 = "viewport"
-      scale_y1 = "1.000000"
-
-      shader2 = "${libretro-shaders-slang}/share/libretro/shaders/shaders_slang/handheld/shaders/color/gbc-color.slang"
-      alias2 = ""
-      wrap_mode2 = "clamp_to_border"
-      mipmap_input2 = "false"
-      filter_linear2 = "false"
-      float_framebuffer2 = "false"
-      srgb_framebuffer2 = "false"
-      scale_type_x2 = "source"
-      scale_x2 = "1.000000"
-      scale_type_y2 = "source"
-      scale_y2 = "1.000000"
-
-      shader3 = "${libretro-shaders-slang}/share/libretro/shaders/shaders_slang/handheld/shaders/pixel_transparency.slang"
-      alias3 = ""
-      wrap_mode3 = "clamp_to_border"
-      mipmap_input3 = "false"
-      filter_linear3 = "false"
-      float_framebuffer3 = "false"
-      srgb_framebuffer3 = "false"
-      scale_type_x3 = "viewport"
-      scale_x3 = "1.000000"
-      scale_type_y3 = "viewport"
-      scale_y3 = "1.000000"
-
-      LUT_selector_param = "2.000000"
-      gain = "1.250000"
-      gamma = "3.500000"
-      blacklevel = "0.000000"
-      textures = "SamplerLUT1;SamplerLUT2"
-      SamplerLUT1 = "${libretro-shaders-slang}/share/libretro/shaders/shaders_slang/handheld/shaders/color/lut/gbc-grey1.png"
-      SamplerLUT1_mipmap = "false"
-      SamplerLUT1_wrap_mode = "clamp_to_border"
-      SamplerLUT2 = "${libretro-shaders-slang}/share/libretro/shaders/shaders_slang/handheld/shaders/color/lut/gbc-grey2.png"
-      SamplerLUT2_mipmap = "false"
-      SamplerLUT2_wrap_mode = "clamp_to_border"
-    ''
-  )
+{ mkSlangShader }:
+mkSlangShader {
+  name = "gbc_shader";
+  description = "A GB and GBC shader that replicates original hardware";
+  passes = [
+    { shader = "handheld/shaders/color/lut/GBC-LUT.slang"; }
+    {
+      shader = "handheld/shaders/lcd3x.slang";
+      scaleTypeX = "viewport";
+      scaleTypeY = "viewport";
+    }
+    { shader = "handheld/shaders/color/gbc-color.slang"; }
+    {
+      shader = "handheld/shaders/pixel_transparency/pixel_transparency.slang";
+      scaleTypeX = "viewport";
+      scaleTypeY = "viewport";
+    }
+  ];
+  textures = {
+    SamplerLUT1.path = "handheld/shaders/color/lut/gbc-grey1.png";
+    SamplerLUT2.path = "handheld/shaders/color/lut/gbc-grey2.png";
+  };
+  params = {
+    LUT_selector_param = "2.000000";
+    # pixel_transparency
+    PT_ACCEL_ENABLE = "0.000000";
+  };
+}

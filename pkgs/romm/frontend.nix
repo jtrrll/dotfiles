@@ -20,10 +20,12 @@ buildNpmPackage (finalAttrs: {
 
   makeCacheWritable = true;
 
-  # The app is served as static assets; only the build output is needed.
+  # vite build omits the static `assets/` tree, merge it in for a static deployment.
   installPhase = ''
     runHook preInstall
     cp -r dist $out
+    mkdir -p $out/assets
+    cp -r assets/. $out/assets/
     runHook postInstall
   '';
 

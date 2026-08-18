@@ -45,7 +45,18 @@ let
         export ROMM_AUTH_SECRET_KEY
       fi
 
+      # opentelemetry-instrument's sitecustomize.py shadows nixpkgs', dropping NIX_PYTHONPATH.
+      # Put site-packages on PYTHONPATH so imports survive.
+      site_packages="$(python -c 'import sysconfig; print(sysconfig.get_path("purelib"))')"
+      export PYTHONPATH="$site_packages''${PYTHONPATH:+:$PYTHONPATH}"
+
       cd "$backend_dir"
+
+      echo "Running database migrations..."
+      alembic upgrade head
+
+      echo "Running startup tasks..."
+      python startup.py
 
       echo "Starting backend (gunicorn)..."
       rm -f "$gunicorn_socket"

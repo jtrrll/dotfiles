@@ -1,16 +1,6 @@
-{
-  lib,
-  libretro-shaders-slang,
-  writeText,
-}:
-lib.addMetaAttrs
-  {
-    description = "A DS shader that replicates original hardware";
-    platforms = lib.platforms.all;
-    sourceProvenance = [ lib.sourceTypes.fromSource ];
-  }
-  (
-    writeText "ds.slangp" ''
-      #reference "${libretro-shaders-slang}/share/libretro/shaders/shaders_slang/presets/handheld-plus-color-mod/lcd-grid-v2-dslite-color.slangp"
-    ''
-  )
+{ mkSlangShader }:
+mkSlangShader {
+  name = "ds_shader";
+  description = "A DS shader that replicates original hardware";
+  reference = "presets/handheld-plus-color-mod/lcd-grid-v2-dslite-color.slangp";
+}
