@@ -29,7 +29,7 @@ jobs:
     steps:
       - name: Free disk space
         if: runner.os == 'Linux'
-        uses: endersonmenezes/free-disk-space@v3
+        uses: endersonmenezes/free-disk-space@v4
         with:
           remove_dotnet: true
           remove_haskell: true
@@ -66,7 +66,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - name: Free disk space
-        uses: endersonmenezes/free-disk-space@v3
+        uses: endersonmenezes/free-disk-space@v4
         with:
           remove_dotnet: true
           remove_haskell: true
