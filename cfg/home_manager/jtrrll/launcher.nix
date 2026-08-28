@@ -36,12 +36,12 @@
           ];
         settings = {
           global_shortcuts = {
-            toggle = if pkgs.stdenv.isDarwin then "cmd+space" else "super+space";
+            toggle = if pkgs.stdenv.hostPlatform.isDarwin then "cmd+space" else "super+space";
           };
         };
       };
     }
-    (lib.mkIf pkgs.stdenv.isDarwin {
+    (lib.mkIf pkgs.stdenv.hostPlatform.isDarwin {
       programs.vicinae.launchd.enable = true;
       # Disable the spotlight hotkey so that vicinae can take its place.
       home.activation.disableSpotlightHotkey = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
@@ -52,7 +52,7 @@
         done
       '';
     })
-    (lib.mkIf pkgs.stdenv.isLinux {
+    (lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
       programs.vicinae.systemd.enable = true;
       # GNOME's Mutter compositor doesn't implement vicinae's custom
       # `vicinae-hotkey-v1` Wayland protocol for global shortcuts.

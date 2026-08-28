@@ -9,7 +9,7 @@
     {
       programs = {
         prismlauncher.enable = lib.mkDefault true;
-        retroarch.enable = lib.mkDefault (!pkgs.stdenv.isDarwin);
+        retroarch.enable = lib.mkDefault (!pkgs.stdenv.hostPlatform.isDarwin);
         vesktop.enable = lib.mkDefault true;
       };
     }

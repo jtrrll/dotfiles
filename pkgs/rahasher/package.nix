@@ -64,7 +64,10 @@ stdenv.mkDerivation (finalAttrs: {
     runHook postInstall
   '';
 
-  passthru.updateScript = nix-update-script { };
+  passthru.updateScript = nix-update-script {
+    attrPath = "rahasher";
+    extraArgs = [ "--flake" ];
+  };
 
   meta = {
     description = "Hashing tool from RALibretro used by RomM for RetroAchievements";

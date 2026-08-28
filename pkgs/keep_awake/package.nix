@@ -12,9 +12,9 @@ writeShellApplication rec {
     sourceProvenance = [ lib.sourceTypes.fromSource ];
   };
   name = "keep-awake";
-  runtimeInputs = lib.optional stdenv.isLinux systemd;
+  runtimeInputs = lib.optional stdenv.hostPlatform.isLinux systemd;
   text =
-    if stdenv.isDarwin then
+    if stdenv.hostPlatform.isDarwin then
       ''
         exec caffeinate -dims "$@"
       ''

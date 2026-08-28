@@ -10,7 +10,7 @@
     (lib.mkIf config.programs.ssh.enable {
       programs.ssh = {
         enableDefaultConfig = false;
-        extraConfig = lib.mkIf pkgs.stdenv.isDarwin ''
+        extraConfig = lib.mkIf pkgs.stdenv.hostPlatform.isDarwin ''
           UseKeychain yes
         '';
 

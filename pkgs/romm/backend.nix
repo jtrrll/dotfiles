@@ -2,6 +2,7 @@
   lib,
   fetchFromGitHub,
   fetchPypi,
+  nix-update-script,
   python313,
   stdenvNoCC,
 }:
@@ -136,7 +137,13 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     runHook postInstall
   '';
 
-  passthru = { inherit pythonEnv; };
+  passthru = {
+    inherit pythonEnv;
+    updateScript = nix-update-script {
+      attrPath = "romm.passthru.backend";
+      extraArgs = [ "--flake" ];
+    };
+  };
 
   meta = {
     description = "Backend application for RomM";

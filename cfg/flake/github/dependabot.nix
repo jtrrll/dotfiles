@@ -19,16 +19,6 @@
                 schedule.interval = "weekly";
               }
               {
-                package-ecosystem = "gomod";
-                commit-message.prefix = "deps(service-status)";
-                directory = "/pkgs/service_status/src";
-                labels = [
-                  "automated"
-                  "dependencies"
-                ];
-                schedule.interval = "weekly";
-              }
-              {
                 package-ecosystem = "nix";
                 commit-message.prefix = "deps(flake)";
                 directory = "/";

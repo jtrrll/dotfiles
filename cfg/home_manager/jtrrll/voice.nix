@@ -6,7 +6,7 @@
 {
   config = lib.mkMerge [
     { home.packages = [ pkgs.handy ]; }
-    (lib.mkIf pkgs.stdenv.isDarwin {
+    (lib.mkIf pkgs.stdenv.hostPlatform.isDarwin {
       programs.vicinae = {
         extensions = [
           (pkgs.mkRayCastExtension (finalAttrs: {

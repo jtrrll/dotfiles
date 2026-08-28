@@ -2,10 +2,14 @@
   lib,
   buildGoModule,
   curl,
+  git,
+  gnused,
+  go,
   runCommand,
   stdenv,
   testers,
   versionCheckHook,
+  writeShellApplication,
   writeShellScriptBin,
 }:
 buildGoModule (finalAttrs: {
@@ -24,6 +28,37 @@ buildGoModule (finalAttrs: {
 
   nativeInstallCheckInputs = [ versionCheckHook ];
   doInstallCheck = true;
+
+  passthru.updateScript = writeShellApplication {
+    name = "update-service-status";
+    runtimeInputs = [
+      git
+      gnused
+      go
+    ];
+    text = ''
+      root=$(git rev-parse --show-toplevel)
+      srcDir="$root/pkgs/service_status/src"
+      pkgFile="$root/pkgs/service_status/package.nix"
+
+      (cd "$srcDir" && go get -u ./... && go mod tidy)
+
+      sed -i 's|vendorHash = "[^"]*"|vendorHash = ""|' "$pkgFile"
+
+      hash=$(
+        nix build "$root#service-status" --no-link 2>&1 \
+          | grep -oE 'got:\s*sha256-[A-Za-z0-9+/=]+' \
+          | awk '{print $2}'
+      ) || true
+
+      if [ -z "$hash" ]; then
+        echo "error: could not determine new vendorHash" >&2
+        exit 1
+      fi
+
+      sed -i "s|vendorHash = \"\"|vendorHash = \"$hash\"|" "$pkgFile"
+    '';
+  };
 
   passthru.tests =
     let

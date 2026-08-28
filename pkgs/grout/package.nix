@@ -58,7 +58,9 @@ buildGoModule (finalAttrs: {
 
   passthru = {
     updateScript = nix-update-script {
+      attrPath = "grout";
       extraArgs = [
+        "--flake"
         "--version-regex"
         "v([0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)"
       ];

@@ -2,6 +2,7 @@
   lib,
   buildNpmPackage,
   fetchFromGitHub,
+  nix-update-script,
 }:
 buildNpmPackage (finalAttrs: {
   pname = "romm-frontend";
@@ -19,6 +20,11 @@ buildNpmPackage (finalAttrs: {
   npmDepsHash = "sha256-p8v5LcBSnKt+UC8JwnzU0gdmE4AQk7YsHIxJ5C26NEc=";
 
   makeCacheWritable = true;
+
+  passthru.updateScript = nix-update-script {
+    attrPath = "romm.passthru.frontend";
+    extraArgs = [ "--flake" ];
+  };
 
   # vite build omits the static `assets/` tree, merge it in for a static deployment.
   installPhase = ''
