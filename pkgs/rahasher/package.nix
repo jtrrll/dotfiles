@@ -6,14 +6,14 @@
 }:
 stdenv.mkDerivation (finalAttrs: {
   pname = "rahasher";
-  version = "1.8.3";
+  version = "1.8.4";
 
   src = fetchFromGitHub {
     owner = "RetroAchievements";
     repo = "RALibretro";
     tag = finalAttrs.version;
     fetchSubmodules = true;
-    hash = "sha256-CR8E9YkXlIBwWLWksKYYRZNrjqNxQm0bVQ7cgIWLEQM=";
+    hash = "sha256-UwA3m9BR3i69HY7QCbs6HjsIe02MIi8ACu4fZTaIVuo=";
   };
 
   enableParallelBuilding = true;

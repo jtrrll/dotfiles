@@ -110,13 +110,13 @@ let
 in
 stdenvNoCC.mkDerivation (finalAttrs: {
   pname = "romm-backend";
-  version = "5.0.0";
+  version = "5.2.0";
 
   src = fetchFromGitHub {
     owner = "rommapp";
     repo = "romm";
     tag = finalAttrs.version;
-    hash = "sha256-1LUWXt89lXId32RFDVV4wOkrPwPtnFVVKEnycAS/Nrg=";
+    hash = "sha256-ixRgaDnyHzHWJjvC5yB6pD88aUgwtnkF6H7snAFODrE=";
   };
 
   # Upstream's release CI replaces the `<version>` placeholder in
