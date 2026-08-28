@@ -33,7 +33,10 @@ in
     ++ map (
       browser:
       lib.mkIf
-        (config.programs.${browser}.enable && (pkgs.stdenv.hostPlatform.isDarwin || !isProprietaryChrome browser))
+        (
+          config.programs.${browser}.enable
+          && (pkgs.stdenv.hostPlatform.isDarwin || !isProprietaryChrome browser)
+        )
         {
           programs.${browser}.extensions = [ { id = bitwardenExtensionId; } ];
         }
