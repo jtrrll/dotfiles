@@ -24,13 +24,15 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 ### `apps`
 
 <details>
-<summary>Show 4</summary>
+<summary>Show 5</summary>
 
 - `default` - Activates a home or NixOS configuration
 
 - `github-tf` - Manages GitHub repository with OpenTofu
 
 - `update-demo` - Updates the demo gif
+
+- `update-packages` - Runs each package's own updateScript
 
 - `write-files` - Write all configured files to their paths
 
@@ -39,7 +41,7 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 ### `checks`
 
 <details>
-<summary>Show 68</summary>
+<summary>Show 61</summary>
 
 - `files:.github/CODEOWNERS`
 
@@ -60,6 +62,8 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 - `files:.github/dependabot.yaml`
 
 - `files:.github/workflows/ci.yaml`
+
+- `files:.github/workflows/update-packages.yaml`
 
 - `files:LICENSE`
 
@@ -85,25 +89,9 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 
 - `packages:bonsai/metadata`
 
-- `packages:crt-shader/build`
-
-- `packages:crt-shader/metadata`
-
-- `packages:ds-shader/build`
-
-- `packages:ds-shader/metadata`
-
 - `packages:edit/build`
 
 - `packages:edit/metadata`
-
-- `packages:gba-shader/build`
-
-- `packages:gba-shader/metadata`
-
-- `packages:gbc-shader/build`
-
-- `packages:gbc-shader/metadata`
 
 - `packages:git-clone-with-worktrees/build`
 
@@ -141,10 +129,6 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 
 - `packages:neovim/tests/version`
 
-- `packages:psp-shader/build`
-
-- `packages:psp-shader/metadata`
-
 - `packages:rahasher/build`
 
 - `packages:rahasher/metadata`
@@ -164,6 +148,10 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 - `packages:service-status/tests/status-endpoint`
 
 - `packages:service-status/tests/version`
+
+- `packages:shader-pack/build`
+
+- `packages:shader-pack/metadata`
 
 - `packages:splash/build`
 
@@ -327,21 +315,13 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 ### `packages`
 
 <details>
-<summary>Show 21</summary>
+<summary>Show 17</summary>
 
 - `activate` - Activates a home or NixOS configuration
 
 - `bonsai` - A botanical terminal screensaver
 
-- `crt-shader` - A CRT shader that blends pixels
-
-- `ds-shader` - A DS shader that replicates original hardware
-
 - `edit` - Launches a text editor
-
-- `gba-shader` - A GBA shader that replicates original hardware
-
-- `gbc-shader` - A GB and GBC shader that replicates original hardware
 
 - `git-clone-with-worktrees` - Clones a bare git repo and creates worktrees for each given suffix
 
@@ -359,13 +339,13 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 
 - `neovim` - Personalized Neovim distribution built with Nixvim
 
-- `psp-shader` - A PSP shader that replicates original hardware
-
 - `rahasher` - Hashing tool from RALibretro used by RomM for RetroAchievements
 
 - `romm` - Self-hosted ROM manager and player
 
 - `service-status` - Serves managed background service status over HTTP
+
+- `shader-pack` - A collection of RetroArch slang shaders for various platforms
 
 - `splash` - Prints a splash screen
 

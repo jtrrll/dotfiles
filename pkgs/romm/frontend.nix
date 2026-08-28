@@ -2,23 +2,29 @@
   lib,
   buildNpmPackage,
   fetchFromGitHub,
+  nix-update-script,
 }:
 buildNpmPackage (finalAttrs: {
   pname = "romm-frontend";
-  version = "5.0.0";
+  version = "5.2.0";
 
   src = fetchFromGitHub {
     owner = "rommapp";
     repo = "romm";
     tag = finalAttrs.version;
-    hash = "sha256-1LUWXt89lXId32RFDVV4wOkrPwPtnFVVKEnycAS/Nrg=";
+    hash = "sha256-ixRgaDnyHzHWJjvC5yB6pD88aUgwtnkF6H7snAFODrE=";
   };
 
   sourceRoot = "${finalAttrs.src.name}/frontend";
 
-  npmDepsHash = "sha256-p8v5LcBSnKt+UC8JwnzU0gdmE4AQk7YsHIxJ5C26NEc=";
+  npmDepsHash = "sha256-k3MYizMevOfYJGRlu650bx1ERUkMBYdvg/JctmdwATo=";
 
   makeCacheWritable = true;
+
+  passthru.updateScript = nix-update-script {
+    attrPath = "romm.passthru.frontend";
+    extraArgs = [ "--flake" ];
+  };
 
   # vite build omits the static `assets/` tree, merge it in for a static deployment.
   installPhase = ''

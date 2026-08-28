@@ -1,7 +1,10 @@
 {
+  cargo,
+  git,
   lib,
   pkgsCross,
   runCommand,
+  writeShellApplication,
   zellijPlugins,
 }:
 let
@@ -35,6 +38,18 @@ in
     finalAttrs: previousAttrs: {
       passthru = previousAttrs.passthru or { } // {
         integrations.opencode-plugin = ./integrations/opencode_plugin.ts;
+        updateScript = writeShellApplication {
+          name = "update-zellij-agent-handler";
+          runtimeInputs = [
+            cargo
+            git
+          ];
+          text = ''
+            root=$(git rev-parse --show-toplevel)
+            cd "$root/pkgs/zellij_agent_handler"
+            cargo update
+          '';
+        };
         tests.is-valid-wasm =
           runCommand "zellij-agent-handler-wasm-check"
             {

@@ -6,7 +6,7 @@
 }:
 {
   config = lib.mkMerge [
-    { programs.aerospace.enable = lib.mkDefault pkgs.stdenv.isDarwin; }
+    { programs.aerospace.enable = lib.mkDefault pkgs.stdenv.hostPlatform.isDarwin; }
     (lib.mkIf config.programs.aerospace.enable {
       programs.vicinae.extensions = [
         (pkgs.mkRayCastExtension (finalAttrs: {

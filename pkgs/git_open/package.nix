@@ -18,7 +18,7 @@ writeShellApplication rec {
     git
     gnused
   ]
-  ++ lib.optional stdenv.isLinux xdg-utils;
+  ++ lib.optional stdenv.hostPlatform.isLinux xdg-utils;
   text = ''
     remote_url=$(git remote get-url origin 2>/dev/null)
 
@@ -37,7 +37,7 @@ writeShellApplication rec {
     fi
 
     echo "Opening: $browser_url"
-    ${if stdenv.isLinux then "xdg-open" else "open"} "$browser_url" >/dev/null 2>&1 &
+    ${if stdenv.hostPlatform.isLinux then "xdg-open" else "open"} "$browser_url" >/dev/null 2>&1 &
     disown
   '';
 }

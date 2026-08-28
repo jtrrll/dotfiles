@@ -119,6 +119,14 @@ entrypoint.overrideAttrs (old: {
       frontend
       pythonEnv
       ;
+
+    updateScript = writeShellApplication {
+      name = "update-romm";
+      text = lib.concatMapStringsSep "\n" (script: lib.escapeShellArgs (map toString script)) [
+        backend.passthru.updateScript
+        frontend.passthru.updateScript
+      ];
+    };
   };
 
   meta = (old.meta or { }) // {

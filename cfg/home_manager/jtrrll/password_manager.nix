@@ -26,14 +26,17 @@ in
       (lib.mkIf config.programs.rbw.enable {
         programs.rbw.settings = {
           email = "jacksonterrill3@gmail.com";
-          pinentry = if pkgs.stdenv.isDarwin then pkgs.pinentry_mac else pkgs.pinentry-gnome3;
+          pinentry = if pkgs.stdenv.hostPlatform.isDarwin then pkgs.pinentry_mac else pkgs.pinentry-gnome3;
         };
       })
     ]
     ++ map (
       browser:
       lib.mkIf
-        (config.programs.${browser}.enable && (pkgs.stdenv.isDarwin || !isProprietaryChrome browser))
+        (
+          config.programs.${browser}.enable
+          && (pkgs.stdenv.hostPlatform.isDarwin || !isProprietaryChrome browser)
+        )
         {
           programs.${browser}.extensions = [ { id = bitwardenExtensionId; } ];
         }

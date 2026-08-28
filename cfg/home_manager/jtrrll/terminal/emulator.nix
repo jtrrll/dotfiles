@@ -19,9 +19,9 @@
         settings.default = [ "com.mitchellh.ghostty.desktop" ];
       };
       programs.ghostty = {
-        installBatSyntax = !pkgs.stdenv.isDarwin;
-        installVimSyntax = !pkgs.stdenv.isDarwin;
-        package = if pkgs.stdenv.isDarwin then pkgs.ghostty-bin else pkgs.ghostty;
+        installBatSyntax = !pkgs.stdenv.hostPlatform.isDarwin;
+        installVimSyntax = !pkgs.stdenv.hostPlatform.isDarwin;
+        package = if pkgs.stdenv.hostPlatform.isDarwin then pkgs.ghostty-bin else pkgs.ghostty;
         settings = {
           auto-update = "off";
           font-family = "Hack Nerd Font Mono";

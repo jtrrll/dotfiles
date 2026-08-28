@@ -14,13 +14,13 @@
 }:
 buildGoModule (finalAttrs: {
   pname = "grout";
-  version = "5.0.0.0";
+  version = "5.1.0.0";
 
   src = fetchFromGitHub {
     owner = "rommapp";
     repo = "grout";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-oAYS2ChKVSK0uOmE/wiCqBMJg+CUS7YWKGr78hkTGo4=";
+    hash = "sha256-zBevrBoPYxqYlx2zVW8rYjbD4F4qp1ZF0d1nK0hEfd4=";
   };
 
   vendorHash = "sha256-earNKxaG8FCkBo5qQWK4ismu+PznPph+asgMg6jRTlc=";
@@ -58,7 +58,9 @@ buildGoModule (finalAttrs: {
 
   passthru = {
     updateScript = nix-update-script {
+      attrPath = "grout";
       extraArgs = [
+        "--flake"
         "--version-regex"
         "v([0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)"
       ];

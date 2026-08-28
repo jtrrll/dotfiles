@@ -18,7 +18,7 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    launchd.agents = lib.mkIf pkgs.stdenv.isDarwin {
+    launchd.agents = lib.mkIf pkgs.stdenv.hostPlatform.isDarwin {
       service-status = {
         enable = true;
         config = {
@@ -38,7 +38,7 @@ in
       };
     };
 
-    systemd.user.services = lib.mkIf (!pkgs.stdenv.isDarwin) {
+    systemd.user.services = lib.mkIf (!pkgs.stdenv.hostPlatform.isDarwin) {
       service-status = {
         Service = {
           ExecStart = "${lib.getExe pkgs.service-status} --port ${builtins.toString cfg.port}";
