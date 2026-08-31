@@ -43,7 +43,7 @@ buildGoModule (finalAttrs: {
 
       (cd "$srcDir" && go get -u ./... && go mod tidy)
 
-      sed -i 's|vendorHash = "sha256-Ip2GuQDOolMyDvfmXcJRlY2rMp1amS8owkqcNMOR1+Y="]*"|vendorHash = ""|' "$pkgFile"
+      sed -i 's|vendorHash = "[^"]*"|vendorHash = ""|' "$pkgFile"
 
       hash=$(
         nix build "$root#service-status" --no-link 2>&1 \
