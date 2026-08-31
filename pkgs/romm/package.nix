@@ -122,10 +122,15 @@ entrypoint.overrideAttrs (old: {
 
     updateScript = writeShellApplication {
       name = "update-romm";
-      text = lib.concatMapStringsSep "\n" (script: lib.escapeShellArgs (map toString script)) [
-        backend.passthru.updateScript
-        frontend.passthru.updateScript
-      ];
+      text =
+        let
+          toCommand =
+            script: if lib.isList script then lib.escapeShellArgs (map toString script) else lib.getExe script;
+        in
+        lib.concatMapStringsSep "\n" toCommand [
+          backend.passthru.updateScript
+          frontend.passthru.updateScript
+        ];
     };
   };
 

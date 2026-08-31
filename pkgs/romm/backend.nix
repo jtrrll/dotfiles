@@ -1,10 +1,16 @@
 {
   lib,
+  cacert,
+  curl,
   fetchFromGitHub,
   fetchPypi,
+  git,
+  gnused,
+  jq,
   nix-update-script,
   python313,
   stdenvNoCC,
+  writeShellApplication,
 }:
 let
   python = python313.override {
@@ -139,9 +145,91 @@ stdenvNoCC.mkDerivation (finalAttrs: {
 
   passthru = {
     inherit pythonEnv;
-    updateScript = nix-update-script {
-      attrPath = "romm.passthru.backend";
-      extraArgs = [ "--flake" ];
+
+    updateScript = writeShellApplication {
+      name = "update-romm-backend";
+      runtimeInputs = [
+        cacert
+        curl
+        git
+        gnused
+        jq
+      ];
+      text = ''
+        export SSL_CERT_FILE="${cacert}/etc/ssl/certs/ca-bundle.crt"
+        root="$(git rev-parse --show-toplevel)"
+
+        nix_sri() {
+          nix --extra-experimental-features nix-command hash convert \
+            --hash-algo sha256 --to sri "$1"
+        }
+
+        edit_version_hash() {
+          local file="$1" version="$2" sri="$3" anchor="''${4:-}"
+          local v="s|version = \"[^\"]*\"|version = \"$version\"|"
+          local h="s|hash = \"[^\"]*\"|hash = \"$sri\"|"
+          if [ -n "$anchor" ]; then
+            sed -i "/$anchor/,/hash = / { $v; $h; }" "$file"
+          else
+            sed -i "$v; $h" "$file"
+          fi
+        }
+
+        # PROJECT is the PyPI project; SELECT is a jq predicate picking the
+        # sdist vs wheel release file.
+        update_pypi() {
+          local file="$1" project="$2" select="$3" anchor="''${4:-}"
+          local latest hex
+          echo "==> $project (pypi)"
+          latest="$(curl -sfL "https://pypi.org/pypi/$project/json" | jq -r '.info.version')"
+          hex="$(curl -sfL "https://pypi.org/pypi/$project/$latest/json" \
+            | jq -r "first(.urls[] | select($select) | .digests.sha256) // empty")"
+          if [ -z "$hex" ]; then
+            echo "::error::no matching release file for $project $latest" >&2
+            return 1
+          fi
+          edit_version_hash "$file" "$latest" "$(nix_sri "$hex")" "$anchor"
+        }
+
+        # A pinned fork tracked on its default branch, versioned as
+        # <base>-unstable-<commit date>.
+        update_github_unstable() {
+          local file="$1" owner="$2" repo="$3" base="$4"
+          local rev date sri
+          echo "==> $owner/$repo (github)"
+          rev="$(git ls-remote "https://github.com/$owner/$repo" HEAD | cut -f1)"
+          date="$(curl -sfL "https://api.github.com/repos/$owner/$repo/commits/$rev" \
+            | jq -r '.commit.committer.date[0:10]')"
+          sri="$(nix_sri "$(nix-prefetch-url --unpack \
+            "https://github.com/$owner/$repo/archive/$rev.tar.gz")")"
+          sed -i \
+            -e "s|rev = \"[^\"]*\"|rev = \"$rev\"|" \
+            -e "s|version = \"[^\"]*\"|version = \"$base-unstable-$date\"|" \
+            -e "s|hash = \"[^\"]*\"|hash = \"$sri\"|" \
+            "$file"
+        }
+
+        sdist='.packagetype == "sdist"'
+        wheel='.packagetype == "bdist_wheel" and (.filename | endswith("py3-none-any.whl"))'
+
+        update_pypi "$root/pkgs/romm/crontab.nix"           crontab           "$sdist"
+        update_pypi "$root/pkgs/romm/strsimpy.nix"          strsimpy          "$sdist"
+        update_pypi "$root/pkgs/romm/zipfile_inflate64.nix" zipfile-inflate64 "$wheel"
+        update_github_unstable "$root/pkgs/romm/rq_scheduler.nix" adamantike rq-scheduler 0.14.0
+
+        backend="$root/pkgs/romm/backend.nix"
+        update_pypi "$backend" fastapi            "$sdist" 'fastapi = prev\.fastapi\.overridePythonAttrs'
+        update_pypi "$backend" starlette          "$sdist" 'starlette = prev\.starlette\.overridePythonAttrs'
+        update_pypi "$backend" fastapi-pagination "$sdist" 'fastapi-pagination = prev\.fastapi-pagination\.overridePythonAttrs'
+
+        # Finally bump the backend release itself.
+        ${lib.escapeShellArgs (
+          map toString (nix-update-script {
+            attrPath = "romm.passthru.backend";
+            extraArgs = [ "--flake" ];
+          })
+        )}
+      '';
     };
   };
 
