@@ -69,6 +69,7 @@
           };
           init.defaultBranch = "main";
           push.autoSetupRemote = true;
+          tag.sort = "version:refname";
           url."git@github.com:".insteadOf = "https://github.com/";
           user.useConfigOnly = true; # require an email to be defined in local .gitconfig
         };
