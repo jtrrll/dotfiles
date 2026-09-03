@@ -17,7 +17,7 @@ let
   loader = spec.loader or "/lib/ld-linux-aarch64.so.1";
 in
 stdenvNoCC.mkDerivation {
-  pname = "grout-pak-${spec.name}";
+  pname = "grout-pak-${lib.toLower spec.name}";
   inherit (grout) version;
 
   inherit (grout) src;
@@ -76,7 +76,7 @@ stdenvNoCC.mkDerivation {
   '';
 
   meta = {
-    description = "RomM grout client packaged as a ${spec.label} app";
+    description = "RomM grout client packaged as a ${spec.name} app";
     homepage = "https://grout.romm.app/";
     license = lib.licenses.mit;
     platforms = [ "aarch64-linux" ];
