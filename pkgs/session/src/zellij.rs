@@ -3,6 +3,8 @@
 use std::collections::BTreeSet;
 use std::path::Path;
 use std::process::{Command, Stdio};
+use std::thread::sleep;
+use std::time::Duration;
 
 use crate::git::Output;
 
@@ -58,7 +60,20 @@ pub fn start(slug: &str, cwd: &Path, attach_existing: bool) -> Result<(), String
 }
 
 /// Tear down the zellij session with the given slug, if any.
+///
+/// `kill-session` is asynchronous: it initiates shutdown but returns before the
+/// session has fully exited. Deleting too eagerly races that shutdown and
+/// leaves the exited session lingering on disk, so wait for the session to
+/// leave the live set (bounded) before forcing the delete.
 pub fn teardown(slug: &str) {
     let _ = zellij(&["kill-session", slug]);
+
+    for _ in 0..50 {
+        if !live_sessions().contains(slug) {
+            break;
+        }
+        sleep(Duration::from_millis(100));
+    }
+
     let _ = zellij(&["delete-session", slug, "--force"]);
 }
