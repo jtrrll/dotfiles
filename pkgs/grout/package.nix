@@ -68,13 +68,17 @@ buildGoModule (finalAttrs: {
 
     # Firmware "pak" bundles for running grout on retro handhelds.
     paks =
-      lib.mapAttrs
+      lib.mapAttrs'
         (
-          _: spec:
-          callPackage ./pak.nix {
-            grout = finalAttrs.finalPackage;
-            inherit spec;
-          }
+          name: spec:
+          lib.nameValuePair (lib.toLower name) (
+            callPackage ./pak.nix {
+              grout = finalAttrs.finalPackage;
+              spec = spec // {
+                inherit name;
+              };
+            }
+          )
         )
         (
           import ./paks.nix {
