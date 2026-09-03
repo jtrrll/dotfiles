@@ -2,6 +2,7 @@
   config,
   lib,
   options,
+  pkgs,
   ...
 }:
 {
@@ -57,6 +58,14 @@
     })
     (lib.mkIf config.programs.fish.enable {
       programs.fish = {
+        # Standalone Home Manager on Darwin does not add the profile's share to
+        # fish's vendor completions path, so completions shipped by packages in
+        # home.packages (e.g. `session`) never load. Prepend it here.
+        interactiveShellInit = lib.optionalString pkgs.stdenv.hostPlatform.isDarwin ''
+          if test -d ${config.home.profileDirectory}/share/fish/vendor_completions.d
+            set --prepend fish_complete_path ${config.home.profileDirectory}/share/fish/vendor_completions.d
+          end
+        '';
         functions = {
           fish_greeting.body = "";
           fish_prompt.body = ''

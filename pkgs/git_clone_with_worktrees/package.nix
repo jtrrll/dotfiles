@@ -53,7 +53,7 @@ writeShellApplication rec {
     url="$1"
     shift
 
-    if [ $# -eq 0 ]; then
+    if [ $# -eq 0 ] && [ -n "$worktree_dest" ]; then
       read -ra suffixes <<< "$(gum input --placeholder "Worktree names (space-separated)")"
     else
       suffixes=("$@")
@@ -62,10 +62,15 @@ writeShellApplication rec {
     name="$(basename "$url" .git)"
 
     bare_dest="''${bare_dest:+$bare_dest/}$name"
-    worktree_prefix="''${worktree_dest:+$worktree_dest/}$name"
 
     git clone --bare "$url" "$bare_dest"
     git -C "$bare_dest" config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
+
+    if [ -z "$worktree_dest" ]; then
+      exit 0
+    fi
+
+    worktree_prefix="$worktree_dest/$name"
 
     default_branch="$(git --git-dir="$bare_dest" ls-remote --symref origin HEAD | awk '/^ref:/ { sub(/.*\//, "", $2); print $2 }')"
 
