@@ -43,7 +43,7 @@
             }
             {
               name = "Open pull request";
-              uses = "peter-evans/create-pull-request@v7";
+              uses = "peter-evans/create-pull-request@v8";
               "with" = {
                 commit-message = "deps(packages): update package dependencies";
                 title = "deps(packages): update package dependencies";

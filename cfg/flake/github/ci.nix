@@ -17,7 +17,7 @@
 
       freeDiskSpaceStep = {
         name = "Free disk space";
-        uses = "endersonmenezes/free-disk-space@v3";
+        uses = "endersonmenezes/free-disk-space@v4";
         "with" = {
           remove_dotnet = true;
           remove_haskell = true;
@@ -116,7 +116,7 @@
             steps = [
               checkoutStep
               nixInstallerStep
-              { uses = "DeterminateSystems/flake-checker-action@v12"; }
+              { uses = "DeterminateSystems/flake-checker-action@v13"; }
               {
                 name = "Check flake";
                 env = evalStatsEnv;
