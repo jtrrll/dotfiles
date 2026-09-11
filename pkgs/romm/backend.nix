@@ -22,31 +22,31 @@ let
       rq-scheduler = final.callPackage ./rq_scheduler.nix { };
 
       fastapi = prev.fastapi.overridePythonAttrs (_old: rec {
-        version = "0.134.0";
+        version = "0.141.1";
         src = fetchPypi {
           pname = "fastapi";
           inherit version;
-          hash = "sha256-MSKx6g2+qrSLWXboC5nKftoCvhVL8D4SajMiDnMlWpo=";
+          hash = "sha256-6IIvxA2x4YWAVNepSaiIaVvJvc5wE5F44zvShxpFPKE=";
         };
         dontUsePytestCheck = true;
       });
 
       starlette = prev.starlette.overridePythonAttrs (_old: rec {
-        version = "1.0.1";
+        version = "1.6.0";
         src = fetchPypi {
           pname = "starlette";
           inherit version;
-          hash = "sha256-USOZxfHef6yZyIVyIS3tnd7d7y+zKvqC1yQADoizj08=";
+          hash = "sha256-1OOsXlRkRJYMcQKXo8n8P3664bfpY/PTYXO0naU1vps=";
         };
         dontUsePytestCheck = true;
       });
 
       fastapi-pagination = prev.fastapi-pagination.overridePythonAttrs (_old: rec {
-        version = "0.15.0";
+        version = "0.15.16";
         src = fetchPypi {
           pname = "fastapi_pagination";
           inherit version;
-          hash = "sha256-Ef45y+GB7TwYkZuQ+va/y+QMtZaqnFKpi7zoURGimk8=";
+          hash = "sha256-c5pOkEcp3AHgPOleJg7ZvgUNSKNlm+hGPlxPzdDPJbA=";
         };
       });
     };
