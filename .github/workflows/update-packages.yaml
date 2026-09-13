@@ -22,7 +22,7 @@ jobs:
       - name: Update packages
         run: nix run .#update-packages
       - name: Open pull request
-        uses: peter-evans/create-pull-request@v7
+        uses: peter-evans/create-pull-request@v8
         with:
           body: Automated update of package dependencies via each package's `passthru.updateScript`.
           branch: update-packages
