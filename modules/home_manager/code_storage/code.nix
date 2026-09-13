@@ -10,7 +10,7 @@ in
 {
   config = lib.mkIf cfg.enable (
     let
-      codeDir = "${config.home.homeDirectory}/code";
+      codeDir = cfg.directory;
       maintainCodeDir = pkgs.writeShellApplication rec {
         meta.mainProgram = name;
         name = "maintain-code-dir";
