@@ -9,6 +9,9 @@
 result
 result-*
 
+# Rust builds
+target/
+
 # Terraform state
 .terraform/
 

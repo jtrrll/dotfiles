@@ -41,7 +41,7 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 ### `checks`
 
 <details>
-<summary>Show 61</summary>
+<summary>Show 63</summary>
 
 - `files:.github/CODEOWNERS`
 
@@ -149,6 +149,10 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 
 - `packages:service-status/tests/version`
 
+- `packages:session/build`
+
+- `packages:session/metadata`
+
 - `packages:shader-pack/build`
 
 - `packages:shader-pack/metadata`
@@ -215,12 +219,13 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 ### `homeModules`
 
 <details>
-<summary>Show 8</summary>
+<summary>Show 9</summary>
 
 - `bonsai`
   - `programs.bonsai.enable` - Whether to enable a bonsai tree screensaver. (default: `false`)
 
 - `code-storage`
+  - `services.codeStorage.directory` - Directory in which bare git repositories are stored. (default: `"${config.home.homeDirectory}/code"`)
   - `services.codeStorage.enable` - Whether to enable self-maintaining directories for source code and worktrees. (default: `false`)
   - `services.codeStorage.frequency` - The interval at which code storage maintenance runs. (default: `"daily"`)
 
@@ -241,6 +246,12 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 - `service-status`
   - `services.serviceStatus.enable` - Whether to enable HTTP server that reports managed background service status. (default: `false`)
   - `services.serviceStatus.port` - Port to listen on. (default: `5679`)
+
+- `sessions`
+  - `programs.sessions.codeDirectory` - Directory containing the bare git repositories that sessions check (default: `"${config.home.homeDirectory}/code"`)
+  - `programs.sessions.directory` - Directory under which sessions and their worktrees live. (default: `"${config.home.homeDirectory}/sessions"`)
+  - `programs.sessions.enable` - Whether to enable development sessions bundling git worktrees and a zellij session. (default: `false`)
+  - `programs.sessions.package` - The `session` CLI package to install. (default: `pkgs.session`)
 
 - `snekcheck`
   - `programs.snekcheck.enable` - Whether to enable snekcheck. (default: `false`)
@@ -315,7 +326,7 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 ### `packages`
 
 <details>
-<summary>Show 17</summary>
+<summary>Show 18</summary>
 
 - `activate` - Activates a home or NixOS configuration
 
@@ -344,6 +355,8 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 - `romm` - Self-hosted ROM manager and player
 
 - `service-status` - Serves managed background service status over HTTP
+
+- `session` - Manage development sessions as git worktrees and a zellij session
 
 - `shader-pack` - A collection of RetroArch slang shaders for various platforms
 
