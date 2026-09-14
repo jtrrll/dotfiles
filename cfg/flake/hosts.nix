@@ -37,9 +37,9 @@
           };
         };
       sharedModules = builtins.attrValues config.flake.nixosModules ++ [
-        inputs.disko.nixosModules.disko
+        (inputs.disko + "/module.nix")
         inputs.home-manager.nixosModules.home-manager
-        inputs.sops-nix.nixosModules.sops
+        (inputs.sops-nix + "/modules/sops")
         homeManagerConfig
         nixConfig
         { dotfiles.users.enable = true; }

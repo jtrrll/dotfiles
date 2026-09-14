@@ -11,7 +11,7 @@
     flake-parts.url = "github:hercules-ci/flake-parts/main";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     treefmt-nix = {
-      inputs.nixpkgs.follows = "nixpkgs";
+      flake = false;
       url = "github:numtide/treefmt-nix/main";
     };
     # keep-sorted end
@@ -42,13 +42,13 @@
     ### NixOS dependencies ###
     # keep-sorted start block=yes
     disko = {
-      inputs.nixpkgs.follows = "nixpkgs-nixos";
+      flake = false;
       url = "github:nix-community/disko/master";
     };
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     nixpkgs-nixos.url = "github:NixOS/nixpkgs/nixos-unstable";
     sops-nix = {
-      inputs.nixpkgs.follows = "nixpkgs-nixos";
+      flake = false;
       url = "github:Mic92/sops-nix/master";
     };
     # keep-sorted end
@@ -60,11 +60,8 @@
   };
 
   outputs =
-    {
-      flake-parts,
-      ...
-    }@inputs:
-    flake-parts.lib.mkFlake { inherit inputs; } (
+    inputs:
+    inputs.flake-parts.lib.mkFlake { inherit inputs; } (
       {
         config,
         lib,
@@ -117,7 +114,7 @@
           inputs.flake-parts.flakeModules.touchup
           inputs.home-manager.flakeModules.home-manager
           inputs.terranix.flakeModule
-          inputs.treefmt-nix.flakeModule
+          (inputs.treefmt-nix + "/flake-module.nix")
         ]
         ++ lib.attrValues (modules.flake or { })
         ++ lib.attrValues (cfg.flake or { });
