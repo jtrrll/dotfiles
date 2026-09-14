@@ -71,30 +71,30 @@
         dotfilesLib = (import ./lib { inherit lib; }).lib;
         inherit (dotfilesLib.strings) snakeToCamel;
 
-        modules = dotfilesLib.modules.modulesByClassAndName {
-          path = ./modules;
-          transform =
-            class: name: module:
-            let
-              class' = snakeToCamel class;
-            in
-            {
-              class = class';
-              name = lib.replaceStrings [ "_" ] [ "-" ] name;
-              module =
-                if class' == "homeManager" || class' == "nixos" then
-                  {
-                    imports = [ module ];
-                    meta = {
-                      inherit (config.flake.meta) maintainers;
-                    };
-                  }
-                else if class' == "generic" then
-                  module // { _class = null; }
-                else
-                  module;
-            };
-        };
+        modules = lib.mapAttrs (_: dotfilesLib.modules.aggregate) (
+          dotfilesLib.modules.modulesByClassAndName {
+            path = ./modules;
+            transform =
+              class: name: module:
+              let
+                class' = snakeToCamel class;
+              in
+              {
+                class = class';
+                name = lib.replaceStrings [ "_" ] [ "-" ] name;
+                module =
+                  if class' == "homeManager" || class' == "nixos" then
+                    {
+                      imports = [ module ];
+                      meta = {
+                        inherit (config.flake.meta) maintainers;
+                      };
+                    }
+                  else
+                    module;
+              };
+          }
+        );
 
         cfg = dotfilesLib.modules.modulesByClassAndName {
           path = ./cfg;
@@ -115,21 +115,17 @@
           inputs.home-manager.flakeModules.home-manager
           inputs.terranix.flakeModule
           (inputs.treefmt-nix + "/flake-module.nix")
+          modules.flake.default
         ]
-        ++ lib.attrValues (modules.flake or { })
         ++ lib.attrValues (cfg.flake or { });
 
         config = {
           _module.args.cfg = cfg;
           flake = {
             inherit modules;
-            flakeModules = config.flake.modules.flake // {
-              default = {
-                imports = lib.attrValues config.flake.modules.flake;
-              };
-            };
-            homeModules = config.flake.modules.homeManager // (config.flake.modules.generic or { });
-            nixosModules = config.flake.modules.nixos // (config.flake.modules.generic or { });
+            flakeModules = config.flake.modules.flake;
+            homeModules = config.flake.modules.homeManager;
+            nixosModules = config.flake.modules.nixos;
           };
           perSystem = {
             terranix.exportDevShells = false;
