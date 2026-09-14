@@ -11,7 +11,7 @@
     flake-parts.url = "github:hercules-ci/flake-parts/main";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     treefmt-nix = {
-      inputs.nixpkgs.follows = "nixpkgs";
+      flake = false;
       url = "github:numtide/treefmt-nix/main";
     };
     # keep-sorted end
@@ -42,13 +42,13 @@
     ### NixOS dependencies ###
     # keep-sorted start block=yes
     disko = {
-      inputs.nixpkgs.follows = "nixpkgs-nixos";
+      flake = false;
       url = "github:nix-community/disko/master";
     };
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     nixpkgs-nixos.url = "github:NixOS/nixpkgs/nixos-unstable";
     sops-nix = {
-      inputs.nixpkgs.follows = "nixpkgs-nixos";
+      flake = false;
       url = "github:Mic92/sops-nix/master";
     };
     # keep-sorted end
@@ -60,11 +60,8 @@
   };
 
   outputs =
-    {
-      flake-parts,
-      ...
-    }@inputs:
-    flake-parts.lib.mkFlake { inherit inputs; } (
+    inputs:
+    inputs.flake-parts.lib.mkFlake { inherit inputs; } (
       {
         config,
         lib,
@@ -74,30 +71,30 @@
         dotfilesLib = (import ./lib { inherit lib; }).lib;
         inherit (dotfilesLib.strings) snakeToCamel;
 
-        modules = dotfilesLib.modules.modulesByClassAndName {
-          path = ./modules;
-          transform =
-            class: name: module:
-            let
-              class' = snakeToCamel class;
-            in
-            {
-              class = class';
-              name = lib.replaceStrings [ "_" ] [ "-" ] name;
-              module =
-                if class' == "homeManager" || class' == "nixos" then
-                  {
-                    imports = [ module ];
-                    meta = {
-                      inherit (config.flake.meta) maintainers;
-                    };
-                  }
-                else if class' == "generic" then
-                  module // { _class = null; }
-                else
-                  module;
-            };
-        };
+        modules = lib.mapAttrs (_: dotfilesLib.modules.aggregate) (
+          dotfilesLib.modules.modulesByClassAndName {
+            path = ./modules;
+            transform =
+              class: name: module:
+              let
+                class' = snakeToCamel class;
+              in
+              {
+                class = class';
+                name = lib.replaceStrings [ "_" ] [ "-" ] name;
+                module =
+                  if class' == "homeManager" || class' == "nixos" then
+                    {
+                      imports = [ module ];
+                      meta = {
+                        inherit (config.flake.meta) maintainers;
+                      };
+                    }
+                  else
+                    module;
+              };
+          }
+        );
 
         cfg = dotfilesLib.modules.modulesByClassAndName {
           path = ./cfg;
@@ -117,22 +114,18 @@
           inputs.flake-parts.flakeModules.touchup
           inputs.home-manager.flakeModules.home-manager
           inputs.terranix.flakeModule
-          inputs.treefmt-nix.flakeModule
+          (inputs.treefmt-nix + "/flake-module.nix")
+          modules.flake.default
         ]
-        ++ lib.attrValues (modules.flake or { })
         ++ lib.attrValues (cfg.flake or { });
 
         config = {
           _module.args.cfg = cfg;
           flake = {
             inherit modules;
-            flakeModules = config.flake.modules.flake // {
-              default = {
-                imports = lib.attrValues config.flake.modules.flake;
-              };
-            };
-            homeModules = config.flake.modules.homeManager // (config.flake.modules.generic or { });
-            nixosModules = config.flake.modules.nixos // (config.flake.modules.generic or { });
+            flakeModules = config.flake.modules.flake;
+            homeModules = config.flake.modules.homeManager;
+            nixosModules = config.flake.modules.nixos;
           };
           perSystem = {
             terranix.exportDevShells = false;

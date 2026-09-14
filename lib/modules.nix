@@ -31,6 +31,8 @@ in
 {
   inherit nixFilesInDir;
 
+  aggregate = modules: modules // { default.imports = lib.attrValues modules; };
+
   modulesByClassAndName =
     {
       path,
