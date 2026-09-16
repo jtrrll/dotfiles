@@ -11,6 +11,7 @@
       programs.ssh = {
         enableDefaultConfig = false;
         extraConfig = lib.mkIf pkgs.stdenv.hostPlatform.isDarwin ''
+          IgnoreUnknown UseKeychain
           UseKeychain yes
         '';
 
