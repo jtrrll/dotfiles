@@ -6,12 +6,13 @@
 }:
 {
   config.packagesByName = {
+    enable = true;
     path = ../../pkgs;
     overlays = [
+      (import inputs.nix-lib { inherit lib; }).overlays.default
       inputs.vicinae.overlays.default
-      (final: prev: {
+      (_: prev: {
         lib = prev.lib.extend inputs.nixvim.lib.overlay;
-        snekcheck = inputs.snekcheck.packages.${final.stdenv.hostPlatform.system}.default;
       })
     ];
     transform = name: pkg: {

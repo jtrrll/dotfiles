@@ -41,7 +41,7 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 ### `checks`
 
 <details>
-<summary>Show 63</summary>
+<summary>Show 56</summary>
 
 - `files:.github/CODEOWNERS`
 
@@ -70,8 +70,6 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 - `files:README.md`
 
 - `homeConfigurations:jtrrll/build`
-
-- `lib`
 
 - `nixosConfigurations:ares/build`
 
@@ -109,10 +107,6 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 
 - `packages:git-trim/metadata`
 
-- `packages:grout/build`
-
-- `packages:grout/metadata`
-
 - `packages:keep-awake/build`
 
 - `packages:keep-awake/metadata`
@@ -128,14 +122,6 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 - `packages:neovim/tests/nixvim-check`
 
 - `packages:neovim/tests/version`
-
-- `packages:rahasher/build`
-
-- `packages:rahasher/metadata`
-
-- `packages:romm/build`
-
-- `packages:romm/metadata`
 
 - `packages:service-status/build`
 
@@ -180,31 +166,6 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 
 </details>
 
-### `flakeModules`
-
-<details>
-<summary>Show 9</summary>
-
-- `default`
-
-- `flake-metadata`
-
-- `home-configuration-build-checks`
-
-- `nixos-configuration-build-checks`
-
-- `nixos-configuration-test-checks`
-
-- `package-build-checks`
-
-- `package-metadata-checks`
-
-- `package-passthru-tests-checks`
-
-- `packages-by-name`
-
-</details>
-
 ### `formatter`
 
 ### `homeConfigurations`
@@ -219,7 +180,7 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 ### `homeModules`
 
 <details>
-<summary>Show 10</summary>
+<summary>Show 8</summary>
 
 - `bonsai`
   - `programs.bonsai.enable` - Whether to enable a bonsai tree screensaver. (default: `false`)
@@ -230,7 +191,6 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
   - `services.codeStorage.frequency` - The interval at which code storage maintenance runs. (default: `"daily"`)
 
 - `default`
-  - `meta.description` - A short description of this configuration. (default: `""`)
   - `programs.bonsai.enable` - Whether to enable a bonsai tree screensaver. (default: `false`)
   - `programs.edit.enable` - Whether to enable edit. (default: `false`)
   - `programs.edit.package` - The edit package to use (default: `<derivation edit>`)
@@ -239,8 +199,6 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
   - `programs.sessions.directory` - Directory under which sessions and their worktrees live. (default: `"${config.home.homeDirectory}/sessions"`)
   - `programs.sessions.enable` - Whether to enable development sessions bundling git worktrees and a zellij session. (default: `false`)
   - `programs.sessions.package` - The `session` CLI package to install. (default: `pkgs.session`)
-  - `programs.snekcheck.enable` - Whether to enable snekcheck. (default: `false`)
-  - `programs.snekcheck.package` - The snekcheck package to use (default: `<derivation snekcheck-0.1.0>`)
   - `services.codeStorage.directory` - Directory in which bare git repositories are stored. (default: `"${config.home.homeDirectory}/code"`)
   - `services.codeStorage.enable` - Whether to enable self-maintaining directories for source code and worktrees. (default: `false`)
   - `services.codeStorage.frequency` - The interval at which code storage maintenance runs. (default: `"daily"`)
@@ -255,9 +213,6 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 - `matrix`
   - `programs.matrix.enable` - Whether to enable a matrix rain screensaver. (default: `false`)
 
-- `meta`
-  - `meta.description` - A short description of this configuration. (default: `""`)
-
 - `music-library`
   - `services.musicLibrary.enable` - Whether to enable a curated music library. (default: `false`)
 
@@ -270,10 +225,6 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
   - `programs.sessions.directory` - Directory under which sessions and their worktrees live. (default: `"${config.home.homeDirectory}/sessions"`)
   - `programs.sessions.enable` - Whether to enable development sessions bundling git worktrees and a zellij session. (default: `false`)
   - `programs.sessions.package` - The `session` CLI package to install. (default: `pkgs.session`)
-
-- `snekcheck`
-  - `programs.snekcheck.enable` - Whether to enable snekcheck. (default: `false`)
-  - `programs.snekcheck.package` - The snekcheck package to use (default: `<derivation snekcheck-0.1.0>`)
 
 </details>
 
@@ -291,69 +242,7 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 ### `nixosModules`
 
 <details>
-<summary>Show 5</summary>
-
-- `default`
-  - `meta.description` - A short description of this configuration. (default: `""`)
-  - `services.romm.baseUrl` - Public URL of this RomM instance (ROMM_BASE_URL). (default: `"http://0.0.0.0"`)
-  - `services.romm.dataDir` - Base directory for RomM persistent data (resources, assets, config, redis). (default: `"/var/lib/romm"`)
-  - `services.romm.database.driver` - Database driver RomM connects with (ROMM_DB_DRIVER). (default: `"mariadb"`)
-  - `services.romm.database.host` - Host name of the database RomM connects to (DB_HOST).
-  - `services.romm.database.name` - Database name RomM connects to (DB_NAME). (default: `"romm"`)
-  - `services.romm.database.port` - Port of the database RomM connects to (DB_PORT). (default: `if driver == "postgresql" then 5432 else 3306`)
-  - `services.romm.database.user` - Database user RomM connects as (DB_USER). (default: `"romm"`)
-  - `services.romm.enable` - Whether to enable RomM, a self-hosted ROM manager and player. (default: `false`)
-  - `services.romm.environmentFiles` - Environment files for the RomM service. Must define (default: `[ ]`)
-  - `services.romm.gunicornSocket` - Path of the Unix socket the backend's gunicorn server listens on. (default: `"/run/romm/gunicorn.sock"`)
-  - `services.romm.libraryDir` - Directory containing ROMs and BIOS files. (default: `"/var/lib/romm/library"`)
-  - `services.romm.logLevel` - Application log level (LOGLEVEL). (default: `"INFO"`)
-  - `services.romm.metadataProviders.flashpoint.enable` - Whether to enable the Flashpoint metadata provider (FLASHPOINT_API_ENABLED). (default: `false`)
-  - `services.romm.metadataProviders.hasheous.enable` - Whether to enable the Hasheous metadata provider (HASHEOUS_API_ENABLED). (default: `false`)
-  - `services.romm.metadataProviders.hltb.enable` - Whether to enable the HowLongToBeat metadata provider (HLTB_API_ENABLED). (default: `false`)
-  - `services.romm.metadataProviders.launchbox.enable` - Whether to enable the LaunchBox metadata provider (LAUNCHBOX_API_ENABLED). (default: `false`)
-  - `services.romm.metadataProviders.playmatch.enable` - Whether to enable the PlayMatch metadata provider (PLAYMATCH_API_ENABLED). (default: `false`)
-  - `services.romm.metadataProviders.retroachievements.cacheRefreshDays` - RetroAchievements metadata cache refresh interval in days (default: `30`)
-  - `services.romm.metadataProviders.tgdb.enable` - Whether to enable the TheGamesDB metadata provider (TGDB_API_ENABLED). (default: `false`)
-  - `services.romm.nginx.enable` - Whether to configure `services.nginx` to serve the RomM frontend and (default: `true`)
-  - `services.romm.openFirewall` - Whether to open the firewall for RomM's port. (default: `false`)
-  - `services.romm.package` - The RomM package to run. (default: `pkgs.romm`)
-  - `services.romm.port` - Host port to expose the RomM web UI on. (default: `8080`)
-  - `services.romm.rahasher` - RAHasher package providing the `RAHasher` binary used to compute (default: `pkgs.rahasher`)
-  - `services.romm.settings` - Environment variables for the RomM application, merged (default: `{ }`)
-  - `tests` - Tests associated with this host. Each value is a derivation that succeeds if the test passes. (default: `{ }`)
-
-- `meta`
-  - `meta.description` - A short description of this configuration. (default: `""`)
-
-- `romm`
-  - `services.romm.baseUrl` - Public URL of this RomM instance (ROMM_BASE_URL). (default: `"http://0.0.0.0"`)
-  - `services.romm.dataDir` - Base directory for RomM persistent data (resources, assets, config, redis). (default: `"/var/lib/romm"`)
-  - `services.romm.database.driver` - Database driver RomM connects with (ROMM_DB_DRIVER). (default: `"mariadb"`)
-  - `services.romm.database.host` - Host name of the database RomM connects to (DB_HOST).
-  - `services.romm.database.name` - Database name RomM connects to (DB_NAME). (default: `"romm"`)
-  - `services.romm.database.port` - Port of the database RomM connects to (DB_PORT). (default: `if driver == "postgresql" then 5432 else 3306`)
-  - `services.romm.database.user` - Database user RomM connects as (DB_USER). (default: `"romm"`)
-  - `services.romm.enable` - Whether to enable RomM, a self-hosted ROM manager and player. (default: `false`)
-  - `services.romm.environmentFiles` - Environment files for the RomM service. Must define (default: `[ ]`)
-  - `services.romm.gunicornSocket` - Path of the Unix socket the backend's gunicorn server listens on. (default: `"/run/romm/gunicorn.sock"`)
-  - `services.romm.libraryDir` - Directory containing ROMs and BIOS files. (default: `"/var/lib/romm/library"`)
-  - `services.romm.logLevel` - Application log level (LOGLEVEL). (default: `"INFO"`)
-  - `services.romm.metadataProviders.flashpoint.enable` - Whether to enable the Flashpoint metadata provider (FLASHPOINT_API_ENABLED). (default: `false`)
-  - `services.romm.metadataProviders.hasheous.enable` - Whether to enable the Hasheous metadata provider (HASHEOUS_API_ENABLED). (default: `false`)
-  - `services.romm.metadataProviders.hltb.enable` - Whether to enable the HowLongToBeat metadata provider (HLTB_API_ENABLED). (default: `false`)
-  - `services.romm.metadataProviders.launchbox.enable` - Whether to enable the LaunchBox metadata provider (LAUNCHBOX_API_ENABLED). (default: `false`)
-  - `services.romm.metadataProviders.playmatch.enable` - Whether to enable the PlayMatch metadata provider (PLAYMATCH_API_ENABLED). (default: `false`)
-  - `services.romm.metadataProviders.retroachievements.cacheRefreshDays` - RetroAchievements metadata cache refresh interval in days (default: `30`)
-  - `services.romm.metadataProviders.tgdb.enable` - Whether to enable the TheGamesDB metadata provider (TGDB_API_ENABLED). (default: `false`)
-  - `services.romm.nginx.enable` - Whether to configure `services.nginx` to serve the RomM frontend and (default: `true`)
-  - `services.romm.openFirewall` - Whether to open the firewall for RomM's port. (default: `false`)
-  - `services.romm.package` - The RomM package to run. (default: `pkgs.romm`)
-  - `services.romm.port` - Host port to expose the RomM web UI on. (default: `8080`)
-  - `services.romm.rahasher` - RAHasher package providing the `RAHasher` binary used to compute (default: `pkgs.rahasher`)
-  - `services.romm.settings` - Environment variables for the RomM application, merged (default: `{ }`)
-
-- `tests`
-  - `tests` - Tests associated with this host. Each value is a derivation that succeeds if the test passes. (default: `{ }`)
+<summary>Show 1</summary>
 
 - `users`
   - `dotfiles.users.enable` - Whether to enable user configurations. (default: `false`)
@@ -372,7 +261,7 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 ### `packages`
 
 <details>
-<summary>Show 18</summary>
+<summary>Show 15</summary>
 
 - `activate` - Activates a home or NixOS configuration
 
@@ -388,17 +277,11 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 
 - `git-trim` - Deletes all working git branches and updates main branch
 
-- `grout` - RomM client for Linux retro handhelds
-
 - `keep-awake` - Prevents system sleep while a command runs
 
 - `matrix` - A cyberpunk terminal screensaver
 
 - `neovim` - Personalized Neovim distribution built with Nixvim
-
-- `rahasher` - Hashing tool from RALibretro used by RomM for RetroAchievements
-
-- `romm` - Self-hosted ROM manager and player
 
 - `service-status` - Serves managed background service status over HTTP
 

@@ -34,6 +34,7 @@
                   flake.patterns = [
                     "files"
                     "flake-parts"
+                    "nix-lib"
                     "nixpkgs"
                     "treefmt-nix"
                   ];
@@ -43,7 +44,6 @@
                   home-manager.patterns = [
                     "home-manager"
                     "nixvim"
-                    "snekcheck"
                     "stylix"
                     "vicinae"
                   ];

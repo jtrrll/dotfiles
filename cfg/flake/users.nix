@@ -8,6 +8,7 @@
 let
   flakeConfig = config;
   sharedModules = (lib.attrValues config.flake.homeModules) ++ [
+    (import inputs.nix-lib { inherit lib; }).modules.homeManager.default
     inputs.stylix.homeModules.stylix
     inputs.vicinae.homeManagerModules.default
   ];
