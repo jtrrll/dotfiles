@@ -79,11 +79,13 @@
             };
             share = "disabled";
           };
-          tui = {
-            theme = "system";
-            tabs.enabled = false;
-          };
+          tui.theme = "system";
         };
+      };
+      xdg.configFile."opencode/cli.json".text = builtins.toJSON {
+        "$schema" = "https://opencode.ai/v2/cli.json";
+        theme.name = "system";
+        tabs.enabled = false;
       };
       xdg.configFile."opencode/plugins/zellij.ts".source =
         pkgs.zellij-agent-handler.integrations.opencode-plugin;
