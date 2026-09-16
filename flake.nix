@@ -9,6 +9,10 @@
       url = "github:mightyiam/files/master";
     };
     flake-parts.url = "github:hercules-ci/flake-parts/main";
+    nix-lib = {
+      flake = false;
+      url = "github:jtrrll/nix-lib/main";
+    };
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     treefmt-nix = {
       flake = false;
@@ -25,10 +29,6 @@
     # keep-sorted start block=yes
     home-manager.url = "github:nix-community/home-manager/master";
     nixvim.url = "github:nix-community/nixvim/main";
-    snekcheck = {
-      inputs.nixpkgs.follows = "home-manager/nixpkgs";
-      url = "github:jtrrll/snekcheck/main";
-    };
     stylix = {
       inputs.nixpkgs.follows = "home-manager/nixpkgs";
       url = "github:nix-community/stylix/master";
@@ -68,35 +68,20 @@
         ...
       }:
       let
-        dotfilesLib = (import ./lib { inherit lib; }).lib;
-        inherit (dotfilesLib.strings) snakeToCamel;
+        nix-lib = import inputs.nix-lib { inherit lib; };
+        inherit (nix-lib.lib.modules) aggregate modulesByClassAndName;
+        inherit (nix-lib.lib.strings) snakeToCamel;
 
-        modules = lib.mapAttrs (_: dotfilesLib.modules.aggregate) (
-          dotfilesLib.modules.modulesByClassAndName {
-            path = ./modules;
-            transform =
-              class: name: module:
-              let
-                class' = snakeToCamel class;
-              in
-              {
-                class = class';
-                name = lib.replaceStrings [ "_" ] [ "-" ] name;
-                module =
-                  if class' == "homeManager" || class' == "nixos" then
-                    {
-                      imports = [ module ];
-                      meta = {
-                        inherit (config.flake.meta) maintainers;
-                      };
-                    }
-                  else
-                    module;
-              };
-          }
-        );
+        modules = lib.mapAttrs (_: aggregate) (modulesByClassAndName {
+          path = ./modules;
+          transform = class: name: module: {
+            class = snakeToCamel class;
+            name = lib.replaceStrings [ "_" ] [ "-" ] name;
+            inherit module;
+          };
+        });
 
-        cfg = dotfilesLib.modules.modulesByClassAndName {
+        cfg = modulesByClassAndName {
           path = ./cfg;
           transform = class: name: module: {
             class = snakeToCamel class;
@@ -109,13 +94,12 @@
         imports = [
           inputs.devenv.flakeModule
           (inputs.files + "/flake-module.nix")
-          inputs.flake-parts.flakeModules.flakeModules
           inputs.flake-parts.flakeModules.modules
           inputs.flake-parts.flakeModules.touchup
           inputs.home-manager.flakeModules.home-manager
           inputs.terranix.flakeModule
           (inputs.treefmt-nix + "/flake-module.nix")
-          modules.flake.default
+          nix-lib.modules.flake.default
         ]
         ++ lib.attrValues (cfg.flake or { });
 
@@ -123,9 +107,8 @@
           _module.args.cfg = cfg;
           flake = {
             inherit modules;
-            flakeModules = config.flake.modules.flake;
-            homeModules = config.flake.modules.homeManager;
-            nixosModules = config.flake.modules.nixos;
+            homeModules = config.flake.modules.homeManager or { };
+            nixosModules = config.flake.modules.nixos or { };
           };
           perSystem = {
             terranix.exportDevShells = false;
@@ -144,7 +127,6 @@
               apps.enable = true;
               checks.enable = true;
               devShells.enable = true;
-              flakeModules.enable = true;
               formatter.enable = true;
               homeConfigurations.enable = true;
               homeModules.enable = true;
