@@ -29,7 +29,7 @@ let
   };
 in
 stdenvNoCC.mkDerivation (finalAttrs: {
-  pname = "opencode2";
+  pname = "opencode";
   version = "2.0.4";
 
   __structuredAttrs = true;
@@ -43,7 +43,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
   };
 
   node_modules = stdenvNoCC.mkDerivation {
-    pname = "opencode2-node_modules";
+    pname = "opencode-node_modules";
     inherit (finalAttrs) version src;
 
     impureEnvVars = lib.fetchers.proxyImpureEnvVars ++ [
