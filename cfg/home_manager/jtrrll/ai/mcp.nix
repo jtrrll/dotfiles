@@ -11,8 +11,8 @@
       programs.mcp.servers = {
         context7 = {
           type = "stdio";
-          env.PATH = "${pkgs.nodejs}/bin";
-          command = "npx";
+          command = "${pkgs.nodejs}/bin/npx";
+          env.PATH = "${pkgs.nodejs}/bin:{env:PATH}";
           args = [
             "-y"
             "@upstash/context7-mcp"
