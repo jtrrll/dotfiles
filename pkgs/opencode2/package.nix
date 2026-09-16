@@ -138,13 +138,28 @@ stdenvNoCC.mkDerivation (finalAttrs: {
 
     install -Dm755 dist/cli-*/bin/opencode "$out/bin/${finalAttrs.meta.mainProgram}"
 
-    wrapProgram "$out/bin/${finalAttrs.meta.mainProgram}" \
-      --prefix PATH : ${
-        lib.makeBinPath ([ ripgrep ] ++ lib.optional stdenvNoCC.hostPlatform.isDarwin sysctl)
-      } ${lib.optionalString stdenvNoCC.hostPlatform.isLinux ''
-        --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath [ wayland ]}
-      ''} \
-      --set OPENCODE_DISABLE_AUTOUPDATE true
+    # OpenTUI dlopens Wayland for clipboard images.
+    wrapProgram "$out/bin/${finalAttrs.meta.mainProgram}" ${
+      lib.escapeShellArgs (
+        [
+          "--prefix"
+          "PATH"
+          ":"
+          (lib.makeBinPath ([ ripgrep ] ++ lib.optional stdenvNoCC.hostPlatform.isDarwin sysctl))
+        ]
+        ++ lib.optionals stdenvNoCC.hostPlatform.isLinux [
+          "--prefix"
+          "LD_LIBRARY_PATH"
+          ":"
+          (lib.makeLibraryPath [ wayland ])
+        ]
+        ++ [
+          "--set"
+          "OPENCODE_DISABLE_AUTOUPDATE"
+          "true"
+        ]
+      )
+    }
 
     runHook postInstall
   '';
