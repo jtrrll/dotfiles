@@ -12,7 +12,11 @@
  */
 
 import { type ChildProcess, spawn } from "node:child_process";
-import { Plugin } from "@opencode/plugin";
+
+// NOTE: intentionally no `@opencode/plugin` import. A V2 plugin is just an
+// object with `id` + `setup`; `Plugin.define` is an identity helper for types.
+// Importing the SDK would fail to resolve, since this file is loaded standalone
+// from the Nix store with no adjacent node_modules.
 
 function getPaneId() {
 	return process.env.ZELLIJ_PANE_ID || "0";
@@ -56,7 +60,7 @@ async function sendState(activity, name, action, snippet) {
 	await zellij(["pipe", "--name", "agent-handler", "--", payload]);
 }
 
-export default Plugin.define({
+export default {
 	id: "zellij",
 	async setup(ctx) {
 		if (!process.env.ZELLIJ) return;
@@ -132,4 +136,4 @@ export default Plugin.define({
 
 		return () => controller.abort();
 	},
-});
+};
