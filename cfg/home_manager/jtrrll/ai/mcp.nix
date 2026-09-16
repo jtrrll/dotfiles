@@ -11,8 +11,11 @@
       programs.mcp.servers = {
         context7 = {
           type = "stdio";
-          command = "${pkgs.bun}/bin/bunx";
-          args = [ "@upstash/context7-mcp" ];
+          command = "${pkgs.nodejs}/bin/npx";
+          args = [
+            "-y"
+            "@upstash/context7-mcp"
+          ];
         };
         nix = {
           type = "stdio";

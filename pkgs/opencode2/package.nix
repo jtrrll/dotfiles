@@ -231,7 +231,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
   meta = {
     description = "AI coding agent built for the terminal (v2)";
     homepage = "https://opencode.ai";
-    mainProgram = "opencode2";
+    mainProgram = "opencode";
     platforms = lib.attrNames nodeModulesHashes;
     sourceProvenance = [ lib.sourceTypes.fromSource ];
   };
