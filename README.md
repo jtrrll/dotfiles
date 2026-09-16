@@ -41,7 +41,7 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 ### `checks`
 
 <details>
-<summary>Show 56</summary>
+<summary>Show 58</summary>
 
 - `files:.github/CODEOWNERS`
 
@@ -122,6 +122,10 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 - `packages:neovim/tests/nixvim-check`
 
 - `packages:neovim/tests/version`
+
+- `packages:opencode2/build`
+
+- `packages:opencode2/metadata`
 
 - `packages:service-status/build`
 
@@ -261,7 +265,7 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 ### `packages`
 
 <details>
-<summary>Show 15</summary>
+<summary>Show 16</summary>
 
 - `activate` - Activates a home or NixOS configuration
 
@@ -282,6 +286,8 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 - `matrix` - A cyberpunk terminal screensaver
 
 - `neovim` - Personalized Neovim distribution built with Nixvim
+
+- `opencode2` - AI coding agent built for the terminal (v2)
 
 - `service-status` - Serves managed background service status over HTTP
 
