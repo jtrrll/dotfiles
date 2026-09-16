@@ -37,6 +37,7 @@
           };
         };
       sharedModules = builtins.attrValues config.flake.nixosModules ++ [
+        (import inputs.nix-lib { inherit lib; }).modules.nixos.default
         (inputs.disko + "/module.nix")
         inputs.home-manager.nixosModules.home-manager
         (inputs.sops-nix + "/modules/sops")
