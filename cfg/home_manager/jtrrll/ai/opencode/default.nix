@@ -14,6 +14,7 @@
           ".opencode"
         ];
         opencode = {
+          package = pkgs.opencode2;
           enableMcpIntegration = true;
           agents =
             let
