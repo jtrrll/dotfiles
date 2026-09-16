@@ -79,7 +79,10 @@
             };
             share = "disabled";
           };
-          tui.theme = "system";
+          tui = {
+            theme = "system";
+            tabs.enabled = false;
+          };
         };
       };
       xdg.configFile."opencode/plugins/zellij.ts".source =
