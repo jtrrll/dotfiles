@@ -16,7 +16,7 @@ buildGoModule (finalAttrs: {
   pname = "service-status";
   version = "0.1.0";
   src = ./src;
-  vendorHash = "sha256-Ip2GuQDOolMyDvfmXcJRlY2rMp1amS8owkqcNMOR1+Y=";
+  vendorHash = "sha256-Sa3fqzEYRT6oU7Uw8FTCG2ZQDbe2xRcray/Js1iEz3s=";
 
   env.CGO_ENABLED = 0;
 
@@ -43,7 +43,7 @@ buildGoModule (finalAttrs: {
 
       (cd "$srcDir" && go get -u ./... && go mod tidy)
 
-      sed -i 's|vendorHash = "[^"]*"|vendorHash = ""|' "$pkgFile"
+      sed -i 's|vendorHash = "sha256-Sa3fqzEYRT6oU7Uw8FTCG2ZQDbe2xRcray/Js1iEz3s="]*"|vendorHash = ""|' "$pkgFile"
 
       hash=$(
         nix build "$root#service-status" --no-link 2>&1 \
