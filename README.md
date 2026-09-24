@@ -41,7 +41,7 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 ### `checks`
 
 <details>
-<summary>Show 62</summary>
+<summary>Show 61</summary>
 
 - `files:.github/CODEOWNERS`
 
@@ -122,8 +122,6 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 - `packages:neovim/build`
 
 - `packages:neovim/metadata`
-
-- `packages:neovim/tests/nixvim-check`
 
 - `packages:neovim/tests/version`
 
