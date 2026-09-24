@@ -9,7 +9,7 @@
     enable = true;
     path = ../../pkgs;
     overlays = [
-      (import inputs.nix-lib { inherit lib; }).overlays.default
+      (import inputs.nix-lib { inherit lib; }).overlays.pkgs
       inputs.vicinae.overlays.default
       (_: prev: {
         lib = prev.lib.extend inputs.nixvim.lib.overlay;

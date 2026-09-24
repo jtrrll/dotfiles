@@ -38,43 +38,31 @@ in
     caddy = {
       enable = true;
       openFirewall = true;
-      virtualHosts.":80".extraConfig =
-        let
-          cfg = config.services;
-        in
-        ''
-          handle_path /jellyfin/* {
-            reverse_proxy localhost:8096
-          }
-          handle_path /sonarr/* {
-            reverse_proxy localhost:8989
-          }
-          handle_path /radarr/* {
-            reverse_proxy localhost:7878
-          }
-          handle_path /prowlarr/* {
-            reverse_proxy localhost:9696
-          }
-          handle_path /qbittorrent/* {
-            reverse_proxy localhost:${toString cfg.qbittorrent.webuiPort}
-          }
-          # romm/* intentionally omitted because its frontend doesn't
-          # support being served from a subpath. Access it directly at
-          # localhost:${toString cfg.romm.port} until it gets its own
-          # subdomain.
-          handle_path /lidarr/* {
-            reverse_proxy localhost:8686
-          }
-          handle_path /audiobookshelf/* {
-            reverse_proxy localhost:${toString cfg.audiobookshelf.port}
-          }
-          handle_path /forgejo/* {
-            reverse_proxy localhost:${toString cfg.forgejo.settings.server.HTTP_PORT}
-          }
-          handle_path /bazarr/* {
-            reverse_proxy localhost:${toString cfg.bazarr.listenPort}
-          }
-        '';
+      virtualHosts =
+        lib.mapAttrs'
+          (
+            name: port:
+            lib.nameValuePair "http://${name}.services.lan" {
+              extraConfig = "reverse_proxy localhost:${toString port}";
+            }
+          )
+          (
+            let
+              cfg = config.services;
+            in
+            {
+              audiobookshelf = cfg.audiobookshelf.port;
+              bazarr = cfg.bazarr.listenPort;
+              forgejo = cfg.forgejo.settings.server.HTTP_PORT;
+              jellyfin = 8096;
+              lidarr = 8686;
+              prowlarr = 9696;
+              qbittorrent = cfg.qbittorrent.webuiPort;
+              radarr = 7878;
+              romm = cfg.romm.port;
+              sonarr = 8989;
+            }
+          );
     };
 
     # Media streaming
@@ -106,7 +94,6 @@ in
     # ROM manager
     romm = {
       enable = true;
-      openFirewall = true;
       database = {
         driver = "postgresql";
         host = "127.0.0.1";
@@ -135,7 +122,13 @@ in
     audiobookshelf.enable = true;
 
     # Git forge
-    forgejo.enable = true;
+    forgejo = {
+      enable = true;
+      settings.server = {
+        DOMAIN = "forgejo.services.lan";
+        ROOT_URL = "http://forgejo.services.lan/";
+      };
+    };
 
     # Network file shares
     samba = {
