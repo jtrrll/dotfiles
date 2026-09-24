@@ -38,7 +38,7 @@
       packagePassthruTestsChecks.enable = true;
       packageMetadataChecks = {
         enable = true;
-        checks = lib.mkForce [
+        checks = [
           (
             meta:
             if meta ? description then
