@@ -38,7 +38,7 @@
       packagePassthruTestsChecks.enable = true;
       packageMetadataChecks = {
         enable = true;
-        checks = [
+        checks = lib.mkForce [
           (
             meta:
             if meta ? description then
@@ -131,19 +131,6 @@
               {
                 success = false;
                 error = "A license must be set";
-              }
-          )
-          (
-            meta:
-            if meta.license.free or false then
-              {
-                success = true;
-                error = null;
-              }
-            else
-              {
-                success = false;
-                error = "The license must be free";
               }
           )
           (

@@ -9,6 +9,9 @@
 result
 result-*
 
+# Python formatting
+.ruff_cache/
+
 # Rust builds
 target/
 
