@@ -10,27 +10,60 @@ let
         nixpkgs.pkgs = pkgs;
         version.enableNixpkgsReleaseCheck = false;
       }
-      ./_clipboard.nix
-      ./_code_tree.nix
-      ./_completion.nix
-      ./_files.nix
-      ./_git.nix
-      ./_keymaps.nix
-      ./_lsp.nix
-      ./_save.nix
-      ./_status_line.nix
-      ./_vim_options.nix
+      ./command_display.nix
+      ./formatting.nix
+      ./theme.nix
+      ./vim_options.nix
       {
-        colorschemes.vscode.enable = true;
-        plugins.lz-n.enable = true;
+        extraPackages = with pkgs; [
+          lua-language-server
+          tree-sitter
+        ];
         viAlias = true;
         vimAlias = true;
-        plugins.snacks = {
+        plugins.lazy = {
           enable = true;
           settings = {
-            bigfile.enabled = true;
-            quickfile.enabled = true;
+            defaults.lazy = false;
+            checker.enabled = true;
+            dev.patterns = lib.mkForce [ ];
           };
+          plugins = [
+            {
+              pkg = pkgs.vimPlugins.LazyVim;
+              name = "LazyVim";
+              lazy = false;
+            }
+            { import = "lazyvim.plugins"; }
+            {
+              __unkeyed = "folke/snacks.nvim";
+              opts.picker.sources.explorer.layout.layout.position = "right";
+            }
+            {
+              __unkeyed = "nvim-lualine/lualine.nvim";
+              opts.__raw = ''
+                function(_, opts)
+                  table.insert(opts.sections.lualine_x, 1, _G.command_statusline)
+                  opts.sections.lualine_c[1] = LazyVim.lualine.root_dir({ cwd = true })
+                  opts.sections.lualine_z = {}
+                  return opts
+                end
+              '';
+            }
+            {
+              __unkeyed = "mason-org/mason.nvim";
+              opts.__raw = ''
+                function(_, opts)
+                  opts.ensure_installed = {}
+                  return opts
+                end
+              '';
+            }
+            {
+              __unkeyed = "neovim/nvim-lspconfig";
+              opts.servers.lua_ls.mason = false;
+            }
+          ];
         };
       }
     ];
@@ -44,7 +77,6 @@ neovim.config.build.package.overrideAttrs (
       sourceProvenance = [ lib.sourceTypes.fromSource ];
     };
     passthru.tests = {
-      nixvim-check = neovim.config.build.test;
       version = testers.testVersion {
         package = finalAttrs.finalPackage;
         version = "v${neovim.config.package.version}";
