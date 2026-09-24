@@ -8,6 +8,7 @@
 {
   config.flake.nixosConfigurations =
     let
+      nix-lib = import inputs.nix-lib { inherit lib; };
       homeManagerConfig = {
         home-manager = {
           backupFileExtension = "bak";
@@ -37,7 +38,7 @@
           };
         };
       sharedModules = builtins.attrValues config.flake.nixosModules ++ [
-        (import inputs.nix-lib { inherit lib; }).modules.nixos.default
+        nix-lib.modules.nixos.default
         (inputs.disko + "/module.nix")
         inputs.home-manager.nixosModules.home-manager
         (inputs.sops-nix + "/modules/sops")
@@ -54,6 +55,7 @@
     lib.mapAttrs (
       _: module:
       inputs.nixpkgs-nixos.lib.nixosSystem {
+        lib = inputs.nixpkgs-nixos.lib.extend nix-lib.overlays.lib;
         modules = sharedModules ++ [ module ];
         specialArgs = {
           nixosHardwareModules = inputs.nixos-hardware.nixosModules;
