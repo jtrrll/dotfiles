@@ -7,6 +7,20 @@
 {
   config = lib.mkMerge [
     { programs.git.enable = lib.mkDefault true; }
+    {
+      programs.delta = {
+        enable = lib.mkDefault true;
+        enableGitIntegration = true;
+        options = {
+          navigate = true;
+          side-by-side = true;
+          line-numbers = true;
+          hyperlinks = true;
+          syntax-theme = "Visual Studio Dark+";
+          merge-conflicts = true;
+        };
+      };
+    }
     (lib.mkIf config.programs.git.enable {
       programs.git = {
         signing.format = null;
@@ -35,6 +49,7 @@
             }";
           };
           branch.sort = "-committerdate";
+          diff.algorithm = "histogram";
           fetch.prune = true;
           trailer = {
             cve = {
