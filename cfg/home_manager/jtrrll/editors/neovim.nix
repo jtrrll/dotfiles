@@ -4,12 +4,8 @@
   ...
 }:
 {
-  config = {
-    programs.neovim = {
-      enable = true;
-      withPython3 = false;
-      withRuby = false;
-    };
-    home.sessionVariables.EDITOR = lib.getExe pkgs.neovim;
+  config.home = {
+    packages = [ pkgs.neovim ];
+    sessionVariables.EDITOR = lib.getExe pkgs.neovim;
   };
 }
