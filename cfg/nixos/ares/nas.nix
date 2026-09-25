@@ -7,6 +7,10 @@
   ...
 }:
 let
+  calibreLibraryName = "calibre-library";
+  calibreLibraryDir = "/var/lib/${calibreLibraryName}";
+  jellyfinPort = 8096;
+
   beetsConfig = pkgs.writeText "beets-config.yaml" ''
     directory: ${config.services.lidarr.dataDir}
     library: ${config.services.lidarr.dataDir}/beets.db
@@ -33,6 +37,28 @@ let
   '';
 in
 {
+  systemd.services.calibre-web = {
+    requires = [ "calibre-library-init.service" ];
+    after = [ "calibre-library-init.service" ];
+  };
+
+  systemd.services.calibre-library-init = {
+    description = "Initialize the Calibre ebook library";
+    environment.CALIBRE_CONFIG_DIRECTORY = "${calibreLibraryDir}/.calibre";
+    serviceConfig = {
+      Type = "oneshot";
+      User = config.services.calibre-web.user;
+      Group = config.services.calibre-web.group;
+      StateDirectory = calibreLibraryName;
+      StateDirectoryMode = "0750";
+    };
+    script = ''
+      if [ ! -e ${lib.escapeShellArg "${calibreLibraryDir}/metadata.db"} ]; then
+        ${config.services.calibre-web.calibrePackage}/bin/calibredb --with-library ${lib.escapeShellArg calibreLibraryDir} list
+      fi
+    '';
+  };
+
   services = {
     # Reverse proxy
     caddy = {
@@ -51,16 +77,16 @@ in
               cfg = config.services;
             in
             {
-              audiobookshelf = cfg.audiobookshelf.port;
               bazarr = cfg.bazarr.listenPort;
+              calibre = cfg.calibre-web.listen.port;
               forgejo = cfg.forgejo.settings.server.HTTP_PORT;
-              jellyfin = 8096;
-              lidarr = 8686;
-              prowlarr = 9696;
+              jellyfin = jellyfinPort;
+              lidarr = cfg.lidarr.settings.server.port;
+              prowlarr = cfg.prowlarr.settings.server.port;
               qbittorrent = cfg.qbittorrent.webuiPort;
-              radarr = 7878;
+              radarr = cfg.radarr.settings.server.port;
               romm = cfg.romm.port;
-              sonarr = 8989;
+              sonarr = cfg.sonarr.settings.server.port;
             }
           );
     };
@@ -118,8 +144,20 @@ in
       '';
     };
 
-    # Audiobooks and e-books
-    audiobookshelf.enable = true;
+    # E-book library and Kobo sync
+    calibre-web = {
+      enable = true;
+      openFirewall = true;
+      package = pkgs.calibre-web.overridePythonAttrs (old: {
+        dependencies = old.dependencies ++ [ pkgs.python3Packages.jsonschema ];
+      });
+      listen.ip = "0.0.0.0";
+      options = {
+        calibreLibrary = calibreLibraryDir;
+        enableBookUploading = true;
+        enableKepubify = true;
+      };
+    };
 
     # Git forge
     forgejo = {
@@ -151,12 +189,6 @@ in
           "read only" = "no";
           "guest ok" = "no";
         };
-        audiobooks = {
-          path = "/var/lib/${config.services.audiobookshelf.dataDir}";
-          browseable = "yes";
-          "read only" = "no";
-          "guest ok" = "no";
-        };
         roms = {
           path = config.services.romm.libraryDir;
           browseable = "yes";
@@ -167,8 +199,13 @@ in
     };
   };
 
-  # qBittorrent's port for inbound P2P connections.
-  networking.firewall.allowedTCPPorts = [ config.services.qbittorrent.torrentingPort ];
+  networking.firewall.allowedTCPPorts = [
+    jellyfinPort
+    config.services.romm.port
+    config.services.qbittorrent.torrentingPort
+  ];
+
+  environment.systemPackages = [ config.services.calibre-web.calibrePackage ];
 
   systemd.tmpfiles.settings.qbittorrent-downloads."${config.services.qbittorrent.profileDir}/downloads"."d" =
     {
