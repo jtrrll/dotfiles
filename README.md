@@ -41,7 +41,7 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 ### `checks`
 
 <details>
-<summary>Show 61</summary>
+<summary>Show 57</summary>
 
 - `files:.github/CODEOWNERS`
 
@@ -83,10 +83,6 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 
 - `packages:activate/metadata`
 
-- `packages:baseos/build`
-
-- `packages:baseos/metadata`
-
 - `packages:bonsai/build`
 
 - `packages:bonsai/metadata`
@@ -124,10 +120,6 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 - `packages:neovim/metadata`
 
 - `packages:neovim/tests/version`
-
-- `packages:nextui-h700/build`
-
-- `packages:nextui-h700/metadata`
 
 - `packages:opencode2/build`
 
@@ -271,11 +263,9 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 ### `packages`
 
 <details>
-<summary>Show 18</summary>
+<summary>Show 16</summary>
 
 - `activate` - Activates a home or NixOS configuration
-
-- `baseos` - Bootable BaseOS image for the Anbernic rgsp
 
 - `bonsai` - A botanical terminal screensaver
 
@@ -294,8 +284,6 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 - `matrix` - A cyberpunk terminal screensaver
 
 - `neovim` - Personalized Neovim distribution built with Nixvim
-
-- `nextui-h700` - NextUI frontend card contents for Anbernic H700 handhelds
 
 - `opencode2` - AI coding agent built for the terminal (v2)
 
