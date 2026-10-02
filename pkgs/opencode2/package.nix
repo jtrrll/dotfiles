@@ -23,14 +23,14 @@
 }:
 let
   nodeModulesHashes = {
-    aarch64-darwin = "sha256-wAea8+jajnMDxZ6XJL+Hsrf0621hwtBtWyD1+dS45dE=";
-    aarch64-linux = "sha256-Wc8OT2DRZpVo56KaoGE0Hsj1NDknakbWXO9w2qy6j+0=";
-    x86_64-linux = "sha256-U9IuP/ev6w4urvogOwQyl3rdumY6W4YaY18NkFaOVHU=";
+    aarch64-darwin = "h8xIzuMmaWfJqjHCO74xUDCWNKQLFrIGoKYZ+2TauYc=";
+    aarch64-linux = "a+3ymqdxOONGe2Tpq4GUccl1b+Dwzxlb9LFXgE1gZ+0=";
+    x86_64-linux = "g3k0cAFGqzmRYlcIkg1NDvlx1WxHYhnYPL0/a8E+qTg=";
   };
 in
 stdenvNoCC.mkDerivation (finalAttrs: {
   pname = "opencode";
-  version = "2.0.4";
+  version = "2.0.22";
 
   __structuredAttrs = true;
   strictDeps = true;
@@ -39,7 +39,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     owner = "anomalyco";
     repo = "opencode";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-1SdZ+VFhhld8R0yYgHtfIgq8kL46xAnAJ4QrRfbKiOw=";
+    hash = "sha256-oKmEStkAGxprPdQCQ8TM4449+FpaV+FnbH6D55137qY=";
   };
 
   node_modules = stdenvNoCC.mkDerivation {
