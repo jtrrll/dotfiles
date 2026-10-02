@@ -9,20 +9,10 @@
     enable = true;
     path = ../../pkgs;
     overlays = [
-      # Dependencies
       (import inputs.nix-lib { inherit lib; }).overlays.pkgs
       inputs.vicinae.overlays.default
       (_: prev: {
         lib = prev.lib.extend inputs.nixvim.lib.overlay;
-      })
-      # Aliases
-      (final: _: {
-        # keep-sorted start
-        agent-harness = final.opencode2;
-        editor = final.neovim;
-        multiplexer = final.zellij;
-        terminal = final.ghostty;
-        # keep-sorted end
       })
     ];
     transform = name: pkg: {
@@ -42,11 +32,24 @@
   };
 
   config.perSystem =
-    { lib, ... }:
+    { lib, pkgs, ... }:
     {
-      packageBuildChecks.enable = true;
-      packagePassthruTestsChecks.enable = true;
-      packageMetadataChecks = {
+      config.packages =
+        let
+          pkgs' = pkgs.extend config.flake.overlays.default;
+        in
+        {
+          # keep-sorted start
+          agent-harness = pkgs'.opencode2;
+          editor = pkgs'.neovim;
+          multiplexer = pkgs'.zellij;
+          terminal = pkgs'.ghostty;
+          # keep-sorted end
+        };
+
+      config.packageBuildChecks.enable = true;
+      config.packagePassthruTestsChecks.enable = true;
+      config.packageMetadataChecks = {
         enable = true;
         checks = [
           (
