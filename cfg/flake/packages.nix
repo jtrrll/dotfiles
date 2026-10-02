@@ -9,10 +9,20 @@
     enable = true;
     path = ../../pkgs;
     overlays = [
+      # Dependencies
       (import inputs.nix-lib { inherit lib; }).overlays.pkgs
       inputs.vicinae.overlays.default
       (_: prev: {
         lib = prev.lib.extend inputs.nixvim.lib.overlay;
+      })
+      # Aliases
+      (final: _: {
+        # keep-sorted start
+        agent-harness = final.opencode2;
+        editor = final.neovim;
+        multiplexer = final.zellij;
+        terminal = final.ghostty;
+        # keep-sorted end
       })
     ];
     transform = name: pkg: {
