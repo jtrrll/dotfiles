@@ -32,11 +32,28 @@
   };
 
   config.perSystem =
-    { lib, ... }:
+    { lib, pkgs, ... }:
     {
-      packageBuildChecks.enable = true;
-      packagePassthruTestsChecks.enable = true;
-      packageMetadataChecks = {
+      config.packages =
+        let
+          pkgs' = pkgs.extend config.flake.overlays.default;
+        in
+        {
+          # keep-sorted start
+          agent-harness = pkgs'.opencode2;
+          editor = pkgs'.neovim;
+          multiplexer = pkgs'.zellij;
+          terminal = pkgs'.ghostty.overrideAttrs (old: {
+            passthru = old.passthru // {
+              tests = { };
+            };
+          });
+          # keep-sorted end
+        };
+
+      config.packageBuildChecks.enable = true;
+      config.packagePassthruTestsChecks.enable = true;
+      config.packageMetadataChecks = {
         enable = true;
         checks = [
           (
