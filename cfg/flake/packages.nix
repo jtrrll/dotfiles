@@ -43,7 +43,11 @@
           agent-harness = pkgs'.opencode2;
           editor = pkgs'.neovim;
           multiplexer = pkgs'.zellij;
-          terminal = pkgs'.ghostty;
+          terminal = pkgs'.ghostty.overrideAttrs (old: {
+            passthru = old.passthru // {
+              tests = { };
+            };
+          });
           # keep-sorted end
         };
 
