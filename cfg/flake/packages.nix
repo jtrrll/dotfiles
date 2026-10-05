@@ -39,13 +39,20 @@
           pkgs' = pkgs.extend config.flake.overlays.default;
         in
         {
-          # keep-sorted start
+          # keep-sorted start block=yes
           agent-harness = pkgs'.opencode2;
           editor = pkgs'.neovim;
-          multiplexer = pkgs'.zellij;
-          terminal = pkgs'.ghostty.overrideAttrs (old: {
-            passthru = old.passthru // {
+          multiplexer = pkgs'.zellij.overrideAttrs (prevAttrs: {
+            meta = prevAttrs.meta // {
+              sourceProvenance = [ lib.sourceTypes.fromSource ];
+            };
+          });
+          terminal = pkgs'.ghostty.overrideAttrs (prevAttrs: {
+            passthru = prevAttrs.passthru // {
               tests = { };
+            };
+            meta = prevAttrs.meta // {
+              sourceProvenance = [ lib.sourceTypes.fromSource ];
             };
           });
           # keep-sorted end
