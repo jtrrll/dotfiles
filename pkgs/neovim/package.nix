@@ -35,6 +35,35 @@ let
               lazy = false;
             }
             { import = "lazyvim.plugins"; }
+            # keep-sorted start
+            { import = "lazyvim.plugins.extras.dap.core"; }
+            { import = "lazyvim.plugins.extras.lang.clangd"; }
+            { import = "lazyvim.plugins.extras.lang.cmake"; }
+            { import = "lazyvim.plugins.extras.lang.docker"; }
+            { import = "lazyvim.plugins.extras.lang.erlang"; }
+            { import = "lazyvim.plugins.extras.lang.git"; }
+            { import = "lazyvim.plugins.extras.lang.gleam"; }
+            { import = "lazyvim.plugins.extras.lang.go"; }
+            { import = "lazyvim.plugins.extras.lang.haskell"; }
+            { import = "lazyvim.plugins.extras.lang.java"; }
+            { import = "lazyvim.plugins.extras.lang.json"; }
+            { import = "lazyvim.plugins.extras.lang.lean"; }
+            { import = "lazyvim.plugins.extras.lang.markdown"; }
+            { import = "lazyvim.plugins.extras.lang.nix"; }
+            { import = "lazyvim.plugins.extras.lang.nushell"; }
+            { import = "lazyvim.plugins.extras.lang.python"; }
+            { import = "lazyvim.plugins.extras.lang.rust"; }
+            { import = "lazyvim.plugins.extras.lang.sql"; }
+            { import = "lazyvim.plugins.extras.lang.terraform"; }
+            { import = "lazyvim.plugins.extras.lang.toml"; }
+            { import = "lazyvim.plugins.extras.lang.typescript"; }
+            { import = "lazyvim.plugins.extras.lang.typst"; }
+            { import = "lazyvim.plugins.extras.lang.yaml"; }
+            { import = "lazyvim.plugins.extras.lang.zig"; }
+            { import = "lazyvim.plugins.extras.linting.nvim-lint"; }
+            { import = "lazyvim.plugins.extras.test.core"; }
+            { import = "lazyvim.plugins.extras.util.dot"; }
+            # keep-sorted end
             {
               __unkeyed = "folke/snacks.nvim";
               opts.picker.sources.explorer.layout.layout.position = "right";
@@ -61,7 +90,14 @@ let
             }
             {
               __unkeyed = "neovim/nvim-lspconfig";
-              opts.servers.lua_ls.mason = false;
+              opts.servers = {
+                gdscript = { };
+                lua_ls.mason = false;
+              };
+            }
+            {
+              __unkeyed = "nvim-treesitter/nvim-treesitter";
+              opts.ensure_installed = [ "gdscript" ];
             }
           ];
         };
