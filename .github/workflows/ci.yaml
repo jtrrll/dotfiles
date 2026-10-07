@@ -36,7 +36,7 @@ jobs:
           remove_packages: azure-cli microsoft-edge-stable google-chrome-stable firefox postgresql* *llvm* mysql*
           testing: false
       - uses: actions/checkout@v7
-      - uses: DeterminateSystems/nix-installer-action@v22
+      - uses: DeterminateSystems/nix-installer-action@v23
         with:
           extra-conf: 'allow-import-from-derivation = false
 
@@ -71,7 +71,7 @@ jobs:
           remove_packages: azure-cli microsoft-edge-stable google-chrome-stable firefox postgresql* *llvm* mysql*
           testing: false
       - uses: actions/checkout@v7
-      - uses: DeterminateSystems/nix-installer-action@v22
+      - uses: DeterminateSystems/nix-installer-action@v23
         with:
           extra-conf: 'allow-import-from-derivation = false
 
@@ -93,7 +93,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - uses: DeterminateSystems/nix-installer-action@v22
+      - uses: DeterminateSystems/nix-installer-action@v23
         with:
           extra-conf: 'allow-import-from-derivation = false
 
