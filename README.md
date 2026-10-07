@@ -41,7 +41,7 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 ### `checks`
 
 <details>
-<summary>Show 66</summary>
+<summary>Show 63</summary>
 
 - `files:.github/CODEOWNERS`
 
@@ -70,12 +70,6 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 - `files:README.md`
 
 - `homeConfigurations:jtrrll/build`
-
-- `nixosConfigurations:ares/build`
-
-- `nixosConfigurations:ares/tests/romm/http`
-
-- `nixosConfigurations:ares/tests/romm/postgresql`
 
 - `nixosConfigurations:athena/build`
 
@@ -251,9 +245,7 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 ### `nixosConfigurations`
 
 <details>
-<summary>Show 2</summary>
-
-- `ares` - jtrrll's gaming/workstation desktop
+<summary>Show 1</summary>
 
 - `athena` - jtrrll's personal laptop
 
