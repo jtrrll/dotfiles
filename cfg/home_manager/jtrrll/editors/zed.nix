@@ -41,23 +41,18 @@
             languages = [
               # keep-sorted start
               "bash"
-              "graphql"
               "haskell"
               "html"
               "java"
               "lua"
               "nix"
               "nu"
-              "ruby"
-              "sorbet"
-              "svelte"
               "templ"
               "terraform"
               "toml"
               "typst"
               "zed-gdscript"
               "zed-gleam"
-              "zed-groovy"
               "zig"
               # keep-sorted end
             ];

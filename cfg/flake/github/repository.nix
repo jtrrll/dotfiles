@@ -112,9 +112,6 @@ _: {
                             context = "Build Home Manager configuration (jtrrll, macos-latest)";
                           }
                           {
-                            context = "Build NixOS configuration (ares, ubuntu-latest)";
-                          }
-                          {
                             context = "Build NixOS configuration (athena, ubuntu-latest)";
                           }
                           {

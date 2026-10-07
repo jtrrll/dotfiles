@@ -41,7 +41,7 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 ### `checks`
 
 <details>
-<summary>Show 57</summary>
+<summary>Show 63</summary>
 
 - `files:.github/CODEOWNERS`
 
@@ -71,17 +71,15 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 
 - `homeConfigurations:jtrrll/build`
 
-- `nixosConfigurations:ares/build`
-
-- `nixosConfigurations:ares/tests/romm/http`
-
-- `nixosConfigurations:ares/tests/romm/postgresql`
-
 - `nixosConfigurations:athena/build`
 
 - `packages:activate/build`
 
 - `packages:activate/metadata`
+
+- `packages:agent-harness/build`
+
+- `packages:agent-harness/metadata`
 
 - `packages:bonsai/build`
 
@@ -90,6 +88,12 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 - `packages:edit/build`
 
 - `packages:edit/metadata`
+
+- `packages:editor/build`
+
+- `packages:editor/metadata`
+
+- `packages:editor/tests/version`
 
 - `packages:git-clone-with-worktrees/build`
 
@@ -114,6 +118,10 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 - `packages:matrix/build`
 
 - `packages:matrix/metadata`
+
+- `packages:multiplexer/build`
+
+- `packages:multiplexer/metadata`
 
 - `packages:neovim/build`
 
@@ -148,6 +156,10 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 - `packages:splash/build`
 
 - `packages:splash/metadata`
+
+- `packages:terminal/build`
+
+- `packages:terminal/metadata`
 
 - `packages:zellij-agent-handler/build`
 
@@ -233,9 +245,7 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 ### `nixosConfigurations`
 
 <details>
-<summary>Show 2</summary>
-
-- `ares` - jtrrll's gaming/workstation desktop
+<summary>Show 1</summary>
 
 - `athena` - jtrrll's personal laptop
 
@@ -263,13 +273,17 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 ### `packages`
 
 <details>
-<summary>Show 16</summary>
+<summary>Show 20</summary>
 
 - `activate` - Activates a home or NixOS configuration
+
+- `agent-harness` - AI coding agent built for the terminal (v2)
 
 - `bonsai` - A botanical terminal screensaver
 
 - `edit` - Launches a text editor
+
+- `editor` - Personalized Neovim distribution built with Nixvim
 
 - `git-clone-with-worktrees` - Clones a bare git repo and creates worktrees for each given suffix
 
@@ -283,6 +297,8 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 
 - `matrix` - A cyberpunk terminal screensaver
 
+- `multiplexer` - Terminal workspace with batteries included
+
 - `neovim` - Personalized Neovim distribution built with Nixvim
 
 - `opencode2` - AI coding agent built for the terminal (v2)
@@ -294,6 +310,8 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 - `shader-pack` - A collection of RetroArch slang shaders for various platforms
 
 - `splash` - Prints a splash screen
+
+- `terminal` - Fast, native, feature-rich terminal emulator pushing modern features
 
 - `zellij-agent-handler` - Zellij plugin: agent status bar with click-to-navigate
 
