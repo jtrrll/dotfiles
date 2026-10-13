@@ -36,7 +36,7 @@ jobs:
           remove_packages: azure-cli microsoft-edge-stable google-chrome-stable firefox postgresql* *llvm* mysql*
           testing: false
       - uses: actions/checkout@v7
-      - uses: DeterminateSystems/nix-installer-action@v22
+      - uses: DeterminateSystems/nix-installer-action@v23
         with:
           extra-conf: 'allow-import-from-derivation = false
 
@@ -71,7 +71,7 @@ jobs:
           remove_packages: azure-cli microsoft-edge-stable google-chrome-stable firefox postgresql* *llvm* mysql*
           testing: false
       - uses: actions/checkout@v7
-      - uses: DeterminateSystems/nix-installer-action@v22
+      - uses: DeterminateSystems/nix-installer-action@v23
         with:
           extra-conf: 'allow-import-from-derivation = false
 
@@ -93,14 +93,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - uses: DeterminateSystems/nix-installer-action@v22
+      - uses: DeterminateSystems/nix-installer-action@v23
         with:
           extra-conf: 'allow-import-from-derivation = false
 
             extra-substituters = https://devenv.cachix.org https://nix-community.cachix.org https://vicinae.cachix.org
 
             extra-trusted-public-keys = devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw= nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs= vicinae.cachix.org-1:1kDrfienkGHPYbkpNj1mWTr7Fm1+zcenzgTizIcI3oc='
-      - uses: DeterminateSystems/flake-checker-action@v13
+      - uses: DeterminateSystems/flake-checker-action@v14
       - name: Check flake
         env:
           NIX_SHOW_STATS: 1
