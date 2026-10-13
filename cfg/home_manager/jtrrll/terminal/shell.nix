@@ -30,12 +30,18 @@
             fi
           }
 
+          if [ -n "$IN_NIX_SHELL" ]; then
+            nix_shell_prompt='\[\033[36m\]*\[\033[0m\] '
+          else
+            nix_shell_prompt=
+          fi
+
           if [ -n "$SSH_CLIENT" ]; then
             # username@host dir branch $
-            PS1='\[\033[34m\]\u@\h \[\033[35m\]\W \[\033[33m\]$(git_branch)\[\033[32m\]$\[\033[0m\] \[\e[5 q\]'
+            PS1='\[\033[34m\]\u@\h \[\033[35m\]\W \[\033[33m\]$(git_branch)'"$nix_shell_prompt"'\[\033[32m\]$\[\033[0m\] \[\e[5 q\]'
           else
             # dir branch $
-            PS1='\[\033[35m\]\W \[\033[33m\]$(git_branch)\[\033[32m\]$\[\033[0m\] \[\e[5 q\]'
+            PS1='\[\033[35m\]\W \[\033[33m\]$(git_branch)'"$nix_shell_prompt"'\[\033[32m\]$\[\033[0m\] \[\e[5 q\]'
           fi
 
           # Improve command history
@@ -87,6 +93,11 @@
             if test -n $branch
               set_color yellow
               echo -n $branch' '
+            end
+
+            if test -n "$IN_NIX_SHELL"
+              set_color cyan
+              echo -n '* '
             end
 
             if test $last_status -eq 0
