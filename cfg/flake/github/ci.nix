@@ -27,7 +27,7 @@
       };
 
       nixInstallerStep = {
-        uses = "DeterminateSystems/nix-installer-action@v22";
+        uses = "DeterminateSystems/nix-installer-action@v23";
         "with".extra-conf = nixInstallerConf;
       };
 
@@ -116,7 +116,7 @@
             steps = [
               checkoutStep
               nixInstallerStep
-              { uses = "DeterminateSystems/flake-checker-action@v13"; }
+              { uses = "DeterminateSystems/flake-checker-action@v14"; }
               {
                 name = "Check flake";
                 env = evalStatsEnv;

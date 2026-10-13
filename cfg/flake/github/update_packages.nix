@@ -34,7 +34,7 @@
           steps = [
             { uses = "actions/checkout@v7"; }
             {
-              uses = "DeterminateSystems/nix-installer-action@v22";
+              uses = "DeterminateSystems/nix-installer-action@v23";
               "with".extra-conf = nixInstallerConf;
             }
             {
