@@ -12,6 +12,7 @@ let
       }
       ./command_display.nix
       ./formatting.nix
+      ./linting.nix
       ./theme.nix
       ./vim_options.nix
       {
@@ -60,7 +61,6 @@ let
             { import = "lazyvim.plugins.extras.lang.typst"; }
             { import = "lazyvim.plugins.extras.lang.yaml"; }
             { import = "lazyvim.plugins.extras.lang.zig"; }
-            { import = "lazyvim.plugins.extras.linting.nvim-lint"; }
             { import = "lazyvim.plugins.extras.test.core"; }
             { import = "lazyvim.plugins.extras.util.dot"; }
             # keep-sorted end
@@ -81,19 +81,19 @@ let
             }
             {
               __unkeyed = "mason-org/mason.nvim";
-              opts.__raw = ''
-                function(_, opts)
-                  opts.ensure_installed = {}
-                  return opts
-                end
-              '';
+              enabled = false;
+            }
+            {
+              __unkeyed = "mason-org/mason-lspconfig.nvim";
+              enabled = false;
+            }
+            {
+              __unkeyed = "jay-babu/mason-nvim-dap.nvim";
+              enabled = false;
             }
             {
               __unkeyed = "neovim/nvim-lspconfig";
-              opts.servers = {
-                gdscript = { };
-                lua_ls.mason = false;
-              };
+              opts.servers.gdscript = { };
             }
             {
               __unkeyed = "nvim-treesitter/nvim-treesitter";
