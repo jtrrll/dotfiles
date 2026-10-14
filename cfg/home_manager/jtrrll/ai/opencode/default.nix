@@ -9,6 +9,7 @@
   config = lib.mkMerge [
     { programs.opencode.enable = lib.mkDefault true; }
     (lib.mkIf config.programs.opencode.enable {
+      home.sessionVariables.AGENT_HARNESS = "opencode";
       programs = {
         git.ignores = [
           ".opencode"

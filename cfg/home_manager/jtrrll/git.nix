@@ -7,6 +7,7 @@
 {
   config = lib.mkMerge [
     { programs.git.enable = lib.mkDefault true; }
+    { programs.lazygit.enable = lib.mkDefault true; }
     {
       programs.delta = {
         enable = lib.mkDefault true;
