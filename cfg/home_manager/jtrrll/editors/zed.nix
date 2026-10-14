@@ -28,7 +28,6 @@
           pkgs.ibm-plex
           pkgs.nerd-fonts.hack
         ];
-        sessionVariables.VISUAL = lib.getExe config.programs.zed-editor.package;
       };
       programs.zed-editor = {
         mutableUserDebug = false;

@@ -111,6 +111,9 @@
             nixosModules = config.flake.modules.nixos or { };
           };
           perSystem = {
+            devenv.modules = [
+              nix-lib.modules.devenv.respect-shell
+            ];
             terranix.exportDevShells = false;
           };
           systems = [

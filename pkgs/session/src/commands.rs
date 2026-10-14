@@ -212,8 +212,8 @@ pub fn new(name: &str, repos: &[String], labels: &[String]) -> Result<(), String
     }
 
     // Start (and attach to) a zellij session named after the slug, rooted at
-    // the session dir. No generated layout — zellij's default.
-    zellij::start(&slug, &session_dir, false)
+    // the session dir, opening with the `plan` layout.
+    zellij::start(&slug, &session_dir)
 }
 
 pub fn attach(name: &str) -> Result<(), String> {
@@ -222,7 +222,7 @@ pub fn attach(name: &str) -> Result<(), String> {
     if !session_dir.exists() {
         return Err(format!("session '{slug}' not found"));
     }
-    zellij::start(&slug, &session_dir, true)
+    zellij::start(&slug, &session_dir)
 }
 
 pub fn add_worktree(name: &str, repos: &[String], labels: &[String]) -> Result<(), String> {

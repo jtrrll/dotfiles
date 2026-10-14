@@ -57,76 +57,102 @@
         end
       end,
     })
+
+    local flake_formatters = {}
+    local formatter_max_age_ms = 5 * 60 * 1000
+    local eval_command = {
+      "nix", "eval", "--no-write-lock-file", "--impure", "--raw", "--apply",
+      [[formatters:
+        let formatter = formatters.''${builtins.currentSystem}; in
+        "''${formatter}/bin/''${formatter.meta.mainProgram or (builtins.parseDrvName formatter.name).name}\n''${formatter.drvPath}"
+      ]],
+      ".#formatter",
+    }
+
+    local function flake_stamp(root)
+      return vim.iter({ "flake.nix", "flake.lock" })
+        :map(function(name)
+          local stat = vim.uv.fs_stat(root .. "/" .. name)
+          return stat and (stat.mtime.sec .. "." .. stat.mtime.nsec) or "-"
+        end)
+        :join(":")
+    end
+
+    local function resolve_formatter(root, entry)
+      entry.pending = true
+      entry.stamp = flake_stamp(root)
+      entry.resolved_at = vim.uv.now()
+
+      local function finish(command)
+        entry.command = command
+        entry.checked = true
+        entry.pending = false
+      end
+
+      vim.system(eval_command, { cwd = root, timeout = 30000 }, vim.schedule_wrap(function(eval)
+        local executable, derivation = eval.stdout:match("^(.-)\n(.-)%s*$")
+        if eval.code ~= 0 or not executable then
+          return finish(nil)
+        end
+        if vim.uv.fs_stat(executable) then
+          return finish(executable)
+        end
+        vim.system({ "nix-store", "--realise", derivation }, { timeout = 600000 }, vim.schedule_wrap(function(realise)
+          finish(realise.code == 0 and executable or nil)
+        end))
+      end))
+    end
+
+    local function flake_formatter(buf)
+      local filename = vim.api.nvim_buf_get_name(buf)
+      if filename == "" or vim.bo[buf].buftype ~= "" or vim.fn.executable("nix") ~= 1 then
+        return nil
+      end
+      local root = vim.fs.root(filename, "flake.nix")
+      if not root then
+        return nil
+      end
+
+      local entry = flake_formatters[root]
+      if not entry then
+        entry = { checked = false, pending = false }
+        flake_formatters[root] = entry
+        resolve_formatter(root, entry)
+      elseif not entry.pending
+        and (entry.stamp ~= flake_stamp(root) or vim.uv.now() - entry.resolved_at > formatter_max_age_ms)
+      then
+        resolve_formatter(root, entry)
+      end
+      return entry
+    end
+
+    _G.flake_formatter = flake_formatter
+
+    vim.api.nvim_create_autocmd({ "BufEnter", "BufFilePost" }, {
+      callback = function(event)
+        flake_formatter(event.buf)
+      end,
+    })
   '';
   plugins.lazy.plugins = lib.mkAfter [
     {
       __unkeyed = "stevearc/conform.nvim";
       opts.__raw = ''
         function(_, opts)
-          local formatter_checks = {}
-          local check_command = {
-            "nix", "eval", "--no-write-lock-file", "--impure", "--raw", "--apply",
-            'formatters: formatters.''${builtins.currentSystem}.drvPath',
-            ".#formatter",
-          }
-
-          local function check_formatter(directory)
-            local cached = formatter_checks[directory]
-            if cached and (cached.pending or vim.uv.now() < cached.expires) then
-              return cached
-            end
-
-            local check = {
-              available = cached and cached.available or nil,
-              pending = true,
-              expires = 0,
-            }
-            formatter_checks[directory] = check
-            vim.system(check_command, {
-              cwd = directory,
-              timeout = 10000,
-              stdout = false,
-              stderr = false,
-            }, vim.schedule_wrap(function(result)
-              if formatter_checks[directory] == check then
-                check.available = result.code == 0
-                check.pending = false
-                check.expires = vim.uv.now() + 30000
-              end
-            end))
-            return check
-          end
-
-          local function check_buffer(buf)
-            local filename = vim.api.nvim_buf_get_name(buf)
-            if filename == "" or vim.bo[buf].buftype ~= "" or vim.fn.executable("nix") ~= 1 then
-              return nil
-            end
-            return check_formatter(vim.fs.dirname(filename))
-          end
-
           local function flake_formatter_available(_, ctx)
-            local check = check_buffer(ctx.buf)
-            if check and check.available == nil then
-              vim.wait(10000, function()
-                return not check.pending
-              end, 50)
+            local entry = _G.flake_formatter(ctx.buf)
+            if entry and not entry.checked then
+              vim.notify("Flake formatter is still resolving; skipping format", vim.log.levels.WARN)
             end
-            return check ~= nil and check.available == true
+            return entry ~= nil and entry.command ~= nil
           end
-
-          vim.api.nvim_create_autocmd({ "BufEnter", "BufFilePost" }, {
-            callback = function(event)
-              check_buffer(event.buf)
-            end,
-          })
-          vim.schedule(function()
-            check_buffer(vim.api.nvim_get_current_buf())
-          end)
 
           opts.formatters.flake_fmt = {
-            command = "nix",
-            args = { "fmt", "--", "$FILENAME" },
+            command = function(_, ctx)
+              local entry = _G.flake_formatter(ctx.buf)
+              return entry and entry.command or "nix"
+            end,
+            args = { "$FILENAME" },
             stdin = false,
             cwd = function(_, ctx)
               return vim.fs.dirname(ctx.filename)
