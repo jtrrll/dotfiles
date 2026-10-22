@@ -10,6 +10,7 @@
     path = ../../pkgs;
     overlays = [
       (import inputs.nix-lib { inherit lib; }).overlays.pkgs
+      inputs.llm-agents.overlays.shared-nixpkgs
       inputs.vicinae.overlays.default
       (_: prev: {
         lib = prev.lib.extend inputs.nixvim.lib.overlay;
@@ -40,7 +41,7 @@
         in
         {
           # keep-sorted start block=yes
-          agent-harness = pkgs'.opencode2;
+          agent-harness = pkgs'.llm-agents.opencode2;
           editor = pkgs'.neovim;
           multiplexer = pkgs'.zellij.overrideAttrs (prevAttrs: {
             meta = prevAttrs.meta // {
