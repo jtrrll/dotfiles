@@ -65,8 +65,9 @@ pub fn start(slug: &str, cwd: &Path) -> Result<(), String> {
     }
 }
 
-/// Create a detached session with zellij's default layout, then replace its
-/// default tab with the initial layout so the default layout supplies the bars.
+/// Create a detached session, then replace its default tab with the initial
+/// layout. The initial layout must supply its own bars through a
+/// `default_tab_template`; zellij does not apply the session's template to it.
 fn create(slug: &str, cwd: &Path) -> Result<(), String> {
     let created = Command::new("zellij")
         .args(["attach", "--create-background", slug])
