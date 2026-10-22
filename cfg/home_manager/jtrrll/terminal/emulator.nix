@@ -26,6 +26,7 @@
           auto-update = "off";
           font-family = "Hack Nerd Font Mono";
           font-thicken = true;
+          macos-option-as-alt = true;
           theme = "VS Code";
           window-padding-x = 8;
           window-padding-y = 8;
