@@ -77,7 +77,12 @@ pub fn start(slug: &str, cwd: &Path) -> Result<(), String> {
         run_foreground(&["attach", slug], cwd)
     } else {
         run_foreground(
-            &["--session", slug, "--new-session-with-layout", INITIAL_LAYOUT],
+            &[
+                "--session",
+                slug,
+                "--new-session-with-layout",
+                INITIAL_LAYOUT,
+            ],
             cwd,
         )
     }
