@@ -70,7 +70,7 @@
 
         userSettings = {
           agent_servers.OpenCode = {
-            command = lib.getExe config.programs.opencode.package;
+            command = config.programs.opencode.package.meta.mainProgram;
             args = [ "acp" ];
           };
 
