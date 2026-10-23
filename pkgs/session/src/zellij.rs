@@ -20,38 +20,42 @@ fn zellij(args: &[&str]) -> Result<Output, String> {
     })
 }
 
-/// Names of currently live zellij sessions.
-pub fn live_sessions() -> BTreeSet<String> {
-    let mut set = BTreeSet::new();
-    if let Ok(o) = zellij(&["list-sessions", "--no-formatting", "--short"]) {
-        if o.status {
-            for line in o.stdout.lines() {
-                let name = line.trim();
-                if !name.is_empty() {
-                    set.insert(name.to_string());
-                }
-            }
-        }
+const EXITED_MARKER: &str = "(EXITED";
+
+/// Names of zellij sessions, optionally including exited (resurrectable) ones.
+fn session_names(include_exited: bool) -> BTreeSet<String> {
+    let Ok(o) = zellij(&["list-sessions", "--no-formatting"]) else {
+        return BTreeSet::new();
+    };
+    if !o.status {
+        return BTreeSet::new();
     }
-    set
+    o.stdout
+        .lines()
+        .filter(|line| include_exited || !line.contains(EXITED_MARKER))
+        .filter_map(|line| line.split_whitespace().next())
+        .map(str::to_string)
+        .collect()
 }
 
-/// Layout opened as the first tab of a freshly created session.
+/// Names of sessions with a running server.
+pub fn live_sessions() -> BTreeSet<String> {
+    session_names(false)
+}
+
+/// Names of all known sessions, live or exited-but-resurrectable.
+fn known_sessions() -> BTreeSet<String> {
+    session_names(true)
+}
+
+/// Layout opened as the first tab of a freshly created session. It must supply
+/// its own bars through a `default_tab_template`.
 const INITIAL_LAYOUT: &str = "plan";
 
-/// Id of the default tab zellij creates in every new session.
-const DEFAULT_TAB_ID: &str = "0";
-
-/// Attach to the session with the given slug in the foreground, first
-/// creating it (with the initial layout as its only tab) if it doesn't exist.
-/// Existing sessions, live or resurrectable, are attached to as they are.
-pub fn start(slug: &str, cwd: &Path) -> Result<(), String> {
-    if !live_sessions().contains(slug) {
-        create(slug, cwd)?;
-    }
+/// Run zellij in the foreground, attached to the current terminal.
+fn run_foreground(args: &[&str], cwd: &Path) -> Result<(), String> {
     let status = Command::new("zellij")
-        .arg("attach")
-        .arg(slug)
+        .args(args)
         .current_dir(cwd)
         .stdin(Stdio::inherit())
         .stdout(Stdio::inherit())
@@ -65,60 +69,18 @@ pub fn start(slug: &str, cwd: &Path) -> Result<(), String> {
     }
 }
 
-/// Create a detached session, then replace its default tab with the initial
-/// layout. The initial layout must supply its own bars through a
-/// `default_tab_template`; zellij does not apply the session's template to it.
-fn create(slug: &str, cwd: &Path) -> Result<(), String> {
-    let created = Command::new("zellij")
-        .args(["attach", "--create-background", slug])
-        .current_dir(cwd)
-        .output()
-        .map_err(|e| format!("failed to create zellij session: {e}"))?;
-    if !created.status.success() {
-        return Err(format!(
-            "failed to create zellij session: {}",
-            String::from_utf8_lossy(&created.stderr).trim()
-        ));
+/// Start the session with the given slug in the foreground. A missing session
+/// is created with the initial layout as its only tab; an existing one, live
+/// or resurrectable, is attached to as it is.
+pub fn start(slug: &str, cwd: &Path) -> Result<(), String> {
+    if known_sessions().contains(slug) {
+        run_foreground(&["attach", slug], cwd)
+    } else {
+        run_foreground(
+            &["--session", slug, "--new-session-with-layout", INITIAL_LAYOUT],
+            cwd,
+        )
     }
-
-    let cwd = cwd.to_string_lossy();
-    let mut last_error = String::new();
-    for _ in 0..50 {
-        match zellij(&[
-            "--session",
-            slug,
-            "action",
-            "new-tab",
-            "--layout",
-            INITIAL_LAYOUT,
-            "--cwd",
-            &cwd,
-        ]) {
-            Ok(o) if o.status => {
-                return zellij(&[
-                    "--session",
-                    slug,
-                    "action",
-                    "close-tab",
-                    "--tab-id",
-                    DEFAULT_TAB_ID,
-                ])
-                .and_then(|o| {
-                    if o.status {
-                        Ok(())
-                    } else {
-                        Err(format!("closing default tab: {}", o.stderr.trim()))
-                    }
-                });
-            }
-            Ok(o) => last_error = o.stderr.trim().to_string(),
-            Err(e) => last_error = e,
-        }
-        sleep(Duration::from_millis(100));
-    }
-    Err(format!(
-        "opening '{INITIAL_LAYOUT}' layout in new session '{slug}': {last_error}"
-    ))
 }
 
 /// Tear down the zellij session with the given slug, if any.
