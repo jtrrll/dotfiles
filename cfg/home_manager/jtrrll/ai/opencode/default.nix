@@ -9,13 +9,18 @@
   config = lib.mkMerge [
     { programs.opencode.enable = lib.mkDefault true; }
     (lib.mkIf config.programs.opencode.enable {
-      home.sessionVariables.AGENT_HARNESS = lib.getExe config.programs.opencode.package;
+      home.sessionVariables.AGENT_HARNESS = config.programs.opencode.package.meta.mainProgram;
       programs = {
         git.ignores = [
           ".opencode"
         ];
         opencode = {
-          package = pkgs.llm-agents.opencode2;
+          package = pkgs.llm-agents.opencode2.overrideAttrs (prevAttrs: {
+            postFixup = (prevAttrs.postFixup or "") + ''
+              wrapProgram $out/bin/${prevAttrs.meta.mainProgram} \
+                --set-default OPENCODE_DISABLE_FREE_MODELS 1
+            '';
+          });
           enableMcpIntegration = true;
           agents =
             let
