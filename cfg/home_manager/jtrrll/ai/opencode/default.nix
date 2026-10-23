@@ -9,13 +9,13 @@
   config = lib.mkMerge [
     { programs.opencode.enable = lib.mkDefault true; }
     (lib.mkIf config.programs.opencode.enable {
-      home.sessionVariables.AGENT_HARNESS = "opencode";
+      home.sessionVariables.AGENT_HARNESS = lib.getExe config.programs.opencode.package;
       programs = {
         git.ignores = [
           ".opencode"
         ];
         opencode = {
-          package = pkgs.opencode2;
+          package = pkgs.llm-agents.opencode2;
           enableMcpIntegration = true;
           agents =
             let

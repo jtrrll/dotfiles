@@ -59,6 +59,10 @@ in
 
         config = lib.mkIf cfg.enable {
           home-manager.users = users;
+          # Stylix's NixOS integration does this, but its NixOS module isn't imported.
+          home-manager.sharedModules = lib.mkIf config.home-manager.useGlobalPkgs [
+            { stylix.overlays.enable = false; }
+          ];
           users.users = lib.mapAttrs (_: _: {
             enable = lib.mkDefault false;
             isNormalUser = true;

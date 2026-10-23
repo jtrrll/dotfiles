@@ -41,7 +41,7 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 ### `checks`
 
 <details>
-<summary>Show 63</summary>
+<summary>Show 61</summary>
 
 - `files:.github/CODEOWNERS`
 
@@ -128,10 +128,6 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 - `packages:neovim/metadata`
 
 - `packages:neovim/tests/version`
-
-- `packages:opencode2/build`
-
-- `packages:opencode2/metadata`
 
 - `packages:service-status/build`
 
@@ -273,11 +269,11 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 ### `packages`
 
 <details>
-<summary>Show 20</summary>
+<summary>Show 19</summary>
 
 - `activate` - Activates a home or NixOS configuration
 
-- `agent-harness` - AI coding agent built for the terminal (v2)
+- `agent-harness` - OpenCode 2 CLI
 
 - `bonsai` - A botanical terminal screensaver
 
@@ -300,8 +296,6 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 - `multiplexer` - Terminal workspace with batteries included
 
 - `neovim` - Personalized Neovim distribution built with Nixvim
-
-- `opencode2` - AI coding agent built for the terminal (v2)
 
 - `service-status` - Serves managed background service status over HTTP
 

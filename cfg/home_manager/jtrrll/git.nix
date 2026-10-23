@@ -7,6 +7,8 @@
 {
   config = lib.mkMerge [
     { programs.git.enable = lib.mkDefault true; }
+    { programs.gh.enable = lib.mkDefault true; }
+    { programs.gh-dash.enable = lib.mkDefault true; }
     { programs.lazygit.enable = lib.mkDefault true; }
     {
       programs.delta = {
@@ -22,6 +24,20 @@
         };
       };
     }
+    (lib.mkIf config.programs.gh-dash.enable {
+      programs.gh.extensions = [ pkgs.gh-enhance ];
+      programs.gh-dash.settings.keybindings.prs = [
+        {
+          key = "T";
+          name = "enhance";
+          command = "${lib.getExe pkgs.gh-enhance} -R {{.RepoName}} {{.PrNumber}}";
+        }
+      ];
+    })
+    (lib.mkIf (config.programs.gh-dash.enable && config.programs.delta.enable) {
+      programs.gh-dash.settings.pager.diff =
+        "${lib.getExe config.programs.delta.package} --paging always";
+    })
     (lib.mkIf config.programs.git.enable {
       programs.git = {
         signing.format = null;
