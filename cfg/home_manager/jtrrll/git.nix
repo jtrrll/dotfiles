@@ -4,6 +4,9 @@
   pkgs,
   ...
 }:
+let
+  diffnav = pkgs.diffnav.override { delta = config.programs.delta.finalPackage; };
+in
 {
   config = lib.mkMerge [
     { programs.git.enable = lib.mkDefault true; }
@@ -13,14 +16,9 @@
     {
       programs.delta = {
         enable = lib.mkDefault true;
-        enableGitIntegration = true;
         options = {
-          navigate = true;
-          side-by-side = true;
           line-numbers = true;
-          hyperlinks = true;
           syntax-theme = "Visual Studio Dark+";
-          merge-conflicts = true;
         };
       };
     }
@@ -34,9 +32,11 @@
         }
       ];
     })
-    (lib.mkIf (config.programs.gh-dash.enable && config.programs.delta.enable) {
-      programs.gh-dash.settings.pager.diff =
-        "${lib.getExe config.programs.delta.package} --paging always";
+    (lib.mkIf (config.programs.git.enable || config.programs.gh-dash.enable) {
+      home.packages = [ diffnav ];
+    })
+    (lib.mkIf config.programs.gh-dash.enable {
+      programs.gh-dash.settings.pager.diff = lib.getExe diffnav;
     })
     (lib.mkIf config.programs.git.enable {
       programs.git = {
@@ -66,6 +66,7 @@
             }";
           };
           branch.sort = "-committerdate";
+          pager.diff = lib.getExe diffnav;
           diff.algorithm = "histogram";
           fetch.prune = true;
           trailer = {
