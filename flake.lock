@@ -574,11 +574,11 @@
     "nix-lib": {
       "flake": false,
       "locked": {
-        "lastModified": 1793839056,
-        "narHash": "sha256-KJgKrH4n+k4FjrYbaaBdN1XZ6ns2R6GXl1cwfUJVJzw=",
+        "lastModified": 1793893834,
+        "narHash": "sha256-t62SqGXyM7Rf5Dm7ixBnD/lxgLWOVfo+H4+xEXy8pGo=",
         "owner": "jtrrll",
         "repo": "nix-lib",
-        "rev": "83c98beeee2090c1233b566d6cf5eb0ebdd2e8e9",
+        "rev": "3fec49dfd98c7cc147835ef051ab5d73ee467a23",
         "type": "github"
       },
       "original": {
