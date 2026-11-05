@@ -4,12 +4,24 @@
   pkgs,
   ...
 }:
+let
+  diffnav = pkgs.diffnav.override { delta = config.programs.delta.finalPackage; };
+in
 {
   config = lib.mkMerge [
     { programs.git.enable = lib.mkDefault true; }
     { programs.gh.enable = lib.mkDefault true; }
     { programs.gh-dash.enable = lib.mkDefault true; }
     { programs.lazygit.enable = lib.mkDefault true; }
+    {
+      programs.delta = {
+        enable = lib.mkDefault true;
+        options = {
+          line-numbers = true;
+          syntax-theme = "Visual Studio Dark+";
+        };
+      };
+    }
     (lib.mkIf config.programs.gh-dash.enable {
       programs.gh.extensions = [ pkgs.gh-enhance ];
       programs.gh-dash.settings.keybindings.prs = [
@@ -21,10 +33,10 @@
       ];
     })
     (lib.mkIf (config.programs.git.enable || config.programs.gh-dash.enable) {
-      home.packages = [ pkgs.diffnav ];
+      home.packages = [ diffnav ];
     })
     (lib.mkIf config.programs.gh-dash.enable {
-      programs.gh-dash.settings.pager.diff = lib.getExe pkgs.diffnav;
+      programs.gh-dash.settings.pager.diff = lib.getExe diffnav;
     })
     (lib.mkIf config.programs.git.enable {
       programs.git = {
@@ -54,11 +66,7 @@
             }";
           };
           branch.sort = "-committerdate";
-          delta = {
-            line-numbers = true;
-            syntax-theme = "Visual Studio Dark+";
-          };
-          pager.diff = lib.getExe pkgs.diffnav;
+          pager.diff = lib.getExe diffnav;
           diff.algorithm = "histogram";
           fetch.prune = true;
           trailer = {
