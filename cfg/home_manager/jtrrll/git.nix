@@ -54,6 +54,10 @@
             }";
           };
           branch.sort = "-committerdate";
+          delta = {
+            line-numbers = true;
+            syntax-theme = "Visual Studio Dark+";
+          };
           pager.diff = lib.getExe pkgs.diffnav;
           diff.algorithm = "histogram";
           fetch.prune = true;
