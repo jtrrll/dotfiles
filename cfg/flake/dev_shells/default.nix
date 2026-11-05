@@ -69,7 +69,7 @@
                   flake-checker.enable = true;
                   fmt = {
                     enable = true;
-                    entry = "just fmt";
+                    entry = "nix fmt";
                     name = "fmt";
                     pass_filenames = false;
                   };
