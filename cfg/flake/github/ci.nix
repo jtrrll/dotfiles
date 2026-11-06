@@ -9,9 +9,12 @@
     let
       yaml = pkgs.formats.yaml { };
 
+      binaryCacheDir = "/tmp/nix-binary-cache";
+      buildResultsFile = "nix_fast_build_results.jsonl";
+
       nixInstallerConf = lib.concatStringsSep "\n" [
         "allow-import-from-derivation = false"
-        "extra-substituters = https://devenv.cachix.org https://nix-community.cachix.org https://vicinae.cachix.org"
+        "extra-substituters = https://devenv.cachix.org https://nix-community.cachix.org https://vicinae.cachix.org file://${binaryCacheDir}?trusted=1"
         "extra-trusted-public-keys = devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw= nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs= vicinae.cachix.org-1:1kDrfienkGHPYbkpNj1mWTr7Fm1+zcenzgTizIcI3oc="
       ];
 
@@ -33,6 +36,24 @@
 
       checkoutStep = {
         uses = "actions/checkout@v7";
+      };
+
+      restoreBinaryCacheStep = {
+        id = "binary-cache";
+        name = "Restore binary cache";
+        uses = "./.github/actions/nix-binary-cache/restore";
+        "with".path = binaryCacheDir;
+      };
+
+      saveBinaryCacheStep = {
+        name = "Save binary cache";
+        "if" = "github.ref_name == github.event.repository.default_branch";
+        uses = "./.github/actions/nix-binary-cache/save";
+        "with" = {
+          path = binaryCacheDir;
+          key = "\${{ steps.binary-cache.outputs.key }}";
+          results-file = buildResultsFile;
+        };
       };
 
       uploadEvalStatsStep = artifactName: {
@@ -80,6 +101,7 @@
               (freeDiskSpaceStep // { "if" = "runner.os == 'Linux'"; })
               checkoutStep
               nixInstallerStep
+              restoreBinaryCacheStep
               {
                 name = "Build \${{ matrix.configuration }} configuration";
                 env = evalStatsEnv;
@@ -102,6 +124,7 @@
               freeDiskSpaceStep
               checkoutStep
               nixInstallerStep
+              restoreBinaryCacheStep
               {
                 name = "Build \${{ matrix.configuration }} configuration";
                 env = evalStatsEnv;
@@ -116,12 +139,17 @@
             steps = [
               checkoutStep
               nixInstallerStep
+              restoreBinaryCacheStep
               { uses = "DeterminateSystems/flake-checker-action@v14"; }
               {
                 name = "Check flake";
                 env = evalStatsEnv;
-                run = "nix run github:Mic92/nix-fast-build -- --flake .#checks.x86_64-linux --impure --skip-cached --stream-json-lines --select 'checks: let lib = (builtins.getFlake \"nixpkgs\").lib; exclude = n: lib.hasPrefix \"nixosConfigurations:\" n || lib.hasPrefix \"homeConfigurations:\" n; in lib.filterAttrs (n: _: !exclude n) checks'";
+                run = lib.concatStringsSep "\n" [
+                  "set -o pipefail"
+                  "nix run github:Mic92/nix-fast-build -- --flake .#checks.x86_64-linux --impure --skip-cached --stream-json-lines --select 'checks: let lib = (builtins.getFlake \"nixpkgs\").lib; exclude = n: lib.hasPrefix \"nixosConfigurations:\" n || lib.hasPrefix \"homeConfigurations:\" n; in lib.filterAttrs (n: _: !exclude n) checks' 2>&1 | tee ${buildResultsFile}"
+                ];
               }
+              saveBinaryCacheStep
               (uploadEvalStatsStep "nix-eval-stats-check")
             ];
           };
@@ -135,7 +163,7 @@
             yq '
               pick(["name", "on", "concurrency", "env", "jobs"]) |
               .jobs[] |= pick(["name", "strategy", "runs-on", "steps"]) |
-              .jobs[].steps[] |= pick(["name", "if", "uses", "with", "env", "run"])
+              .jobs[].steps[] |= pick(["id", "name", "if", "uses", "with", "env", "run"])
             ' ${generated} > $out
           '';
     };

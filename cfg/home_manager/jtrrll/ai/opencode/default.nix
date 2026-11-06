@@ -90,7 +90,10 @@
       };
       xdg.configFile."opencode/cli.json".text = builtins.toJSON {
         "$schema" = "https://opencode.ai/v2/cli.json";
-        cursor.style = "default";
+        cursor = {
+          style = "line";
+          blinking = true;
+        };
         theme.name = "system";
         tabs.enabled = false;
       };
