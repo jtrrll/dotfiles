@@ -56,7 +56,6 @@
             name = "Hack Nerd Font Mono";
           };
         };
-        image = lib.mkDefault (config.lib.stylix.pixel "base0D");
         opacity = {
           popups = 0.7;
         };
