@@ -4,10 +4,6 @@
   pkgs,
   ...
 }:
-let
-  backgroundImagePath = "${config.home.homeDirectory}/.config/background";
-  backgroundImageExists = builtins.pathExists backgroundImagePath;
-in
 {
   config = lib.mkMerge [
     { stylix.enable = lib.mkDefault true; }
@@ -65,9 +61,6 @@ in
           popups = 0.7;
         };
       };
-    })
-    (lib.mkIf (config.stylix.enable && backgroundImageExists) {
-      stylix.image = builtins.fetchurl { url = "file://${backgroundImagePath}"; };
     })
   ];
 }
