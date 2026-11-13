@@ -4,10 +4,6 @@
   pkgs,
   ...
 }:
-let
-  backgroundImagePath = "${config.home.homeDirectory}/.config/background";
-  backgroundImageExists = builtins.pathExists backgroundImagePath;
-in
 {
   config = lib.mkMerge [
     { stylix.enable = lib.mkDefault true; }
@@ -60,14 +56,10 @@ in
             name = "Hack Nerd Font Mono";
           };
         };
-        image = lib.mkDefault (config.lib.stylix.pixel "base0D");
         opacity = {
           popups = 0.7;
         };
       };
-    })
-    (lib.mkIf (config.stylix.enable && backgroundImageExists) {
-      stylix.image = builtins.fetchurl { url = "file://${backgroundImagePath}"; };
     })
   ];
 }
