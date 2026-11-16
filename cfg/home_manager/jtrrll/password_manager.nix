@@ -6,9 +6,9 @@
 }:
 let
   bitwardenExtensionId = "nngceckbapebfimnlniiiahkandclblb";
+  bitwardenFirefoxId = "{446900e4-71c2-419f-a6a7-df9c091e268b}";
   chromiumBrowsers = [
     # keep-sorted start
-    "brave"
     "chromium"
     "google-chrome"
     "google-chrome-beta"
@@ -41,5 +41,13 @@ in
           programs.${browser}.extensions = [ { id = bitwardenExtensionId; } ];
         }
     ) chromiumBrowsers
+    ++ [
+      (lib.mkIf config.programs.librewolf.enable {
+        programs.librewolf.policies.ExtensionSettings.${bitwardenFirefoxId} = {
+          installation_mode = "force_installed";
+          install_url = "https://addons.mozilla.org/firefox/downloads/latest/bitwarden-password-manager/latest.xpi";
+        };
+      })
+    ]
   );
 }

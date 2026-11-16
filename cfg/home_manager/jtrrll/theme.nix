@@ -33,6 +33,11 @@
             base0F = "#f2cdcd";
           };
         };
+        targets = lib.mkIf pkgs.stdenv.hostPlatform.isDarwin {
+          gtk.enable = false;
+          sway.enable = false;
+          x11.enable = false;
+        };
         cursor = {
           name = "Adwaita";
           package = pkgs.adwaita-icon-theme;

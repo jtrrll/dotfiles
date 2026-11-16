@@ -58,20 +58,13 @@
             pkgs.gh
             pkgs.jq
             pkgs.keep-awake
+            pkgs.mermaid-cli
             pkgs.ripgrep
             pkgs.uutils-coreutils-noprefix
             pkgs.uutils-findutils
             pkgs.which
             # keep-sorted end
-          ]
-          ++ (
-            if config.programs.brave.enable then
-              [
-                (pkgs.mermaid-cli.override { chromium = config.programs.brave.finalPackage; })
-              ]
-            else
-              [ ]
-          );
+          ];
           settings = {
             autoupdate = false;
             permission = {
