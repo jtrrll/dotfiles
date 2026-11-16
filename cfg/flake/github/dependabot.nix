@@ -43,7 +43,6 @@
                   ];
                   home-manager.patterns = [
                     "home-manager"
-                    "llm-agents"
                     "nixvim"
                     "stylix"
                     "vicinae"

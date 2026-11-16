@@ -15,7 +15,7 @@
           ".opencode"
         ];
         opencode = {
-          package = pkgs.llm-agents.opencode2.overrideAttrs (prevAttrs: {
+          package = pkgs.opencode.overrideAttrs (prevAttrs: {
             postFixup = (prevAttrs.postFixup or "") + ''
               wrapProgram $out/bin/${prevAttrs.meta.mainProgram} \
                 --set-default OPENCODE_DISABLE_FREE_MODELS 1

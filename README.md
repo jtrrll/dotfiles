@@ -277,7 +277,7 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 
 - `activate` - Activates a home or NixOS configuration
 
-- `agent-harness` - OpenCode 2 CLI
+- `agent-harness` - AI coding agent built for the terminal
 
 - `bonsai` - A botanical terminal screensaver
 

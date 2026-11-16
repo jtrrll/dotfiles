@@ -28,10 +28,6 @@
     ### Home Manager dependencies ###
     # keep-sorted start block=yes
     home-manager.url = "github:nix-community/home-manager/master";
-    llm-agents = {
-      inputs.nixpkgs.follows = "home-manager/nixpkgs";
-      url = "github:numtide/llm-agents.nix/main";
-    };
     nixvim.url = "github:nix-community/nixvim/main";
     stylix = {
       inputs.nixpkgs.follows = "home-manager/nixpkgs";
