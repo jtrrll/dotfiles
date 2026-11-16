@@ -23,15 +23,29 @@ import ./mk-shader-pack.nix { inherit lib stdenvNoCC libretro-shaders-slang; } {
     };
     gba = {
       passes = [
-        { shader = "handheld/shaders/color/lut/GBA-LUT.slang"; }
         {
-          shader = "handheld/shaders/lcd3x.slang";
+          shader = "handheld/shaders/pixel_transparency/pt-0-shadow-cache.slang";
+          scaleX = "3.1";
+          scaleY = "1.1";
+        }
+        {
+          shader = "handheld/shaders/pixel_transparency/grids/lcd3x/input.slang";
+          alias = "LCDInput";
           scaleTypeX = "viewport";
           scaleTypeY = "viewport";
         }
-        { shader = "handheld/shaders/color/gba-color.slang"; }
         {
-          shader = "handheld/shaders/pixel_transparency/pixel_transparency.slang";
+          shader = "handheld/shaders/pixel_transparency/grids/lcd3x/pixel_transparency.slang";
+          scaleTypeX = "viewport";
+          scaleTypeY = "viewport";
+        }
+        {
+          shader = "handheld/shaders/color/lut/GBA-LUT.slang";
+          scaleTypeX = "viewport";
+          scaleTypeY = "viewport";
+        }
+        {
+          shader = "handheld/shaders/color/gba-color.slang";
           scaleTypeX = "viewport";
           scaleTypeY = "viewport";
         }
@@ -43,19 +57,36 @@ import ./mk-shader-pack.nix { inherit lib stdenvNoCC libretro-shaders-slang; } {
       params = {
         # pixel_transparency
         PT_ACCEL_ENABLE = "0.000000";
+        PT_HIGHLIGHTS = "0.000000";
+        PT_PALETTE = "1.000000";
+        PT_POLARIZER = "0.000000";
       };
     };
     gbc = {
       passes = [
-        { shader = "handheld/shaders/color/lut/GBC-LUT.slang"; }
         {
-          shader = "handheld/shaders/lcd3x.slang";
+          shader = "handheld/shaders/pixel_transparency/pt-0-shadow-cache.slang";
+          scaleX = "3.1";
+          scaleY = "1.1";
+        }
+        {
+          shader = "handheld/shaders/pixel_transparency/grids/lcd3x/input.slang";
+          alias = "LCDInput";
           scaleTypeX = "viewport";
           scaleTypeY = "viewport";
         }
-        { shader = "handheld/shaders/color/gbc-color.slang"; }
         {
-          shader = "handheld/shaders/pixel_transparency/pixel_transparency.slang";
+          shader = "handheld/shaders/pixel_transparency/grids/lcd3x/pixel_transparency.slang";
+          scaleTypeX = "viewport";
+          scaleTypeY = "viewport";
+        }
+        {
+          shader = "handheld/shaders/color/lut/GBC-LUT.slang";
+          scaleTypeX = "viewport";
+          scaleTypeY = "viewport";
+        }
+        {
+          shader = "handheld/shaders/color/gbc-color.slang";
           scaleTypeX = "viewport";
           scaleTypeY = "viewport";
         }
@@ -68,6 +99,9 @@ import ./mk-shader-pack.nix { inherit lib stdenvNoCC libretro-shaders-slang; } {
         LUT_selector_param = "2.000000";
         # pixel_transparency
         PT_ACCEL_ENABLE = "0.000000";
+        PT_HIGHLIGHTS = "0.000000";
+        PT_PALETTE = "1.000000";
+        PT_POLARIZER = "0.000000";
       };
     };
   };

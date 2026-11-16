@@ -158,7 +158,11 @@ stdenvNoCC.mkDerivation (
         while IFS= read -r ref; do
           [ -z "$ref" ] && continue
           resolved="$(realpath -m --relative-to="$base" "$base/$dir/$ref")"
-          queue+=("$resolved")
+          if [ -e "$base/$resolved" ]; then
+            queue+=("$resolved")
+          else
+            echo "skipping unresolved reference '$ref' in $path (likely a comment)"
+          fi
         done < <(grep -oE '[A-Za-z0-9_./-]+\.(slang|slangp|inc|png|bmp|tga)' "$src" | sort -u)
       done
 
