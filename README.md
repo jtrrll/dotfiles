@@ -41,7 +41,7 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 ### `checks`
 
 <details>
-<summary>Show 61</summary>
+<summary>Show 63</summary>
 
 - `files:.github/CODEOWNERS`
 
@@ -58,6 +58,10 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 - `files:.github/ISSUE_TEMPLATE/feature_request.yaml`
 
 - `files:.github/PULL_REQUEST_TEMPLATE.md`
+
+- `files:.github/actions/nix-binary-cache/restore/action.yml`
+
+- `files:.github/actions/nix-binary-cache/save/action.yml`
 
 - `files:.github/dependabot.yaml`
 
