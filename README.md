@@ -194,7 +194,7 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 ### `homeModules`
 
 <details>
-<summary>Show 8</summary>
+<summary>Show 7</summary>
 
 - `bonsai`
   - `programs.bonsai.enable` - Whether to enable a bonsai tree screensaver. (default: `false`)
@@ -216,7 +216,6 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
   - `services.codeStorage.directory` - Directory in which bare git repositories are stored. (default: `"${config.home.homeDirectory}/code"`)
   - `services.codeStorage.enable` - Whether to enable self-maintaining directories for source code and worktrees. (default: `false`)
   - `services.codeStorage.frequency` - The interval at which code storage maintenance runs. (default: `"daily"`)
-  - `services.musicLibrary.enable` - Whether to enable a curated music library. (default: `false`)
   - `services.serviceStatus.enable` - Whether to enable HTTP server that reports managed background service status. (default: `false`)
   - `services.serviceStatus.port` - Port to listen on. (default: `5679`)
 
@@ -226,9 +225,6 @@ Managed via [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-
 
 - `matrix`
   - `programs.matrix.enable` - Whether to enable a matrix rain screensaver. (default: `false`)
-
-- `music-library`
-  - `services.musicLibrary.enable` - Whether to enable a curated music library. (default: `false`)
 
 - `service-status`
   - `services.serviceStatus.enable` - Whether to enable HTTP server that reports managed background service status. (default: `false`)
